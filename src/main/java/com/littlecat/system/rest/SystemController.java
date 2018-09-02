@@ -13,43 +13,44 @@ import com.littlecat.cbb.rest.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.system.model.AccountMO;
+import com.littlecat.system.model.SysOperatorMO;
 
 @RestController
 @RequestMapping("/rest/littlecat/caobao/sys")
 public class SystemController
 {
-	@PostMapping(value = "/account/login")
-	public RestRsp<AccountMO> login(@RequestBody AccountMO account)
+	@PostMapping(value = "/sysoperator/login")
+	public RestRsp<SysOperatorMO> login(@RequestBody AccountMO account)
 	{
 		return null;
 	}
 
-	@GetMapping(value = "/account/{id}")
-	public RestRsp<AccountMO> getById(@PathVariable String id)
+	@GetMapping(value = "/sysoperator/{id}")
+	public RestRsp<SysOperatorMO> getById(@PathVariable String id)
 	{
 		return null;
 	}
 
-	@DeleteMapping(value = "/account/{id}")
+	@DeleteMapping(value = "/sysoperator/{id}")
 	public RestSimpleRsp deleteById(@PathVariable String id)
 	{
 		return null;
 	}
 
-	@PutMapping(value = "/account")
-	public RestRsp<AccountMO> modify(@RequestBody AccountMO account)
+	@PutMapping(value = "/sysoperator")
+	public RestRsp<SysOperatorMO> modify(@RequestBody AccountMO account)
 	{
 		return null;
 	}
 
-	@PostMapping(value = "/account")
-	public RestRsp<AccountMO> add(@RequestBody AccountMO account)
+	@PostMapping(value = "/sysoperator")
+	public RestRsp<SysOperatorMO> add(@RequestBody AccountMO account)
 	{
 		return null;
 	}
 
-	@PostMapping(value = "/accounts")
-	public RestRsp<AccountMO> getList(@RequestBody QueryParam queryParam)
+	@PostMapping(value = "/sysoperators")
+	public RestRsp<SysOperatorMO> getList(@RequestBody QueryParam queryParam)
 	{
 		return null;
 	}

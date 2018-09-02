@@ -13,8 +13,8 @@ import com.littlecat.cbb.base.BaseMO;
 public class AccountMO extends BaseMO
 {
 	private String username;
-	private String name;
 	private String password;
+	private String name;
 	private String wxCode;
 	private String email;
 	private String mobile;
@@ -45,6 +45,26 @@ public class AccountMO extends BaseMO
 	public void setPassword(String password)
 	{
 		this.password = password;
+	}
+
+	public List<RoleMO> getRoles()
+	{
+		return roles;
+	}
+
+	public void setRoles(List<RoleMO> roles)
+	{
+		this.roles = roles;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 
 	public String getWxCode()
@@ -87,24 +107,6 @@ public class AccountMO extends BaseMO
 		this.enable = enable;
 	}
 
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	public List<RoleMO> getRoles()
-	{
-		return roles;
-	}
-
-	public void setRoles(List<RoleMO> roles)
-	{
-		this.roles = roles;
-	}
+	
 
 }
