@@ -1,0 +1,63 @@
+package com.littlecat.system.rest;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.littlecat.cbb.rest.QueryParam;
+import com.littlecat.cbb.rest.RestRsp;
+import com.littlecat.cbb.rest.RestSimpleRsp;
+import com.littlecat.system.model.AccountMO;
+
+@RestController
+@RequestMapping("/rest/test")
+public class TestController
+{
+	@PostMapping(value = "/a")
+	public String test1(@RequestBody String account)
+	{
+		return "test1:post:" + account;
+	}
+
+	@GetMapping(value = "/a")
+	public String test2()
+	{
+		return "test2:get:";
+	}
+	
+	@GetMapping(value = "/")
+	public String test3()
+	{
+		return "test3:get:";
+	}
+
+	@DeleteMapping(value = "/account/{id}")
+	public RestSimpleRsp deleteById(@PathVariable String id)
+	{
+		return null;
+	}
+
+	@PutMapping(value = "/account")
+	public RestRsp<AccountMO> modify(@RequestBody AccountMO account)
+	{
+		return null;
+	}
+
+	@PostMapping(value = "/account")
+	public RestRsp<AccountMO> add(@RequestBody AccountMO account)
+	{
+		return null;
+	}
+
+	@PostMapping(value = "/accounts")
+	public RestRsp<AccountMO> getList(@RequestBody QueryParam queryParam)
+	{
+		return null;
+	}
+}
