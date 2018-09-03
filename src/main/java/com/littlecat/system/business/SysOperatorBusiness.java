@@ -2,7 +2,7 @@ package com.littlecat.system.business;
 
 import org.springframework.stereotype.Component;
 
-import com.littlecat.cbb.rest.QueryParam;
+import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.system.model.AccountMO;
