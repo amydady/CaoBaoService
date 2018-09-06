@@ -11,4 +11,14 @@ public class SysOperatorMO extends AccountMO
 	{
 		super();
 	}
+
+	public static String getTableName()
+	{
+		return "t_sys_sysoperator";
+	}
+
+	public static String getDefaultQueryFields()
+	{
+		return "id,username,name,wxCode,email,mobile";
+	}
 }

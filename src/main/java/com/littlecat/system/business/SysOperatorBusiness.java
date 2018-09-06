@@ -1,6 +1,7 @@
 package com.littlecat.system.business;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
@@ -9,6 +10,7 @@ import com.littlecat.system.model.AccountMO;
 import com.littlecat.system.model.SysOperatorMO;
 
 @Component
+@Transactional
 public class SysOperatorBusiness
 {
 	public RestRsp<SysOperatorMO> login(AccountMO account)
