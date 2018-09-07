@@ -2,10 +2,16 @@ package com.littlecat.terminaluser.model;
 
 import com.littlecat.cbb.base.BaseMO;
 
+/**
+ * 终端用户
+ * amydady
+ *
+ */
 public class TerminalUserMO extends BaseMO
 {
 	private String wxCode;
 	private String name;
+	private String refereeWxCode;//推荐人微信
 	private String createTime;
 	
 	public TerminalUserMO()
@@ -36,6 +42,16 @@ public class TerminalUserMO extends BaseMO
 	public void setCreateTime(String createTime)
 	{
 		this.createTime = createTime;
+	}
+
+	public String getRefereeWxCode()
+	{
+		return refereeWxCode;
+	}
+
+	public void setRefereeWxCode(String refereeWxCode)
+	{
+		this.refereeWxCode = refereeWxCode;
 	}
 	
 	
