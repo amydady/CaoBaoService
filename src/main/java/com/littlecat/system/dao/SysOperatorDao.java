@@ -61,8 +61,9 @@ public class SysOperatorDao
 	 */
 	public int getSysOperatorList(QueryParam queryParam, List<SysOperatorMO> mos)
 	{
-		String sql = "select count(*) totalNum," + SysOperatorMO.getDefaultQueryFields() + " from "
+		String sql = "select count(*) totalNum,* from "
 		        + SysOperatorMO.getTableName();
+		
 		return -1;
 	}
 }

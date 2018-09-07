@@ -1,4 +1,4 @@
-package com.littlecat.system.rest;
+package com.littlecat.test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
-import com.littlecat.system.model.AccountMO;
+import com.littlecat.system.model.SysOperatorMO;
 
 @RestController
 @RequestMapping("/rest/test")
@@ -55,19 +55,19 @@ public class TestController
 	}
 
 	@PutMapping(value = "/account")
-	public RestRsp<AccountMO> modify(@RequestBody AccountMO account)
+	public RestRsp<SysOperatorMO> modify(@RequestBody SysOperatorMO account)
 	{
 		return null;
 	}
 
 	@PostMapping(value = "/account")
-	public RestRsp<AccountMO> add(@RequestBody AccountMO account)
+	public RestRsp<SysOperatorMO> add(@RequestBody SysOperatorMO account)
 	{
 		return null;
 	}
 
 	@PostMapping(value = "/accounts")
-	public RestRsp<AccountMO> getList(@RequestBody QueryParam queryParam)
+	public RestRsp<SysOperatorMO> getList(@RequestBody QueryParam queryParam)
 	{
 		return null;
 	}

@@ -6,14 +6,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
-import com.littlecat.system.model.AccountMO;
 import com.littlecat.system.model.SysOperatorMO;
 
 @Component
 @Transactional
 public class SysOperatorBusiness
 {
-	public RestRsp<SysOperatorMO> login(AccountMO account)
+	public RestRsp<SysOperatorMO> login(SysOperatorMO account)
 	{
 		return null;
 	}
@@ -28,12 +27,12 @@ public class SysOperatorBusiness
 		return null;
 	}
 
-	public RestRsp<SysOperatorMO> modify(AccountMO account)
+	public RestRsp<SysOperatorMO> modify(SysOperatorMO account)
 	{
 		return null;
 	}
 
-	public RestRsp<SysOperatorMO> add(AccountMO account)
+	public RestRsp<SysOperatorMO> add(SysOperatorMO account)
 	{
 		return null;
 	}

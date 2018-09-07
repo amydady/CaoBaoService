@@ -14,7 +14,6 @@ import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.system.business.SysOperatorBusiness;
-import com.littlecat.system.model.AccountMO;
 import com.littlecat.system.model.SysOperatorMO;
 
 @RestController
@@ -25,7 +24,7 @@ public class SystemController
 	private SysOperatorBusiness sysOperatorBusiness;
 	
 	@PostMapping(value = "/sysoperator/login")
-	public RestRsp<SysOperatorMO> login(@RequestBody AccountMO account)
+	public RestRsp<SysOperatorMO> login(@RequestBody SysOperatorMO account)
 	{
 		return sysOperatorBusiness.login(account);
 	}
@@ -43,13 +42,13 @@ public class SystemController
 	}
 
 	@PutMapping(value = "/sysoperator")
-	public RestRsp<SysOperatorMO> modify(@RequestBody AccountMO account)
+	public RestRsp<SysOperatorMO> modify(@RequestBody SysOperatorMO account)
 	{
 		return sysOperatorBusiness.modify(account);
 	}
 
 	@PostMapping(value = "/sysoperator")
-	public RestRsp<SysOperatorMO> add(@RequestBody AccountMO account)
+	public RestRsp<SysOperatorMO> add(@RequestBody SysOperatorMO account)
 	{
 		return sysOperatorBusiness.add(account);
 	}
