@@ -6,6 +6,11 @@ import java.util.List;
 import com.littlecat.cbb.base.BaseMO;
 import com.littlecat.terminaluser.model.TerminalUserMO;
 
+/**
+ * 团MO
+ * amydady
+ *
+ */
 public class TuanMO extends BaseMO
 {
 	private String name;

@@ -1,5 +1,8 @@
 package com.littlecat.tuanzhang.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.littlecat.cbb.base.BaseMO;
 
 /**
@@ -11,6 +14,7 @@ public class TuanClassifyMO extends BaseMO
 {
 	private String name;
 	private String remark;
+	private List<TuanMO> tuanList = new ArrayList<TuanMO>();
 	
 	public TuanClassifyMO()
 	{
@@ -32,6 +36,16 @@ public class TuanClassifyMO extends BaseMO
 	public void setRemark(String remark)
 	{
 		this.remark = remark;
+	}
+
+	public List<TuanMO> getTuanList()
+	{
+		return tuanList;
+	}
+
+	public void setTuanList(List<TuanMO> tuanList)
+	{
+		this.tuanList = tuanList;
 	}
 	
 	
