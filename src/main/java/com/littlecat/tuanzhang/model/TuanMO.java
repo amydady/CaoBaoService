@@ -3,7 +3,7 @@ package com.littlecat.tuanzhang.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.littlecat.cbb.base.BaseMO;
+import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.terminaluser.model.TerminalUserMO;
 
 /**

@@ -16,6 +16,16 @@ public class SysOperatorDao
 	@Autowired
     protected JdbcTemplate jdbcTemplate;
 	
+	public SysOperatorMO login(String id,String pwd)
+	{
+		String sql = "select * from " + TableName.SysOperator.getName()
+        + " where (wxCode =? or username=? or email=? or mobile=?) and password=password(?)";
+		
+		//jdbcTemplate.query(sql, new Object[] {id,id,id,id,pwd},)
+		
+		return null;
+	}
+	
 	public String addSysOperator(SysOperatorMO mo)
 	{
 		String sql = "insert into " + TableName.SysOperator.getName()

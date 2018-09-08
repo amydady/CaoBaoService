@@ -1,6 +1,6 @@
 package com.littlecat.maishou.model;
 
-import com.littlecat.cbb.base.BaseMO;
+import com.littlecat.cbb.common.BaseMO;
 
 /**
  * 买手MO

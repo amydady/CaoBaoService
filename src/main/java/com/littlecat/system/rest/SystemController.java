@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.littlecat.cbb.common.Consts;
+import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.system.business.SysOperatorBusiness;
+import com.littlecat.system.model.LoginMO;
 import com.littlecat.system.model.SysOperatorMO;
 
 @RestController
@@ -24,9 +27,27 @@ public class SystemController
 	private SysOperatorBusiness sysOperatorBusiness;
 	
 	@PostMapping(value = "/sysoperator/login")
-	public RestRsp<SysOperatorMO> login(@RequestBody SysOperatorMO account)
+	public RestRsp<SysOperatorMO> login(@RequestBody LoginMO logininfo)
 	{
-		return sysOperatorBusiness.login(account);
+		RestRsp<SysOperatorMO> result = new RestRsp<SysOperatorMO>();
+		
+		try
+		{
+			SysOperatorMO sysOperatorMO = sysOperatorBusiness.login(logininfo.getId(),logininfo.getPwd());
+			result.getData().add(sysOperatorMO);
+		}
+		catch(LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.UNKNOW_ERROR_CODE);
+			result.setMessage(e.getMessage());
+		}
+		
+		return result;
 	}
 
 	@GetMapping(value = "/sysoperator/{id}")

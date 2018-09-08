@@ -1,6 +1,6 @@
 package com.littlecat.tuanzhang.model;
 
-import com.littlecat.cbb.base.BaseMO;
+import com.littlecat.cbb.common.BaseMO;
 
 /**
  * 团分类MO

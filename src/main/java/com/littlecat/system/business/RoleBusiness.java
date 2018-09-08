@@ -1,25 +1,20 @@
 package com.littlecat.system.business;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
-import com.littlecat.system.dao.SysOperatorDao;
 import com.littlecat.system.model.SysOperatorMO;
 
 @Component
 @Transactional
-public class SysOperatorBusiness
+public class RoleBusiness
 {
-	@Autowired
-	private SysOperatorDao sysOperatorDao;
-	
-	public SysOperatorMO login(String id,String pwd)
+	public RestRsp<SysOperatorMO> login(SysOperatorMO account)
 	{
-		return sysOperatorDao.login(id,pwd);
+		return null;
 	}
 
 	public RestRsp<SysOperatorMO> getById(String id)
