@@ -8,14 +8,14 @@ import com.littlecat.terminaluser.model.TerminalUserMO;
 
 /**
  * 团MO
- * amydady
+ * 
+ * @author amydady
  *
  */
 public class TuanMO extends BaseMO
 {
 	private String name;
 	private String remark;
-	private TuanClassifyMO tuanClassify;
 	private String createTime;
 	
 	private List<TerminalUserMO> terminalUserMembers = new ArrayList<TerminalUserMO>();
@@ -44,16 +44,6 @@ public class TuanMO extends BaseMO
 	public void setRemark(String remark)
 	{
 		this.remark = remark;
-	}
-
-	public TuanClassifyMO getTuanClassify()
-	{
-		return tuanClassify;
-	}
-
-	public void setTuanClassify(TuanClassifyMO tuanClassify)
-	{
-		this.tuanClassify = tuanClassify;
 	}
 
 	public String getCreateTime()

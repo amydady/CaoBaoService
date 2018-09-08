@@ -7,7 +7,8 @@ import com.littlecat.cbb.base.BaseMO;
 
 /**
  * 团分类MO
- * amydady
+ * 
+ * @author amydady
  *
  */
 public class TuanClassifyMO extends BaseMO
@@ -15,24 +16,27 @@ public class TuanClassifyMO extends BaseMO
 	private String name;
 	private String remark;
 	private List<TuanMO> tuanList = new ArrayList<TuanMO>();
-	
+
 	public TuanClassifyMO()
 	{
 		super();
 	}
-	
+
 	public String getName()
 	{
 		return name;
 	}
+
 	public void setName(String name)
 	{
 		this.name = name;
 	}
+
 	public String getRemark()
 	{
 		return remark;
 	}
+
 	public void setRemark(String remark)
 	{
 		this.remark = remark;
@@ -47,6 +51,5 @@ public class TuanClassifyMO extends BaseMO
 	{
 		this.tuanList = tuanList;
 	}
-	
-	
+
 }

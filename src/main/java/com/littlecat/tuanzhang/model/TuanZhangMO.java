@@ -7,13 +7,14 @@ import com.littlecat.terminaluser.model.TerminalUserMO;
 
 /**
  * 团长MO
- * amydady
+ * 
+ * @author amydady
  *
  */
 public class TuanZhangMO extends TerminalUserMO
 {
 	private List<TuanClassifyMO> TuanClassifyList = new ArrayList<TuanClassifyMO>();
-	
+
 	public TuanZhangMO()
 	{
 		super();

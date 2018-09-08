@@ -6,7 +6,6 @@ public class TestMain
 {
 	public static void main(String[] args)
 	{
-		//test commit and push
 		System.out.println(SysOperatorMO.getTableName());
 	}
 }
