@@ -7,6 +7,10 @@ package com.littlecat.consts;
  */
 public enum TableName
 {
+	Menu("t_menu"),
+	Action("t_action"),
+	Role("t_role"),
+	
 	SysOperator("t_sysoperator"),
 	TerminalUser("t_terminaluser"),
 	TuanZhang("t_tuanzhang"),
