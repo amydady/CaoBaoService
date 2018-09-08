@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.consts.TableName;
 import com.littlecat.system.model.SysOperatorMO;
 
 @Component
@@ -17,7 +18,7 @@ public class SysOperatorDao
 	
 	public String addSysOperator(SysOperatorMO mo)
 	{
-		String sql = "insert into " + SysOperatorMO.getTableName()
+		String sql = "insert into " + TableName.SysOperator.getName()
 		        + "(id,username,password,name,wxCode,email,mobile) values(?,?,?,?,?,?,?)";
 		
 		int ret = jdbcTemplate.update(sql, new Object[]
@@ -34,7 +35,7 @@ public class SysOperatorDao
 
 	public boolean modifySysOperator(SysOperatorMO mo)
 	{
-		String sql = "update " + SysOperatorMO.getTableName() + " set name = ?,wxCode = ?,email = ?,mobile = ? where id = ?";
+		String sql = "update " + TableName.SysOperator.getName() + " set name = ?,wxCode = ?,email = ?,mobile = ? where id = ?";
 		int ret = jdbcTemplate.update(sql, new Object[]
 		{ mo.getName(), mo.getWxCode(), mo.getEmail(), mo.getMobile(), mo.getId() });
 
@@ -43,7 +44,7 @@ public class SysOperatorDao
 
 	public boolean deleteSysOperator(String id)
 	{
-		String sql = "delete from " + SysOperatorMO.getTableName() + " where id = ?";
+		String sql = "delete from " + TableName.SysOperator.getName() + " where id = ?";
 		int ret = jdbcTemplate.update(sql, new Object[]
 		{ id });
 
@@ -62,7 +63,7 @@ public class SysOperatorDao
 	public int getSysOperatorList(QueryParam queryParam, List<SysOperatorMO> mos)
 	{
 		String sql = "select count(*) totalNum,* from "
-		        + SysOperatorMO.getTableName();
+		        + TableName.SysOperator.getName();
 		
 		return -1;
 	}

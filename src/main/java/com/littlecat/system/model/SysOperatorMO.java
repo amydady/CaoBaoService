@@ -95,9 +95,4 @@ public class SysOperatorMO extends BaseMO
 	{
 		this.roles = roles;
 	}
-
-	public static String getTableName()
-	{
-		return "t_sys_sysoperator";
-	}
 }
