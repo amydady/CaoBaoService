@@ -1,18 +1,13 @@
 package com.littlecat.system.model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.springframework.jdbc.core.RowMapper;
-
 import com.littlecat.cbb.common.BaseMO;
 
 /**
- * 系统操作人员 
+ * 系统操作人员
  * amydady
  *
  */
-public class SysOperatorMO extends BaseMO implements RowMapper<SysOperatorMO>
+public class SysOperatorMO extends BaseMO
 {
 	private String username;
 	private String password;
@@ -86,10 +81,4 @@ public class SysOperatorMO extends BaseMO implements RowMapper<SysOperatorMO>
 		this.mobile = mobile;
 	}
 
-	@Override
-	public SysOperatorMO mapRow(ResultSet rs, int rowNum) throws SQLException
-	{
-		SysOperatorMO mo = new SysOperatorMO();
-		return mo;
-	}
 }
