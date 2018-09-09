@@ -10,6 +10,8 @@ public enum ErrorCode
 {
 	DataAccessException("DataAccessException","Occur an exception when access DB."),
 	GetInfoFromDBReturnEmpty("GetInfoFromDBReturnEmpty","get {INFO_NAME} from db return empty."),
+	GiveNullObjectToCreate("GiveNullObjectToCreate","give null object to create for {INFO_NAME}."),
+	InsertObjectToDBError("InsertObjectToDBError","insert {INFO_NAME} to DB error. "),
 	;
 	
 	private String code;

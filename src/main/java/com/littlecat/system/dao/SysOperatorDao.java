@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
+import com.littlecat.cbb.utils.StringUtil;
+import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.consts.ErrorCode;
 import com.littlecat.consts.TableName;
 import com.littlecat.system.model.SysOperatorMO;
@@ -52,16 +54,35 @@ public class SysOperatorDao
 	
 	public String addSysOperator(SysOperatorMO mo)
 	{
-		String sql = "insert into " + TableName.SysOperator.getName()
-		        + "(id,username,password,name,wxCode,email,mobile) values(?,?,?,?,?,?,?)";
-		
-		int ret = jdbcTemplate.update(sql, new Object[]
-		{ mo.getId(), mo.getUsername(), mo.getPassword(), mo.getName(), mo.getWxCode(), mo.getEmail(),
-		        mo.getMobile() });
-
-		if (ret != 1)
+		if(mo == null)
 		{
-			return null;
+			logger.warn(ErrorCode.GiveNullObjectToCreate.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(),ErrorCode.GiveNullObjectToCreate.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+		}
+		
+		if(StringUtil.isEmpty(mo.getId()))
+		{
+			mo.setId(UUIDUtil.createUUID());
+		}
+		
+		String sql = "insert into " + TableName.SysOperator.getName()
+		        + "(id,username,password,name,wxCode,email,mobile) values(?,?,password(?),?,?,?,?)";
+		
+		try
+		{
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getUsername(), mo.getPassword(), mo.getName(),
+					mo.getWxCode(), mo.getEmail(), mo.getMobile() });
+
+			if (ret != 1)
+			{
+				logger.warn(ErrorCode.InsertObjectToDBError.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(),ErrorCode.InsertObjectToDBError.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+			}
+		}
+		catch(DataAccessException e)
+		{
+			logger.warn(ErrorCode.DataAccessException.getMsg());
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
 		}
 
 		return mo.getId();
