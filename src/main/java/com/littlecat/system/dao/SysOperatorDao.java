@@ -9,11 +9,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
+import com.littlecat.common.TotalNumMapper;
 import com.littlecat.consts.ErrorCode;
 import com.littlecat.consts.TableName;
 import com.littlecat.system.model.SysOperatorMO;
@@ -40,15 +42,15 @@ public class SysOperatorDao
 			if(CollectionUtil.isEmpty(mos))
 			{
 				logger.warn(ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replaceAll("{INFO_NAME}", "SysOperatorMO") + " id=" + id);
-				throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(),ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replaceAll("{INFO_NAME}", "SysOperatorMO"));
+				return null;
 			}
 			
 			return mos.get(0);
 		}
 		catch(DataAccessException e)
 		{
-			logger.warn(ErrorCode.DataAccessException.getMsg() + " id=" + id);
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
+			logger.warn(ErrorCode.DataAccessException.getMsg() + " id=" + id,e);
+			return null;
 		}
 	}
 	
@@ -57,7 +59,7 @@ public class SysOperatorDao
 		if(mo == null)
 		{
 			logger.warn(ErrorCode.GiveNullObjectToCreate.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
-			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(),ErrorCode.GiveNullObjectToCreate.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+			return null;
 		}
 		
 		if(StringUtil.isEmpty(mo.getId()))
@@ -76,13 +78,13 @@ public class SysOperatorDao
 			if (ret != 1)
 			{
 				logger.warn(ErrorCode.InsertObjectToDBError.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
-				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(),ErrorCode.InsertObjectToDBError.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+				return null;
 			}
 		}
 		catch(DataAccessException e)
 		{
-			logger.warn(ErrorCode.DataAccessException.getMsg());
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
+			logger.warn(ErrorCode.DataAccessException.getMsg(),e);
+			return null;
 		}
 
 		return mo.getId();
@@ -90,20 +92,46 @@ public class SysOperatorDao
 
 	public boolean modifySysOperator(SysOperatorMO mo)
 	{
+		if(mo == null)
+		{
+			logger.warn(ErrorCode.GiveNullObjectToModify.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+			return false;
+		}
+		
 		String sql = "update " + TableName.SysOperator.getName() + " set name = ?,wxCode = ?,email = ?,mobile = ? where id = ?";
-		int ret = jdbcTemplate.update(sql, new Object[]
-		{ mo.getName(), mo.getWxCode(), mo.getEmail(), mo.getMobile(), mo.getId() });
-
-		return ret == 1;
+		
+		try
+		{
+			int ret = jdbcTemplate.update(sql,new Object[] { mo.getName(), mo.getWxCode(), mo.getEmail(), mo.getMobile(), mo.getId() });
+			return ret == 1;
+		}
+		catch (DataAccessException e)
+		{
+			logger.warn(ErrorCode.DataAccessException.getMsg(),e);
+			return false;
+		}
 	}
 
 	public boolean deleteSysOperator(String id)
 	{
+		if(StringUtil.isEmpty(id))
+		{
+			logger.warn(ErrorCode.DeleteObjectWithEmptyId.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+			return false;
+		}
+		
 		String sql = "delete from " + TableName.SysOperator.getName() + " where id = ?";
-		int ret = jdbcTemplate.update(sql, new Object[]
-		{ id });
-
-		return ret == 1;
+		
+		try
+		{
+			int ret = jdbcTemplate.update(sql, new Object[] { id });
+			return ret <=1;
+		}
+		catch (DataAccessException e)
+		{
+			logger.warn(ErrorCode.DataAccessException.getMsg(), e);
+			return false;
+		}
 	}
 
 	/**
@@ -117,9 +145,13 @@ public class SysOperatorDao
 	 */
 	public int getSysOperatorList(QueryParam queryParam, List<SysOperatorMO> mos)
 	{
-		String sql = "select count(*) totalNum,* from "
-		        + TableName.SysOperator.getName();
+		String sql = "select count(*) totalNum,* from " + TableName.SysOperator.getName();
 		
-		return -1;
+		
+		mos = jdbcTemplate.query(sql, new Object[] {id,id,id,id,pwd},new SysOperatorMapper());
+		
+		int totalNum = jdbcTemplate.queryForObject("select count(*) " + Consts.COMMON_DB_RESULT_FIELDS_TOTALNUM + " from " +TableName.SysOperator.getName(), new TotalNumMapper());
+		
+		return totalNum;
 	}
 }

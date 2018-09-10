@@ -43,7 +43,7 @@ public class SystemController
 		}
 		catch (Exception e)
 		{
-			result.setCode(Consts.UNKNOW_ERROR_CODE);
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
 			result.setMessage(e.getMessage());
 		}
 		
