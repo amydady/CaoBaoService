@@ -145,13 +145,13 @@ public class SysOperatorDao
 	 */
 	public int getSysOperatorList(QueryParam queryParam, List<SysOperatorMO> mos)
 	{
-		String sql = "select count(*) totalNum,* from " + TableName.SysOperator.getName();
+//		String sql = "select count(*) totalNum,* from " + TableName.SysOperator.getName();
 		
 		
-		mos = jdbcTemplate.query(sql, new Object[] {id,id,id,id,pwd},new SysOperatorMapper());
+//		mos = jdbcTemplate.query(sql, new Object[] {id,id,id,id,pwd},new SysOperatorMapper());
+//		
+//		int totalNum = jdbcTemplate.queryForObject("select count(*) " + Consts.COMMON_DB_RESULT_FIELDS_TOTALNUM + " from " +TableName.SysOperator.getName(), new TotalNumMapper());
 		
-		int totalNum = jdbcTemplate.queryForObject("select count(*) " + Consts.COMMON_DB_RESULT_FIELDS_TOTALNUM + " from " +TableName.SysOperator.getName(), new TotalNumMapper());
-		
-		return totalNum;
+		return 0;
 	}
 }

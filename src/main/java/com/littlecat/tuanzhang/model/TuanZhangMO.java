@@ -1,17 +1,22 @@
 package com.littlecat.tuanzhang.model;
 
-import com.littlecat.terminaluser.model.TerminalUserMO;
-
 /**
  * 团长MO
  * 
  * @author amydady
  *
  */
-public class TuanZhangMO extends TerminalUserMO
+public class TuanZhangMO
 {
-	public TuanZhangMO()
+	private String id; //TerminalUser ID
+
+	public String getId()
 	{
-		super();
+		return id;
+	}
+
+	public void setId(String id)
+	{
+		this.id = id;
 	}
 }

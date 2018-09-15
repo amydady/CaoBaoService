@@ -18,9 +18,7 @@ public class TuanMO extends BaseMO
 	private String remark;
 	private String createTime;
 	private String tuanClassifyId;
-	
-	private List<TerminalUserMO> terminalUserMembers = new ArrayList<TerminalUserMO>();
-
+	private String tuanZhangId;
 	
 	public TuanMO()
 	{
@@ -57,16 +55,6 @@ public class TuanMO extends BaseMO
 		this.createTime = createTime;
 	}
 
-	public List<TerminalUserMO> getTerminalUserMembers()
-	{
-		return terminalUserMembers;
-	}
-
-	public void setTerminalUserMembers(List<TerminalUserMO> terminalUserMembers)
-	{
-		this.terminalUserMembers = terminalUserMembers;
-	}
-
 	public String getTuanClassifyId()
 	{
 		return tuanClassifyId;
@@ -75,6 +63,16 @@ public class TuanMO extends BaseMO
 	public void setTuanClassifyId(String tuanClassifyId)
 	{
 		this.tuanClassifyId = tuanClassifyId;
+	}
+
+	public String getTuanZhangId()
+	{
+		return tuanZhangId;
+	}
+
+	public void setTuanZhangId(String tuanZhangId)
+	{
+		this.tuanZhangId = tuanZhangId;
 	}
 
 	

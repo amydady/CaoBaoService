@@ -1,10 +1,6 @@
 package com.littlecat.terminaluser.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.littlecat.cbb.common.BaseMO;
-import com.littlecat.tuanzhang.model.TuanMO;
 
 /**
  * 终端用户
@@ -18,8 +14,9 @@ public class TerminalUserMO extends BaseMO
 	private String name;
 	private String mobile;
 	private String refereeWxCode;// 推荐人微信
-	private List<TuanMO> tuanList = new ArrayList<TuanMO>();
 	private String createTime;
+	private String isTuanZhang; // 是否为团长（社圈长）
+	private String isMaiShou; // 是否为买手
 
 	public TerminalUserMO()
 	{
@@ -66,16 +63,6 @@ public class TerminalUserMO extends BaseMO
 		this.refereeWxCode = refereeWxCode;
 	}
 
-	public List<TuanMO> getTuanList()
-	{
-		return tuanList;
-	}
-
-	public void setTuanList(List<TuanMO> tuanList)
-	{
-		this.tuanList = tuanList;
-	}
-
 	public String getMobile()
 	{
 		return mobile;
@@ -84,6 +71,26 @@ public class TerminalUserMO extends BaseMO
 	public void setMobile(String mobile)
 	{
 		this.mobile = mobile;
+	}
+
+	public String getIsTuanZhang()
+	{
+		return isTuanZhang;
+	}
+
+	public void setIsTuanZhang(String isTuanZhang)
+	{
+		this.isTuanZhang = isTuanZhang;
+	}
+
+	public String getIsMaiShou()
+	{
+		return isMaiShou;
+	}
+
+	public void setIsMaiShou(String isMaiShou)
+	{
+		this.isMaiShou = isMaiShou;
 	}
 
 }
