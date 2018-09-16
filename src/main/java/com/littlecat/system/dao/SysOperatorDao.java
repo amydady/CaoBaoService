@@ -1,10 +1,13 @@
 package com.littlecat.system.dao;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
@@ -165,11 +168,15 @@ public class SysOperatorDao
 			throw new LittleCatException(ErrorCode.DeleteObjectWithEmptyId.getCode(),ErrorCode.DeleteObjectWithEmptyId.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
 		}
 		
-		String sql = "delete from " + TableName.SysOperator.getName() + " where id in (?)";
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+		
+		String sql = "delete from " + TableName.SysOperator.getName() + " where id in (:ids)";
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+	    parameters.addValue("ids", ids);
 		
 		try
 		{
-			jdbcTemplate.update(sql, new Object[] {ListUtil.join2String(ids)});
+			namedParameterJdbcTemplate.update(sql, parameters);
 		}
 		catch (DataAccessException e)
 		{
