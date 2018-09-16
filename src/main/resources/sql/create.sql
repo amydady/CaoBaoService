@@ -11,6 +11,4 @@ CREATE TABLE `t_sysoperator` (
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	
 	PRIMARY KEY (`id`)
-)
-COLLATE='latin1_swedish_ci'
-ENGINE=InnoDB;
+);

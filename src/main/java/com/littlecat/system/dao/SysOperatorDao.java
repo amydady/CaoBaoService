@@ -37,14 +37,14 @@ public class SysOperatorDao
 			
 			if(CollectionUtil.isEmpty(mos))
 			{
-				throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(),ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replaceAll("{INFO_NAME}", "SysOperatorMO") + " id=" + id);
+				throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(),ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", "SysOperatorMO") + " id=" + id);
 			}
 			
 			return mos.get(0);
 		}
 		catch(DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
 		}
 	}
 	
@@ -52,7 +52,7 @@ public class SysOperatorDao
 	{
 		if(StringUtil.isEmpty(id))
 		{
-			throw new LittleCatException(ErrorCode.UpdateObjectWithEmptyId.getCode(),ErrorCode.UpdateObjectWithEmptyId.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+			throw new LittleCatException(ErrorCode.UpdateObjectWithEmptyId.getCode(),ErrorCode.UpdateObjectWithEmptyId.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
 		}
 		
 		String sql = "update " + TableName.SysOperator.getName() + " set password = password(?) where id = ?";
@@ -63,12 +63,12 @@ public class SysOperatorDao
 			
 			if (ret != 1)
 			{
-				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(),ErrorCode.UpdateObjectToDBError.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(),ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
 			}
 		}
 		catch (DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
 		}
 		
 		return true;
@@ -78,7 +78,7 @@ public class SysOperatorDao
 	{
 		if(mo == null)
 		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(),ErrorCode.GiveNullObjectToCreate.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(),ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
 		}
 		
 		if(StringUtil.isEmpty(mo.getId()))
@@ -96,12 +96,12 @@ public class SysOperatorDao
 
 			if (ret != 1)
 			{
-				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(),ErrorCode.InsertObjectToDBError.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(),ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
 			}
 		}
 		catch(DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
 		}
 
 		return mo.getId();
@@ -111,7 +111,7 @@ public class SysOperatorDao
 	{
 		if(mo == null)
 		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToModify.getCode(),ErrorCode.GiveNullObjectToModify.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+			throw new LittleCatException(ErrorCode.GiveNullObjectToModify.getCode(),ErrorCode.GiveNullObjectToModify.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
 		}
 		
 		String sql = "update " + TableName.SysOperator.getName() + " set name = ?,wxCode = ?,email = ?,mobile = ? where id = ?";
@@ -122,12 +122,12 @@ public class SysOperatorDao
 			
 			if (ret != 1)
 			{
-				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(),ErrorCode.UpdateObjectToDBError.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(),ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
 			}
 		}
 		catch (DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
 		}
 		
 		return true;
@@ -137,7 +137,7 @@ public class SysOperatorDao
 	{
 		if(StringUtil.isEmpty(id))
 		{
-			throw new LittleCatException(ErrorCode.DeleteObjectWithEmptyId.getCode(),ErrorCode.DeleteObjectWithEmptyId.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+			throw new LittleCatException(ErrorCode.DeleteObjectWithEmptyId.getCode(),ErrorCode.DeleteObjectWithEmptyId.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
 		}
 		
 		String sql = "delete from " + TableName.SysOperator.getName() + " where id = ?";
@@ -147,12 +147,12 @@ public class SysOperatorDao
 			int ret = jdbcTemplate.update(sql, new Object[] { id });
 			if (ret > 1)
 			{
-				throw new LittleCatException(ErrorCode.DeleteObjectWithIdError.getCode(),ErrorCode.DeleteObjectWithIdError.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO") + "id=" + id);
+				throw new LittleCatException(ErrorCode.DeleteObjectWithIdError.getCode(),ErrorCode.DeleteObjectWithIdError.getMsg().replace("{INFO_NAME}","SysOperatorMO") + "id=" + id);
 			}
 		}
 		catch (DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
 		}
 		
 		return true;
@@ -162,7 +162,7 @@ public class SysOperatorDao
 	{
 		if(CollectionUtil.isEmpty(ids))
 		{
-			throw new LittleCatException(ErrorCode.DeleteObjectWithEmptyId.getCode(),ErrorCode.DeleteObjectWithEmptyId.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+			throw new LittleCatException(ErrorCode.DeleteObjectWithEmptyId.getCode(),ErrorCode.DeleteObjectWithEmptyId.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
 		}
 		
 		String sql = "delete from " + TableName.SysOperator.getName() + " where id in (?)";
@@ -173,7 +173,7 @@ public class SysOperatorDao
 		}
 		catch (DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
 		}
 		
 		return true;
@@ -189,7 +189,7 @@ public class SysOperatorDao
 		}
 		catch (DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
 		}
 	}
 
@@ -206,18 +206,18 @@ public class SysOperatorDao
 	{
 		if(queryParam == null)
 		{
-			throw new LittleCatException(ErrorCode.QueryParamIsNull.getCode(),ErrorCode.QueryParamIsNull.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+			throw new LittleCatException(ErrorCode.QueryParamIsNull.getCode(),ErrorCode.QueryParamIsNull.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
 		}
 		
 		String sql = "select * from " + TableName.SysOperator.getName() + queryParam.getQueryDataConditionString();
 		
 		try
 		{
-			mos = jdbcTemplate.query(sql,new SysOperatorMapper());
+			mos.addAll(jdbcTemplate.query(sql,new SysOperatorMapper()));
 		}
 		catch( DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
 		}
 		
 		return getTotalNum(queryParam);
@@ -238,7 +238,12 @@ public class SysOperatorDao
 		}
 		catch( DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
 		}
 	}
+	
+//	public static void main(String[] args)
+//	{
+//		System.out.println(ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
+//	}
 }
