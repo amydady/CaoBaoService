@@ -15,6 +15,7 @@ public enum ErrorCode
 	GiveNullObjectToModify("GiveNullObjectToModify","give null object to modify for {INFO_NAME}."),
 	InsertObjectToDBError("InsertObjectToDBError","insert {INFO_NAME} to DB error. "),
 	UpdateObjectToDBError("UpdateObjectToDBError","update {INFO_NAME} to DB error. "),
+	UpdateObjectWithEmptyId("UpdateObjectWithEmptyId","update {INFO_NAME} with empty id. "),
 	DeleteObjectWithEmptyId("DeleteObjectWithEmptyId","delete {INFO_NAME} with empty id. "),
 	DeleteObjectWithIdError("DeleteObjectWithIdError","delete {INFO_NAME} with id error. "),
 	;

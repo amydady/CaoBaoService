@@ -1,5 +1,10 @@
 package com.littlecat.system.rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +21,7 @@ import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.system.business.SysOperatorBusiness;
+import com.littlecat.system.model.ChangePasswordMO;
 import com.littlecat.system.model.LoginMO;
 import com.littlecat.system.model.SysOperatorMO;
 
@@ -25,6 +31,8 @@ public class SystemController
 {
 	@Autowired
 	private SysOperatorBusiness sysOperatorBusiness;
+	
+	private Logger logger = LoggerFactory.getLogger(SystemController.class);
 	
 	@PostMapping(value = "/sysoperator/login")
 	public RestRsp<SysOperatorMO> login(@RequestBody LoginMO logininfo)
@@ -40,11 +48,38 @@ public class SystemController
 		{
 			result.setCode(e.getErrorCode());
 			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(),e);
 		}
 		catch (Exception e)
 		{
 			result.setCode(Consts.ERROR_CODE_UNKNOW);
 			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(),e);
+		}
+		
+		return result;
+	}
+	
+	@PostMapping(value = "/sysoperator/changepassword")
+	public RestSimpleRsp changePassword(@RequestBody ChangePasswordMO changePasswordMO)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+		
+		try
+		{
+			sysOperatorBusiness.changePassword(changePasswordMO.getId(),changePasswordMO.getPwd());
+		}
+		catch(LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(),e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(),e);
 		}
 		
 		return result;
@@ -53,30 +88,155 @@ public class SystemController
 	@GetMapping(value = "/sysoperator/{id}")
 	public RestRsp<SysOperatorMO> getById(@PathVariable String id)
 	{
-		return sysOperatorBusiness.getById(id);
+		RestRsp<SysOperatorMO> result = new RestRsp<SysOperatorMO>();
+		
+		try
+		{
+			SysOperatorMO sysOperatorMO = sysOperatorBusiness.getById(id);
+			result.getData().add(sysOperatorMO);
+		}
+		catch(LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(),e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(),e);
+		}
+		
+		return result;
 	}
 
 	@DeleteMapping(value = "/sysoperator/{id}")
 	public RestSimpleRsp deleteById(@PathVariable String id)
 	{
-		return sysOperatorBusiness.deleteById(id);
+		RestSimpleRsp result = new RestSimpleRsp();
+		
+		try
+		{
+			sysOperatorBusiness.deleteById(id);
+		}
+		catch(LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(),e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(),e);
+		}
+		
+		return result;
 	}
 
 	@PutMapping(value = "/sysoperator")
-	public RestRsp<SysOperatorMO> modify(@RequestBody SysOperatorMO account)
+	public RestSimpleRsp modify(@RequestBody SysOperatorMO mo)
 	{
-		return sysOperatorBusiness.modify(account);
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			sysOperatorBusiness.modify(mo);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
 	}
 
 	@PostMapping(value = "/sysoperator")
-	public RestRsp<SysOperatorMO> add(@RequestBody SysOperatorMO account)
+	public RestRsp<String> add(@RequestBody SysOperatorMO mo)
 	{
-		return sysOperatorBusiness.add(account);
+		RestRsp<String> result = new RestRsp<String>();
+
+		try
+		{
+			result.getData().add(sysOperatorBusiness.add(mo));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
 	}
 
 	@PostMapping(value = "/sysoperators")
 	public RestRsp<SysOperatorMO> getList(@RequestBody QueryParam queryParam)
 	{
-		return sysOperatorBusiness.getList(queryParam);
+		RestRsp<SysOperatorMO> result = new RestRsp<SysOperatorMO>();
+		
+		try
+		{
+			List<SysOperatorMO> mos = new ArrayList<SysOperatorMO>();
+			int totalNum = sysOperatorBusiness.getList(queryParam, mos);
+			result.setTotalNum(totalNum);
+			result.getData().addAll(mos);
+		}
+		catch(LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(),e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(),e);
+		}
+		
+		return result;
 	}
+	
+	@DeleteMapping(value = "/sysoperators")
+	public RestSimpleRsp deleteByIdList(@RequestBody List<String> ids)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+		
+		try
+		{
+			sysOperatorBusiness.deleteByIdList(ids);
+		}
+		catch(LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(),e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(),e);
+		}
+		
+		return result;
+	}
+	
 }

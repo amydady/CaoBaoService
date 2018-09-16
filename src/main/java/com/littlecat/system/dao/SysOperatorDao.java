@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
+import com.littlecat.cbb.utils.ListUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.TotalNumMapper;
@@ -47,7 +48,33 @@ public class SysOperatorDao
 		}
 	}
 	
-	public String addSysOperator(SysOperatorMO mo)
+	public boolean changePassword(String id,String pwd) throws LittleCatException
+	{
+		if(StringUtil.isEmpty(id))
+		{
+			throw new LittleCatException(ErrorCode.UpdateObjectWithEmptyId.getCode(),ErrorCode.UpdateObjectWithEmptyId.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+		}
+		
+		String sql = "update " + TableName.SysOperator.getName() + " set password = password(?) where id = ?";
+		
+		try
+		{
+			int ret = jdbcTemplate.update(sql,new Object[] { id,pwd });
+			
+			if (ret != 1)
+			{
+				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(),ErrorCode.UpdateObjectToDBError.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+			}
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+		}
+		
+		return true;
+	}
+	
+	public String add(SysOperatorMO mo) throws LittleCatException
 	{
 		if(mo == null)
 		{
@@ -80,7 +107,7 @@ public class SysOperatorDao
 		return mo.getId();
 	}
 
-	public boolean modifySysOperator(SysOperatorMO mo)
+	public boolean modify(SysOperatorMO mo) throws LittleCatException
 	{
 		if(mo == null)
 		{
@@ -106,7 +133,7 @@ public class SysOperatorDao
 		return true;
 	}
 
-	public boolean deleteSysOperator(String id)
+	public boolean delete(String id) throws LittleCatException
 	{
 		if(StringUtil.isEmpty(id))
 		{
@@ -130,6 +157,41 @@ public class SysOperatorDao
 		
 		return true;
 	}
+	
+	public boolean delete(List<String> ids) throws LittleCatException
+	{
+		if(CollectionUtil.isEmpty(ids))
+		{
+			throw new LittleCatException(ErrorCode.DeleteObjectWithEmptyId.getCode(),ErrorCode.DeleteObjectWithEmptyId.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+		}
+		
+		String sql = "delete from " + TableName.SysOperator.getName() + " where id in (?)";
+		
+		try
+		{
+			jdbcTemplate.update(sql, new Object[] {ListUtil.join2String(ids)});
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+		}
+		
+		return true;
+	}
+	
+	public SysOperatorMO getById(String id) throws LittleCatException
+	{
+		String sql = "select * from " + TableName.SysOperator.getName() + " where id = ?";
+		
+		try
+		{
+			return jdbcTemplate.queryForObject(sql,new Object[] {id},new SysOperatorMapper());
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+		}
+	}
 
 	/**
 	 * 查询系统操作人员列表
@@ -140,7 +202,7 @@ public class SysOperatorDao
 	 *            返回列表信息（当前这一批，不是全部数据）
 	 * @return 总记录数
 	 */
-	public int getSysOperatorList(QueryParam queryParam, List<SysOperatorMO> mos)
+	public int getList(QueryParam queryParam, List<SysOperatorMO> mos) throws LittleCatException
 	{
 		if(queryParam == null)
 		{
@@ -161,7 +223,7 @@ public class SysOperatorDao
 		return getTotalNum(queryParam);
 	}
 	
-	private int getTotalNum(QueryParam queryParam)
+	private int getTotalNum(QueryParam queryParam) throws LittleCatException
 	{
 		String sql = "select count(*) totalNum	from " + TableName.SysOperator.getName();
 		

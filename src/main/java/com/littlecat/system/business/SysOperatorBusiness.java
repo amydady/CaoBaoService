@@ -1,12 +1,13 @@
 package com.littlecat.system.business;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
-import com.littlecat.cbb.rest.RestRsp;
-import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.system.dao.SysOperatorDao;
 import com.littlecat.system.model.SysOperatorMO;
 
@@ -17,33 +18,43 @@ public class SysOperatorBusiness
 	@Autowired
 	private SysOperatorDao sysOperatorDao;
 	
-	public SysOperatorMO login(String id,String pwd)
+	public SysOperatorMO login(String id,String pwd) throws LittleCatException
 	{
 		return sysOperatorDao.login(id,pwd);
 	}
-
-	public RestRsp<SysOperatorMO> getById(String id)
+	
+	public boolean changePassword(String id,String pwd) throws LittleCatException
 	{
-		return null;
+		return sysOperatorDao.changePassword(id, pwd);
 	}
 
-	public RestSimpleRsp deleteById(String id)
+	public SysOperatorMO getById(String id) throws LittleCatException
 	{
-		return null;
+		return sysOperatorDao.getById(id);
 	}
 
-	public RestRsp<SysOperatorMO> modify(SysOperatorMO account)
+	public boolean deleteById(String id) throws LittleCatException
 	{
-		return null;
+		return sysOperatorDao.delete(id);
+	}
+	
+	public boolean deleteByIdList(List<String> ids) throws LittleCatException
+	{
+		return sysOperatorDao.delete(ids);
 	}
 
-	public RestRsp<SysOperatorMO> add(SysOperatorMO account)
+	public boolean modify(SysOperatorMO mo) throws LittleCatException
 	{
-		return null;
+		return sysOperatorDao.modify(mo);
 	}
 
-	public RestRsp<SysOperatorMO> getList(QueryParam queryParam)
+	public String add(SysOperatorMO mo) throws LittleCatException
 	{
-		return null;
+		return sysOperatorDao.add(mo);
+	}
+
+	public int getList(QueryParam queryParam,List<SysOperatorMO> mos) throws LittleCatException
+	{
+		return sysOperatorDao.getList(queryParam, mos);
 	}
 }
