@@ -2,14 +2,11 @@ package com.littlecat.system.dao;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
@@ -26,8 +23,6 @@ public class SysOperatorDao
 {
 	@Autowired
     protected JdbcTemplate jdbcTemplate;
-
-	private Logger logger = LoggerFactory.getLogger(SysOperatorDao.class);
 	
 	public SysOperatorMO login(String id,String pwd) throws LittleCatException
 	{
@@ -41,16 +36,14 @@ public class SysOperatorDao
 			
 			if(CollectionUtil.isEmpty(mos))
 			{
-				logger.warn(ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replaceAll("{INFO_NAME}", "SysOperatorMO") + " id=" + id);
-				return null;
+				throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(),ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replaceAll("{INFO_NAME}", "SysOperatorMO") + " id=" + id);
 			}
 			
 			return mos.get(0);
 		}
 		catch(DataAccessException e)
 		{
-			logger.warn(ErrorCode.DataAccessException.getMsg() + " id=" + id,e);
-			return null;
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
 		}
 	}
 	
@@ -58,8 +51,7 @@ public class SysOperatorDao
 	{
 		if(mo == null)
 		{
-			logger.warn(ErrorCode.GiveNullObjectToCreate.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
-			return null;
+			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(),ErrorCode.GiveNullObjectToCreate.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
 		}
 		
 		if(StringUtil.isEmpty(mo.getId()))
@@ -77,14 +69,12 @@ public class SysOperatorDao
 
 			if (ret != 1)
 			{
-				logger.warn(ErrorCode.InsertObjectToDBError.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
-				return null;
+				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(),ErrorCode.InsertObjectToDBError.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
 			}
 		}
 		catch(DataAccessException e)
 		{
-			logger.warn(ErrorCode.DataAccessException.getMsg(),e);
-			return null;
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
 		}
 
 		return mo.getId();
@@ -94,8 +84,7 @@ public class SysOperatorDao
 	{
 		if(mo == null)
 		{
-			logger.warn(ErrorCode.GiveNullObjectToModify.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
-			return false;
+			throw new LittleCatException(ErrorCode.GiveNullObjectToModify.getCode(),ErrorCode.GiveNullObjectToModify.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
 		}
 		
 		String sql = "update " + TableName.SysOperator.getName() + " set name = ?,wxCode = ?,email = ?,mobile = ? where id = ?";
@@ -103,21 +92,25 @@ public class SysOperatorDao
 		try
 		{
 			int ret = jdbcTemplate.update(sql,new Object[] { mo.getName(), mo.getWxCode(), mo.getEmail(), mo.getMobile(), mo.getId() });
-			return ret == 1;
+			
+			if (ret != 1)
+			{
+				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(),ErrorCode.UpdateObjectToDBError.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+			}
 		}
 		catch (DataAccessException e)
 		{
-			logger.warn(ErrorCode.DataAccessException.getMsg(),e);
-			return false;
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
 		}
+		
+		return true;
 	}
 
 	public boolean deleteSysOperator(String id)
 	{
 		if(StringUtil.isEmpty(id))
 		{
-			logger.warn(ErrorCode.DeleteObjectWithEmptyId.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
-			return false;
+			throw new LittleCatException(ErrorCode.DeleteObjectWithEmptyId.getCode(),ErrorCode.DeleteObjectWithEmptyId.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
 		}
 		
 		String sql = "delete from " + TableName.SysOperator.getName() + " where id = ?";
@@ -125,13 +118,17 @@ public class SysOperatorDao
 		try
 		{
 			int ret = jdbcTemplate.update(sql, new Object[] { id });
-			return ret <=1;
+			if (ret > 1)
+			{
+				throw new LittleCatException(ErrorCode.DeleteObjectWithIdError.getCode(),ErrorCode.DeleteObjectWithIdError.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO") + "id=" + id);
+			}
 		}
 		catch (DataAccessException e)
 		{
-			logger.warn(ErrorCode.DataAccessException.getMsg(), e);
-			return false;
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
 		}
+		
+		return true;
 	}
 
 	/**
@@ -145,13 +142,41 @@ public class SysOperatorDao
 	 */
 	public int getSysOperatorList(QueryParam queryParam, List<SysOperatorMO> mos)
 	{
-//		String sql = "select count(*) totalNum,* from " + TableName.SysOperator.getName();
+		if(queryParam == null)
+		{
+			throw new LittleCatException(ErrorCode.QueryParamIsNull.getCode(),ErrorCode.QueryParamIsNull.getMsg().replaceAll("{INFO_NAME}","SysOperatorMO"));
+		}
 		
+		String sql = "select * from " + TableName.SysOperator.getName() + queryParam.getQueryDataConditionString();
 		
-//		mos = jdbcTemplate.query(sql, new Object[] {id,id,id,id,pwd},new SysOperatorMapper());
-//		
-//		int totalNum = jdbcTemplate.queryForObject("select count(*) " + Consts.COMMON_DB_RESULT_FIELDS_TOTALNUM + " from " +TableName.SysOperator.getName(), new TotalNumMapper());
+		try
+		{
+			mos = jdbcTemplate.query(sql,new SysOperatorMapper());
+		}
+		catch( DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+		}
 		
-		return 0;
+		return getTotalNum(queryParam);
+	}
+	
+	private int getTotalNum(QueryParam queryParam)
+	{
+		String sql = "select count(*) totalNum	from " + TableName.SysOperator.getName();
+		
+		if(queryParam != null)
+		{
+			sql += queryParam.getQueryCountConditionString();
+		}
+		
+		try
+		{
+			return jdbcTemplate.queryForObject(sql,new TotalNumMapper());
+		}
+		catch( DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),e);
+		}
 	}
 }
