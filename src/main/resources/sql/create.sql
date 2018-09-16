@@ -8,7 +8,7 @@ CREATE TABLE `t_sysoperator` (
 	`wxCode` VARCHAR(255) NOT NULL,
 	`email` VARCHAR(255) NOT NULL,
 	`mobile` VARCHAR(255) NOT NULL,
-	`enable` VARCHAR(1) NOT NULL,
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	
 	PRIMARY KEY (`id`)
 )
