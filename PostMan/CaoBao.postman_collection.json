@@ -172,10 +172,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\":\"admin\",\n\t\"password\":\"123\",\n\t\"name\":\"管理员\",\n\t\"wxCode\":\"wx123\",\n\t\"email\":\"e@mail.com\",\n\t\"mobile\":\"12323423\"\n\t\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "{{hostip}}/rest/littlecat/caobao/sys/sysoperator/b2e69d88-664e-4971-9cea-4428155e8c6c",
+							"raw": "{{hostip}}/rest/littlecat/caobao/sys/sysoperator/0912543b-da19-4a8f-990e-3b63fab9e219",
 							"host": [
 								"{{hostip}}"
 							],
@@ -185,7 +185,7 @@
 								"caobao",
 								"sys",
 								"sysoperator",
-								"b2e69d88-664e-4971-9cea-4428155e8c6c"
+								"0912543b-da19-4a8f-990e-3b63fab9e219"
 							]
 						}
 					},
