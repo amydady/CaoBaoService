@@ -7,7 +7,6 @@
 	"item": [
 		{
 			"name": "SysOperator",
-			"description": null,
 			"item": [
 				{
 					"name": "Add",
@@ -75,6 +74,39 @@
 					"response": []
 				},
 				{
+					"name": "ChangePassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":\"fcbe393f-af56-4cb0-bfa2-b22b06ecd56d\",\n\t\"pwd\":\"aaa\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8006/rest/littlecat/caobao/sys/sysoperator/changepassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8006",
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"sys",
+								"sysoperator",
+								"changepassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "getList",
 					"request": {
 						"method": "POST",
@@ -86,7 +118,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\":\"e@mail.com2\",\n\t\"pwd\":\"123\"\n}"
+							"raw": "{\n\t\"condition\":{\n\t\t\"logicType\":\"and\",\n\t\t\"condItems\":[\n\t\t\t\t{\n\t\t\t\t\t\"fieldName\":\"wxCode\",\n\t\t\t\t\t\"opType\":\"startwith\",\n\t\t\t\t\t\"value\":\"wx\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"fieldName\":\"id\",\n\t\t\t\t\t\"opType\":\"in\",\n\t\t\t\t\t\"value\":\"'fcbe393f-af56-4cb0-bfa2-b22b06ecd56d','c64b7176-d384-40b6-9ef6-aa82ac802c35'\"\n\t\t\t\t}\n\t\t\t]\n\t},\n\t\"pageParam\":{\n\t\t\"pageSize\":4,\n\t\t\"pageIndex\":1\n\t},\n\t\"sortFields\":\"wxCode\",\n\t\"sortType\":\"desc\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8006/rest/littlecat/caobao/sys/sysoperators",

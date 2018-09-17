@@ -1,6 +1,5 @@
 package com.littlecat.system.dao;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
-import com.littlecat.cbb.utils.ListUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.TotalNumMapper;
@@ -62,7 +60,7 @@ public class SysOperatorDao
 		
 		try
 		{
-			int ret = jdbcTemplate.update(sql,new Object[] { id,pwd });
+			int ret = jdbcTemplate.update(sql,new Object[] { pwd,id });
 			
 			if (ret != 1)
 			{
