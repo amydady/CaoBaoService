@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
-import com.littlecat.common.utils.DaoUtil;
 import com.littlecat.supplier.dao.SupplierDao;
 import com.littlecat.supplier.model.SupplierMO;
 
