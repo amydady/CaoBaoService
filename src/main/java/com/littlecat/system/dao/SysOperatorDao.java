@@ -14,11 +14,10 @@ import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
-import com.littlecat.common.TotalNumMapper;
+import com.littlecat.common.DaoUtil;
 import com.littlecat.consts.ErrorCode;
 import com.littlecat.consts.TableName;
 import com.littlecat.system.model.SysOperatorMO;
-import com.littlecat.system.model.SysOperatorMapper;
 
 @Component
 public class SysOperatorDao
@@ -34,7 +33,7 @@ public class SysOperatorDao
 		List<SysOperatorMO> mos;
 		try
 		{
-			mos = jdbcTemplate.query(sql, new Object[] {id,id,id,id,pwd},new SysOperatorMapper());
+			mos = jdbcTemplate.query(sql, new Object[] {id,id,id,id,pwd},new SysOperatorMO.SysOperatorMapper());
 			
 			if(CollectionUtil.isEmpty(mos))
 			{
@@ -190,7 +189,7 @@ public class SysOperatorDao
 		
 		try
 		{
-			return jdbcTemplate.queryForObject(sql,new Object[] {id},new SysOperatorMapper());
+			return jdbcTemplate.queryForObject(sql,new Object[] {id},new SysOperatorMO.SysOperatorMapper());
 		}
 		catch (DataAccessException e)
 		{
@@ -209,46 +208,6 @@ public class SysOperatorDao
 	 */
 	public int getList(QueryParam queryParam, List<SysOperatorMO> mos) throws LittleCatException
 	{
-		if(queryParam == null)
-		{
-			throw new LittleCatException(ErrorCode.QueryParamIsNull.getCode(),ErrorCode.QueryParamIsNull.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
-		}
-		
-		String sql = "select * from " + TableName.SysOperator.getName() + queryParam.getQueryDataConditionString();
-		
-		try
-		{
-			mos.addAll(jdbcTemplate.query(sql,new SysOperatorMapper()));
-		}
-		catch( DataAccessException e)
-		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
-		}
-		
-		return getTotalNum(queryParam);
+		return DaoUtil.getList(TableName.SysOperator.getName(), queryParam, mos, jdbcTemplate, new SysOperatorMO.SysOperatorMapper());
 	}
-	
-	private int getTotalNum(QueryParam queryParam) throws LittleCatException
-	{
-		String sql = "select count(*) totalNum	from " + TableName.SysOperator.getName();
-		
-		if(queryParam != null)
-		{
-			sql += queryParam.getQueryCountConditionString();
-		}
-		
-		try
-		{
-			return jdbcTemplate.queryForObject(sql,new TotalNumMapper());
-		}
-		catch( DataAccessException e)
-		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
-		}
-	}
-	
-//	public static void main(String[] args)
-//	{
-//		System.out.println(ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
-//	}
 }

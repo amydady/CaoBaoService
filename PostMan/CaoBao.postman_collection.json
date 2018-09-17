@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1c6c52bb-1d74-49d7-ad56-33fa6d5490e0",
+		"_postman_id": "3bbe5e2e-52da-411b-a137-6f88114d0fbe",
 		"name": "CaoBao",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -20,15 +20,13 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\":\"admin\",\n\t\"password\":\"123\",\n\t\"name\":\"管理员\",\n\t\"wxCode\":\"wx123\",\n\t\"email\":\"e@mail.com\",\n\t\"mobile\":\"12323423\"\n\t\n}"
+							"raw": "{\n\t\"username\":\"admin1\",\n\t\"password\":\"123\",\n\t\"name\":\"guanliyuan\",\n\t\"wxCode\":\"wx1231\",\n\t\"email\":\"e@mail.com1\",\n\t\"mobile\":\"12323423\"\n\t\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8006/rest/littlecat/caobao/sys/sysoperator",
-							"protocol": "http",
+							"raw": "{{hostip}}/rest/littlecat/caobao/sys/sysoperator",
 							"host": [
-								"localhost"
+								"{{hostip}}"
 							],
-							"port": "8006",
 							"path": [
 								"rest",
 								"littlecat",
@@ -55,12 +53,10 @@
 							"raw": "{\n\t\"id\":\"e@mail.com2\",\n\t\"pwd\":\"123\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8006/rest/littlecat/caobao/sys/sysoperator/login",
-							"protocol": "http",
+							"raw": "{{hostip}}/rest/littlecat/caobao/sys/sysoperator/login",
 							"host": [
-								"localhost"
+								"{{hostip}}"
 							],
-							"port": "8006",
 							"path": [
 								"rest",
 								"littlecat",
@@ -88,12 +84,10 @@
 							"raw": "{\n\t\"id\":\"fcbe393f-af56-4cb0-bfa2-b22b06ecd56d\",\n\t\"pwd\":\"aaa\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8006/rest/littlecat/caobao/sys/sysoperator/changepassword",
-							"protocol": "http",
+							"raw": "{{hostip}}/rest/littlecat/caobao/sys/sysoperator/changepassword",
 							"host": [
-								"localhost"
+								"{{hostip}}"
 							],
-							"port": "8006",
 							"path": [
 								"rest",
 								"littlecat",
@@ -118,15 +112,13 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"condition\":{\n\t\t\"logicType\":\"and\",\n\t\t\"condItems\":[\n\t\t\t\t{\n\t\t\t\t\t\"fieldName\":\"wxCode\",\n\t\t\t\t\t\"opType\":\"startwith\",\n\t\t\t\t\t\"value\":\"wx\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"fieldName\":\"id\",\n\t\t\t\t\t\"opType\":\"in\",\n\t\t\t\t\t\"value\":\"'fcbe393f-af56-4cb0-bfa2-b22b06ecd56d','c64b7176-d384-40b6-9ef6-aa82ac802c35'\"\n\t\t\t\t}\n\t\t\t]\n\t},\n\t\"pageParam\":{\n\t\t\"pageSize\":4,\n\t\t\"pageIndex\":1\n\t},\n\t\"sortFields\":\"wxCode\",\n\t\"sortType\":\"desc\"\n}"
+							"raw": "{\n\t\"condition\":{\n\t\t\"logicType\":\"and\",\n\t\t\"condItems\":[\n\t\t\t\t{\n\t\t\t\t\t\"fieldName\":\"wxCode\",\n\t\t\t\t\t\"opType\":\"startwith\",\n\t\t\t\t\t\"value\":\"wx\"\n\t\t\t\t}\n\t\t\t]\n\t},\n\t\"pageParam\":{\n\t\t\"pageSize\":4,\n\t\t\"pageIndex\":1\n\t},\n\t\"sortFields\":\"wxCode\",\n\t\"sortType\":\"desc\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8006/rest/littlecat/caobao/sys/sysoperators",
-							"protocol": "http",
+							"raw": "{{hostip}}/rest/littlecat/caobao/sys/sysoperators",
 							"host": [
-								"localhost"
+								"{{hostip}}"
 							],
-							"port": "8006",
 							"path": [
 								"rest",
 								"littlecat",
@@ -153,12 +145,10 @@
 							"raw": "{\n\t\"id\":\"46888b48-8cf2-43bb-a6df-b19e10a236fd\",\n\t\"username\":\"admin2\",\n\t\"password\":\"1232\",\n\t\"name\":\"管理员2\",\n\t\"wxCode\":\"wx1232\",\n\t\"email\":\"e@mail.com2\",\n\t\"mobile\":\"123234232\"\n\t\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8006/rest/littlecat/caobao/sys/sysoperator",
-							"protocol": "http",
+							"raw": "{{hostip}}/rest/littlecat/caobao/sys/sysoperator",
 							"host": [
-								"localhost"
+								"{{hostip}}"
 							],
-							"port": "8006",
 							"path": [
 								"rest",
 								"littlecat",
@@ -185,12 +175,10 @@
 							"raw": "{\n\t\"username\":\"admin\",\n\t\"password\":\"123\",\n\t\"name\":\"管理员\",\n\t\"wxCode\":\"wx123\",\n\t\"email\":\"e@mail.com\",\n\t\"mobile\":\"12323423\"\n\t\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8006/rest/littlecat/caobao/sys/sysoperator/b2e69d88-664e-4971-9cea-4428155e8c6c",
-							"protocol": "http",
+							"raw": "{{hostip}}/rest/littlecat/caobao/sys/sysoperator/b2e69d88-664e-4971-9cea-4428155e8c6c",
 							"host": [
-								"localhost"
+								"{{hostip}}"
 							],
-							"port": "8006",
 							"path": [
 								"rest",
 								"littlecat",
@@ -218,12 +206,10 @@
 							"raw": "[\"92616bf3-1bb5-470b-9503-b7869cf403cd\",\"46888b48-8cf2-43bb-a6df-b19e10a236fd\"]"
 						},
 						"url": {
-							"raw": "http://localhost:8006/rest/littlecat/caobao/sys/sysoperators",
-							"protocol": "http",
+							"raw": "{{hostip}}/rest/littlecat/caobao/sys/sysoperators",
 							"host": [
-								"localhost"
+								"{{hostip}}"
 							],
-							"port": "8006",
 							"path": [
 								"rest",
 								"littlecat",
@@ -236,6 +222,10 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Terminaluser",
+			"item": []
 		}
 	]
 }
