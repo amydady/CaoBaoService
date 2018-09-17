@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.common.utils.DaoUtil;
 import com.littlecat.supplier.dao.SupplierDao;
 import com.littlecat.supplier.model.SupplierMO;
 
@@ -21,6 +22,16 @@ public class SupplierBusiness
 	public SupplierMO getById(String id) throws LittleCatException
 	{
 		return supplierDao.getById(id);
+	}
+	
+	public boolean delete(String id) throws LittleCatException
+	{
+		return supplierDao.delete(id);
+	}
+	
+	public boolean delete(List<String> ids) throws LittleCatException
+	{
+		return supplierDao.delete(ids);
 	}
 	
 	public boolean enable(String id) throws LittleCatException
