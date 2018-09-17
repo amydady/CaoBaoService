@@ -17,9 +17,9 @@ import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
-import com.littlecat.common.DaoUtil;
-import com.littlecat.consts.ErrorCode;
-import com.littlecat.consts.TableName;
+import com.littlecat.common.consts.ErrorCode;
+import com.littlecat.common.consts.TableName;
+import com.littlecat.common.utils.DaoUtil;
 import com.littlecat.terminaluser.model.TerminalUserMO;
 
 @Component
@@ -53,7 +53,7 @@ public class TerminalUserDao
 	
 	public TerminalUserMO getById(String id) throws LittleCatException
 	{
-		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new TerminalUserMO.TerminalUserMapper());
+		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new TerminalUserMO.MOMapper());
 	}
 
 
@@ -122,6 +122,6 @@ public class TerminalUserDao
 
 	public int getList(QueryParam queryParam,List<TerminalUserMO> mos) throws LittleCatException
 	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new TerminalUserMO.TerminalUserMapper());
+		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new TerminalUserMO.MOMapper());
 	}
 }

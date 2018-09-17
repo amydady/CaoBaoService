@@ -1,4 +1,4 @@
-package com.littlecat.common;
+package com.littlecat.common.utils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,10 +15,12 @@ import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.StringUtil;
-import com.littlecat.consts.ErrorCode;
+import com.littlecat.common.consts.ErrorCode;
 
-public class DaoUtil
+public final class DaoUtil
 {
+	private final static String FIELD_NAME_ENABLE = "enable";
+	
 	private static class TotalNumMapper implements RowMapper<Integer>
 	{
 		@Override
@@ -37,7 +39,7 @@ public class DaoUtil
 	{
 		if(StringUtil.isEmpty(id))
 		{
-			throw new LittleCatException(ErrorCode.DeleteObjectWithEmptyId.getCode(),ErrorCode.DeleteObjectWithEmptyId.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
+			throw new LittleCatException(ErrorCode.DeleteObjectWithEmptyId.getCode(),ErrorCode.DeleteObjectWithEmptyId.getMsg().replace("{INFO_NAME}",tableName));
 		}
 		
 		String sql = "delete from " + tableName + " where id = ?";
@@ -68,6 +70,108 @@ public class DaoUtil
 		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
 		
 		String sql = "delete from " + tableName + " where id in (:ids)";
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+	    parameters.addValue("ids", ids);
+		
+		try
+		{
+			namedParameterJdbcTemplate.update(sql, parameters);
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
+		}
+		
+		return true;
+	}
+	
+	public static boolean disable(String tableName,String id,JdbcTemplate jdbcTemplate) throws LittleCatException
+	{
+		if(StringUtil.isEmpty(id))
+		{
+			throw new LittleCatException(ErrorCode.DisableObjectWithEmptyId.getCode(),ErrorCode.DisableObjectWithEmptyId.getMsg().replace("{INFO_NAME}",tableName));
+		}
+		
+		String sql = "update " + tableName + " set "+FIELD_NAME_ENABLE+" = 'N' where id = ?";
+		
+		try
+		{
+			int ret = jdbcTemplate.update(sql, new Object[] { id });
+			if (ret > 1)
+			{
+				throw new LittleCatException(ErrorCode.DisableObjectWithIdError.getCode(),ErrorCode.DisableObjectWithIdError.getMsg().replace("{INFO_NAME}",tableName) + "id=" + id);
+			}
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
+		}
+		
+		return true;
+	}
+	
+	public static boolean disable(String tableName,List<String> ids,JdbcTemplate jdbcTemplate) throws LittleCatException
+	{
+		if(CollectionUtil.isEmpty(ids))
+		{
+			throw new LittleCatException(ErrorCode.DisableObjectWithEmptyId.getCode(),ErrorCode.DisableObjectWithEmptyId.getMsg().replace("{INFO_NAME}",tableName));
+		}
+		
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+		
+		String sql = "update " + tableName + " set "+FIELD_NAME_ENABLE+" = 'N' where id in (:ids)";
+		
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+	    parameters.addValue("ids", ids);
+		
+		try
+		{
+			namedParameterJdbcTemplate.update(sql, parameters);
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
+		}
+		
+		return true;
+	}
+	
+	public static boolean enable(String tableName,String id,JdbcTemplate jdbcTemplate) throws LittleCatException
+	{
+		if(StringUtil.isEmpty(id))
+		{
+			throw new LittleCatException(ErrorCode.EnableObjectWithEmptyId.getCode(),ErrorCode.EnableObjectWithEmptyId.getMsg().replace("{INFO_NAME}",tableName));
+		}
+		
+		String sql = "update " + tableName + " set "+FIELD_NAME_ENABLE+" = 'Y' where id = ?";
+		
+		try
+		{
+			int ret = jdbcTemplate.update(sql, new Object[] { id });
+			if (ret > 1)
+			{
+				throw new LittleCatException(ErrorCode.EnableObjectWithIdError.getCode(),ErrorCode.EnableObjectWithIdError.getMsg().replace("{INFO_NAME}",tableName) + "id=" + id);
+			}
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
+		}
+		
+		return true;
+	}
+	
+	public static boolean enable(String tableName,List<String> ids,JdbcTemplate jdbcTemplate) throws LittleCatException
+	{
+		if(CollectionUtil.isEmpty(ids))
+		{
+			throw new LittleCatException(ErrorCode.EnableObjectWithEmptyId.getCode(),ErrorCode.EnableObjectWithEmptyId.getMsg().replace("{INFO_NAME}",tableName));
+		}
+		
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+		
+		String sql = "update " + tableName + " set "+FIELD_NAME_ENABLE+" = 'Y' where id in (:ids)";
+		
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
 	    parameters.addValue("ids", ids);
 		
@@ -138,6 +242,4 @@ public class DaoUtil
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
 		}
 	}
-	
-	
 }

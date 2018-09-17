@@ -86,7 +86,7 @@ public class SysOperatorMO extends BaseMO
 		this.mobile = mobile;
 	}
 	
-	public static class SysOperatorMapper implements RowMapper<SysOperatorMO>
+	public static class MOMapper implements RowMapper<SysOperatorMO>
 	{
 		@Override
 		public SysOperatorMO mapRow(ResultSet rs, int rowNum) throws SQLException

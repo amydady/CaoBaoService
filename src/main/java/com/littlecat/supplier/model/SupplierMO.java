@@ -1,5 +1,10 @@
 package com.littlecat.supplier.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
 import com.littlecat.cbb.common.BaseMO;
 
 /**
@@ -37,5 +42,21 @@ public class SupplierMO extends BaseMO
 	public void setCreateTime(String createTime)
 	{
 		this.createTime = createTime;
+	}
+	
+	public static class MOMapper implements RowMapper<SupplierMO>
+	{
+		@Override
+		public SupplierMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			SupplierMO mo = new SupplierMO();
+			
+			mo.setId(rs.getString("id"));
+			mo.setName(rs.getString("name"));
+			mo.setRemark(rs.getString("remark"));
+			mo.setCreateTime(rs.getString("createTime"));
+			
+			return mo;
+		}
 	}
 }

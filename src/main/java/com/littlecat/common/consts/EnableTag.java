@@ -1,4 +1,4 @@
-package com.littlecat.consts;
+package com.littlecat.common.consts;
 
 /**
  * 数据是否有效标记
@@ -8,5 +8,5 @@ package com.littlecat.consts;
  */
 public enum EnableTag
 {
-	y,n
+	Y,N
 }

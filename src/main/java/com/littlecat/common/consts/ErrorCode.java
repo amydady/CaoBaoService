@@ -1,4 +1,4 @@
-package com.littlecat.consts;
+package com.littlecat.common.consts;
 
 /**
  * 错误码信息
@@ -18,6 +18,10 @@ public enum ErrorCode
 	UpdateObjectWithEmptyId("UpdateObjectWithEmptyId","update {INFO_NAME} with empty id. "),
 	DeleteObjectWithEmptyId("DeleteObjectWithEmptyId","delete {INFO_NAME} with empty id. "),
 	DeleteObjectWithIdError("DeleteObjectWithIdError","delete {INFO_NAME} with id error. "),
+	DisableObjectWithEmptyId("DisableObjectWithEmptyId","disable {INFO_NAME} with empty id. "),
+	DisableObjectWithIdError("DisableObjectWithIdError","disable {INFO_NAME} with id error. "),
+	EnableObjectWithEmptyId("EnableObjectWithEmptyId","enable {INFO_NAME} with empty id. "),
+	EnableObjectWithIdError("EnableObjectWithIdError","enable {INFO_NAME} with id error. "),
 	;
 	
 	private String code;

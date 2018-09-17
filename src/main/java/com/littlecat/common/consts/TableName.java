@@ -1,4 +1,4 @@
-package com.littlecat.consts;
+package com.littlecat.common.consts;
 
 /**
  * 数据库表名
@@ -18,6 +18,8 @@ public enum TableName
 	Tuan("t_tuan"),
 	
 	MaiShou("t_maishou"),
+	
+	Supplier("t_supplier"),
 	;
 	
 	private String name;

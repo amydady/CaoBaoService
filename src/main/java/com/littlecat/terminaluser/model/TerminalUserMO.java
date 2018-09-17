@@ -22,25 +22,7 @@ public class TerminalUserMO extends BaseMO
 	private String isTuanZhang; // 是否为团长（社圈长）
 	private String isMaiShou; // 是否为买手
 	
-	public static class TerminalUserMapper implements RowMapper<TerminalUserMO>
-	{
-		@Override
-		public TerminalUserMO mapRow(ResultSet rs, int rowNum) throws SQLException
-		{
-			TerminalUserMO mo = new TerminalUserMO();
-			
-			mo.setId(rs.getString("id"));
-			mo.setName(rs.getString("name"));
-			mo.setWxCode(rs.getString("wxCode"));
-			mo.setMobile(rs.getString("mobile"));
-			mo.setIsTuanZhang(rs.getString("isTuanZhang"));
-			mo.setIsMaiShou(rs.getString("isMaiShou"));
-			mo.setCreateTime(rs.getString("createTime"));
-			
-			return mo;
-		}
-	}
-
+	
 	public TerminalUserMO()
 	{
 		super();
@@ -106,6 +88,24 @@ public class TerminalUserMO extends BaseMO
 		this.isMaiShou = isMaiShou;
 	}
 	
-	
+	public static class MOMapper implements RowMapper<TerminalUserMO>
+	{
+		@Override
+		public TerminalUserMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			TerminalUserMO mo = new TerminalUserMO();
+			
+			mo.setId(rs.getString("id"));
+			mo.setName(rs.getString("name"));
+			mo.setWxCode(rs.getString("wxCode"));
+			mo.setMobile(rs.getString("mobile"));
+			mo.setIsTuanZhang(rs.getString("isTuanZhang"));
+			mo.setIsMaiShou(rs.getString("isMaiShou"));
+			mo.setCreateTime(rs.getString("createTime"));
+			
+			return mo;
+		}
+	}
+
 
 }

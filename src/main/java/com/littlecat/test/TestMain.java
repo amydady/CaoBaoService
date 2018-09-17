@@ -1,6 +1,6 @@
 package com.littlecat.test;
 
-import com.littlecat.consts.TableName;
+import com.littlecat.common.consts.TableName;
 
 public class TestMain
 {

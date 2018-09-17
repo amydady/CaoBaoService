@@ -12,9 +12,9 @@ import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
-import com.littlecat.common.DaoUtil;
-import com.littlecat.consts.ErrorCode;
-import com.littlecat.consts.TableName;
+import com.littlecat.common.consts.ErrorCode;
+import com.littlecat.common.consts.TableName;
+import com.littlecat.common.utils.DaoUtil;
 import com.littlecat.system.model.SysOperatorMO;
 
 @Component
@@ -31,7 +31,7 @@ public class SysOperatorDao
 		List<SysOperatorMO> mos;
 		try
 		{
-			mos = jdbcTemplate.query(sql, new Object[] {id,id,id,id,pwd},new SysOperatorMO.SysOperatorMapper());
+			mos = jdbcTemplate.query(sql, new Object[] {id,id,id,id,pwd},new SysOperatorMO.MOMapper());
 			
 			if(CollectionUtil.isEmpty(mos))
 			{
@@ -143,11 +143,11 @@ public class SysOperatorDao
 	
 	public SysOperatorMO getById(String id) throws LittleCatException
 	{
-		return DaoUtil.getById(TableName.SysOperator.getName(), id, jdbcTemplate, new SysOperatorMO.SysOperatorMapper());
+		return DaoUtil.getById(TableName.SysOperator.getName(), id, jdbcTemplate, new SysOperatorMO.MOMapper());
 	}
 
 	public int getList(QueryParam queryParam, List<SysOperatorMO> mos) throws LittleCatException
 	{
-		return DaoUtil.getList(TableName.SysOperator.getName(), queryParam, mos, jdbcTemplate, new SysOperatorMO.SysOperatorMapper());
+		return DaoUtil.getList(TableName.SysOperator.getName(), queryParam, mos, jdbcTemplate, new SysOperatorMO.MOMapper());
 	}
 }
