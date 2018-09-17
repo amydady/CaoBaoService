@@ -18,6 +18,7 @@ public class SupplierMO extends BaseMO
 	private String name;
 	private String remark;
 	private String createTime;
+	private String enable;
 	
 	public String getName()
 	{
@@ -44,6 +45,15 @@ public class SupplierMO extends BaseMO
 		this.createTime = createTime;
 	}
 	
+	public String getEnable()
+	{
+		return enable;
+	}
+	public void setEnable(String enable)
+	{
+		this.enable = enable;
+	}
+
 	public static class MOMapper implements RowMapper<SupplierMO>
 	{
 		@Override
@@ -55,6 +65,7 @@ public class SupplierMO extends BaseMO
 			mo.setName(rs.getString("name"));
 			mo.setRemark(rs.getString("remark"));
 			mo.setCreateTime(rs.getString("createTime"));
+			mo.setEnable(rs.getString("enable"));
 			
 			return mo;
 		}

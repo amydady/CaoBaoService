@@ -40,6 +40,26 @@ public class SupplierDao
 	{
 		return DaoUtil.delete(TABLE_NAME, ids, jdbcTemplate);
 	}
+	
+	public boolean enable(String id) throws LittleCatException
+	{
+		return DaoUtil.enable(TABLE_NAME, id, jdbcTemplate);
+	}
+	
+	public boolean enable(List<String> ids) throws LittleCatException
+	{
+		return DaoUtil.enable(TABLE_NAME, ids, jdbcTemplate);
+	}
+	
+	public boolean disable(String id) throws LittleCatException
+	{
+		return DaoUtil.disable(TABLE_NAME, id, jdbcTemplate);
+	}
+	
+	public boolean disable(List<String> ids) throws LittleCatException
+	{
+		return DaoUtil.disable(TABLE_NAME, ids, jdbcTemplate);
+	}
 
 	public String add(SupplierMO mo) throws LittleCatException
 	{
