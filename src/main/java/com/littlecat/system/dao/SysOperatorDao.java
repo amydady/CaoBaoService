@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
@@ -135,77 +133,19 @@ public class SysOperatorDao
 
 	public boolean delete(String id) throws LittleCatException
 	{
-		if(StringUtil.isEmpty(id))
-		{
-			throw new LittleCatException(ErrorCode.DeleteObjectWithEmptyId.getCode(),ErrorCode.DeleteObjectWithEmptyId.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
-		}
-		
-		String sql = "delete from " + TableName.SysOperator.getName() + " where id = ?";
-		
-		try
-		{
-			int ret = jdbcTemplate.update(sql, new Object[] { id });
-			if (ret > 1)
-			{
-				throw new LittleCatException(ErrorCode.DeleteObjectWithIdError.getCode(),ErrorCode.DeleteObjectWithIdError.getMsg().replace("{INFO_NAME}","SysOperatorMO") + "id=" + id);
-			}
-		}
-		catch (DataAccessException e)
-		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
-		}
-		
-		return true;
+		return DaoUtil.delete(TableName.SysOperator.getName(), id, jdbcTemplate);
 	}
 	
 	public boolean delete(List<String> ids) throws LittleCatException
 	{
-		if(CollectionUtil.isEmpty(ids))
-		{
-			throw new LittleCatException(ErrorCode.DeleteObjectWithEmptyId.getCode(),ErrorCode.DeleteObjectWithEmptyId.getMsg().replace("{INFO_NAME}","SysOperatorMO"));
-		}
-		
-		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
-		
-		String sql = "delete from " + TableName.SysOperator.getName() + " where id in (:ids)";
-		MapSqlParameterSource parameters = new MapSqlParameterSource();
-	    parameters.addValue("ids", ids);
-		
-		try
-		{
-			namedParameterJdbcTemplate.update(sql, parameters);
-		}
-		catch (DataAccessException e)
-		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
-		}
-		
-		return true;
+		return DaoUtil.delete(TableName.SysOperator.getName(), ids, jdbcTemplate);
 	}
 	
 	public SysOperatorMO getById(String id) throws LittleCatException
 	{
-		String sql = "select * from " + TableName.SysOperator.getName() + " where id = ?";
-		
-		try
-		{
-			return jdbcTemplate.queryForObject(sql,new Object[] {id},new SysOperatorMO.SysOperatorMapper());
-		}
-		catch (DataAccessException e)
-		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
-		}
+		return DaoUtil.getById(TableName.SysOperator.getName(), id, jdbcTemplate, new SysOperatorMO.SysOperatorMapper());
 	}
 
-	/**
-	 * 查询系统操作人员列表
-	 * 
-	 * @param queryParam
-	 *            查询参数
-	 * @param mos
-	 *            返回列表信息（当前这一批，不是全部数据）
-	 * @return 总记录数
-	 */
 	public int getList(QueryParam queryParam, List<SysOperatorMO> mos) throws LittleCatException
 	{
 		return DaoUtil.getList(TableName.SysOperator.getName(), queryParam, mos, jdbcTemplate, new SysOperatorMO.SysOperatorMapper());

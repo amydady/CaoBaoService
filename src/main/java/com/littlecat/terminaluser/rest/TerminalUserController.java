@@ -6,7 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +19,6 @@ import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
-import com.littlecat.system.model.SysOperatorMO;
 import com.littlecat.terminaluser.business.TerminalUserBusiness;
 import com.littlecat.terminaluser.model.TerminalUserMO;
 
@@ -30,44 +28,69 @@ public class TerminalUserController
 {
 	@Autowired
 	private TerminalUserBusiness terminalUserBusiness;
-	
+
 	private Logger logger = LoggerFactory.getLogger(TerminalUserController.class);
-	
 
 	@GetMapping(value = "/getbywxcode/{wxCode}")
 	public RestRsp<TerminalUserMO> getByWXCode(@PathVariable String wxCode)
 	{
-		RestRsp<SysOperatorMO> result = new RestRsp<SysOperatorMO>();
-		
+		RestRsp<TerminalUserMO> result = new RestRsp<TerminalUserMO>();
+
 		try
 		{
-			SysOperatorMO sysOperatorMO = sysOperatorBusiness.getById(id);
-			result.getData().add(sysOperatorMO);
+			TerminalUserMO mo = terminalUserBusiness.getByWXCode(wxCode);
+			result.getData().add(mo);
 		}
-		catch(LittleCatException e)
+		catch (LittleCatException e)
 		{
 			result.setCode(e.getErrorCode());
 			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 		}
 		catch (Exception e)
 		{
 			result.setCode(Consts.ERROR_CODE_UNKNOW);
 			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 		}
-		
+
 		return result;
 	}
 
-	@PutMapping(value = "/sysoperator")
-	public RestSimpleRsp modify(@RequestBody SysOperatorMO mo)
+	@GetMapping(value = "/getbyid/{id}")
+	public RestRsp<TerminalUserMO> getById(@PathVariable String id)
+	{
+		RestRsp<TerminalUserMO> result = new RestRsp<TerminalUserMO>();
+
+		try
+		{
+			TerminalUserMO mo = terminalUserBusiness.getById(id);
+			result.getData().add(mo);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PutMapping(value = "/modify")
+	public RestSimpleRsp modify(@RequestBody TerminalUserMO mo)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			sysOperatorBusiness.modify(mo);
+			terminalUserBusiness.modify(mo);
 		}
 		catch (LittleCatException e)
 		{
@@ -85,14 +108,14 @@ public class TerminalUserController
 		return result;
 	}
 
-	@PostMapping(value = "/sysoperator")
-	public RestRsp<String> add(@RequestBody SysOperatorMO mo)
+	@PostMapping(value = "/add")
+	public RestRsp<String> add(@RequestBody TerminalUserMO mo)
 	{
 		RestRsp<String> result = new RestRsp<String>();
 
 		try
 		{
-			result.getData().add(sysOperatorBusiness.add(mo));
+			result.getData().add(terminalUserBusiness.add(mo));
 		}
 		catch (LittleCatException e)
 		{
@@ -110,31 +133,31 @@ public class TerminalUserController
 		return result;
 	}
 
-	@PostMapping(value = "/sysoperators")
-	public RestRsp<SysOperatorMO> getList(@RequestBody QueryParam queryParam)
+	@PostMapping(value = "/getList")
+	public RestRsp<TerminalUserMO> getList(@RequestBody QueryParam queryParam)
 	{
-		RestRsp<SysOperatorMO> result = new RestRsp<SysOperatorMO>();
-		
+		RestRsp<TerminalUserMO> result = new RestRsp<TerminalUserMO>();
+
 		try
 		{
-			List<SysOperatorMO> mos = new ArrayList<SysOperatorMO>();
-			int totalNum = sysOperatorBusiness.getList(queryParam, mos);
+			List<TerminalUserMO> mos = new ArrayList<TerminalUserMO>();
+			int totalNum = terminalUserBusiness.getList(queryParam, mos);
 			result.setTotalNum(totalNum);
 			result.getData().addAll(mos);
 		}
-		catch(LittleCatException e)
+		catch (LittleCatException e)
 		{
 			result.setCode(e.getErrorCode());
 			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 		}
 		catch (Exception e)
 		{
 			result.setCode(Consts.ERROR_CODE_UNKNOW);
 			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 		}
-		
+
 		return result;
 	}
 }
