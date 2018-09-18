@@ -10,5 +10,9 @@ import com.littlecat.cbb.common.BaseMO;
  */
 public class OrderMO extends BaseMO
 {
-
+	private String terminalUserId;
+	private String createTime;
+	private int createYear;
+	private int createMonth;
+	private int fee;
 }
