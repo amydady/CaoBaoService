@@ -12,7 +12,8 @@ public class GoodsMO extends BaseMO
 	private String classifyId;
 	private String supplierId;
 	private String name;
-	private String remark;
+	private String summaryDescription;	//产品概要描述信息
+	private String mainImgUrl;
 	private long price; // 单位为厘
 	private String enable;
 	private String createOperatorid;
@@ -53,6 +54,26 @@ public class GoodsMO extends BaseMO
 		this.name = name;
 	}
 
+	public String getSummaryDescription()
+	{
+		return summaryDescription;
+	}
+
+	public void setSummaryDescription(String summaryDescription)
+	{
+		this.summaryDescription = summaryDescription;
+	}
+
+	public String getMainImgUrl()
+	{
+		return mainImgUrl;
+	}
+
+	public void setMainImgUrl(String mainImgUrl)
+	{
+		this.mainImgUrl = mainImgUrl;
+	}
+
 	public long getPrice()
 	{
 		return price;
@@ -73,15 +94,7 @@ public class GoodsMO extends BaseMO
 		this.enable = enable;
 	}
 
-	public String getRemark()
-	{
-		return remark;
-	}
-
-	public void setRemark(String remark)
-	{
-		this.remark = remark;
-	}
+	
 
 	public String getCreateOperatorid()
 	{
