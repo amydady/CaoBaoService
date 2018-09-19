@@ -16,30 +16,30 @@ import com.littlecat.terminaluser.model.TerminalUserMO;
 public class TerminalUserBusiness
 {
 	@Autowired
-	private TerminalUserDao terminalUser;
+	private TerminalUserDao terminalUserDao;
 	
 	public TerminalUserMO getByWXCode(String wxCode) throws LittleCatException
 	{
-		return terminalUser.getByWXCode(wxCode);
+		return terminalUserDao.getByWXCode(wxCode);
 	}
 	
 	public TerminalUserMO getById(String id) throws LittleCatException
 	{
-		return terminalUser.getById(id);
+		return terminalUserDao.getById(id);
 	}
 
 	public boolean modify(TerminalUserMO mo) throws LittleCatException
 	{
-		return terminalUser.modify(mo);
+		return terminalUserDao.modify(mo);
 	}
 
 	public String add(TerminalUserMO mo) throws LittleCatException
 	{
-		return terminalUser.add(mo);
+		return terminalUserDao.add(mo);
 	}
 
 	public int getList(QueryParam queryParam,List<TerminalUserMO> mos) throws LittleCatException
 	{
-		return terminalUser.getList(queryParam, mos);
+		return terminalUserDao.getList(queryParam, mos);
 	}
 }
