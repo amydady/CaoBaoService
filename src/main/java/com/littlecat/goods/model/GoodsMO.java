@@ -7,22 +7,27 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
 
+/**
+ * 商品MO
+ * 
+ * @author amydady
+ *
+ */
 public class GoodsMO extends BaseMO
 {
 	private String classifyId;
 	private String supplierId;
 	private String name;
-	private String summaryDescription;	//产品概要描述信息
+	private String summaryDescription; // 产品概要描述信息
 	private String mainImgUrl;
 	private long price; // 单位为厘
 	private String enable;
 	private String createOperatorid;
+	private String deliveryAreaId;	//配送区域ID
+	private String deliveryFeeRuleId;	//运费规则ID
 	private String createTime;
 	private int createYear;
 	private int createMonth;
-	private long totalInventory;	//当前总库存
-	private long secKillInventory;	//当前秒杀库存
-	private long groupBuyInventory;	//当前团购库存
 
 	public String getClassifyId()
 	{
@@ -94,8 +99,6 @@ public class GoodsMO extends BaseMO
 		this.enable = enable;
 	}
 
-	
-
 	public String getCreateOperatorid()
 	{
 		return createOperatorid;
@@ -136,34 +139,24 @@ public class GoodsMO extends BaseMO
 		this.createMonth = createMonth;
 	}
 
-	public long getCurrentTotalInventory()
+	public String getDeliveryAreaId()
 	{
-		return totalInventory;
+		return deliveryAreaId;
 	}
 
-	public void setCurrentTotalInventory(long currentTotalInventory)
+	public void setDeliveryAreaId(String deliveryAreaId)
 	{
-		this.totalInventory = currentTotalInventory;
+		this.deliveryAreaId = deliveryAreaId;
 	}
 
-	public long getCurrentSecKillInventory()
+	public String getDeliveryFeeRuleId()
 	{
-		return secKillInventory;
+		return deliveryFeeRuleId;
 	}
 
-	public void setCurrentSecKillInventory(long currentSecKillInventory)
+	public void setDeliveryFeeRuleId(String deliveryFeeRuleId)
 	{
-		this.secKillInventory = currentSecKillInventory;
-	}
-
-	public long getCurrentGroupBuyInventory()
-	{
-		return groupBuyInventory;
-	}
-
-	public void setCurrentGroupBuyInventory(long currentGroupBuyInventory)
-	{
-		this.groupBuyInventory = currentGroupBuyInventory;
+		this.deliveryFeeRuleId = deliveryFeeRuleId;
 	}
 
 	public static class GoodsMapper implements RowMapper<GoodsMO>
@@ -172,7 +165,6 @@ public class GoodsMO extends BaseMO
 		public GoodsMO mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
 			GoodsMO mo = new GoodsMO();
-		
 
 			return mo;
 		}

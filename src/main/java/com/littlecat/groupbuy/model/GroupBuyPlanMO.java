@@ -14,15 +14,15 @@ public class GroupBuyPlanMO extends BaseMO
 	private String startTime;
 	private String endTime;
 	private long price;
-	private long inventory;
+	private long initInventory;// 初始库存量
 	private int memberNum;
 	private int limitBuyNum;
 	private String enable;
 	private String createTime;
 	private String createOperatorId;
 
-	// 配送范围ID
-	// 快递费用规则ID
+	private String deliveryAreaId; // 配送区域ID
+	private String deliveryFeeRuleId; // 运费规则ID
 
 	public String getGoodsId()
 	{
@@ -64,14 +64,14 @@ public class GroupBuyPlanMO extends BaseMO
 		this.price = price;
 	}
 
-	public long getInventory()
+	public long getInitInventory()
 	{
-		return inventory;
+		return initInventory;
 	}
 
-	public void setInventory(long inventory)
+	public void setInitInventory(long initInventory)
 	{
-		this.inventory = inventory;
+		this.initInventory = initInventory;
 	}
 
 	public int getMemberNum()
@@ -122,6 +122,26 @@ public class GroupBuyPlanMO extends BaseMO
 	public void setCreateOperatorId(String createOperatorId)
 	{
 		this.createOperatorId = createOperatorId;
+	}
+
+	public String getDeliveryAreaId()
+	{
+		return deliveryAreaId;
+	}
+
+	public void setDeliveryAreaId(String deliveryAreaId)
+	{
+		this.deliveryAreaId = deliveryAreaId;
+	}
+
+	public String getDeliveryFeeRuleId()
+	{
+		return deliveryFeeRuleId;
+	}
+
+	public void setDeliveryFeeRuleId(String deliveryFeeRuleId)
+	{
+		this.deliveryFeeRuleId = deliveryFeeRuleId;
 	}
 
 }
