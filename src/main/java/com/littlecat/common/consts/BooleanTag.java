@@ -1,12 +1,12 @@
 package com.littlecat.common.consts;
 
 /**
- * 数据是否有效标记
+ * boolean值标记
  * 
  * @author amydady
  *
  */
-public enum EnableTag
+public enum BooleanTag
 {
 	Y,N
 }

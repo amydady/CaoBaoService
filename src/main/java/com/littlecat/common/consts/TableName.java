@@ -20,6 +20,10 @@ public enum TableName
 	MaiShou("t_maishou"),
 	
 	Supplier("t_supplier"),
+	
+	Province("t_basicinfo_province"),
+	City("t_basicinfo_city"),
+	Area("t_basicinfo_area"),
 	;
 	
 	private String name;

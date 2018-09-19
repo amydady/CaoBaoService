@@ -30,3 +30,29 @@ CREATE TABLE `t_terminaluser` (
 	UNIQUE KEY `wxCode` (`wxCode`),
 	UNIQUE KEY `mobile` (`mobile`)
 );
+
+--basic info---
+
+CREATE TABLE `t_basicinfo_province` (
+	`id` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `t_basicinfo_city` (
+	`id` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	`provinceId` VARCHAR(255) NOT NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `t_basicinfo_area` (
+	`id` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	`cityId` VARCHAR(255) NOT NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
