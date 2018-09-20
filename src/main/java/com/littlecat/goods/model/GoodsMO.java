@@ -19,12 +19,13 @@ public class GoodsMO extends BaseMO
 	private String supplierId;
 	private String name;
 	private String summaryDescription; // 产品概要描述信息
+	private String detailDescription; // 详细描述信息（支持富文本）
 	private String mainImgUrl;
 	private long price; // 单位为厘
 	private String enable;
 	private String createOperatorid;
-	private String deliveryAreaId;	//配送区域ID
-	private String deliveryFeeRuleId;	//运费规则ID
+	private String deliveryAreaId; // 配送区域ID
+	private String deliveryFeeRuleId; // 运费规则ID
 	private String createTime;
 	private int createYear;
 	private int createMonth;
@@ -157,6 +158,16 @@ public class GoodsMO extends BaseMO
 	public void setDeliveryFeeRuleId(String deliveryFeeRuleId)
 	{
 		this.deliveryFeeRuleId = deliveryFeeRuleId;
+	}
+
+	public String getDetailDescription()
+	{
+		return detailDescription;
+	}
+
+	public void setDetailDescription(String detailDescription)
+	{
+		this.detailDescription = detailDescription;
 	}
 
 	public static class GoodsMapper implements RowMapper<GoodsMO>

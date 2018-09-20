@@ -1,6 +1,7 @@
 package com.littlecat.shoppingcart.model;
 
 import com.littlecat.cbb.common.BaseMO;
+import com.littlecat.common.consts.BuyType;
 
 /**
  * 购物车MO
@@ -11,9 +12,9 @@ import com.littlecat.cbb.common.BaseMO;
 public class ShoppingCartMO extends BaseMO
 {
 	private String terminalUserId;
-	private String goodsId;
+	private BuyType buyType;
+	private String resId;
 	private long goodsNum;
-	private long price;
 	private String createTime;
 
 	public String getTerminalUserId()
@@ -26,14 +27,24 @@ public class ShoppingCartMO extends BaseMO
 		this.terminalUserId = terminalUserId;
 	}
 
-	public String getGoodsId()
+	public BuyType getBuyType()
 	{
-		return goodsId;
+		return buyType;
 	}
 
-	public void setGoodsId(String goodsId)
+	public void setBuyType(BuyType buyType)
 	{
-		this.goodsId = goodsId;
+		this.buyType = buyType;
+	}
+
+	public String getResId()
+	{
+		return resId;
+	}
+
+	public void setResId(String resId)
+	{
+		this.resId = resId;
 	}
 
 	public long getGoodsNum()
@@ -44,16 +55,6 @@ public class ShoppingCartMO extends BaseMO
 	public void setGoodsNum(long goodsNum)
 	{
 		this.goodsNum = goodsNum;
-	}
-
-	public long getPrice()
-	{
-		return price;
-	}
-
-	public void setPrice(long price)
-	{
-		this.price = price;
 	}
 
 	public String getCreateTime()
