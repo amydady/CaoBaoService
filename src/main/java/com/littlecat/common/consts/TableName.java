@@ -15,7 +15,6 @@ public enum TableName
 	TerminalUser("t_terminaluser"),
 	TuanZhang("t_tuanzhang"),
 	TuanClassify("t_tuanclassify"),
-	Tuan("t_tuan"),
 	
 	MaiShou("t_maishou"),
 	
@@ -25,6 +24,7 @@ public enum TableName
 	City("t_basicinfo_city"),
 	Area("t_basicinfo_area"),
 	
+	Tuan("t_quanzi_tuan"),
 	TuanGoods("t_quanzi_tuangoods"),
 	;
 	

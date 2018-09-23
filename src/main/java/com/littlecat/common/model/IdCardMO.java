@@ -15,6 +15,16 @@ public class IdCardMO
 	private String imgUrlFront;
 	private String imgUrlBack;
 
+	
+	public IdCardMO(IdCardType type, String code, String imgUrlFront, String imgUrlBack)
+	{
+		super();
+		this.type = type;
+		this.code = code;
+		this.imgUrlFront = imgUrlFront;
+		this.imgUrlBack = imgUrlBack;
+	}
+
 	public IdCardType getType()
 	{
 		return type;

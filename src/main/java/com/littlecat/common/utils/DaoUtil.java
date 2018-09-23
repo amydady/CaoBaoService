@@ -2,6 +2,7 @@ package com.littlecat.common.utils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
@@ -221,6 +222,24 @@ public final class DaoUtil
 		}
 		
 		return DaoUtil.getTotalNum(tableName,queryParam,jdbcTemplate);
+	}
+	
+	public static <T_MO> T_MO getObject(String tableName,QueryParam queryParam,JdbcTemplate jdbcTemplate,RowMapper<T_MO> rowMapper) throws LittleCatException
+	{
+		if(queryParam == null)
+		{
+			throw new LittleCatException(ErrorCode.QueryParamIsNull.getCode(),ErrorCode.QueryParamIsNull.getMsg().replace("{INFO_NAME}",tableName));
+		}
+		
+		List<T_MO> mos = new ArrayList<T_MO>();
+		getList(tableName,queryParam,mos,jdbcTemplate,rowMapper);
+		
+		if(CollectionUtil.isEmpty(mos))
+		{
+			return null;
+		}
+		
+		return mos.get(0);
 	}
 	
 	

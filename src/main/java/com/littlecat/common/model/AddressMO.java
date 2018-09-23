@@ -7,6 +7,15 @@ public class AddressMO
 	private String areaId;
 	private String detailInfo;
 	
+	public AddressMO(String provinceId, String cityId, String areaId, String detailInfo)
+	{
+		super();
+		this.provinceId = provinceId;
+		this.cityId = cityId;
+		this.areaId = areaId;
+		this.detailInfo = detailInfo;
+	}
+	
 	public String getProvinceId()
 	{
 		return provinceId;
