@@ -22,15 +22,65 @@ import com.littlecat.quanzi.business.TuanGoodsBusiness;
 import com.littlecat.quanzi.model.TuanGoodsMO;
 
 @RestController
-@RequestMapping("/rest/littlecat/caobao/tuan")
-public class TuanController
+@RequestMapping("/rest/littlecat/caobao/tuangoods")
+public class TuanGoodsController
 {
-	private static Logger logger = LoggerFactory.getLogger(TuanController.class);
+	private static Logger logger = LoggerFactory.getLogger(TuanGoodsController.class);
 
 	@Autowired
 	private TuanGoodsBusiness tuanGoodsBusiness;
 
-	@GetMapping(value = "/tuangoods/{tuanId}")
+	@PostMapping(value = "/add")
+	public RestRsp<String> add(@RequestBody TuanGoodsMO mo)
+	{
+		RestRsp<String> result = new RestRsp<String>();
+
+		try
+		{
+			result.getData().add(tuanGoodsBusiness.add(mo));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PostMapping(value = "/batchadd")
+	public RestRsp<String> batchAdd(@RequestBody List<TuanGoodsMO> mos)
+	{
+		RestRsp<String> result = new RestRsp<String>();
+
+		try
+		{
+			result.getData().addAll(tuanGoodsBusiness.batchAdd(mos));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/getbytuanid/{tuanId}")
 	public RestRsp<TuanGoodsMO> getByTuanId(@PathVariable String tuanId)
 	{
 		RestRsp<TuanGoodsMO> result = new RestRsp<TuanGoodsMO>();
@@ -59,7 +109,7 @@ public class TuanController
 		return result;
 	}
 
-	@DeleteMapping(value = "/tuangoods/{id}")
+	@DeleteMapping(value = "/deletebyid/{id}")
 	public RestSimpleRsp deleteById(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
@@ -84,7 +134,7 @@ public class TuanController
 		return result;
 	}
 
-	@PostMapping(value = "/tuangoods/batchdelete")
+	@PostMapping(value = "/batchdelete")
 	public RestSimpleRsp deleteByIds(@RequestBody List<String> idList)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();

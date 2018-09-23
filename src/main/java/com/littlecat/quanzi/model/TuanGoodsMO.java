@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.common.consts.BuyType;
-import com.littlecat.supplier.model.SupplierMO;
 
 /**
  * 团商品MO

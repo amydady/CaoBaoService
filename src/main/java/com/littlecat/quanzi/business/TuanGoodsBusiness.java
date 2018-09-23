@@ -21,21 +21,26 @@ public class TuanGoodsBusiness
 	private static String FIELDS_NAME_TUANID = "tuanId";
 	
 	@Autowired
-	private TuanGoodsDao tuanGoods;
+	private TuanGoodsDao tuanGoodsDao;
 
 	public boolean delete(String id) throws LittleCatException
 	{
-		return tuanGoods.delete(id);
+		return tuanGoodsDao.delete(id);
 	}
 
 	public boolean delete(List<String> ids) throws LittleCatException
 	{
-		return tuanGoods.delete(ids);
+		return tuanGoodsDao.delete(ids);
 	}
 
 	public String add(TuanGoodsMO mo) throws LittleCatException
 	{
-		return tuanGoods.add(mo);
+		return tuanGoodsDao.add(mo);
+	}
+	
+	public List<String> batchAdd(List<TuanGoodsMO> mos) throws LittleCatException
+	{
+		return tuanGoodsDao.batchAdd(mos);
 	}
 
 	public int getListByTuanId(String tuanId, List<TuanGoodsMO> mos) throws LittleCatException
@@ -51,6 +56,6 @@ public class TuanGoodsBusiness
 	
 	public int getList(QueryParam queryParam, List<TuanGoodsMO> mos) throws LittleCatException
 	{
-		return tuanGoods.getList(queryParam, mos);
+		return tuanGoodsDao.getList(queryParam, mos);
 	}
 }
