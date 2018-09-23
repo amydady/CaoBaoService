@@ -24,6 +24,8 @@ public enum TableName
 	Province("t_basicinfo_province"),
 	City("t_basicinfo_city"),
 	Area("t_basicinfo_area"),
+	
+	TuanGoods("t_quanzi_tuangoods"),
 	;
 	
 	private String name;

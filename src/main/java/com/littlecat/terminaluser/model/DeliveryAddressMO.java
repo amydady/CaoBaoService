@@ -1,4 +1,4 @@
-package com.littlecat.deliveryaddress.model;
+package com.littlecat.terminaluser.model;
 
 import com.littlecat.cbb.common.BaseMO;
 
