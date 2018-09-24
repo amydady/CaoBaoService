@@ -32,4 +32,9 @@ public class TuanMemberBusiness
 	{
 		return tuanMemberDao.getList(queryParam, mos);
 	}
+	
+	public boolean isMember(String terminalUserId, String tuanId) throws LittleCatException
+	{
+		return tuanMemberDao.isMember(terminalUserId, tuanId);
+	}
 }

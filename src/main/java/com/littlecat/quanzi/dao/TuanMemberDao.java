@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
@@ -106,5 +107,24 @@ public class TuanMemberDao
 	{
 		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new TuanMemberMO.MOMapper());
 	}
+	
+	public boolean isMember(String terminalUserId, String tuanId) throws LittleCatException
+	{
+		String sql = "select * from " + TABLE_NAME + " where terminalUserId = ? and tuanId = ?";
+
+		try
+		{
+			List<TuanMemberMO> mos = jdbcTemplate.query(sql, new Object[] { terminalUserId, tuanId },
+					new TuanMemberMO.MOMapper());
+			
+			return CollectionUtil.isNotEmpty(mos);
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),
+					ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
 
 }
