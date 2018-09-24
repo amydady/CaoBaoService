@@ -7,11 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.littlecat.cbb.common.Consts;
@@ -31,8 +31,8 @@ public class TerminalUserController
 
 	private Logger logger = LoggerFactory.getLogger(TerminalUserController.class);
 
-	@GetMapping(value = "/getbywxcode/{wxCode}")
-	public RestRsp<TerminalUserMO> getByWXCode(@PathVariable String wxCode)
+	@GetMapping(value = "/getbywxcode")
+	public RestRsp<TerminalUserMO> getByWXCode(@RequestParam String wxCode)
 	{
 		RestRsp<TerminalUserMO> result = new RestRsp<TerminalUserMO>();
 
@@ -57,8 +57,8 @@ public class TerminalUserController
 		return result;
 	}
 
-	@GetMapping(value = "/getbyid/{id}")
-	public RestRsp<TerminalUserMO> getById(@PathVariable String id)
+	@GetMapping(value = "/getbyid")
+	public RestRsp<TerminalUserMO> getById(@RequestParam String id)
 	{
 		RestRsp<TerminalUserMO> result = new RestRsp<TerminalUserMO>();
 
