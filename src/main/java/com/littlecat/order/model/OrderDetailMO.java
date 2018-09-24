@@ -1,5 +1,10 @@
 package com.littlecat.order.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
 import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.common.consts.BuyType;
 
@@ -76,5 +81,23 @@ public class OrderDetailMO extends BaseMO
 	public void setFee(long fee)
 	{
 		this.fee = fee;
+	}
+
+	public static class MOMapper implements RowMapper<OrderDetailMO>
+	{
+		@Override
+		public OrderDetailMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			OrderDetailMO mo = new OrderDetailMO();
+
+			mo.setId(rs.getString("id"));
+			mo.setOrderId(rs.getString("orderId"));
+			mo.setBuyType(BuyType.valueOf(rs.getString("butType")));
+			mo.setResId(rs.getString("resId"));
+			mo.setPrice(rs.getLong("price"));
+			mo.setGoodsNum(rs.getLong("goodsNum"));
+
+			return mo;
+		}
 	}
 }

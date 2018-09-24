@@ -2,19 +2,18 @@ package com.littlecat.common.consts;
 
 /**
  * 数据库表名
+ * 
  * @author amydady
  *
  */
 public enum TableName
 {
-	Menu("t_menu"),
-	Action("t_action"),
-	Role("t_role"),
+	Menu("t_sys_menu"),
+	Action("t_sys_action"),
+	Role("t_sys_role"),
+	SysOperator("t_sys_sysoperator"),
 	
-	SysOperator("t_sysoperator"),
 	TerminalUser("t_terminaluser"),
-	TuanZhang("t_tuanzhang"),
-	TuanClassify("t_tuanclassify"),
 	
 	MaiShou("t_maishou"),
 	
@@ -24,9 +23,15 @@ public enum TableName
 	City("t_basicinfo_city"),
 	Area("t_basicinfo_area"),
 	
+	
 	Tuan("t_quanzi_tuan"),
+	TuanClassify("t_tuan_classify"),
 	TuanGoods("t_quanzi_tuangoods"),
 	TuanMember("t_quanzi_tuanmember"),
+
+	Order("t_order"),
+	OrderDetail("t_order_detail"),
+	OrderTrail("t_order_trail"),
 	;
 	
 	private String name;
