@@ -1,5 +1,10 @@
 package com.littlecat.quanzi.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
 import com.littlecat.cbb.common.BaseMO;
 
 /**
@@ -14,7 +19,6 @@ public class TuanMemberMO extends BaseMO
 	private String terminalUserId;
 	private String firstJoinTime; // 首次加入时间
 	private String lastActiveTime; // 最后活跃时间
-	private String enable;
 
 	public TuanMemberMO()
 	{
@@ -60,15 +64,22 @@ public class TuanMemberMO extends BaseMO
 	{
 		this.lastActiveTime = lastActiveTime;
 	}
-
-	public String getEnable()
+	
+	public static class MOMapper implements RowMapper<TuanMemberMO>
 	{
-		return enable;
-	}
-
-	public void setEnable(String enable)
-	{
-		this.enable = enable;
+		@Override
+		public TuanMemberMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			TuanMemberMO mo = new TuanMemberMO();
+			
+			mo.setId(rs.getString("id"));
+			mo.setTuanId(rs.getString("tuanId"));
+			mo.setTerminalUserId(rs.getString("terminalUserId"));
+			mo.setFirstJoinTime(rs.getString("firstJoinTime"));
+			mo.setLastActiveTime(rs.getString("lastActiveTime"));
+			
+			return mo;
+		}
 	}
 
 }

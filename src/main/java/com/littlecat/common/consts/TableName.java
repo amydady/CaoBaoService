@@ -26,6 +26,7 @@ public enum TableName
 	
 	Tuan("t_quanzi_tuan"),
 	TuanGoods("t_quanzi_tuangoods"),
+	TuanMember("t_quanzi_tuanmember"),
 	;
 	
 	private String name;
