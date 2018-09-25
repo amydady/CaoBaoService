@@ -56,3 +56,24 @@ CREATE TABLE `t_basicinfo_area` (
 	PRIMARY KEY (`id`)
 );
 
+--goods --
+CREATE TABLE `t_goods` (
+	`id` VARCHAR(255) NOT NULL,
+	`classifyId` VARCHAR(255) NOT NULL,
+	`supplierId` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	`summaryDescription` VARCHAR(255) NOT NULL,
+	`detailDescription` VARCHAR(255) NOT NULL,
+	`mainImgUrl` VARCHAR(255) NOT NULL,
+	`price` INT NOT NULL,
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	`createOperatorId` VARCHAR(255) NOT NULL,
+	`deliveryAreaId` VARCHAR(255) NOT NULL,
+	`deliveryFeeRuleId` VARCHAR(255) NOT NULL,
+	`createTime` VARCHAR(255) NOT NULL,
+	`createYear` INT NOT NULL,
+	`createMonth` INT NOT NULL,
+	
+	PRIMARY KEY (`id`)
+);
+

@@ -23,7 +23,7 @@ public class GoodsMO extends BaseMO
 	private String mainImgUrl;
 	private long price; // 单位为厘
 	private String enable;
-	private String createOperatorid;
+	private String createOperatorId;
 	private String deliveryAreaId; // 配送区域ID
 	private String deliveryFeeRuleId; // 运费规则ID
 	private String createTime;
@@ -100,16 +100,6 @@ public class GoodsMO extends BaseMO
 		this.enable = enable;
 	}
 
-	public String getCreateOperatorid()
-	{
-		return createOperatorid;
-	}
-
-	public void setCreateOperatorid(String createOperatorid)
-	{
-		this.createOperatorid = createOperatorid;
-	}
-
 	public String getCreateTime()
 	{
 		return createTime;
@@ -170,12 +160,36 @@ public class GoodsMO extends BaseMO
 		this.detailDescription = detailDescription;
 	}
 
-	public static class GoodsMapper implements RowMapper<GoodsMO>
+	public String getCreateOperatorId()
+	{
+		return createOperatorId;
+	}
+
+	public void setCreateOperatorId(String createOperatorId)
+	{
+		this.createOperatorId = createOperatorId;
+	}
+
+	public static class MOMapper implements RowMapper<GoodsMO>
 	{
 		@Override
 		public GoodsMO mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
 			GoodsMO mo = new GoodsMO();
+			mo.setId(rs.getString("id"));
+			mo.setClassifyId(rs.getString("classifyId"));
+			mo.setName(rs.getString("name"));
+			mo.setSummaryDescription(rs.getString("summaryDescription"));
+			mo.setDetailDescription(rs.getString("detailDescription"));
+			mo.setMainImgUrl(rs.getString("mainImgUrl"));
+			mo.setPrice(rs.getLong("price"));
+			mo.setEnable(rs.getString("enable"));
+			mo.setCreateOperatorId(rs.getString("createOperatorId"));
+			mo.setDeliveryAreaId(rs.getString("deliveryAreaId"));
+			mo.setDeliveryFeeRuleId(rs.getString("deliveryFeeRuleId"));
+			mo.setCreateTime(rs.getString("createTime"));
+			mo.setCreateYear(rs.getInt("createYear"));
+			mo.setCreateMonth(rs.getInt("createMonth"));
 
 			return mo;
 		}
