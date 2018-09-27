@@ -1,6 +1,6 @@
 CREATE DATABASE `caobaodb` ;
 
-CREATE TABLE `t_sysoperator` (
+CREATE TABLE `t_sys_sysoperator` (
 	`id` VARCHAR(255) NOT NULL,
 	`username` VARCHAR(255) NOT NULL,
 	`password` VARCHAR(255) NOT NULL,
@@ -57,6 +57,18 @@ CREATE TABLE `t_basicinfo_area` (
 );
 
 #goods --
+CREATE TABLE `t_goods_classify` (
+	`id` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	`sortNum` INT NOT NULL DEFAULT 0,
+	`parentId` VARCHAR(255) NOT NULL DEFAULT '-1',
+	`remark` VARCHAR(255) NULL,
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `name` (`parentId`,`name`)
+);
+
 CREATE TABLE `t_goods` (
 	`id` VARCHAR(255) NOT NULL,
 	`classifyId` VARCHAR(255) NOT NULL,

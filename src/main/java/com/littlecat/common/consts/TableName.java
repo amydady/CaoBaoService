@@ -15,8 +15,6 @@ public enum TableName
 	
 	TerminalUser("t_terminaluser"),
 	
-	MaiShou("t_maishou"),
-	
 	Supplier("t_supplier"),
 	
 	Province("t_basicinfo_province"),
