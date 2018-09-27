@@ -30,6 +30,7 @@ public enum TableName
 	TuanMember("t_quanzi_tuanmember"),
 	
 	Goods("t_goods"),
+	GoodsClassify("t_goods_classify"),
 
 	Order("t_order"),
 	OrderDetail("t_order_detail"),

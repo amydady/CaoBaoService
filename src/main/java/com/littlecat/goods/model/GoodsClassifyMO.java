@@ -15,7 +15,7 @@ import com.littlecat.cbb.common.BaseMO;
  */
 public class GoodsClassifyMO extends BaseMO
 {
-	private final String NO_PARENT_ID = "-1";
+	public static final String NO_PARENT_ID = "-1";
 
 	private String name;
 	private int sortNum;
