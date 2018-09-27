@@ -108,11 +108,11 @@ public class GoodsDao
 			throw new LittleCatException(ErrorCode.GiveNullObjectToModify.getCode(), ErrorCode.GiveNullObjectToModify.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
-		String sql = "update " + TABLE_NAME + " set classifyId=?,supplierId=?,name=?,summaryDescription=?,detailDescription=?,mainImgUrl=?,price=?,deliveryAreaId=?,deliveryFeeRuleId=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set classifyId=?,supplierId=?,name=?,summaryDescription=?,detailDescription=?,mainImgUrl=?,price=?,deliveryAreaId=?,deliveryFeeRuleId=?,hasSecKillPlan=?,hasGroupBuyPlan=? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getClassifyId(), mo.getSupplierId(), mo.getName(),mo.getSummaryDescription(),mo.getDetailDescription(),mo.getMainImgUrl(),mo.getPrice(),mo.getDeliveryAreaId(),mo.getDeliveryFeeRuleId(),mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getClassifyId(), mo.getSupplierId(), mo.getName(),mo.getSummaryDescription(),mo.getDetailDescription(),mo.getMainImgUrl(),mo.getPrice(),mo.getDeliveryAreaId(),mo.getDeliveryFeeRuleId(),mo.getHasSecKillPlan(),mo.getHasGroupBuyPlan(),mo.getId() });
 
 			if (ret != 1)
 			{

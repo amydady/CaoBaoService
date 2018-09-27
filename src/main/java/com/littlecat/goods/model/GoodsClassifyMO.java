@@ -5,32 +5,23 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import com.littlecat.cbb.common.BaseMO;
+
 /**
  * 商品分类
  * 
  * @author amydady
  *
  */
-public class GoodsClassifyMO
+public class GoodsClassifyMO extends BaseMO
 {
 	private final String NO_PARENT_ID = "-1";
 
-	private String id;
 	private String name;
 	private int sortNum;
 	private String parentId = NO_PARENT_ID;
 	private String remark;
 	private String enable;
-
-	public String getId()
-	{
-		return id;
-	}
-
-	public void setId(String id)
-	{
-		this.id = id;
-	}
 
 	public String getName()
 	{
@@ -82,7 +73,7 @@ public class GoodsClassifyMO
 		this.enable = enable;
 	}
 
-	public static class GoodsClassifyMapper implements RowMapper<GoodsClassifyMO>
+	public static class MOMapper implements RowMapper<GoodsClassifyMO>
 	{
 		@Override
 		public GoodsClassifyMO mapRow(ResultSet rs, int rowNum) throws SQLException

@@ -23,6 +23,8 @@ public class GoodsMO extends BaseMO
 	private String mainImgUrl;
 	private long price; // 单位为厘
 	private String enable;
+	private String hasSecKillPlan; // 当前是否有秒杀计划
+	private String hasGroupBuyPlan; // 当前是否有拼购计划
 	private String createOperatorId;
 	private String deliveryAreaId; // 配送区域ID
 	private String deliveryFeeRuleId; // 运费规则ID
@@ -170,6 +172,26 @@ public class GoodsMO extends BaseMO
 		this.createOperatorId = createOperatorId;
 	}
 
+	public String getHasSecKillPlan()
+	{
+		return hasSecKillPlan;
+	}
+
+	public void setHasSecKillPlan(String hasSecKillPlan)
+	{
+		this.hasSecKillPlan = hasSecKillPlan;
+	}
+
+	public String getHasGroupBuyPlan()
+	{
+		return hasGroupBuyPlan;
+	}
+
+	public void setHasGroupBuyPlan(String hasGroupBuyPlan)
+	{
+		this.hasGroupBuyPlan = hasGroupBuyPlan;
+	}
+
 	public static class MOMapper implements RowMapper<GoodsMO>
 	{
 		@Override
@@ -184,6 +206,8 @@ public class GoodsMO extends BaseMO
 			mo.setMainImgUrl(rs.getString("mainImgUrl"));
 			mo.setPrice(rs.getLong("price"));
 			mo.setEnable(rs.getString("enable"));
+			mo.setHasSecKillPlan(rs.getString("hasSecKillPlan"));
+			mo.setHasGroupBuyPlan(rs.getString("hasGroupBuyPlan"));
 			mo.setCreateOperatorId(rs.getString("createOperatorId"));
 			mo.setDeliveryAreaId(rs.getString("deliveryAreaId"));
 			mo.setDeliveryFeeRuleId(rs.getString("deliveryFeeRuleId"));

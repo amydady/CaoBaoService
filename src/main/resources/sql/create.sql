@@ -31,7 +31,7 @@ CREATE TABLE `t_terminaluser` (
 	UNIQUE KEY `mobile` (`mobile`)
 );
 
---basic info---
+# basic info
 
 CREATE TABLE `t_basicinfo_province` (
 	`id` VARCHAR(255) NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE `t_basicinfo_area` (
 	PRIMARY KEY (`id`)
 );
 
---goods --
+#goods --
 CREATE TABLE `t_goods` (
 	`id` VARCHAR(255) NOT NULL,
 	`classifyId` VARCHAR(255) NOT NULL,
@@ -67,6 +67,8 @@ CREATE TABLE `t_goods` (
 	`mainImgUrl` VARCHAR(255) NOT NULL,
 	`price` INT NOT NULL,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	`hasSecKillPlan` VARCHAR(1) NOT NULL DEFAULT 'N',
+	`hasGroupBuyPlan` VARCHAR(1) NOT NULL DEFAULT 'N',
 	`createOperatorId` VARCHAR(255) NOT NULL,
 	`deliveryAreaId` VARCHAR(255) NOT NULL,
 	`deliveryFeeRuleId` VARCHAR(255) NOT NULL,

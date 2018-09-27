@@ -8,5 +8,5 @@ package com.littlecat.common.consts;
  */
 public enum OrderState
 {
-	daifahuo,wuliudianyiqianshou,yonghuyishouhuo,yituikuan
+	daifukuan,daichengtuan,daiqianshou,yishouhuo,tuikuanzhong,yituikuan
 }
