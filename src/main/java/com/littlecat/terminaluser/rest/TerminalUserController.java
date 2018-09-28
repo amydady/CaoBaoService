@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,32 +31,6 @@ public class TerminalUserController
 	private TerminalUserBusiness terminalUserBusiness;
 
 	private Logger logger = LoggerFactory.getLogger(TerminalUserController.class);
-
-	@GetMapping(value = "/getbywxcode")
-	public RestRsp<TerminalUserMO> getByWXCode(@RequestParam String wxCode)
-	{
-		RestRsp<TerminalUserMO> result = new RestRsp<TerminalUserMO>();
-
-		try
-		{
-			TerminalUserMO mo = terminalUserBusiness.getByWXCode(wxCode);
-			result.getData().add(mo);
-		}
-		catch (LittleCatException e)
-		{
-			result.setCode(e.getErrorCode());
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-		catch (Exception e)
-		{
-			result.setCode(Consts.ERROR_CODE_UNKNOW);
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-
-		return result;
-	}
 
 	@GetMapping(value = "/getbyid")
 	public RestRsp<TerminalUserMO> getById(@RequestParam String id)
@@ -83,14 +58,89 @@ public class TerminalUserController
 		return result;
 	}
 
-	@PutMapping(value = "/modify")
-	public RestSimpleRsp modify(@RequestBody TerminalUserMO mo)
+	@PutMapping(value = "/settuanzhangyes/{id}")
+	public RestSimpleRsp setTuanZhangYes(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			terminalUserBusiness.modify(mo);
+			terminalUserBusiness.setTuanZhangYes(id);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PutMapping(value = "/settuanzhangno/{id}")
+	public RestSimpleRsp setTuanZhangNo(@PathVariable String id)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			terminalUserBusiness.setTuanZhangNo(id);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PutMapping(value = "/setmaishouyes/{id}")
+	public RestSimpleRsp setMaiShouYes(@PathVariable String id)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			terminalUserBusiness.setMaiShouYes(id);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PutMapping(value = "/setmaishouno/{id}")
+	public RestSimpleRsp setMaiShouNo(@PathVariable String id)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			terminalUserBusiness.setMaiShouNo(id);
 		}
 		catch (LittleCatException e)
 		{
@@ -116,6 +166,106 @@ public class TerminalUserController
 		try
 		{
 			result.getData().add(terminalUserBusiness.add(mo));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PutMapping(value = "/disable/{id}")
+	public RestSimpleRsp disable(@PathVariable String id)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			terminalUserBusiness.disable(id);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PutMapping(value = "/batchdisable")
+	public RestSimpleRsp batchDisable(@RequestBody List<String> ids)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			terminalUserBusiness.disable(ids);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PutMapping(value = "/enable/{id}")
+	public RestSimpleRsp enable(@PathVariable String id)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			terminalUserBusiness.enable(id);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PutMapping(value = "/batchenable")
+	public RestSimpleRsp batchEable(@RequestBody List<String> ids)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			terminalUserBusiness.enable(ids);
 		}
 		catch (LittleCatException e)
 		{

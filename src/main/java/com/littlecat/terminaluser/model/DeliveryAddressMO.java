@@ -1,17 +1,19 @@
 package com.littlecat.terminaluser.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
 import com.littlecat.cbb.common.BaseMO;
+import com.littlecat.common.model.AddressMO;
 
 public class DeliveryAddressMO extends BaseMO
 {
 	private String terminalUserId;
 	private String name;
-	private String provinceId;
-	private String cityId;
-	private String areaId;
-	private String detailInfo;
+	private AddressMO addressInfo;
 	private String isDefault;
-	private String createTime;
 
 	public String getTerminalUserId()
 	{
@@ -33,46 +35,6 @@ public class DeliveryAddressMO extends BaseMO
 		this.name = name;
 	}
 
-	public String getProvinceId()
-	{
-		return provinceId;
-	}
-
-	public void setProvinceId(String provinceId)
-	{
-		this.provinceId = provinceId;
-	}
-
-	public String getCityId()
-	{
-		return cityId;
-	}
-
-	public void setCityId(String cityId)
-	{
-		this.cityId = cityId;
-	}
-
-	public String getAreaId()
-	{
-		return areaId;
-	}
-
-	public void setAreaId(String areaId)
-	{
-		this.areaId = areaId;
-	}
-
-	public String getDetailInfo()
-	{
-		return detailInfo;
-	}
-
-	public void setDetailInfo(String detailInfo)
-	{
-		this.detailInfo = detailInfo;
-	}
-
 	public String getIsDefault()
 	{
 		return isDefault;
@@ -83,14 +45,30 @@ public class DeliveryAddressMO extends BaseMO
 		this.isDefault = isDefault;
 	}
 
-	public String getCreateTime()
+	public AddressMO getAddressInfo()
 	{
-		return createTime;
+		return addressInfo;
 	}
 
-	public void setCreateTime(String createTime)
+	public void setAddressInfo(AddressMO addressInfo)
 	{
-		this.createTime = createTime;
+		this.addressInfo = addressInfo;
 	}
 
+	public static class MOMapper implements RowMapper<DeliveryAddressMO>
+	{
+		@Override
+		public DeliveryAddressMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			DeliveryAddressMO mo = new DeliveryAddressMO();
+
+			mo.setId(rs.getString("id"));
+			mo.setTerminalUserId(rs.getString("terminalUserId"));
+			mo.setName(rs.getString("name"));
+			mo.setAddressInfo(new AddressMO(rs.getString("provinceId"), rs.getString("cityId"), rs.getString("areaId"), rs.getString("detailInfo")));
+			mo.setIsDefault(rs.getString("isDefault"));
+
+			return mo;
+		}
+	}
 }

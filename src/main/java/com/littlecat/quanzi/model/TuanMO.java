@@ -1,6 +1,5 @@
 package com.littlecat.quanzi.model;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class TuanMO extends BaseMO
 	private IdCardMO idCard;
 	private AddressMO addressInfo;
 	private String createTime;
-	private List<String> labels = new ArrayList<String>();	//团标签
+	private List<String> labels = new ArrayList<String>(); // 团标签
 	private String enable;
 
 	public TuanMO()
@@ -115,25 +114,24 @@ public class TuanMO extends BaseMO
 	{
 		this.labels = labels;
 	}
-	
+
 	public static class MOMapper implements RowMapper<TuanMO>
 	{
 		@Override
 		public TuanMO mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
 			TuanMO mo = new TuanMO();
-			
+
 			mo.setId(rs.getString("id"));
 			mo.setTuanZhangId(rs.getString("tuanZhangId"));
 			mo.setName(rs.getString("name"));
 			mo.setRemark(rs.getString("remark"));
-			mo.setIdCard(new IdCardMO(IdCardType.valueOf(rs.getString("idCardType")), rs.getString("idCardCode"),
-					rs.getString("idCardImgUrlFront"), rs.getString("idCardImgUrlBack")));
-			mo.setAddressInfo(new AddressMO(rs.getString("provinceId"),rs.getString("cityId"),rs.getString("areaId"),rs.getString("detailInfo")));
+			mo.setIdCard(new IdCardMO(IdCardType.valueOf(rs.getString("idCardType")), rs.getString("idCardCode"), rs.getString("idCardImgUrlFront"), rs.getString("idCardImgUrlBack")));
+			mo.setAddressInfo(new AddressMO(rs.getString("provinceId"), rs.getString("cityId"), rs.getString("areaId"), rs.getString("detailInfo")));
 			mo.setLabels(StringUtil.split2List(rs.getString("labels")));
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setEnable(rs.getString("enable"));
-			
+
 			return mo;
 		}
 	}
