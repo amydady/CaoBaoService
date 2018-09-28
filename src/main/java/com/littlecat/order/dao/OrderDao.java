@@ -13,6 +13,7 @@ import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
+import com.littlecat.common.consts.OrderState;
 import com.littlecat.common.consts.TableName;
 import com.littlecat.common.utils.DaoUtil;
 import com.littlecat.order.model.OrderMO;
@@ -47,8 +48,7 @@ public class OrderDao
 		}
 		
 		
-		String sql = "insert into " + TABLE_NAME
-				+ "(id,terminalUserId,createTime,createYear,createMonth,fee,state,provinceId,cityId,areaId,detailInfo) values(?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,createTime,createYear,createMonth,fee,state,provinceId,cityId,areaId,detailInfo) values(?,?,?,?,?,?,?,?,?,?,?)";
 		
 		try
 		{
@@ -56,8 +56,7 @@ public class OrderDao
 
 			if (ret != 1)
 			{
-				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(),
-						ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(), ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 			}
 		}
 		catch(DataAccessException e)
@@ -93,7 +92,6 @@ public class OrderDao
 		
 		return true;
 	}
-
 
 	public OrderMO getById(String id) throws LittleCatException
 	{

@@ -1,7 +1,7 @@
 package com.littlecat.common.consts;
 
 /**
- * 订单状态
+ * 订单状态（与消费者相关的订单状态）
  * 
  * @author amydady
  *
