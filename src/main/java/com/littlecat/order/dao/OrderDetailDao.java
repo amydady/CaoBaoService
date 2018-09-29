@@ -9,9 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.ConditionItem;
-import com.littlecat.cbb.query.ConditionOperatorType;
-import com.littlecat.cbb.query.QueryCondition;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.StringUtil;
@@ -23,22 +20,20 @@ import com.littlecat.order.model.OrderDetailMO;
 
 @Component
 public class OrderDetailDao
-{	
-	private static final String FIELDNAME_ORDERID = "orderId";
-
+{
 	@Autowired
-    protected JdbcTemplate jdbcTemplate;
-	
+	protected JdbcTemplate jdbcTemplate;
+
 	private final String TABLE_NAME = TableName.OrderDetail.getName();
 	private final String MODEL_NAME = "OrderDetailMO";
-	
+
 	public List<String> add(List<OrderDetailMO> mos) throws LittleCatException
 	{
-		if(CollectionUtil.isEmpty(mos))
+		if (CollectionUtil.isEmpty(mos))
 		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(),ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}",MODEL_NAME));
+			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(), ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
-		
+
 		List<Object[]> batchParam = new ArrayList<Object[]>();
 		List<String> ids = new ArrayList<String>();
 		for (OrderDetailMO mo : mos)
@@ -48,49 +43,50 @@ public class OrderDetailDao
 				mo.setId(UUIDUtil.createUUID());
 				ids.add(mo.getId());
 			}
-			
+
 			batchParam.add(new Object[] { mo.getId(), mo.getOrderId(), mo.getBuyType().name(), mo.getResId(), mo.getPrice(), mo.getGoodsNum(), mo.getFee() });
 		}
-		
+
 		String sql = "insert into " + TABLE_NAME + "(id,orderId,buyType,resId,price,goodsNum,fee) values(?,?,?,?,?,?,?)";
-		
+
 		try
 		{
 			jdbcTemplate.batchUpdate(sql, batchParam);
 		}
-		catch(DataAccessException e)
+		catch (DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 
 		return ids;
 	}
-	
+
 	public OrderDetailMO getById(String id) throws LittleCatException
 	{
 		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new OrderDetailMO.MOMapper());
 	}
 	
-	public List<OrderDetailMO> getByOrderId(String orderId) throws LittleCatException
+	public void deleteByOrderId(String orderId) throws LittleCatException
 	{
-		List<OrderDetailMO> mos = new ArrayList<OrderDetailMO>();
-
-		QueryParam queryParam = new QueryParam();
-		QueryCondition condition = new QueryCondition();
-		condition.getCondItems().add(new ConditionItem(FIELDNAME_ORDERID, orderId, ConditionOperatorType.equal));
-		queryParam.setCondition(condition);
-
-		getList(queryParam, mos);
-
-		if (CollectionUtil.isEmpty(mos))
+		if (StringUtil.isEmpty(orderId))
 		{
-			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+			throw new LittleCatException(ErrorCode.DeleteObjectWithEmptyId.getCode(), ErrorCode.DeleteObjectWithEmptyId.getMsg().replace("{INFO_NAME}", TABLE_NAME));
 		}
 
-		return mos;
-	}
+		String sql = "delete from " + TABLE_NAME + " where orderId = ?";
 
-	public int getList(QueryParam queryParam,List<OrderDetailMO> mos) throws LittleCatException
+		try
+		{
+			jdbcTemplate.update(sql, new Object[] { orderId });
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+	
+
+	public int getList(QueryParam queryParam, List<OrderDetailMO> mos) throws LittleCatException
 	{
 		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new OrderDetailMO.MOMapper());
 	}

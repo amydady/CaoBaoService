@@ -8,6 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.cbb.utils.DateTimeUtil;
+import com.littlecat.common.consts.ErrorCode;
+import com.littlecat.common.consts.OrderState;
 import com.littlecat.order.dao.OrderDao;
 import com.littlecat.order.dao.OrderDetailDao;
 import com.littlecat.order.model.OrderDetailMO;
@@ -22,6 +25,8 @@ public class OrderBusiness
 
 	@Autowired
 	private OrderDetailDao orderDetailDao;
+	
+	private static final String MODEL_NAME = OrderMO.class.getSimpleName();
 
 	public String addOrder(OrderMO orderMO, List<OrderDetailMO> orderDetailMOs) throws LittleCatException
 	{
@@ -34,16 +39,79 @@ public class OrderBusiness
 		return orderId;
 	}
 
+	public void setOrderState2DaiQianShou(String id) throws LittleCatException
+	{
+		OrderMO mo = orderDao.getById(id);
+
+		if (mo == null)
+		{
+			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+
+		mo.setState(OrderState.daiqianshou);
+		mo.setPayTime(String.valueOf(DateTimeUtil.getCurrentTime()));
+
+		orderDao.modify(mo);
+	}
+
+	public void setOrderState2YiShouHuo(String id) throws LittleCatException
+	{
+		OrderMO mo = orderDao.getById(id);
+
+		if (mo == null)
+		{
+			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+		mo.setState(OrderState.yishouhuo);
+		mo.setReceiveTime(String.valueOf(DateTimeUtil.getCurrentTime()));
+
+		orderDao.modify(mo);
+	}
+
+	public void setOrderState2TuiKuanZhong(String id) throws LittleCatException
+	{
+		OrderMO mo = orderDao.getById(id);
+
+		if (mo == null)
+		{
+			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+		mo.setState(OrderState.tuikuanzhong);
+		mo.setReturnApplyTime(String.valueOf(DateTimeUtil.getCurrentTime()));
+
+		orderDao.modify(mo);
+	}
+
+	public void setOrderState2YiTuiKuan(String id) throws LittleCatException
+	{
+		OrderMO mo = orderDao.getById(id);
+
+		if (mo == null)
+		{
+			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+		mo.setState(OrderState.yituikuan);
+		mo.setReturnCompleteTime(String.valueOf(DateTimeUtil.getCurrentTime()));
+
+		orderDao.modify(mo);
+	}
+
 	/**
-	 * 修改订单信息（可修改字段：状态）
+	 * 修改订单信息
 	 * 
 	 * @param mo
 	 * @return
 	 * @throws LittleCatException
 	 */
-	public boolean modifyOrder(OrderMO mo) throws LittleCatException
+	public void modifyOrder(OrderMO mo) throws LittleCatException
 	{
-		return orderDao.modify(mo);
+		orderDao.modify(mo);
+	}
+
+	public void deleteOrderById(String id) throws LittleCatException
+	{
+		orderDetailDao.deleteByOrderId(id);
+		orderDao.delete(id);
 	}
 
 	public OrderMO getOrderById(String id) throws LittleCatException
@@ -59,11 +127,6 @@ public class OrderBusiness
 	public OrderDetailMO getOrderDetailById(String id) throws LittleCatException
 	{
 		return orderDetailDao.getById(id);
-	}
-
-	public List<OrderDetailMO> getOrderDetailByOrderId(String orderId) throws LittleCatException
-	{
-		return orderDetailDao.getByOrderId(orderId);
 	}
 
 	public int getOrderDetailList(QueryParam queryParam, List<OrderDetailMO> mos) throws LittleCatException

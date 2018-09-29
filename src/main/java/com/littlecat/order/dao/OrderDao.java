@@ -13,84 +13,85 @@ import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
-import com.littlecat.common.consts.OrderState;
 import com.littlecat.common.consts.TableName;
 import com.littlecat.common.utils.DaoUtil;
 import com.littlecat.order.model.OrderMO;
 
 @Component
 public class OrderDao
-{	
+{
 	@Autowired
-    protected JdbcTemplate jdbcTemplate;
-	
+	protected JdbcTemplate jdbcTemplate;
+
 	private final String TABLE_NAME = TableName.Order.getName();
-	private final String MODEL_NAME = "OrderMO";
-	
+	private static final String MODEL_NAME = OrderMO.class.getSimpleName();
+
 	public String add(OrderMO mo) throws LittleCatException
 	{
-		if(mo == null)
+		if (mo == null)
 		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(),ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}",MODEL_NAME));
+			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(), ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
-		
-		if(StringUtil.isEmpty(mo.getId()))
+
+		if (StringUtil.isEmpty(mo.getId()))
 		{
 			mo.setId(UUIDUtil.createUUID());
 		}
-		
-		if(StringUtil.isEmpty(mo.getCreateTime()))
+
+		if (StringUtil.isEmpty(mo.getCreateTime()))
 		{
 			long now = DateTimeUtil.getCurrentTime();
 			mo.setCreateTime(String.valueOf(now));
 			mo.setCreateYear(DateTimeUtil.getYear(now));
 			mo.setCreateMonth(DateTimeUtil.getMonth(now));
 		}
-		
-		
+
 		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,createTime,createYear,createMonth,fee,state,provinceId,cityId,areaId,detailInfo) values(?,?,?,?,?,?,?,?,?,?,?)";
-		
+
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(),mo.getCreateTime(),mo.getCreateYear(),mo.getCreateMonth(),mo.getFee(),mo.getState().name(),mo.getDeliveryAddress().getProvinceId(),mo.getDeliveryAddress().getCityId(),mo.getDeliveryAddress().getAreaId(),mo.getDeliveryAddress().getDetailInfo() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getCreateTime(), mo.getCreateYear(), mo.getCreateMonth(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvinceId(), mo.getDeliveryAddress().getCityId(), mo.getDeliveryAddress().getAreaId(), mo.getDeliveryAddress().getDetailInfo() });
 
 			if (ret != 1)
 			{
 				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(), ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 			}
 		}
-		catch(DataAccessException e)
+		catch (DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 
 		return mo.getId();
 	}
-	
-	public boolean modify(OrderMO mo) throws LittleCatException
+
+	public void modify(OrderMO mo) throws LittleCatException
 	{
-		if(mo == null)
+		if (mo == null)
 		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToModify.getCode(),ErrorCode.GiveNullObjectToModify.getMsg().replace("{INFO_NAME}",MODEL_NAME));
+			throw new LittleCatException(ErrorCode.GiveNullObjectToModify.getCode(), ErrorCode.GiveNullObjectToModify.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
-		
-		String sql = "update " + TABLE_NAME + " set state = ? where id = ?";
-		
+
+		String sql = "update " + TABLE_NAME + " set state = ?,payTime = ?,receiveTime = ?,returnApplyTime = ?,returnCompleteTime = ? where id = ?";
+
 		try
 		{
-			int ret = jdbcTemplate.update(sql,new Object[] { mo.getState().name(), mo.getId() });
-			
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getState().name(), mo.getPayTime(), mo.getReceiveTime(), mo.getReturnApplyTime(), mo.getReturnCompleteTime(), mo.getId() });
+
 			if (ret != 1)
 			{
-				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(),ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}",MODEL_NAME));
+				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 			}
 		}
 		catch (DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(),e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
-		
-		return true;
+	}
+	
+	public void delete(String id) throws LittleCatException
+	{
+		DaoUtil.delete(TABLE_NAME, id, jdbcTemplate);
 	}
 
 	public OrderMO getById(String id) throws LittleCatException
@@ -98,8 +99,7 @@ public class OrderDao
 		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new OrderMO.MOMapper());
 	}
 
-
-	public int getList(QueryParam queryParam,List<OrderMO> mos) throws LittleCatException
+	public int getList(QueryParam queryParam, List<OrderMO> mos) throws LittleCatException
 	{
 		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new OrderMO.MOMapper());
 	}
