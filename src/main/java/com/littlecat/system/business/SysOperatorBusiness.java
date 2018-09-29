@@ -43,9 +43,9 @@ public class SysOperatorBusiness
 		sysOperatorDao.delete(ids);
 	}
 
-	public boolean modify(SysOperatorMO mo) throws LittleCatException
+	public void modify(SysOperatorMO mo) throws LittleCatException
 	{
-		return sysOperatorDao.modify(mo);
+		sysOperatorDao.modify(mo);
 	}
 
 	public String add(SysOperatorMO mo) throws LittleCatException

@@ -8,6 +8,7 @@ package com.littlecat.common.consts;
  */
 public enum TableName
 {
+	SysParam("t_sys_param"),
 	Menu("t_sys_menu"),
 	Action("t_sys_action"),
 	Role("t_sys_role"),
@@ -30,6 +31,8 @@ public enum TableName
 	
 	Goods("t_goods"),
 	GoodsClassify("t_goods_classify"),
+	
+	ShoppingCart("t_shoppingcart"),
 
 	Order("t_order"),
 	OrderDetail("t_order_detail"),

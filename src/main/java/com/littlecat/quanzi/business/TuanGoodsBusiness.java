@@ -11,6 +11,7 @@ import com.littlecat.cbb.query.ConditionItem;
 import com.littlecat.cbb.query.ConditionOperatorType;
 import com.littlecat.cbb.query.QueryCondition;
 import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.goods.model.GoodsMO;
 import com.littlecat.quanzi.dao.TuanGoodsDao;
 import com.littlecat.quanzi.model.TuanGoodsMO;
 
@@ -57,5 +58,10 @@ public class TuanGoodsBusiness
 	public int getList(QueryParam queryParam, List<TuanGoodsMO> mos) throws LittleCatException
 	{
 		return tuanGoodsDao.getList(queryParam, mos);
+	}
+	
+	public List<GoodsMO> getUnPutOnGoodsList(String tuanId) throws LittleCatException
+	{
+		return tuanGoodsDao.getUnPutOnGoodsList(tuanId);
 	}
 }

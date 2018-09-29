@@ -1,5 +1,6 @@
-package com.littlecat.quanzi.dao;
+package com.littlecat.shoppingcart.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +17,28 @@ import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.TableName;
 import com.littlecat.common.utils.DaoUtil;
-import com.littlecat.quanzi.model.TuanMemberMO;
+import com.littlecat.shoppingcart.model.ShoppingCartMO;
 
 @Component
-public class TuanMemberDao
+public class ShoppingCartDao
 {
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
 
-	private final String TABLE_NAME = TableName.TuanMember.getName();
-	private final String MODEL_NAME = "TuanMemberDao";
+	private final String TABLE_NAME = TableName.ShoppingCart.getName();
+	private final String MODEL_NAME = "ShoppingCartMO";
 
-	public String add(TuanMemberMO mo) throws LittleCatException
+	public void delete(String id) throws LittleCatException
+	{
+		DaoUtil.delete(TABLE_NAME, id, jdbcTemplate);
+	}
+
+	public void delete(List<String> ids) throws LittleCatException
+	{
+		DaoUtil.delete(TABLE_NAME, ids, jdbcTemplate);
+	}
+
+	public String add(ShoppingCartMO mo) throws LittleCatException
 	{
 		if (mo == null)
 		{
@@ -39,18 +50,16 @@ public class TuanMemberDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		if (StringUtil.isEmpty(mo.getFirstJoinTime()))
+		if (StringUtil.isEmpty(mo.getCreateTime()))
 		{
-			mo.setFirstJoinTime(String.valueOf(DateTimeUtil.getCurrentTime()));
+			mo.setCreateTime(String.valueOf(DateTimeUtil.getCurrentTime()));
 		}
 
-		mo.setLastActiveTime(mo.getFirstJoinTime());
-
-		String sql = "insert into " + TABLE_NAME + "(id,tuanId,terminalUserId,firstJoinTime,lastActiveTime) values(?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,buyType,resId,goodsNum,createTime) values(?,?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTuanId(), mo.getTerminalUserId(), mo.getFirstJoinTime(), mo.getLastActiveTime() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getBuyType().name(), mo.getResId(), mo.getGoodsNum(), mo.getCreateTime() });
 
 			if (ret != 1)
 			{
@@ -65,18 +74,18 @@ public class TuanMemberDao
 		return mo.getId();
 	}
 
-	public void modify(TuanMemberMO mo) throws LittleCatException
+	public void modify(ShoppingCartMO mo) throws LittleCatException
 	{
 		if (mo == null)
 		{
 			throw new LittleCatException(ErrorCode.GiveNullObjectToModify.getCode(), ErrorCode.GiveNullObjectToModify.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
-		String sql = "update " + TABLE_NAME + " set lastActiveTime=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set goodsNum = ? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getLastActiveTime(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getGoodsNum(), mo.getId() });
 
 			if (ret != 1)
 			{
@@ -88,25 +97,35 @@ public class TuanMemberDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
-	
-	public int getList(QueryParam queryParam, List<TuanMemberMO> mos) throws LittleCatException
+
+	public void modify(List<ShoppingCartMO> mos) throws LittleCatException
 	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new TuanMemberMO.MOMapper());
-	}
-	
-	public boolean isMember(String terminalUserId, String tuanId) throws LittleCatException
-	{
-		String sql = "select * from " + TABLE_NAME + " where terminalUserId = ? and tuanId = ?";
+		if (CollectionUtil.isEmpty(mos))
+		{
+			throw new LittleCatException(ErrorCode.GiveNullObjectToModify.getCode(), ErrorCode.GiveNullObjectToModify.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+
+		List<Object[]> batchParam = new ArrayList<Object[]>();
+
+		for (ShoppingCartMO mo : mos)
+		{
+			batchParam.add(new Object[] { mo.getGoodsNum(), mo.getId() });
+		}
+
+		String sql = "update " + TABLE_NAME + " set goodsNum = ? where id = ?";
 
 		try
 		{
-			List<TuanMemberMO> mos = jdbcTemplate.query(sql, new Object[] { terminalUserId, tuanId }, new TuanMemberMO.MOMapper());
-			
-			return CollectionUtil.isNotEmpty(mos);
+			jdbcTemplate.batchUpdate(sql, batchParam);
 		}
 		catch (DataAccessException e)
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
+	}
+
+	public int getList(QueryParam queryParam, List<ShoppingCartMO> mos) throws LittleCatException
+	{
+		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new ShoppingCartMO.MOMapper());
 	}
 }

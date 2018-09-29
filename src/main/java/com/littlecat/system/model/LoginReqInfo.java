@@ -1,12 +1,12 @@
 package com.littlecat.system.model;
 
 /**
- * 行为MO
+ * 登录请求信息
  * 
  * @author amydady
  *
  */
-public class ChangePasswordMO
+public class LoginReqInfo
 {
 	private String id;
 	private String pwd;

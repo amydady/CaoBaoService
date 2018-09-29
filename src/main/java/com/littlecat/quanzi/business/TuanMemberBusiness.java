@@ -23,16 +23,16 @@ public class TuanMemberBusiness
 		return tuanMemberDao.add(mo);
 	}
 
-	public boolean modify(TuanMemberMO mo) throws LittleCatException
+	public void modify(TuanMemberMO mo) throws LittleCatException
 	{
-		return tuanMemberDao.modify(mo);
+		tuanMemberDao.modify(mo);
 	}
 
 	public int getList(QueryParam queryParam, List<TuanMemberMO> mos) throws LittleCatException
 	{
 		return tuanMemberDao.getList(queryParam, mos);
 	}
-	
+
 	public boolean isMember(String terminalUserId, String tuanId) throws LittleCatException
 	{
 		return tuanMemberDao.isMember(terminalUserId, tuanId);

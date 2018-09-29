@@ -9,7 +9,7 @@ import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.common.consts.BuyType;
 
 /**
- * 团商品MO
+ * 团商品MO（上架到圈长店铺的商品）
  * 
  * @author amydady
  *
@@ -54,19 +54,19 @@ public class TuanGoodsMO extends BaseMO
 	{
 		this.goodsId = goodsId;
 	}
-	
+
 	public static class MOMapper implements RowMapper<TuanGoodsMO>
 	{
 		@Override
 		public TuanGoodsMO mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
 			TuanGoodsMO mo = new TuanGoodsMO();
-			
+
 			mo.setId(rs.getString("id"));
 			mo.setTuanId(rs.getString("tuanId"));
 			mo.setBuyType(BuyType.valueOf(rs.getString("buyType")));
 			mo.setGoodsId(rs.getString("goodsId"));
-			
+
 			return mo;
 		}
 	}

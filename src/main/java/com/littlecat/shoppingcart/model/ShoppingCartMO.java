@@ -1,5 +1,10 @@
 package com.littlecat.shoppingcart.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
 import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.common.consts.BuyType;
 
@@ -65,6 +70,24 @@ public class ShoppingCartMO extends BaseMO
 	public void setCreateTime(String createTime)
 	{
 		this.createTime = createTime;
+	}
+
+	public static class MOMapper implements RowMapper<ShoppingCartMO>
+	{
+		@Override
+		public ShoppingCartMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			ShoppingCartMO mo = new ShoppingCartMO();
+
+			mo.setId(rs.getString("id"));
+			mo.setTerminalUserId(rs.getString("terminalUserId"));
+			mo.setBuyType(BuyType.valueOf(rs.getString("buyType")));
+			mo.setResId(rs.getString("resId"));
+			mo.setGoodsNum(rs.getLong("goodsNum"));
+			mo.setCreateTime(rs.getString("createTime"));
+
+			return mo;
+		}
 	}
 
 }

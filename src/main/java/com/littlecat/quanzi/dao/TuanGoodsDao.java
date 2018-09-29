@@ -16,6 +16,7 @@ import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.TableName;
 import com.littlecat.common.utils.DaoUtil;
+import com.littlecat.goods.model.GoodsMO;
 import com.littlecat.quanzi.model.TuanGoodsMO;
 
 @Component
@@ -25,6 +26,7 @@ public class TuanGoodsDao
 	protected JdbcTemplate jdbcTemplate;
 
 	private final String TABLE_NAME = TableName.TuanGoods.getName();
+	private final String TABLE_NAME_GOODS = TableName.Goods.getName();
 	private final String MODEL_NAME = "TuanGoodsMO";
 
 	public void delete(String id) throws LittleCatException
@@ -111,5 +113,30 @@ public class TuanGoodsDao
 	public int getList(QueryParam queryParam, List<TuanGoodsMO> mos) throws LittleCatException
 	{
 		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new TuanGoodsMO.MOMapper());
+	}
+
+	/**
+	 * 获取该圈子尚未上架的商品（目前只实现一次性加载）
+	 * 
+	 * @param tuanId
+	 * @return
+	 * @throws LittleCatException
+	 */
+	public List<GoodsMO> getUnPutOnGoodsList(String tuanId) throws LittleCatException
+	{
+		List<GoodsMO> goodsList = null;
+
+		String sql = "select * from " + TABLE_NAME_GOODS + " where id not in (select goodsId from " + TABLE_NAME + " where tuanId=?)";
+		
+		try
+		{
+			goodsList = jdbcTemplate.query(sql, new Object[] { tuanId }, new GoodsMO.MOMapper());
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+
+		return goodsList;
 	}
 }

@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
+import com.littlecat.goods.model.GoodsMO;
 import com.littlecat.quanzi.business.TuanGoodsBusiness;
 import com.littlecat.quanzi.model.TuanGoodsMO;
 
@@ -80,8 +82,8 @@ public class TuanGoodsController
 		return result;
 	}
 
-	@GetMapping(value = "/getbytuanid/{tuanId}")
-	public RestRsp<TuanGoodsMO> getByTuanId(@PathVariable String tuanId)
+	@GetMapping(value = "/getbytuanid")
+	public RestRsp<TuanGoodsMO> getByTuanId(@RequestParam String tuanId)
 	{
 		RestRsp<TuanGoodsMO> result = new RestRsp<TuanGoodsMO>();
 
@@ -109,8 +111,33 @@ public class TuanGoodsController
 		return result;
 	}
 
-	@DeleteMapping(value = "/deletebyid/{id}")
-	public RestSimpleRsp deleteById(@PathVariable String id)
+	@GetMapping(value = "/getunputongoodslist")
+	public RestRsp<GoodsMO> getUnPutOnGoodsList(@RequestParam String tuanId)
+	{
+		RestRsp<GoodsMO> result = new RestRsp<GoodsMO>();
+
+		try
+		{
+			result.getData().addAll(tuanGoodsBusiness.getUnPutOnGoodsList(tuanId));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@DeleteMapping(value = "/delete/{id}")
+	public RestSimpleRsp delete(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
@@ -134,8 +161,8 @@ public class TuanGoodsController
 		return result;
 	}
 
-	@PostMapping(value = "/batchdelete")
-	public RestSimpleRsp deleteByIds(@RequestBody List<String> idList)
+	@DeleteMapping(value = "/batchdelete")
+	public RestSimpleRsp batchDelete(@RequestBody List<String> idList)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 

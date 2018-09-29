@@ -108,7 +108,7 @@ public class SysOperatorDao
 		return mo.getId();
 	}
 
-	public boolean modify(SysOperatorMO mo) throws LittleCatException
+	public void modify(SysOperatorMO mo) throws LittleCatException
 	{
 		if (mo == null)
 		{
@@ -130,8 +130,6 @@ public class SysOperatorDao
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
-
-		return true;
 	}
 
 	public void delete(String id) throws LittleCatException

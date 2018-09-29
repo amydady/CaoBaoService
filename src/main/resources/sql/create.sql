@@ -1,5 +1,13 @@
 CREATE DATABASE `caobaodb` ;
 
+# system
+CREATE TABLE `t_sys_param` (
+	`name` VARCHAR(255) NOT NULL,
+	`value` VARCHAR(255) NOT NULL,
+	
+	PRIMARY KEY (`name`)
+);
+
 CREATE TABLE `t_sys_sysoperator` (
 	`id` VARCHAR(255) NOT NULL,
 	`username` VARCHAR(255) NOT NULL,
@@ -17,6 +25,8 @@ CREATE TABLE `t_sys_sysoperator` (
 	UNIQUE KEY `mobile` (`mobile`)
 );
 
+# terminaluser
+
 CREATE TABLE `t_terminaluser` (
 	`id` VARCHAR(255) NOT NULL,
 	`wxCode` VARCHAR(255) NOT NULL,
@@ -27,6 +37,20 @@ CREATE TABLE `t_terminaluser` (
 	
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `wxCode` (`wxCode`)
+);
+
+CREATE TABLE `t_terminaluser_deliveryaddress` (
+	`id` VARCHAR(255) NOT NULL,
+	`terminalUserId` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	`provinceId` VARCHAR(255) NOT NULL,
+	`cityId` VARCHAR(255) NOT NULL,
+	`areaId` VARCHAR(255) NOT NULL,
+	`detailInfo` VARCHAR(255) NOT NULL,
+	`isDefault` VARCHAR(1) NOT NULL DEFAULT 'N',
+	
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `name` (`terminalUserId`,`name`)
 );
 
 # basic info
