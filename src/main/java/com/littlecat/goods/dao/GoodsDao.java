@@ -31,34 +31,34 @@ public class GoodsDao
 		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new GoodsMO.MOMapper());
 	}
 
-	public boolean delete(String id) throws LittleCatException
+	public void delete(String id) throws LittleCatException
 	{
-		return DaoUtil.delete(TABLE_NAME, id, jdbcTemplate);
+		DaoUtil.delete(TABLE_NAME, id, jdbcTemplate);
 	}
 
-	public boolean delete(List<String> ids) throws LittleCatException
+	public void delete(List<String> ids) throws LittleCatException
 	{
-		return DaoUtil.delete(TABLE_NAME, ids, jdbcTemplate);
+		DaoUtil.delete(TABLE_NAME, ids, jdbcTemplate);
 	}
 
-	public boolean enable(String id) throws LittleCatException
+	public void enable(String id) throws LittleCatException
 	{
-		return DaoUtil.enable(TABLE_NAME, id, jdbcTemplate);
+		DaoUtil.enable(TABLE_NAME, id, jdbcTemplate);
 	}
 
-	public boolean enable(List<String> ids) throws LittleCatException
+	public void enable(List<String> ids) throws LittleCatException
 	{
-		return DaoUtil.enable(TABLE_NAME, ids, jdbcTemplate);
+		DaoUtil.enable(TABLE_NAME, ids, jdbcTemplate);
 	}
 
-	public boolean disable(String id) throws LittleCatException
+	public void disable(String id) throws LittleCatException
 	{
-		return DaoUtil.disable(TABLE_NAME, id, jdbcTemplate);
+		DaoUtil.disable(TABLE_NAME, id, jdbcTemplate);
 	}
 
-	public boolean disable(List<String> ids) throws LittleCatException
+	public void disable(List<String> ids) throws LittleCatException
 	{
-		return DaoUtil.disable(TABLE_NAME, ids, jdbcTemplate);
+		DaoUtil.disable(TABLE_NAME, ids, jdbcTemplate);
 	}
 
 	public String add(GoodsMO mo) throws LittleCatException
@@ -80,13 +80,12 @@ public class GoodsDao
 			mo.setCreateYear(DateTimeUtil.getYear(now));
 			mo.setCreateMonth(DateTimeUtil.getMonth(now));
 		}
-		
 
 		String sql = "insert into " + TABLE_NAME + "(id,classifyId,supplierId,name,summaryDescription,detailDescription,mainImgUrl,price,createOperatorId,deliveryAreaId,deliveryFeeRuleId,createTime,createYear,createMonth) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getClassifyId(), mo.getSupplierId(), mo.getName(),mo.getSummaryDescription(),mo.getDetailDescription(),mo.getMainImgUrl(),mo.getPrice(),mo.getCreateOperatorId(),mo.getDeliveryAreaId(),mo.getDeliveryFeeRuleId(),mo.getCreateTime(),mo.getCreateYear(),mo.getCreateMonth() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mo.getDetailDescription(), mo.getMainImgUrl(), mo.getPrice(), mo.getCreateOperatorId(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getCreateTime(), mo.getCreateYear(), mo.getCreateMonth() });
 
 			if (ret != 1)
 			{
@@ -112,7 +111,7 @@ public class GoodsDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getClassifyId(), mo.getSupplierId(), mo.getName(),mo.getSummaryDescription(),mo.getDetailDescription(),mo.getMainImgUrl(),mo.getPrice(),mo.getDeliveryAreaId(),mo.getDeliveryFeeRuleId(),mo.getHasSecKillPlan(),mo.getHasGroupBuyPlan(),mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mo.getDetailDescription(), mo.getMainImgUrl(), mo.getPrice(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getHasSecKillPlan(), mo.getHasGroupBuyPlan(), mo.getId() });
 
 			if (ret != 1)
 			{

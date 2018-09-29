@@ -28,24 +28,24 @@ public class GoodsClassifyBusiness
 		return goodsClassifyDao.getById(id);
 	}
 
-	public boolean enable(String id) throws LittleCatException
+	public void enable(String id) throws LittleCatException
 	{
-		return goodsClassifyDao.enable(id);
+		goodsClassifyDao.enable(id);
 	}
 
-	public boolean enable(List<String> ids) throws LittleCatException
+	public void enable(List<String> ids) throws LittleCatException
 	{
-		return goodsClassifyDao.enable(ids);
+		goodsClassifyDao.enable(ids);
 	}
 
-	public boolean disable(String id) throws LittleCatException
+	public void disable(String id) throws LittleCatException
 	{
-		return goodsClassifyDao.disable(id);
+		goodsClassifyDao.disable(id);
 	}
 
-	public boolean disable(List<String> ids) throws LittleCatException
+	public void disable(List<String> ids) throws LittleCatException
 	{
-		return goodsClassifyDao.disable(ids);
+		goodsClassifyDao.disable(ids);
 	}
 
 	public String add(GoodsClassifyMO mo) throws LittleCatException
@@ -62,19 +62,19 @@ public class GoodsClassifyBusiness
 	{
 		return goodsClassifyDao.getList(queryParam, mos);
 	}
-	
+
 	public List<GoodsClassifyMO> getByParentId(String parentId)
 	{
-		List<GoodsClassifyMO> mos  = new ArrayList<GoodsClassifyMO>();
-		
+		List<GoodsClassifyMO> mos = new ArrayList<GoodsClassifyMO>();
+
 		QueryParam queryParam = new QueryParam();
-		
+
 		QueryCondition condition = new QueryCondition();
 		condition.getCondItems().add(new ConditionItem(FIELDNAME_PARENTID, parentId, ConditionOperatorType.equal));
 		queryParam.setCondition(condition);
-		
+
 		goodsClassifyDao.getList(queryParam, mos);
-		
+
 		return mos;
 	}
 }

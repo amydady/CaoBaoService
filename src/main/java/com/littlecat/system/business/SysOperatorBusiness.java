@@ -33,14 +33,14 @@ public class SysOperatorBusiness
 		return sysOperatorDao.getById(id);
 	}
 
-	public boolean deleteById(String id) throws LittleCatException
+	public void deleteById(String id) throws LittleCatException
 	{
-		return sysOperatorDao.delete(id);
+		sysOperatorDao.delete(id);
 	}
 	
-	public boolean deleteByIdList(List<String> ids) throws LittleCatException
+	public void deleteByIdList(List<String> ids) throws LittleCatException
 	{
-		return sysOperatorDao.delete(ids);
+		sysOperatorDao.delete(ids);
 	}
 
 	public boolean modify(SysOperatorMO mo) throws LittleCatException

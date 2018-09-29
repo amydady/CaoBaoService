@@ -23,24 +23,24 @@ public class TerminalUserBusiness
 		return terminalUserDao.getById(id);
 	}
 
-	public boolean enable(String id) throws LittleCatException
+	public void enable(String id) throws LittleCatException
 	{
-		return terminalUserDao.enable(id);
+		terminalUserDao.enable(id);
 	}
 
-	public boolean enable(List<String> ids) throws LittleCatException
+	public void enable(List<String> ids) throws LittleCatException
 	{
-		return terminalUserDao.enable(ids);
+		terminalUserDao.enable(ids);
 	}
 
-	public boolean disable(String id) throws LittleCatException
+	public void disable(String id) throws LittleCatException
 	{
-		return terminalUserDao.disable(id);
+		terminalUserDao.disable(id);
 	}
 
-	public boolean disable(List<String> ids) throws LittleCatException
+	public void disable(List<String> ids) throws LittleCatException
 	{
-		return terminalUserDao.disable(ids);
+		terminalUserDao.disable(ids);
 	}
 
 	public String add(TerminalUserMO mo) throws LittleCatException
@@ -53,23 +53,23 @@ public class TerminalUserBusiness
 		return terminalUserDao.getList(queryParam, mos);
 	}
 
-	public boolean setTuanZhangYes(String id) throws LittleCatException
+	public void setTuanZhangYes(String id) throws LittleCatException
 	{
-		return terminalUserDao.setTuanZhangYes(id);
+		terminalUserDao.setTuanZhangYes(id);
 	}
 
-	public boolean setTuanZhangNo(String id) throws LittleCatException
+	public void setTuanZhangNo(String id) throws LittleCatException
 	{
-		return terminalUserDao.setTuanZhangNo(id);
+		terminalUserDao.setTuanZhangNo(id);
 	}
 
-	public boolean setMaiShouYes(String id) throws LittleCatException
+	public void setMaiShouYes(String id) throws LittleCatException
 	{
-		return terminalUserDao.setMaiShouYes(id);
+		terminalUserDao.setMaiShouYes(id);
 	}
 
-	public boolean setMaiShouNo(String id) throws LittleCatException
+	public void setMaiShouNo(String id) throws LittleCatException
 	{
-		return terminalUserDao.setMaiShouNo(id);
+		terminalUserDao.setMaiShouNo(id);
 	}
 }

@@ -27,14 +27,14 @@ public class TuanGoodsDao
 	private final String TABLE_NAME = TableName.TuanGoods.getName();
 	private final String MODEL_NAME = "TuanGoodsMO";
 
-	public boolean delete(String id) throws LittleCatException
+	public void delete(String id) throws LittleCatException
 	{
-		return DaoUtil.delete(TABLE_NAME, id, jdbcTemplate);
+		DaoUtil.delete(TABLE_NAME, id, jdbcTemplate);
 	}
 
-	public boolean delete(List<String> ids) throws LittleCatException
+	public void delete(List<String> ids) throws LittleCatException
 	{
-		return DaoUtil.delete(TABLE_NAME, ids, jdbcTemplate);
+		DaoUtil.delete(TABLE_NAME, ids, jdbcTemplate);
 	}
 
 	public String add(TuanGoodsMO mo) throws LittleCatException
@@ -102,7 +102,7 @@ public class TuanGoodsDao
 		}
 		catch (DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),ErrorCode.DataAccessException.getMsg(), e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 
 		return ids;

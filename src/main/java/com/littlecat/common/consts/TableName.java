@@ -14,6 +14,7 @@ public enum TableName
 	SysOperator("t_sys_sysoperator"),
 	
 	TerminalUser("t_terminaluser"),
+	DeliveryAddress("t_terminaluser_deliveryaddress"),
 	
 	Supplier("t_supplier"),
 	

@@ -16,47 +16,47 @@ public class TuanBusiness
 {
 	@Autowired
 	private TuanDao tuanDao;
-	
+
 	public TuanMO getByTuanZhangId(String tuanZhangId) throws LittleCatException
 	{
 		return tuanDao.getByTuanZhangId(tuanZhangId);
 	}
-	
+
 	public String add(TuanMO mo) throws LittleCatException
 	{
 		return tuanDao.add(mo);
 	}
-	
-	public boolean delete(String id) throws LittleCatException
+
+	public void delete(String id) throws LittleCatException
 	{
-		return tuanDao.delete(id);
+		tuanDao.delete(id);
 	}
-	
-	public boolean delete(List<String> ids) throws LittleCatException
+
+	public void delete(List<String> ids) throws LittleCatException
 	{
-		return tuanDao.delete(ids);
+		tuanDao.delete(ids);
 	}
-	
-	public boolean enable(String id) throws LittleCatException
+
+	public void enable(String id) throws LittleCatException
 	{
-		return tuanDao.enable(id);
+		tuanDao.enable(id);
 	}
-	
-	public boolean enable(List<String> ids) throws LittleCatException
+
+	public void enable(List<String> ids) throws LittleCatException
 	{
-		return tuanDao.enable(ids);
+		tuanDao.enable(ids);
 	}
-	
-	public boolean disable(String id) throws LittleCatException
+
+	public void disable(String id) throws LittleCatException
 	{
-		return tuanDao.disable(id);
+		tuanDao.disable(id);
 	}
-	
-	public boolean disable(List<String> ids) throws LittleCatException
+
+	public void disable(List<String> ids) throws LittleCatException
 	{
-		return tuanDao.disable(ids);
+		tuanDao.disable(ids);
 	}
-	
+
 	public boolean modify(TuanMO mo) throws LittleCatException
 	{
 		return tuanDao.modify(mo);

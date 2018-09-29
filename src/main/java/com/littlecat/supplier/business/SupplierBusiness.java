@@ -17,53 +17,53 @@ public class SupplierBusiness
 {
 	@Autowired
 	private SupplierDao supplierDao;
-	
+
 	public SupplierMO getById(String id) throws LittleCatException
 	{
 		return supplierDao.getById(id);
 	}
-	
-	public boolean delete(String id) throws LittleCatException
+
+	public void delete(String id) throws LittleCatException
 	{
-		return supplierDao.delete(id);
+		supplierDao.delete(id);
 	}
-	
-	public boolean delete(List<String> ids) throws LittleCatException
+
+	public void delete(List<String> ids) throws LittleCatException
 	{
-		return supplierDao.delete(ids);
+		supplierDao.delete(ids);
 	}
-	
-	public boolean enable(String id) throws LittleCatException
+
+	public void enable(String id) throws LittleCatException
 	{
-		return supplierDao.enable(id);
+		supplierDao.enable(id);
 	}
-	
-	public boolean enable(List<String> ids) throws LittleCatException
+
+	public void enable(List<String> ids) throws LittleCatException
 	{
-		return supplierDao.enable(ids);
+		supplierDao.enable(ids);
 	}
-	
-	public boolean disable(String id) throws LittleCatException
+
+	public void disable(String id) throws LittleCatException
 	{
-		return supplierDao.disable(id);
+		supplierDao.disable(id);
 	}
-	
-	public boolean disable(List<String> ids) throws LittleCatException
+
+	public void disable(List<String> ids) throws LittleCatException
 	{
-		return supplierDao.disable(ids);
+		supplierDao.disable(ids);
 	}
-	
+
 	public String add(SupplierMO mo) throws LittleCatException
 	{
 		return supplierDao.add(mo);
 	}
-	
+
 	public boolean modify(SupplierMO mo) throws LittleCatException
 	{
 		return supplierDao.modify(mo);
 	}
 
-	public int getList(QueryParam queryParam,List<SupplierMO> mos) throws LittleCatException
+	public int getList(QueryParam queryParam, List<SupplierMO> mos) throws LittleCatException
 	{
 		return supplierDao.getList(queryParam, mos);
 	}

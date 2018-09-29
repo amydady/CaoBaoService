@@ -19,25 +19,25 @@ import com.littlecat.quanzi.model.TuanGoodsMO;
 public class TuanGoodsBusiness
 {
 	private static String FIELDS_NAME_TUANID = "tuanId";
-	
+
 	@Autowired
 	private TuanGoodsDao tuanGoodsDao;
 
-	public boolean delete(String id) throws LittleCatException
+	public void delete(String id) throws LittleCatException
 	{
-		return tuanGoodsDao.delete(id);
+		tuanGoodsDao.delete(id);
 	}
 
-	public boolean delete(List<String> ids) throws LittleCatException
+	public void delete(List<String> ids) throws LittleCatException
 	{
-		return tuanGoodsDao.delete(ids);
+		tuanGoodsDao.delete(ids);
 	}
 
 	public String add(TuanGoodsMO mo) throws LittleCatException
 	{
 		return tuanGoodsDao.add(mo);
 	}
-	
+
 	public List<String> batchAdd(List<TuanGoodsMO> mos) throws LittleCatException
 	{
 		return tuanGoodsDao.batchAdd(mos);
@@ -53,7 +53,7 @@ public class TuanGoodsBusiness
 
 		return getList(queryParam, mos);
 	}
-	
+
 	public int getList(QueryParam queryParam, List<TuanGoodsMO> mos) throws LittleCatException
 	{
 		return tuanGoodsDao.getList(queryParam, mos);

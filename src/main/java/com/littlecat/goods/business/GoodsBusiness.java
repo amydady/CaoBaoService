@@ -23,34 +23,34 @@ public class GoodsBusiness
 		return goodsDao.getById(id);
 	}
 
-	public boolean delete(String id) throws LittleCatException
+	public void delete(String id) throws LittleCatException
 	{
-		return goodsDao.delete(id);
+		goodsDao.delete(id);
 	}
 
-	public boolean delete(List<String> ids) throws LittleCatException
+	public void delete(List<String> ids) throws LittleCatException
 	{
-		return goodsDao.delete(ids);
+		goodsDao.delete(ids);
 	}
 
-	public boolean enable(String id) throws LittleCatException
+	public void enable(String id) throws LittleCatException
 	{
-		return goodsDao.enable(id);
+		goodsDao.enable(id);
 	}
 
-	public boolean enable(List<String> ids) throws LittleCatException
+	public void enable(List<String> ids) throws LittleCatException
 	{
-		return goodsDao.enable(ids);
+		goodsDao.enable(ids);
 	}
 
-	public boolean disable(String id) throws LittleCatException
+	public void disable(String id) throws LittleCatException
 	{
-		return goodsDao.disable(id);
+		goodsDao.disable(id);
 	}
 
-	public boolean disable(List<String> ids) throws LittleCatException
+	public void disable(List<String> ids) throws LittleCatException
 	{
-		return goodsDao.disable(ids);
+		goodsDao.disable(ids);
 	}
 
 	public String add(GoodsMO mo) throws LittleCatException
