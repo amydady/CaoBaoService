@@ -1,13 +1,12 @@
 {
 	"info": {
-		"_postman_id": "d02fbf4c-7eac-4773-be52-91935d624344",
+		"_postman_id": "da33b98e-9ba6-41b4-9a76-43029d101849",
 		"name": "CaoBao",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "SysOperator",
-			"description": null,
 			"item": [
 				{
 					"name": "Add",
@@ -226,12 +225,72 @@
 		},
 		{
 			"name": "Terminaluser",
-			"description": null,
-			"item": []
+			"item": [
+				{
+					"name": "AddTerminalUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"wxCode\":\"wxCode001\"\r\n}"
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/terminaluser/add",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"terminaluser",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTerminalById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/terminaluser/getbyid?id=12046f04-91ba-47f5-8113-54c55e8b05ec",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"terminaluser",
+								"getbyid"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "12046f04-91ba-47f5-8113-54c55e8b05ec"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "Goods",
-			"description": "",
 			"item": [
 				{
 					"name": "AddGoods",
@@ -268,7 +327,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{hostip}}/rest/littlecat/caobao/goods/getbyid?id=b4e72e08-3d68-4f69-96fc-ab21d1d3a6f5",
 							"host": [
@@ -296,7 +358,10 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{hostip}}/rest/littlecat/caobao/goods/disable/b4e72e08-3d68-4f69-96fc-ab21d1d3a6f5",
 							"host": [
@@ -349,7 +414,10 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{hostip}}/rest/littlecat/caobao/goods/enable/b4e72e08-3d68-4f69-96fc-ab21d1d3a6f5",
 							"host": [

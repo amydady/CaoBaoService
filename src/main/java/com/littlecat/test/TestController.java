@@ -2,6 +2,8 @@ package com.littlecat.test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,14 +24,13 @@ public class TestController
 {
 	private Logger logger = LoggerFactory.getLogger(TestController.class);
 	
-	@PostMapping(value = "/a")
-	public String test1(@RequestBody String account)
+	@Autowired
+	protected TestDao testDao;
+	
+	@PostMapping(value = "/add")
+	public void test1(@RequestBody TestMO mo)
 	{
-		logger.info("tihs is a info");
-		logger.warn("tihs is a warn");
-		logger.error("tihs is a error");
-		
-		return "test1:post:" + account;
+		testDao.add(mo);
 	}
 
 	@GetMapping(value = "/a")

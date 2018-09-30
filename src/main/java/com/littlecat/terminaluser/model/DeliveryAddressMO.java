@@ -15,6 +15,11 @@ public class DeliveryAddressMO extends BaseMO
 	private AddressMO addressInfo;
 	private String isDefault;
 
+	public DeliveryAddressMO()
+	{
+		
+	}
+
 	public String getTerminalUserId()
 	{
 		return terminalUserId;

@@ -36,7 +36,6 @@ public enum TableName
 
 	Order("t_order"),
 	OrderDetail("t_order_detail"),
-	OrderTrail("t_order_trail"),
 	;
 	
 	private String name;

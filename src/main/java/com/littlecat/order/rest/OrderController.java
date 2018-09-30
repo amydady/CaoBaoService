@@ -34,6 +34,31 @@ public class OrderController
 
 	private Logger logger = LoggerFactory.getLogger(OrderController.class);
 
+	@PostMapping(value = "/create")
+	public RestRsp<String> create(@RequestBody OrderCreateReqInfo orderCreateReqInfo)
+	{
+		RestRsp<String> result = new RestRsp<String>();
+	
+		try
+		{
+			result.getData().add(orderBusiness.addOrder(orderCreateReqInfo.getOrderMO(), orderCreateReqInfo.getOrderDetailMOs()));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+	
+		return result;
+	}
+
 	@GetMapping(value = "/getById")
 	public RestRsp<OrderMO> getById(@RequestParam String id)
 	{
@@ -143,31 +168,6 @@ public class OrderController
 		try
 		{
 			orderBusiness.setOrderState2YiTuiKuan(id);
-		}
-		catch (LittleCatException e)
-		{
-			result.setCode(e.getErrorCode());
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-		catch (Exception e)
-		{
-			result.setCode(Consts.ERROR_CODE_UNKNOW);
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-
-		return result;
-	}
-
-	@PostMapping(value = "/create")
-	public RestRsp<String> create(@RequestBody OrderCreateReqInfo orderCreateReqInfo)
-	{
-		RestRsp<String> result = new RestRsp<String>();
-
-		try
-		{
-			result.getData().add(orderBusiness.addOrder(orderCreateReqInfo.getOrderMO(), orderCreateReqInfo.getOrderDetailMOs()));
 		}
 		catch (LittleCatException e)
 		{

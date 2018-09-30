@@ -32,7 +32,7 @@ CREATE TABLE `t_terminaluser` (
 	`wxCode` VARCHAR(255) NOT NULL,
 	`isTuanZhang` VARCHAR(1) NOT NULL DEFAULT 'N',
 	`isMaiShou` VARCHAR(1) NOT NULL DEFAULT 'N',
-	`createTime` VARCHAR(255) NOT NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	
 	PRIMARY KEY (`id`),
@@ -109,6 +109,47 @@ CREATE TABLE `t_goods` (
 	`createTime` VARCHAR(255) NOT NULL,
 	`createYear` INT NOT NULL,
 	`createMonth` INT NOT NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
+#order
+CREATE TABLE `t_order` (
+	`id` VARCHAR(255) NOT NULL,
+	`terminalUserId` VARCHAR(255) NOT NULL,
+	`createTime` VARCHAR(255) NOT NULL,
+	`createYear` INT NOT NULL,
+	`createMonth` INT NOT NULL,
+	`fee` INT NOT NULL,
+	`state` VARCHAR(255) NOT NULL,
+	`provinceId` VARCHAR(255) NOT NULL,
+	`cityId` VARCHAR(255) NOT NULL,
+	`areaId` VARCHAR(255) NOT NULL,
+	`detailInfo` VARCHAR(255) NOT NULL,
+	`payTime` VARCHAR(255) NULL,
+	`receiveTime` VARCHAR(255) NULL,
+	`returnApplyTime` VARCHAR(255) NULL,
+	`returnCompleteTime` VARCHAR(255) NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `t_order_detail` (
+	`id` VARCHAR(255) NOT NULL,
+	`orderId` VARCHAR(255) NOT NULL,
+	`buyType` VARCHAR(255) NOT NULL,
+	`resId` VARCHAR(255) NOT NULL,
+	`price` INT NOT NULL,
+	`goodsNum` INT NOT NULL,
+	`fee` INT NOT NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
+#test
+CREATE TABLE `t_test` (
+	`id` VARCHAR(255) NOT NULL,
+	`dateTime` DATETIME NULL,
 	
 	PRIMARY KEY (`id`)
 );

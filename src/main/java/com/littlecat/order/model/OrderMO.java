@@ -23,7 +23,7 @@ public class OrderMO extends BaseMO
 	private int createMonth;
 	private long fee;
 	private OrderState state;
-	private AddressMO deliveryAddress; // 发货地址
+	private AddressMO deliveryAddress; // 发货地址信息
 	private String payTime; // 付款时间
 	private String receiveTime;// 收货时间
 	private String returnApplyTime;// 退款申请时间

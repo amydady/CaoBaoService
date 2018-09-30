@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.OrderState;
@@ -25,13 +26,34 @@ public class OrderBusiness
 
 	@Autowired
 	private OrderDetailDao orderDetailDao;
-	
+
 	private static final String MODEL_NAME = OrderMO.class.getSimpleName();
+	private static final String MODEL_NAME_ORDERDETAIL = OrderDetailMO.class.getSimpleName();
 
 	public String addOrder(OrderMO orderMO, List<OrderDetailMO> orderDetailMOs) throws LittleCatException
 	{
+		if (orderMO == null)
+		{
+			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(), ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+
+		if (CollectionUtil.isEmpty(orderDetailMOs))
+		{
+			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(), ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}", MODEL_NAME_ORDERDETAIL));
+		}
+
+		for (OrderDetailMO orderDetail : orderDetailMOs)
+		{
+			orderMO.setFee(orderMO.getFee() + orderDetail.getFee());
+		}
+
 		// 创建订单
 		String orderId = orderDao.add(orderMO);
+
+		for (OrderDetailMO orderDetail : orderDetailMOs)
+		{
+			orderDetail.setOrderId(orderId);
+		}
 
 		// 创建订单明细
 		orderDetailDao.add(orderDetailMOs);
