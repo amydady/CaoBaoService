@@ -33,8 +33,8 @@ public class TuanMemberBusiness
 		return tuanMemberDao.getList(queryParam, mos);
 	}
 
-	public boolean isMember(String terminalUserId, String tuanId) throws LittleCatException
+	public String getCurrentEnableTuan(String terminalUserId) throws LittleCatException
 	{
-		return tuanMemberDao.isMember(terminalUserId, tuanId);
+		return tuanMemberDao.getCurrentEnableTuan(terminalUserId);
 	}
 }

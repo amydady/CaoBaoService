@@ -3,6 +3,8 @@ package com.littlecat.quanzi.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
@@ -18,10 +20,6 @@ import com.littlecat.common.utils.SysParamUtil;
  */
 public class TuanMemberMO extends BaseMO
 {
-	// 粉丝失效周期（当前时间与最后活跃时间相差的天数）
-	
-	private static final int MEMBER_DISABLE_DAYS = Integer.valueOf(SysParamUtil.getValueByName(SysParamUtil.PARAM_NAME_MEMBER_ENABLE_DAYS));
-
 	private String tuanId;
 	private String terminalUserId;
 	private String firstJoinTime; // 首次加入时间
@@ -85,6 +83,9 @@ public class TuanMemberMO extends BaseMO
 
 	public static class MOMapper implements RowMapper<TuanMemberMO>
 	{
+		private static final int DEFAULT_MEMBER_DISABLE_DAYS = 30;
+		private static Logger logger = LoggerFactory.getLogger(TuanMemberMO.MOMapper.class);
+
 		@Override
 		public TuanMemberMO mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
@@ -96,9 +97,21 @@ public class TuanMemberMO extends BaseMO
 			mo.setFirstJoinTime(rs.getString("firstJoinTime"));
 			mo.setLastActiveTime(rs.getString("lastActiveTime"));
 
+			// 非活跃的天数（当前时间与最后活跃时间相差的天数）
 			int unActiveDays = DateTimeUtil.getDurationDays(mo.getLastActiveTime());
 
-			if (unActiveDays > MEMBER_DISABLE_DAYS)
+			// 系统配置的粉丝失效周期
+			int memberDisableDays = DEFAULT_MEMBER_DISABLE_DAYS;
+			try
+			{
+				memberDisableDays = Integer.valueOf(SysParamUtil.getValueByName(SysParamUtil.PARAM_NAME_MEMBER_ENABLE_DAYS));
+			}
+			catch (Exception e)
+			{
+				logger.error("get param from db error,paramname=" + SysParamUtil.PARAM_NAME_MEMBER_ENABLE_DAYS, e);
+			}
+
+			if (unActiveDays > memberDisableDays)
 			{
 				mo.setEnable(BooleanTag.N.name());
 			}

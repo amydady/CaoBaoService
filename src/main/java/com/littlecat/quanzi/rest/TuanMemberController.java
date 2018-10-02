@@ -112,14 +112,14 @@ public class TuanMemberController
 		return result;
 	}
 
-	@GetMapping(value = "/ismember")
-	public RestRsp<Boolean> isMemberOfTuan(@RequestParam String terminalUserId, @RequestParam String tuanId)
+	@GetMapping(value = "/getCurrentEnableTuan")
+	public RestRsp<String> getCurrentEnableTuan(@RequestParam String terminalUserId)
 	{
-		RestRsp<Boolean> result = new RestRsp<Boolean>();
+		RestRsp<String> result = new RestRsp<String>();
 
 		try
 		{
-			result.getData().add(tuanMemberBusiness.isMember(terminalUserId, tuanId));
+			result.getData().add(tuanMemberBusiness.getCurrentEnableTuan(terminalUserId));
 		}
 		catch (LittleCatException e)
 		{
