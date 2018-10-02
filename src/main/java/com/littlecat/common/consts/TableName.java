@@ -36,6 +36,8 @@ public enum TableName
 
 	Order("t_order"),
 	OrderDetail("t_order_detail"),
+	
+	SecKillPlan("t_seckill_seckillplan"),
 	;
 	
 	private String name;

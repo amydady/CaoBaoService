@@ -1,5 +1,10 @@
 package com.littlecat.seckill.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
 import com.littlecat.cbb.common.BaseMO;
 
 /**
@@ -14,7 +19,7 @@ public class SecKillPlanMO extends BaseMO
 	private String startTime;
 	private String endTime;
 	private long price;
-	private long initInventory;	//初始库存量
+	private long initInventory; // 初始库存量
 	private int limitBuyNum;
 	private String enable;
 	private String createTime;
@@ -131,6 +136,29 @@ public class SecKillPlanMO extends BaseMO
 	public void setInitInventory(long initInventory)
 	{
 		this.initInventory = initInventory;
+	}
+
+	public static class MOMapper implements RowMapper<SecKillPlanMO>
+	{
+		@Override
+		public SecKillPlanMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			SecKillPlanMO mo = new SecKillPlanMO();
+			mo.setId(rs.getString("id"));
+			mo.setGoodsId(rs.getString("goodsId"));
+			mo.setStartTime(rs.getString("startTime"));
+			mo.setEndTime(rs.getString("endTime"));
+			mo.setPrice(rs.getLong("price"));
+			mo.setInitInventory(rs.getLong("initInventory"));
+			mo.setLimitBuyNum(rs.getInt("limitBuyNum"));
+			mo.setEnable(rs.getString("enable"));
+			mo.setCreateTime(rs.getString("createTime"));
+			mo.setCreateOperatorId(rs.getString("createOperatorId"));
+			mo.setDeliveryAreaId(rs.getString("deliveryAreaId"));
+			mo.setDeliveryFeeRuleId(rs.getString("deliveryFeeRuleId"));
+
+			return mo;
+		}
 	}
 
 }
