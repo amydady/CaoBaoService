@@ -106,9 +106,7 @@ CREATE TABLE `t_goods` (
 	`createOperatorId` VARCHAR(255) NOT NULL,
 	`deliveryAreaId` VARCHAR(255) NOT NULL,
 	`deliveryFeeRuleId` VARCHAR(255) NOT NULL,
-	`createTime` VARCHAR(255) NOT NULL,
-	`createYear` INT NOT NULL,
-	`createMonth` INT NOT NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	
 	PRIMARY KEY (`id`)
 );
@@ -117,9 +115,7 @@ CREATE TABLE `t_goods` (
 CREATE TABLE `t_order` (
 	`id` VARCHAR(255) NOT NULL,
 	`terminalUserId` VARCHAR(255) NOT NULL,
-	`createTime` VARCHAR(255) NOT NULL,
-	`createYear` INT NOT NULL,
-	`createMonth` INT NOT NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`fee` INT NOT NULL,
 	`state` VARCHAR(255) NOT NULL,
 	`provinceId` VARCHAR(255) NOT NULL,
@@ -142,6 +138,37 @@ CREATE TABLE `t_order_detail` (
 	`price` INT NOT NULL,
 	`goodsNum` INT NOT NULL,
 	`fee` INT NOT NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
+#quanzi
+CREATE TABLE `t_quanzi_tuan` (
+	`id` VARCHAR(255) NOT NULL,
+	`tuanZhangId` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	`remark` VARCHAR(255) NULL,
+	`idCardType` VARCHAR(255) NOT NULL,
+	`idCardCode` VARCHAR(255) NOT NULL,
+	`idCardImgUrlFront` VARCHAR(255) NOT NULL,
+	`idCardImgUrlBack` VARCHAR(255) NOT NULL,
+	`provinceId` VARCHAR(255) NOT NULL,
+	`cityId` VARCHAR(255) NOT NULL,
+	`areaId` VARCHAR(255) NOT NULL,
+	`detailInfo` VARCHAR(255) NOT NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`labels` VARCHAR(255) NOT NULL,
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `t_quanzi_tuanmember` (
+	`id` VARCHAR(255) NOT NULL,
+	`tuanId` VARCHAR(255) NOT NULL,
+	`terminalUserId` VARCHAR(255) NOT NULL,
+	`firstJoinTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`lastActiveTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	
 	PRIMARY KEY (`id`)
 );

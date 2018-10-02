@@ -45,6 +45,20 @@ public class SysParamDao
 		}
 	}
 
+	public SysParamMO getValueByName(String name) throws LittleCatException
+	{
+		String sql = "select * from " + TABLE_NAME + " where name = ?";
+
+		try
+		{
+			return jdbcTemplate.queryForObject(sql, new Object[] { name }, new SysParamMO.MOMapper());
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
 	public List<SysParamMO> getList() throws LittleCatException
 	{
 		String sql = "select * from " + TABLE_NAME;

@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.common.consts.BooleanTag;
+import com.littlecat.common.utils.SysParamUtil;
 
 /**
  * 团成员（粉丝）MO
@@ -18,7 +19,8 @@ import com.littlecat.common.consts.BooleanTag;
 public class TuanMemberMO extends BaseMO
 {
 	// 粉丝失效周期（当前时间与最后活跃时间相差的天数）
-	private static final int MEMBER_DISABLE_DAYS = 30;
+	
+	private static final int MEMBER_DISABLE_DAYS = Integer.valueOf(SysParamUtil.getValueByName(SysParamUtil.PARAM_NAME_MEMBER_ENABLE_DAYS));
 
 	private String tuanId;
 	private String terminalUserId;
@@ -94,7 +96,8 @@ public class TuanMemberMO extends BaseMO
 			mo.setFirstJoinTime(rs.getString("firstJoinTime"));
 			mo.setLastActiveTime(rs.getString("lastActiveTime"));
 
-			int unActiveDays = DateTimeUtil.getDurationDays(Long.valueOf(mo.getLastActiveTime()), DateTimeUtil.getCurrentTime());
+			int unActiveDays = DateTimeUtil.getDurationDays(mo.getLastActiveTime());
+
 			if (unActiveDays > MEMBER_DISABLE_DAYS)
 			{
 				mo.setEnable(BooleanTag.N.name());

@@ -29,8 +29,6 @@ public class GoodsMO extends BaseMO
 	private String deliveryAreaId; // 配送区域ID
 	private String deliveryFeeRuleId; // 运费规则ID
 	private String createTime;
-	private int createYear;
-	private int createMonth;
 
 	public String getClassifyId()
 	{
@@ -110,26 +108,6 @@ public class GoodsMO extends BaseMO
 	public void setCreateTime(String createTime)
 	{
 		this.createTime = createTime;
-	}
-
-	public int getCreateYear()
-	{
-		return createYear;
-	}
-
-	public void setCreateYear(int createYear)
-	{
-		this.createYear = createYear;
-	}
-
-	public int getCreateMonth()
-	{
-		return createMonth;
-	}
-
-	public void setCreateMonth(int createMonth)
-	{
-		this.createMonth = createMonth;
 	}
 
 	public String getDeliveryAreaId()
@@ -212,8 +190,6 @@ public class GoodsMO extends BaseMO
 			mo.setDeliveryAreaId(rs.getString("deliveryAreaId"));
 			mo.setDeliveryFeeRuleId(rs.getString("deliveryFeeRuleId"));
 			mo.setCreateTime(rs.getString("createTime"));
-			mo.setCreateYear(rs.getInt("createYear"));
-			mo.setCreateMonth(rs.getInt("createMonth"));
 
 			return mo;
 		}

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,9 +24,9 @@ import com.littlecat.quanzi.business.TuanMemberBusiness;
 import com.littlecat.quanzi.model.TuanMemberMO;
 
 @RestController
-@RequestMapping("/rest/littlecat/caobao/tuanmember")
+@RequestMapping("/rest/littlecat/caobao/quanzi/tuanmember")
 public class TuanMemberController
-{
+{// TOTO:此controller可能不需要，待定。
 	private static Logger logger = LoggerFactory.getLogger(TuanMemberController.class);
 
 	@Autowired
@@ -56,14 +57,15 @@ public class TuanMemberController
 		return result;
 	}
 
-	@PutMapping(value = "/modify")
-	public RestSimpleRsp modify(@RequestBody TuanMemberMO mo)
+	@PutMapping(value = "/setLastActiveTime/{id}")
+	public RestSimpleRsp setLastActiveTime(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			tuanMemberBusiness.modify(mo);
+			tuanMemberBusiness.setLastActiveTime(id);
+			;
 		}
 		catch (LittleCatException e)
 		{
@@ -109,9 +111,9 @@ public class TuanMemberController
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/ismember")
-	public RestRsp<Boolean> getByTuanZhangId(@RequestParam String terminalUserId, @RequestParam String tuanId)
+	public RestRsp<Boolean> isMemberOfTuan(@RequestParam String terminalUserId, @RequestParam String tuanId)
 	{
 		RestRsp<Boolean> result = new RestRsp<Boolean>();
 

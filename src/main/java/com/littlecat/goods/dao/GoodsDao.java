@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
-import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
@@ -73,19 +72,11 @@ public class GoodsDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		if (StringUtil.isEmpty(mo.getCreateTime()))
-		{
-			long now = DateTimeUtil.getCurrentTime();
-			mo.setCreateTime(String.valueOf(now));
-			mo.setCreateYear(DateTimeUtil.getYear(now));
-			mo.setCreateMonth(DateTimeUtil.getMonth(now));
-		}
-
-		String sql = "insert into " + TABLE_NAME + "(id,classifyId,supplierId,name,summaryDescription,detailDescription,mainImgUrl,price,createOperatorId,deliveryAreaId,deliveryFeeRuleId,createTime,createYear,createMonth) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,classifyId,supplierId,name,summaryDescription,detailDescription,mainImgUrl,price,createOperatorId,deliveryAreaId,deliveryFeeRuleId) values(?,?,?,?,?,?,?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mo.getDetailDescription(), mo.getMainImgUrl(), mo.getPrice(), mo.getCreateOperatorId(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getCreateTime(), mo.getCreateYear(), mo.getCreateMonth() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mo.getDetailDescription(), mo.getMainImgUrl(), mo.getPrice(), mo.getCreateOperatorId(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId() });
 
 			if (ret != 1)
 			{

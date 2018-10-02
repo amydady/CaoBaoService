@@ -19,8 +19,6 @@ public class OrderMO extends BaseMO
 {
 	private String terminalUserId;
 	private String createTime;
-	private int createYear;
-	private int createMonth;
 	private long fee;
 	private OrderState state;
 	private AddressMO deliveryAddress; // 发货地址信息
@@ -47,26 +45,6 @@ public class OrderMO extends BaseMO
 	public void setCreateTime(String createTime)
 	{
 		this.createTime = createTime;
-	}
-
-	public int getCreateYear()
-	{
-		return createYear;
-	}
-
-	public void setCreateYear(int createYear)
-	{
-		this.createYear = createYear;
-	}
-
-	public int getCreateMonth()
-	{
-		return createMonth;
-	}
-
-	public void setCreateMonth(int createMonth)
-	{
-		this.createMonth = createMonth;
 	}
 
 	public long getFee()
@@ -149,8 +127,6 @@ public class OrderMO extends BaseMO
 			mo.setId(rs.getString("id"));
 			mo.setTerminalUserId(rs.getString("terminalUserId"));
 			mo.setCreateTime(rs.getString("createTime"));
-			mo.setCreateYear(rs.getInt("createYear"));
-			mo.setCreateMonth(rs.getInt("createMonth"));
 			mo.setFee(rs.getLong("fee"));
 			mo.setState(OrderState.valueOf(rs.getString("state")));
 

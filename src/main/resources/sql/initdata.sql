@@ -1,0 +1,1 @@
+insert into t_sys_param(name,value) values('member_enable_days','30');

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
-import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
@@ -37,20 +36,12 @@ public class OrderDao
 		{
 			mo.setId(UUIDUtil.createUUID());
 		}
-
-		if (StringUtil.isEmpty(mo.getCreateTime()))
-		{
-			long now = DateTimeUtil.getCurrentTime();
-			mo.setCreateTime(String.valueOf(now));
-			mo.setCreateYear(DateTimeUtil.getYear(now));
-			mo.setCreateMonth(DateTimeUtil.getMonth(now));
-		}
-
-		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,createTime,createYear,createMonth,fee,state,provinceId,cityId,areaId,detailInfo) values(?,?,?,?,?,?,?,?,?,?,?)";
+		
+		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,fee,state,provinceId,cityId,areaId,detailInfo) values(?,?,?,?,?,?,?,?,)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getCreateTime(), mo.getCreateYear(), mo.getCreateMonth(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvinceId(), mo.getDeliveryAddress().getCityId(), mo.getDeliveryAddress().getAreaId(), mo.getDeliveryAddress().getDetailInfo() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvinceId(), mo.getDeliveryAddress().getCityId(), mo.getDeliveryAddress().getAreaId(), mo.getDeliveryAddress().getDetailInfo() });
 
 			if (ret != 1)
 			{

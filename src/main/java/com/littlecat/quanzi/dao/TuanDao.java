@@ -12,7 +12,6 @@ import com.littlecat.cbb.query.ConditionItem;
 import com.littlecat.cbb.query.ConditionOperatorType;
 import com.littlecat.cbb.query.QueryCondition;
 import com.littlecat.cbb.query.QueryParam;
-import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.ListUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
@@ -78,8 +77,7 @@ public class TuanDao
 	{
 		if (mo == null)
 		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(),
-					ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(), ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
 		if (StringUtil.isEmpty(mo.getId()))
@@ -87,13 +85,7 @@ public class TuanDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		if (StringUtil.isEmpty(mo.getCreateTime()))
-		{
-			mo.setCreateTime(String.valueOf(DateTimeUtil.getCurrentTime()));
-		}
-
-		String sql = "insert into " + TABLE_NAME
-				+ "(id,tuanZhangId,name,remark,idCardType,idCardCode,idCardImgUrlFront,idCardImgUrlBack,provinceId,cityId,areaId,detailInfo,createTime,labels) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,tuanZhangId,name,remark,idCardType,idCardCode,idCardImgUrlFront,idCardImgUrlBack,provinceId,cityId,areaId,detailInfo,labels) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		try
 		{
@@ -102,19 +94,17 @@ public class TuanDao
 							mo.getIdCard().getType().name(), mo.getIdCard().getCode(), mo.getIdCard().getImgUrlFront(),
 							mo.getIdCard().getImgUrlBack(), mo.getAddressInfo().getProvinceId(),
 							mo.getAddressInfo().getCityId(), mo.getAddressInfo().getAreaId(),
-							mo.getAddressInfo().getAreaId(), mo.getAddressInfo().getDetailInfo(), mo.getCreateTime(),
+							mo.getAddressInfo().getAreaId(), mo.getAddressInfo().getDetailInfo(),
 							ListUtil.join2String(mo.getLabels()) });
 
 			if (ret != 1)
 			{
-				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(),
-						ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(), ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 			}
 		}
 		catch (DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),
-					ErrorCode.DataAccessException.getMsg(), e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 
 		return mo.getId();
@@ -124,12 +114,10 @@ public class TuanDao
 	{
 		if (mo == null)
 		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToModify.getCode(),
-					ErrorCode.GiveNullObjectToModify.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+			throw new LittleCatException(ErrorCode.GiveNullObjectToModify.getCode(), ErrorCode.GiveNullObjectToModify.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
-		String sql = "update " + TABLE_NAME
-				+ " set tuanZhangId=?,name=?,remark=?,idCardType=?,idCardCode=?,idCardImgUrlFront=?,idCardImgUrlBack=?,provinceId=?,cityId=?,areaId=?,detailInfo=?,labels=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set tuanZhangId=?,name=?,remark=?,idCardType=?,idCardCode=?,idCardImgUrlFront=?,idCardImgUrlBack=?,provinceId=?,cityId=?,areaId=?,detailInfo=?,labels=? where id = ?";
 
 		try
 		{
@@ -142,14 +130,12 @@ public class TuanDao
 
 			if (ret != 1)
 			{
-				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(),
-						ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 			}
 		}
 		catch (DataAccessException e)
 		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(),
-					ErrorCode.DataAccessException.getMsg(), e);
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 
 		return true;
