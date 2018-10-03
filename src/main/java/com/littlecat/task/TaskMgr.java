@@ -59,6 +59,7 @@ public class TaskMgr
 				secKillPlanBusiness.disable();
 			}
 		};
+		
 		Timer timer = new Timer();
 
 		long cyc = SECKILLPLAN_ENABLETAG_PROCESS_CYC_DEFAULT;
