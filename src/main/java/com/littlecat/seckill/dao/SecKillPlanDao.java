@@ -14,7 +14,6 @@ import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.TableName;
 import com.littlecat.common.utils.DaoUtil;
-import com.littlecat.order.model.OrderMO;
 import com.littlecat.seckill.model.SecKillPlanMO;
 
 @Component
@@ -86,6 +85,11 @@ public class SecKillPlanDao
 		DaoUtil.delete(TABLE_NAME, id, jdbcTemplate);
 	}
 
+	public void delete(List<String> ids) throws LittleCatException
+	{
+		DaoUtil.delete(TABLE_NAME, ids, jdbcTemplate);
+	}
+
 	public void enable(String id) throws LittleCatException
 	{
 		DaoUtil.enable(TABLE_NAME, id, jdbcTemplate);
@@ -106,9 +110,28 @@ public class SecKillPlanDao
 		DaoUtil.disable(TABLE_NAME, ids, jdbcTemplate);
 	}
 
-	public OrderMO getById(String id) throws LittleCatException
+	/**
+	 * 根据时间自动将秒杀计划失效（由系统定时调用）
+	 * 
+	 * @throws LittleCatException
+	 */
+	public void disable() throws LittleCatException
 	{
-		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new OrderMO.MOMapper());
+		String sql = "update " + TABLE_NAME + " set enable = 'N' where CURRENT_TIMESTAMP < startTime or CURRENT_TIMESTAMP > endTime";
+
+		try
+		{
+			jdbcTemplate.update(sql);
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
+	public SecKillPlanMO getById(String id) throws LittleCatException
+	{
+		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new SecKillPlanMO.MOMapper());
 	}
 
 	public int getList(QueryParam queryParam, List<SecKillPlanMO> mos) throws LittleCatException
