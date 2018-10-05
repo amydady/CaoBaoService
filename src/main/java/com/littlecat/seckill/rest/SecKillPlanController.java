@@ -185,6 +185,36 @@ public class SecKillPlanController
 
 		return result;
 	}
+	
+	/**
+	 * 后台任务接口：按照秒杀计划时间窗口自动失效处理
+	 * 
+	 * @return
+	 */
+	@GetMapping(value = "/task/disable")
+	public RestSimpleRsp disable4Task()
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			secKillPlanBusiness.disable();
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
 
 	@PutMapping(value = "/batchdisable")
 	public RestSimpleRsp batchDisable(@RequestBody List<String> ids)

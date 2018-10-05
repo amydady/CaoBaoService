@@ -1,6 +1,7 @@
 package com.littlecat.common.utils;
 
 import com.littlecat.cbb.exception.LittleCatException;
+import com.littlecat.cbb.utils.SpringUtil;
 import com.littlecat.system.business.SysParamBusiness;
 
 public class SysParamUtil
