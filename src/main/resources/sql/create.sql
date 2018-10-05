@@ -111,6 +111,24 @@ CREATE TABLE `t_goods` (
 	PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `t_seckill_seckillplan` (
+	`id` VARCHAR(255) NOT NULL,
+	`goodsId` VARCHAR(255) NOT NULL,
+	`startTime` DATETIME NOT NULL,
+	`endTime` DATETIME NOT NULL,
+	`price` INT NOT NULL,
+	`initInventory` INT NOT NULL,
+	`limitBuyNum` INT NOT NULL,
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`createOperatorId` VARCHAR(255) NOT NULL,
+	`deliveryAreaId` VARCHAR(255) NOT NULL,
+	`deliveryFeeRuleId` VARCHAR(255) NOT NULL,
+	
+	
+	PRIMARY KEY (`id`)
+);
+
 #order
 CREATE TABLE `t_order` (
 	`id` VARCHAR(255) NOT NULL,
