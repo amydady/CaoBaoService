@@ -32,13 +32,13 @@ public class OrderController
 	@Autowired
 	private OrderBusiness orderBusiness;
 
-	private Logger logger = LoggerFactory.getLogger(OrderController.class);
+	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
 	@PostMapping(value = "/create")
 	public RestRsp<String> create(@RequestBody OrderCreateReqInfo orderCreateReqInfo)
 	{
 		RestRsp<String> result = new RestRsp<String>();
-	
+
 		try
 		{
 			result.getData().add(orderBusiness.addOrder(orderCreateReqInfo.getOrderMO(), orderCreateReqInfo.getOrderDetailMOs()));
@@ -55,7 +55,7 @@ public class OrderController
 			result.setMessage(e.getMessage());
 			logger.error(e.getMessage(), e);
 		}
-	
+
 		return result;
 	}
 

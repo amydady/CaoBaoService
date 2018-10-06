@@ -23,7 +23,7 @@ public class BasicInfoController
 	@Autowired
 	private BasicInfoBusiness basicInfoBusiness;
 
-	private Logger logger = LoggerFactory.getLogger(BasicInfoController.class);
+	private static final Logger logger = LoggerFactory.getLogger(BasicInfoController.class);
 
 	@GetMapping(value = "/provinces")
 	public RestRsp<ProvinceMO> getProvinceList()

@@ -19,7 +19,7 @@ import com.littlecat.terminaluser.model.DeliveryAddressMO;
 public class DeliveryAddressBusiness
 {
 	private static final String TABLE_NAME = TableName.DeliveryAddress.getName();
-	private static final String MODEL_NAME = "DeliveryAddressMO";
+	private static final String MODEL_NAME = DeliveryAddressMO.class.getSimpleName();
 
 	@Autowired
 	private DeliveryAddressDao deliveryAddressDao;

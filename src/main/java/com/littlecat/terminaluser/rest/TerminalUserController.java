@@ -30,7 +30,7 @@ public class TerminalUserController
 	@Autowired
 	private TerminalUserBusiness terminalUserBusiness;
 
-	private Logger logger = LoggerFactory.getLogger(TerminalUserController.class);
+	private static final Logger logger = LoggerFactory.getLogger(TerminalUserController.class);
 
 	@GetMapping(value = "/getbyid")
 	public RestRsp<TerminalUserMO> getById(@RequestParam String id)

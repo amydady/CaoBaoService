@@ -29,7 +29,7 @@ public class TuanDao
 	protected JdbcTemplate jdbcTemplate;
 
 	private final String TABLE_NAME = TableName.Tuan.getName();
-	private final String MODEL_NAME = "TuanMO";
+	private final String MODEL_NAME = TuanMO.class.getSimpleName();
 
 	public TuanMO getByTuanZhangId(String tuanZhangId) throws LittleCatException
 	{

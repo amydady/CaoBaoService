@@ -84,7 +84,7 @@ public class TuanMemberMO extends BaseMO
 	public static class MOMapper implements RowMapper<TuanMemberMO>
 	{
 		private static final int DEFAULT_MEMBER_DISABLE_DAYS = 30;
-		private static Logger logger = LoggerFactory.getLogger(TuanMemberMO.MOMapper.class);
+		private static final Logger logger = LoggerFactory.getLogger(TuanMemberMO.MOMapper.class);
 
 		@Override
 		public TuanMemberMO mapRow(ResultSet rs, int rowNum) throws SQLException

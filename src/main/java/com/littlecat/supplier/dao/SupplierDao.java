@@ -24,7 +24,7 @@ public class SupplierDao
     protected JdbcTemplate jdbcTemplate;
 	
 	private final String TABLE_NAME = TableName.Supplier.getName();
-	private final String MODEL_NAME = "SupplierMO";
+	private final String MODEL_NAME = SupplierMO.class.getSimpleName();
 	
 	public SupplierMO getById(String id) throws LittleCatException
 	{

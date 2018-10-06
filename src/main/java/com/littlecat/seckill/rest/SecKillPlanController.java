@@ -31,7 +31,7 @@ public class SecKillPlanController
 	@Autowired
 	private SecKillPlanBusiness secKillPlanBusiness;
 
-	private Logger logger = LoggerFactory.getLogger(SecKillPlanController.class);
+	private static final Logger logger = LoggerFactory.getLogger(SecKillPlanController.class);
 
 	@GetMapping(value = "/getbyid")
 	public RestRsp<SecKillPlanMO> getById(@RequestParam String id)
@@ -185,7 +185,7 @@ public class SecKillPlanController
 
 		return result;
 	}
-	
+
 	/**
 	 * 后台任务接口：按照秒杀计划时间窗口自动失效处理
 	 * 

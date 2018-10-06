@@ -15,7 +15,6 @@ import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.goods.dao.GoodsClassifyDao;
 import com.littlecat.goods.model.GoodsClassifyMO;
-import com.littlecat.goods.model.GoodsMO;
 
 @Component
 @Transactional
@@ -23,6 +22,7 @@ public class GoodsClassifyBusiness
 {
 	private static final String FIELDNAME_PARENTID = "parentId";
 	private static final String MODEL_NAME = GoodsClassifyMO.class.getSimpleName();
+	
 	@Autowired
 	private GoodsClassifyDao goodsClassifyDao;
 
@@ -82,7 +82,7 @@ public class GoodsClassifyBusiness
 
 		return mos;
 	}
-	
+
 	private void validateReqData(GoodsClassifyMO reqData) throws LittleCatException
 	{
 		if (reqData == null)

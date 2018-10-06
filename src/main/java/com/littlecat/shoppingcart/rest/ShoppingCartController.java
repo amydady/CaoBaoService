@@ -29,7 +29,7 @@ public class ShoppingCartController
 	@Autowired
 	private ShoppingCartBusiness shoppingCartBusiness;
 
-	private Logger logger = LoggerFactory.getLogger(ShoppingCartController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ShoppingCartController.class);
 
 	@PutMapping(value = "/modify")
 	public RestSimpleRsp modify(@RequestBody ShoppingCartMO mo)

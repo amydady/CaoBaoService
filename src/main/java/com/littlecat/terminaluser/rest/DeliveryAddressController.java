@@ -31,7 +31,7 @@ public class DeliveryAddressController
 	@Autowired
 	private DeliveryAddressBusiness deliveryAddressBusiness;
 
-	private Logger logger = LoggerFactory.getLogger(DeliveryAddressController.class);
+	private static final Logger logger = LoggerFactory.getLogger(DeliveryAddressController.class);
 
 	@GetMapping(value = "/getbyid")
 	public RestRsp<DeliveryAddressMO> getById(@RequestParam String id)
@@ -133,7 +133,7 @@ public class DeliveryAddressController
 
 		return result;
 	}
-	
+
 	@DeleteMapping(value = "/delete/{id}")
 	public RestSimpleRsp delete(@PathVariable String id)
 	{
@@ -141,7 +141,8 @@ public class DeliveryAddressController
 
 		try
 		{
-			deliveryAddressBusiness.delete(id);;
+			deliveryAddressBusiness.delete(id);
+			;
 		}
 		catch (LittleCatException e)
 		{
@@ -158,7 +159,7 @@ public class DeliveryAddressController
 
 		return result;
 	}
-	
+
 	@DeleteMapping(value = "/batchdelete")
 	public RestSimpleRsp batchdelete(@RequestBody List<String> ids)
 	{
@@ -166,7 +167,8 @@ public class DeliveryAddressController
 
 		try
 		{
-			deliveryAddressBusiness.delete(ids);;
+			deliveryAddressBusiness.delete(ids);
+			;
 		}
 		catch (LittleCatException e)
 		{
@@ -183,7 +185,6 @@ public class DeliveryAddressController
 
 		return result;
 	}
-
 
 	@PostMapping(value = "/getList")
 	public RestRsp<DeliveryAddressMO> getList(@RequestBody QueryParam queryParam)

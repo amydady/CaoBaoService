@@ -30,7 +30,7 @@ public class GoodsClassifyController
 	@Autowired
 	private GoodsClassifyBusiness goodsClassifyBusiness;
 
-	private Logger logger = LoggerFactory.getLogger(GoodsClassifyController.class);
+	private static final Logger logger = LoggerFactory.getLogger(GoodsClassifyController.class);
 
 	@GetMapping(value = "/getbyid")
 	public RestRsp<GoodsClassifyMO> getById(@RequestParam String id)
@@ -135,7 +135,7 @@ public class GoodsClassifyController
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/getListByParentId")
 	public RestRsp<GoodsClassifyMO> getListByParentId(@RequestParam String parentId)
 	{

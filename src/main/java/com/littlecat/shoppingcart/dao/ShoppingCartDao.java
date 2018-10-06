@@ -26,7 +26,7 @@ public class ShoppingCartDao
 	protected JdbcTemplate jdbcTemplate;
 
 	private final String TABLE_NAME = TableName.ShoppingCart.getName();
-	private final String MODEL_NAME = "ShoppingCartMO";
+	private final String MODEL_NAME = ShoppingCartMO.class.getSimpleName();
 
 	public void delete(String id) throws LittleCatException
 	{

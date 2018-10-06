@@ -23,7 +23,7 @@ public class GoodsClassifyDao
 	protected JdbcTemplate jdbcTemplate;
 
 	private final String TABLE_NAME = TableName.GoodsClassify.getName();
-	private final String MODEL_NAME = "GoodsClassifyMO";
+	private final String MODEL_NAME = GoodsClassifyMO.class.getSimpleName();
 
 	public GoodsClassifyMO getById(String id) throws LittleCatException
 	{

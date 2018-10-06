@@ -93,11 +93,11 @@ CREATE TABLE `t_goods_classify` (
 
 CREATE TABLE `t_goods` (
 	`id` VARCHAR(255) NOT NULL,
-	`classifyId` VARCHAR(255) NOT NULL,
-	`supplierId` VARCHAR(255) NOT NULL,
+	`classifyId` VARCHAR(255) NULL,
+	`supplierId` VARCHAR(255) NULL,
 	`name` VARCHAR(255) NOT NULL,
-	`summaryDescription` VARCHAR(255) NOT NULL,
-	`detailDescription` VARCHAR(255) NOT NULL,
+	`summaryDescription` VARCHAR(300) NULL,
+	`detailDescription` VARCHAR(5000) NULL,
 	`mainImgUrl` VARCHAR(255) NOT NULL,
 	`price` INT NOT NULL,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
@@ -108,7 +108,8 @@ CREATE TABLE `t_goods` (
 	`deliveryFeeRuleId` VARCHAR(255) NOT NULL,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `name` (`name`)
 );
 
 CREATE TABLE `t_seckill_seckillplan` (

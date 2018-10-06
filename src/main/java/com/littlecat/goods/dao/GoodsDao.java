@@ -23,7 +23,7 @@ public class GoodsDao
 	protected JdbcTemplate jdbcTemplate;
 
 	private final String TABLE_NAME = TableName.Goods.getName();
-	private final String MODEL_NAME = "GoodsMO";
+	private final String MODEL_NAME = GoodsMO.class.getSimpleName();
 
 	public GoodsMO getById(String id) throws LittleCatException
 	{
@@ -62,6 +62,11 @@ public class GoodsDao
 
 	public String add(GoodsMO mo) throws LittleCatException
 	{
+		if (mo == null)
+		{
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+		
 		if (StringUtil.isEmpty(mo.getId()))
 		{
 			mo.setId(UUIDUtil.createUUID());
@@ -88,6 +93,11 @@ public class GoodsDao
 
 	public void modify(GoodsMO mo) throws LittleCatException
 	{
+		if (mo == null)
+		{
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+		
 		String sql = "update " + TABLE_NAME + " set classifyId=?,supplierId=?,name=?,summaryDescription=?,detailDescription=?,mainImgUrl=?,price=?,deliveryAreaId=?,deliveryFeeRuleId=?,hasSecKillPlan=?,hasGroupBuyPlan=? where id = ?";
 
 		try

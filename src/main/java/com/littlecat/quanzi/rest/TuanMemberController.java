@@ -27,7 +27,7 @@ import com.littlecat.quanzi.model.TuanMemberMO;
 @RequestMapping("/rest/littlecat/caobao/quanzi/tuanmember")
 public class TuanMemberController
 {// TOTO:此controller可能不需要，待定。
-	private static Logger logger = LoggerFactory.getLogger(TuanMemberController.class);
+	private static final Logger logger = LoggerFactory.getLogger(TuanMemberController.class);
 
 	@Autowired
 	private TuanMemberBusiness tuanMemberBusiness;

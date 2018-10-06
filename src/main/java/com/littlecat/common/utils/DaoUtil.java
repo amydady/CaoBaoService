@@ -196,6 +196,11 @@ public final class DaoUtil
 		{
 			throw new LittleCatException(ErrorCode.QueryParamIsNull.getCode(), ErrorCode.QueryParamIsNull.getMsg().replace("{INFO_NAME}", tableName));
 		}
+		
+		if(mos == null)
+		{
+			throw new LittleCatException("the param mos for filling the data can not be null.");
+		}
 
 		String sql = "select * from " + tableName + queryParam.getQueryDataConditionString();
 

@@ -22,11 +22,11 @@ import com.littlecat.system.model.SysOperatorMO;
 @RequestMapping("/rest/test")
 public class TestController
 {
-	private Logger logger = LoggerFactory.getLogger(TestController.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(TestController.class);
+
 	@Autowired
 	protected TestDao testDao;
-	
+
 	@PostMapping(value = "/add")
 	public void test1(@RequestBody TestMO mo)
 	{
@@ -39,10 +39,10 @@ public class TestController
 		logger.info("tihs is a info");
 		logger.warn("tihs is a warn");
 		logger.error("tihs is a error");
-		
+
 		return "test2:get:";
 	}
-	
+
 	@GetMapping(value = "/")
 	public String test3()
 	{

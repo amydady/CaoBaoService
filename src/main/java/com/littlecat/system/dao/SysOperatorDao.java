@@ -21,7 +21,7 @@ import com.littlecat.system.model.SysOperatorMO;
 public class SysOperatorDao
 {
 	private final String TABLE_NAME = TableName.SysOperator.getName();
-	private final String MODEL_NAME = "SysOperatorMO";
+	private final String MODEL_NAME = SysOperatorMO.class.getSimpleName();
 
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;

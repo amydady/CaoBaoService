@@ -17,6 +17,7 @@ import com.littlecat.goods.model.GoodsMO;
 public class GoodsBusiness
 {
 	private static final String MODEL_NAME = GoodsMO.class.getSimpleName();
+
 	@Autowired
 	private GoodsDao goodsDao;
 

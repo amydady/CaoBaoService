@@ -30,7 +30,7 @@ public class GoodsController
 	@Autowired
 	private GoodsBusiness goodsBusiness;
 
-	private Logger logger = LoggerFactory.getLogger(GoodsController.class);
+	private static final Logger logger = LoggerFactory.getLogger(GoodsController.class);
 
 	@GetMapping(value = "/getbyid")
 	public RestRsp<GoodsMO> getById(@RequestParam String id)

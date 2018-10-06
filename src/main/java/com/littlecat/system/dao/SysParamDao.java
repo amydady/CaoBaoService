@@ -16,7 +16,7 @@ import com.littlecat.system.model.SysParamMO;
 public class SysParamDao
 {
 	private final String TABLE_NAME = TableName.SysParam.getName();
-	private final String MODEL_NAME = "SysParamMO";
+	private final String MODEL_NAME = SysParamMO.class.getSimpleName();
 
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
