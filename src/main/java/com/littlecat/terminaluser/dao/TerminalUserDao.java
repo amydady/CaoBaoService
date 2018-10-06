@@ -24,7 +24,7 @@ public class TerminalUserDao
 	protected JdbcTemplate jdbcTemplate;
 
 	private final String TABLE_NAME = TableName.TerminalUser.getName();
-	private final String MODEL_NAME = "TerminalUserMO";
+	private final String MODEL_NAME = TerminalUserMO.class.getSimpleName();
 
 	public TerminalUserMO getById(String id) throws LittleCatException
 	{
@@ -35,7 +35,7 @@ public class TerminalUserDao
 	{
 		if (mo == null)
 		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(), ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
 		if (StringUtil.isEmpty(mo.getId()))

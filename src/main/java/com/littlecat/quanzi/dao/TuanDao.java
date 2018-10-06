@@ -75,11 +75,6 @@ public class TuanDao
 
 	public String add(TuanMO mo) throws LittleCatException
 	{
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(), ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		if (StringUtil.isEmpty(mo.getId()))
 		{
 			mo.setId(UUIDUtil.createUUID());
@@ -110,13 +105,8 @@ public class TuanDao
 		return mo.getId();
 	}
 
-	public boolean modify(TuanMO mo) throws LittleCatException
+	public void modify(TuanMO mo) throws LittleCatException
 	{
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToModify.getCode(), ErrorCode.GiveNullObjectToModify.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		String sql = "update " + TABLE_NAME + " set tuanZhangId=?,name=?,remark=?,idCardType=?,idCardCode=?,idCardImgUrlFront=?,idCardImgUrlBack=?,provinceId=?,cityId=?,areaId=?,detailInfo=?,labels=? where id = ?";
 
 		try
@@ -137,8 +127,6 @@ public class TuanDao
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
-
-		return true;
 	}
 
 }

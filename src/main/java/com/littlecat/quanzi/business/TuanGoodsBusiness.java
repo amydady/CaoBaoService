@@ -11,14 +11,19 @@ import com.littlecat.cbb.query.ConditionItem;
 import com.littlecat.cbb.query.ConditionOperatorType;
 import com.littlecat.cbb.query.QueryCondition;
 import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.cbb.utils.CollectionUtil;
+import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.goods.model.GoodsMO;
 import com.littlecat.quanzi.dao.TuanGoodsDao;
 import com.littlecat.quanzi.model.TuanGoodsMO;
+import com.littlecat.quanzi.model.TuanMO;
 
 @Component
 @Transactional
 public class TuanGoodsBusiness
 {
+	private static final String MODEL_NAME = TuanGoodsMO.class.getSimpleName();
+
 	private static String FIELDS_NAME_TUANID = "tuanId";
 
 	@Autowired
@@ -36,11 +41,17 @@ public class TuanGoodsBusiness
 
 	public String add(TuanGoodsMO mo) throws LittleCatException
 	{
+		validateReqData(mo);
 		return tuanGoodsDao.add(mo);
 	}
 
 	public List<String> batchAdd(List<TuanGoodsMO> mos) throws LittleCatException
 	{
+		if (CollectionUtil.isEmpty(mos))
+		{
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+
 		return tuanGoodsDao.batchAdd(mos);
 	}
 
@@ -63,5 +74,13 @@ public class TuanGoodsBusiness
 	public List<GoodsMO> getUnPutOnGoodsList(String tuanId) throws LittleCatException
 	{
 		return tuanGoodsDao.getUnPutOnGoodsList(tuanId);
+	}
+	
+	private void validateReqData(TuanGoodsMO reqData) throws LittleCatException
+	{
+		if (reqData == null)
+		{
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
 	}
 }

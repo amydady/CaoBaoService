@@ -12,14 +12,17 @@ import com.littlecat.cbb.query.ConditionItem;
 import com.littlecat.cbb.query.ConditionOperatorType;
 import com.littlecat.cbb.query.QueryCondition;
 import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.goods.dao.GoodsClassifyDao;
 import com.littlecat.goods.model.GoodsClassifyMO;
+import com.littlecat.goods.model.GoodsMO;
 
 @Component
 @Transactional
 public class GoodsClassifyBusiness
 {
 	private static final String FIELDNAME_PARENTID = "parentId";
+	private static final String MODEL_NAME = GoodsClassifyMO.class.getSimpleName();
 	@Autowired
 	private GoodsClassifyDao goodsClassifyDao;
 
@@ -50,12 +53,14 @@ public class GoodsClassifyBusiness
 
 	public String add(GoodsClassifyMO mo) throws LittleCatException
 	{
+		validateReqData(mo);
 		return goodsClassifyDao.add(mo);
 	}
 
-	public boolean modify(GoodsClassifyMO mo) throws LittleCatException
+	public void modify(GoodsClassifyMO mo) throws LittleCatException
 	{
-		return goodsClassifyDao.modify(mo);
+		validateReqData(mo);
+		goodsClassifyDao.modify(mo);
 	}
 
 	public int getList(QueryParam queryParam, List<GoodsClassifyMO> mos) throws LittleCatException
@@ -76,5 +81,13 @@ public class GoodsClassifyBusiness
 		goodsClassifyDao.getList(queryParam, mos);
 
 		return mos;
+	}
+	
+	private void validateReqData(GoodsClassifyMO reqData) throws LittleCatException
+	{
+		if (reqData == null)
+		{
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
 	}
 }

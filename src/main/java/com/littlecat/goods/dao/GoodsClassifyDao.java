@@ -52,11 +52,6 @@ public class GoodsClassifyDao
 
 	public String add(GoodsClassifyMO mo) throws LittleCatException
 	{
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(), ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		if (StringUtil.isEmpty(mo.getId()))
 		{
 			mo.setId(UUIDUtil.createUUID());
@@ -81,13 +76,8 @@ public class GoodsClassifyDao
 		return mo.getId();
 	}
 
-	public boolean modify(GoodsClassifyMO mo) throws LittleCatException
+	public void modify(GoodsClassifyMO mo) throws LittleCatException
 	{
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToModify.getCode(), ErrorCode.GiveNullObjectToModify.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		String sql = "update " + TABLE_NAME + " set name=?,sortNum=?,parentId=?,remark=? where id = ?";
 
 		try
@@ -103,8 +93,6 @@ public class GoodsClassifyDao
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
-
-		return true;
 	}
 
 	public int getList(QueryParam queryParam, List<GoodsClassifyMO> mos) throws LittleCatException

@@ -10,9 +10,9 @@ public enum ErrorCode
 {
 	DataAccessException("DataAccessException","Occur an exception when access DB."),
 	QueryParamIsNull("QueryParamIsNull","Query param is null."),
-	GetInfoFromDBReturnEmpty("GetInfoFromDBReturnEmpty","get {INFO_NAME} from db return empty."),
-	GiveNullObjectToCreate("GiveNullObjectToCreate","give null object to create for {INFO_NAME}."),
-	GiveNullObjectToModify("GiveNullObjectToModify","give null object to modify for {INFO_NAME}."),
+	RequestObjectIsNull("RequestObjectIsNull","Request object is null.infoname:{INFO_NAME}"),
+	RequestObjectInvalidate("RequestObjectInvalidate","Request object is invalidate.infoname:{INFO_NAME},detailinfo:{DETAILINFO}"),
+	GetInfoFromDBReturnEmpty("GetInfoFromDBReturnEmpty","get {INFO_NAME} from db return empty,detailinfo:{DETAILINFO}."),
 	InsertObjectToDBError("InsertObjectToDBError","insert {INFO_NAME} to DB error. "),
 	UpdateObjectToDBError("UpdateObjectToDBError","update {INFO_NAME} to DB error. "),
 	UpdateObjectWithEmptyId("UpdateObjectWithEmptyId","update {INFO_NAME} with empty id. "),

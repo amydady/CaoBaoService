@@ -27,7 +27,7 @@ public class TuanGoodsDao
 
 	private final String TABLE_NAME = TableName.TuanGoods.getName();
 	private final String TABLE_NAME_GOODS = TableName.Goods.getName();
-	private final String MODEL_NAME = "TuanGoodsMO";
+	private final String MODEL_NAME = TuanGoodsMO.class.getSimpleName();
 
 	public void delete(String id) throws LittleCatException
 	{
@@ -43,8 +43,7 @@ public class TuanGoodsDao
 	{
 		if (mo == null)
 		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(),
-					ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
 		if (StringUtil.isEmpty(mo.getId()))
@@ -78,8 +77,7 @@ public class TuanGoodsDao
 	{
 		if (CollectionUtil.isEmpty(mos))
 		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(),
-					ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
 		List<String> ids = new ArrayList<String>();
@@ -127,7 +125,7 @@ public class TuanGoodsDao
 		List<GoodsMO> goodsList = null;
 
 		String sql = "select * from " + TABLE_NAME_GOODS + " where id not in (select goodsId from " + TABLE_NAME + " where tuanId=?)";
-		
+
 		try
 		{
 			goodsList = jdbcTemplate.query(sql, new Object[] { tuanId }, new GoodsMO.MOMapper());

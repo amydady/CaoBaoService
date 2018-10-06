@@ -32,15 +32,7 @@ public class OrderBusiness
 
 	public String addOrder(OrderMO orderMO, List<OrderDetailMO> orderDetailMOs) throws LittleCatException
 	{
-		if (orderMO == null)
-		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(), ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
-		if (CollectionUtil.isEmpty(orderDetailMOs))
-		{
-			throw new LittleCatException(ErrorCode.GiveNullObjectToCreate.getCode(), ErrorCode.GiveNullObjectToCreate.getMsg().replace("{INFO_NAME}", MODEL_NAME_ORDERDETAIL));
-		}
+		validateReqData(orderMO, orderDetailMOs);
 
 		for (OrderDetailMO orderDetail : orderDetailMOs)
 		{
@@ -154,5 +146,18 @@ public class OrderBusiness
 	public int getOrderDetailList(QueryParam queryParam, List<OrderDetailMO> mos) throws LittleCatException
 	{
 		return orderDetailDao.getList(queryParam, mos);
+	}
+
+	private void validateReqData(OrderMO orderMO, List<OrderDetailMO> orderDetailMOs) throws LittleCatException
+	{
+		if (orderMO == null)
+		{
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+
+		if (CollectionUtil.isEmpty(orderDetailMOs))
+		{
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME_ORDERDETAIL));
+		}
 	}
 }

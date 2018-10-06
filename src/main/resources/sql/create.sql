@@ -117,7 +117,6 @@ CREATE TABLE `t_seckill_seckillplan` (
 	`startTime` DATETIME NOT NULL,
 	`endTime` DATETIME NOT NULL,
 	`price` INT NOT NULL,
-	`initInventory` INT NOT NULL,
 	`limitBuyNum` INT NOT NULL,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
