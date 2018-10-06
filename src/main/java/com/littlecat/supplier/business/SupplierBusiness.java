@@ -58,9 +58,9 @@ public class SupplierBusiness
 		return supplierDao.add(mo);
 	}
 
-	public boolean modify(SupplierMO mo) throws LittleCatException
+	public void modify(SupplierMO mo) throws LittleCatException
 	{
-		return supplierDao.modify(mo);
+		supplierDao.modify(mo);
 	}
 
 	public int getList(QueryParam queryParam, List<SupplierMO> mos) throws LittleCatException

@@ -18,10 +18,10 @@ import com.littlecat.common.model.AddressMO;
 public class OrderMO extends BaseMO
 {
 	private String terminalUserId;
-	private String createTime;
 	private long fee;
 	private OrderState state;
 	private AddressMO deliveryAddress; // 发货地址信息
+	private String createTime;
 	private String payTime; // 付款时间
 	private String receiveTime;// 收货时间
 	private String returnApplyTime;// 退款申请时间

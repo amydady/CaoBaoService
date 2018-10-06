@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
-import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
@@ -50,16 +49,11 @@ public class ShoppingCartDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		if (StringUtil.isEmpty(mo.getCreateTime()))
-		{
-			mo.setCreateTime(String.valueOf(DateTimeUtil.getCurrentTime()));
-		}
-
-		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,buyType,resId,goodsNum,createTime) values(?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,buyType,resId,goodsNum) values(?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getBuyType().name(), mo.getResId(), mo.getGoodsNum(), mo.getCreateTime() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getBuyType().name(), mo.getResId(), mo.getGoodsNum() });
 
 			if (ret != 1)
 			{

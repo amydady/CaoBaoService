@@ -27,6 +27,11 @@ public class OrderDao
 
 	public String add(OrderMO mo) throws LittleCatException
 	{
+		if (mo == null)
+		{
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+		
 		if (StringUtil.isEmpty(mo.getId()))
 		{
 			mo.setId(UUIDUtil.createUUID());

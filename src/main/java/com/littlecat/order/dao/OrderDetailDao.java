@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
@@ -20,13 +21,19 @@ import com.littlecat.order.model.OrderDetailMO;
 @Component
 public class OrderDetailDao
 {
+	private static final String TABLE_NAME = TableName.OrderDetail.getName();
+	private static final String MODEL_NAME = OrderDetailMO.class.getSimpleName();
+
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
 
-	private final String TABLE_NAME = TableName.OrderDetail.getName();
-
 	public List<String> add(List<OrderDetailMO> mos) throws LittleCatException
 	{
+		if (CollectionUtil.isEmpty(mos))
+		{
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+		
 		List<Object[]> batchParam = new ArrayList<Object[]>();
 		List<String> ids = new ArrayList<String>();
 		for (OrderDetailMO mo : mos)

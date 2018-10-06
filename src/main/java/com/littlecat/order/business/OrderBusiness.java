@@ -63,7 +63,7 @@ public class OrderBusiness
 		}
 
 		mo.setState(OrderState.daiqianshou);
-		mo.setPayTime(String.valueOf(DateTimeUtil.getCurrentTime()));
+		mo.setPayTime(DateTimeUtil.getCurrentTimeForDisplay());
 
 		orderDao.modify(mo);
 	}
@@ -77,7 +77,7 @@ public class OrderBusiness
 			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 		mo.setState(OrderState.yishouhuo);
-		mo.setReceiveTime(String.valueOf(DateTimeUtil.getCurrentTime()));
+		mo.setReceiveTime(DateTimeUtil.getCurrentTimeForDisplay());
 
 		orderDao.modify(mo);
 	}
@@ -91,7 +91,7 @@ public class OrderBusiness
 			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 		mo.setState(OrderState.tuikuanzhong);
-		mo.setReturnApplyTime(String.valueOf(DateTimeUtil.getCurrentTime()));
+		mo.setReturnApplyTime(DateTimeUtil.getCurrentTimeForDisplay());
 
 		orderDao.modify(mo);
 	}
@@ -105,7 +105,7 @@ public class OrderBusiness
 			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 		mo.setState(OrderState.yituikuan);
-		mo.setReturnCompleteTime(String.valueOf(DateTimeUtil.getCurrentTime()));
+		mo.setReturnCompleteTime(DateTimeUtil.getCurrentTimeForDisplay());
 
 		orderDao.modify(mo);
 	}

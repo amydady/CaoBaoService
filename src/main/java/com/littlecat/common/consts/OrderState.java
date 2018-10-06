@@ -8,5 +8,10 @@ package com.littlecat.common.consts;
  */
 public enum OrderState
 {
-	daifukuan,daichengtuan,daiqianshou,yishouhuo,tuikuanzhong,yituikuan
+	daifukuan, // 待付款
+	daichengtuan, // 待成团
+	daiqianshou, // 待签收
+	yishouhuo, // 已收货
+	tuikuanzhong, // 退款中
+	yituikuan// 已退款
 }

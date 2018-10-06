@@ -25,6 +25,18 @@ CREATE TABLE `t_sys_sysoperator` (
 	UNIQUE KEY `mobile` (`mobile`)
 );
 
+# supplier
+CREATE TABLE `t_supplier` (
+	`id` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	`remark` VARCHAR(255) NOT NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `name` (`name`),
+);
+
 # terminaluser
 
 CREATE TABLE `t_terminaluser` (
@@ -124,6 +136,19 @@ CREATE TABLE `t_seckill_seckillplan` (
 	`createOperatorId` VARCHAR(255) NOT NULL,
 	`deliveryAreaId` VARCHAR(255) NOT NULL,
 	`deliveryFeeRuleId` VARCHAR(255) NOT NULL,
+	
+	
+	PRIMARY KEY (`id`)
+);
+
+#购物车
+CREATE TABLE `t_shoppingcart` (
+	`id` VARCHAR(255) NOT NULL,
+	`terminalUserId` VARCHAR(255) NOT NULL,
+	`buyType` VARCHAR(20) NOT NULL,
+	`resId` VARCHAR(255) NOT NULL,
+	`goodsNum` INT NOT NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	
 	
 	PRIMARY KEY (`id`)
