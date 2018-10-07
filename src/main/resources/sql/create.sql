@@ -8,6 +8,14 @@ CREATE TABLE `t_sys_param` (
 	PRIMARY KEY (`name`)
 );
 
+CREATE TABLE `t_sys_reslock` (
+	`type` VARCHAR(255) NOT NULL,
+	`key` VARCHAR(255) NOT NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	
+	UNIQUE KEY `name` (`type`,`key`)
+);
+
 CREATE TABLE `t_sys_sysoperator` (
 	`id` VARCHAR(255) NOT NULL,
 	`username` VARCHAR(255) NOT NULL,
@@ -112,6 +120,7 @@ CREATE TABLE `t_goods` (
 	`detailDescription` VARCHAR(5000) NULL,
 	`mainImgUrl` VARCHAR(255) NOT NULL,
 	`price` INT NOT NULL,
+	`currentInventory` INT NOT NULL,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	`hasSecKillPlan` VARCHAR(1) NOT NULL DEFAULT 'N',
 	`hasGroupBuyPlan` VARCHAR(1) NOT NULL DEFAULT 'N',

@@ -9,11 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
-import com.littlecat.cbb.utils.DateTimeUtil;
-import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
-import com.littlecat.common.consts.TableName;
 import com.littlecat.common.utils.DaoUtil;
 import com.littlecat.order.model.OrderMO;
 
@@ -29,12 +26,12 @@ public class TestDao
 	public void add(TestMO mo) throws LittleCatException
 	{
 		mo.setId(UUIDUtil.createUUID());
-		
+
 		String sql = "insert into " + TABLE_NAME + "(id,dateTime) values(?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(),mo.getDateTime()});
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getDateTime() });
 
 			if (ret != 1)
 			{
@@ -70,7 +67,7 @@ public class TestDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
-	
+
 	public void delete(String id) throws LittleCatException
 	{
 		DaoUtil.delete(TABLE_NAME, id, jdbcTemplate);

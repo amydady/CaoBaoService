@@ -13,6 +13,7 @@ public enum TableName
 	Action("t_sys_action"),
 	Role("t_sys_role"),
 	SysOperator("t_sys_sysoperator"),
+	ResLock("t_sys_reslock"),
 	
 	TerminalUser("t_terminaluser"),
 	DeliveryAddress("t_terminaluser_deliveryaddress"),
@@ -38,6 +39,12 @@ public enum TableName
 	OrderDetail("t_order_detail"),
 	
 	SecKillPlan("t_seckill_seckillplan"),
+	
+	
+
+	GoodsInventory("t_inventory_goods"),
+	SecKillInventory("t_inventory_seckill"),
+	GroupBuyInventory("t_inventory_groupbuy"),
 	;
 	
 	private String name;

@@ -1,6 +1,7 @@
 package com.littlecat.inventory.model;
 
 import com.littlecat.cbb.common.BaseMO;
+import com.littlecat.common.consts.InventoryChangeType;
 
 /**
  * 商品库存MO
@@ -12,12 +13,10 @@ public class GoodsInventoryMO extends BaseMO
 {
 	private String goodsId;
 	private long changeValue;
-	private String changeType;
+	private InventoryChangeType changeType;
 	private String operatorId;
 	private String description;
 	private String createTime;
-	private int createYear;
-	private int createMonth;
 
 	public String getGoodsId()
 	{
@@ -39,12 +38,12 @@ public class GoodsInventoryMO extends BaseMO
 		this.changeValue = changeValue;
 	}
 
-	public String getChangeType()
+	public InventoryChangeType getChangeType()
 	{
 		return changeType;
 	}
 
-	public void setChangeType(String changeType)
+	public void setChangeType(InventoryChangeType changeType)
 	{
 		this.changeType = changeType;
 	}
@@ -78,25 +77,4 @@ public class GoodsInventoryMO extends BaseMO
 	{
 		this.createTime = createTime;
 	}
-
-	public int getCreateYear()
-	{
-		return createYear;
-	}
-
-	public void setCreateYear(int createYear)
-	{
-		this.createYear = createYear;
-	}
-
-	public int getCreateMonth()
-	{
-		return createMonth;
-	}
-
-	public void setCreateMonth(int createMonth)
-	{
-		this.createMonth = createMonth;
-	}
-
 }

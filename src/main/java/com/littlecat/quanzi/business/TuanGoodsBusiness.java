@@ -16,7 +16,6 @@ import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.goods.model.GoodsMO;
 import com.littlecat.quanzi.dao.TuanGoodsDao;
 import com.littlecat.quanzi.model.TuanGoodsMO;
-import com.littlecat.quanzi.model.TuanMO;
 
 @Component
 @Transactional
@@ -70,12 +69,12 @@ public class TuanGoodsBusiness
 	{
 		return tuanGoodsDao.getList(queryParam, mos);
 	}
-	
+
 	public List<GoodsMO> getUnPutOnGoodsList(String tuanId) throws LittleCatException
 	{
 		return tuanGoodsDao.getUnPutOnGoodsList(tuanId);
 	}
-	
+
 	private void validateReqData(TuanGoodsMO reqData) throws LittleCatException
 	{
 		if (reqData == null)
