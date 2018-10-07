@@ -12,6 +12,7 @@ CREATE TABLE `t_sys_reslock` (
 	`type` VARCHAR(255) NOT NULL,
 	`key` VARCHAR(255) NOT NULL,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`disableTime` DATETIME NOT NULL,
 	
 	UNIQUE KEY `name` (`type`,`key`)
 );
