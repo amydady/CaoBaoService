@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "61d22f9c-8ec7-4a5d-88a8-60eacb93aacd",
+		"_postman_id": "6b1634b3-03e4-4365-9f94-13faa6c0c22b",
 		"name": "CaoBao",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -709,6 +709,254 @@
 						}
 					],
 					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Supplier",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\":\"name1\",\r\n\t\"remark\":\"remark\"\r\n}"
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/supplier/add",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"supplier",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modify",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"id\":\"ac3a82f7-cbd9-4921-af54-3114ad1ef555\",\r\n\t\"name\":\"123\",\r\n\t\"remark\":\"remark2222\"\r\n}"
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/supplier/modify",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"supplier",
+								"modify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "disable",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/supplier/disable/ac3a82f7-cbd9-4921-af54-3114ad1ef555",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"supplier",
+								"disable",
+								"ac3a82f7-cbd9-4921-af54-3114ad1ef555"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "batchDisable",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\"ac3a82f7-cbd9-4921-af54-3114ad1ef555\"]"
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/supplier/batchdisable",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"supplier",
+								"batchdisable"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "batchEnable",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\"ac3a82f7-cbd9-4921-af54-3114ad1ef555\"]"
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/supplier/batchenable",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"supplier",
+								"batchenable"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "enable",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/supplier/enable/ac3a82f7-cbd9-4921-af54-3114ad1ef555",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"supplier",
+								"enable",
+								"ac3a82f7-cbd9-4921-af54-3114ad1ef555"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/supplier/getbyid?id=ac3a82f7-cbd9-4921-af54-3114ad1ef555",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"supplier",
+								"getbyid"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "ac3a82f7-cbd9-4921-af54-3114ad1ef555"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getList",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"condition\":{\n\t\t\"logicType\":\"and\",\n\t\t\"condItems\":[\n\t\t\t\t{\n\t\t\t\t\t\"fieldName\":\"id\",\n\t\t\t\t\t\"opType\":\"equal\",\n\t\t\t\t\t\"value\":\"ac3a82f7-cbd9-4921-af54-3114ad1ef555\"\n\t\t\t\t}\n\t\t\t]\n\t},\n\t\"pageParam\":{\n\t\t\"pageSize\":4,\n\t\t\"pageIndex\":1\n\t},\n\t\"sortFields\":\"name\",\n\t\"sortType\":\"desc\"\n}"
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/supplier/getList",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"supplier",
+								"getList"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
