@@ -25,7 +25,7 @@ CREATE TABLE `t_sys_sysoperator` (
 	UNIQUE KEY `mobile` (`mobile`)
 );
 
-# supplier
+# 供应商
 CREATE TABLE `t_supplier` (
 	`id` VARCHAR(255) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE `t_supplier` (
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	
 	PRIMARY KEY (`id`),
-	UNIQUE KEY `name` (`name`),
+	UNIQUE KEY `name` (`name`)
 );
 
 # terminaluser

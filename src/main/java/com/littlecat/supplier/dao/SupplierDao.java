@@ -98,7 +98,7 @@ public class SupplierDao
 			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
-		String sql = "update " + TABLE_NAME + " set name = ?,remak = ? where id = ?";
+		String sql = "update " + TABLE_NAME + " set name = ?,remark = ? where id = ?";
 
 		try
 		{

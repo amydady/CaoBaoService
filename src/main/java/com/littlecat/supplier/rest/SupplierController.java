@@ -212,7 +212,7 @@ public class SupplierController
 	}
 
 	@PutMapping(value = "/batchenable")
-	public RestSimpleRsp batchEable(@RequestBody List<String> ids)
+	public RestSimpleRsp batchEnable(@RequestBody List<String> ids)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
