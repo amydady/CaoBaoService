@@ -4,3 +4,6 @@ insert into t_sys_param(name,value) values('member_enable_days','30');
 
 #秒杀计划后台按秒杀时间窗口定时处理失效标记的周期（秒）
 insert into t_sys_param(name,value) values('seckillplan_enabletag_process_cyc','30');
+
+#资源锁定时清理周期（秒）
+insert into t_sys_param(name,value) values('clear_reslock_process_cyc','60');

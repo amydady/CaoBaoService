@@ -1,5 +1,10 @@
 package com.littlecat.inventory.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
 import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.common.consts.InventoryChangeType;
 
@@ -77,4 +82,24 @@ public class GoodsInventoryMO extends BaseMO
 	{
 		this.createTime = createTime;
 	}
+
+	public static class MOMapper implements RowMapper<GoodsInventoryMO>
+	{
+		@Override
+		public GoodsInventoryMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			GoodsInventoryMO mo = new GoodsInventoryMO();
+
+			mo.setId(rs.getString("id"));
+			mo.setGoodsId(rs.getString("goodsId"));
+			mo.setChangeValue(rs.getLong("changeValue"));
+			mo.setChangeType(InventoryChangeType.valueOf(rs.getString("changeType")));
+			mo.setOperatorId(rs.getString("operatorId"));
+			mo.setDescription(rs.getString("description"));
+			mo.setCreateTime(rs.getString("createTime"));
+
+			return mo;
+		}
+	}
+
 }
