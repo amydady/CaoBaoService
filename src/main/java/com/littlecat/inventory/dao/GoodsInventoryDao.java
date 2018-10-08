@@ -60,4 +60,18 @@ public class GoodsInventoryDao
 	{
 		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new GoodsInventoryMO.MOMapper());
 	}
+
+	public long getCurrentValueByGoodsId(String goodsId) throws LittleCatException
+	{
+		String sql = "select sum(changeValue) from " + TABLE_NAME + " where goodsId=?";
+
+		try
+		{
+			return jdbcTemplate.queryForObject(sql, new Object[] { goodsId }, Long.class);
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
 }

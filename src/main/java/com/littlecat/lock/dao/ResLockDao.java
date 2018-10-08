@@ -1,5 +1,8 @@
 package com.littlecat.lock.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,6 +35,27 @@ public class ResLockDao
 			{
 				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(), ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 			}
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
+	public void add(List<ResLockMO> mos) throws LittleCatException
+	{
+		String sql = "insert into " + TABLE_NAME + "(type,key,disableTime) values(?,?)";
+
+		List<Object[]> params = new ArrayList<Object[]>();
+
+		for (ResLockMO mo : mos)
+		{
+			params.add(new Object[] { mo.getType(), mo.getKey(), mo.getDisableTime() });
+		}
+
+		try
+		{
+			jdbcTemplate.batchUpdate(sql, params);
 		}
 		catch (DataAccessException e)
 		{

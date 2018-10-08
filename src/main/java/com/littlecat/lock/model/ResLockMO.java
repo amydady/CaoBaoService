@@ -12,6 +12,19 @@ public class ResLockMO
 	private String key;
 	private String createTime;
 	private String disableTime;	//锁失效的时间
+	
+	
+	public ResLockMO()
+	{
+		
+	}
+	
+	public ResLockMO(String type, String key, String disableTime)
+	{
+		this.type = type;
+		this.key = key;
+		this.disableTime = disableTime;
+	}
 
 	public String getType()
 	{
