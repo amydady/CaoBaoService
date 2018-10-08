@@ -21,8 +21,9 @@ public class GoodsMO extends BaseMO
 	private String summaryDescription; // 产品概要描述信息
 	private String detailDescription; // 详细描述信息（支持富文本）
 	private String mainImgUrl;
+	private String detailImgUrls;// 详细描述信息（图片，URL间用英文分号;隔开）
 	private long price; // 单位为厘
-	private long currentInventory; 
+	private long currentInventory;
 	private String enable;
 	private String hasSecKillPlan; // 当前是否有秒杀计划
 	private String hasGroupBuyPlan; // 当前是否有拼购计划
@@ -181,6 +182,16 @@ public class GoodsMO extends BaseMO
 		this.currentInventory = currentInventory;
 	}
 
+	public String getDetailImgUrls()
+	{
+		return detailImgUrls;
+	}
+
+	public void setDetailImgUrls(String detailImgUrls)
+	{
+		this.detailImgUrls = detailImgUrls;
+	}
+
 	public static class MOMapper implements RowMapper<GoodsMO>
 	{
 		@Override
@@ -193,6 +204,7 @@ public class GoodsMO extends BaseMO
 			mo.setSummaryDescription(rs.getString("summaryDescription"));
 			mo.setDetailDescription(rs.getString("detailDescription"));
 			mo.setMainImgUrl(rs.getString("mainImgUrl"));
+			mo.setDetailImgUrls(rs.getString("detailImgUrls"));
 			mo.setPrice(rs.getLong("price"));
 			mo.setCurrentInventory(rs.getLong("currentInventory"));
 			mo.setEnable(rs.getString("enable"));

@@ -44,7 +44,7 @@ public class ResLockDao
 
 	public void add(List<ResLockMO> mos) throws LittleCatException
 	{
-		String sql = "insert into " + TABLE_NAME + "(type,key,disableTime) values(?,?)";
+		String sql = "insert into " + TABLE_NAME + "(type,key,disableTime) values(?,?,?)";
 
 		List<Object[]> params = new ArrayList<Object[]>();
 
@@ -70,6 +70,27 @@ public class ResLockDao
 		try
 		{
 			jdbcTemplate.update(sql, new Object[] { mo.getType(), mo.getKey() });
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
+	public void delete(List<ResLockMO> mos) throws LittleCatException
+	{
+		String sql = "delete from " + TABLE_NAME + " where type = ? and key = ?";
+
+		List<Object[]> params = new ArrayList<Object[]>();
+
+		for (ResLockMO mo : mos)
+		{
+			params.add(new Object[] { mo.getType(), mo.getKey() });
+		}
+
+		try
+		{
+			jdbcTemplate.batchUpdate(sql, params);
 		}
 		catch (DataAccessException e)
 		{

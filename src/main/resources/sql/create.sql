@@ -75,26 +75,26 @@ CREATE TABLE `t_terminaluser_deliveryaddress` (
 );
 
 # basic info
-
+drop table t_basicinfo_province;
 CREATE TABLE `t_basicinfo_province` (
-	`id` VARCHAR(255) NOT NULL,
-	`name` VARCHAR(255) NOT NULL,
+	`id` VARCHAR(50) NOT NULL,
+	`name` VARCHAR(50) NOT NULL,
 	
 	PRIMARY KEY (`id`)
 );
-
+drop table t_basicinfo_city;
 CREATE TABLE `t_basicinfo_city` (
-	`id` VARCHAR(255) NOT NULL,
-	`name` VARCHAR(255) NOT NULL,
-	`provinceId` VARCHAR(255) NOT NULL,
+	`id` VARCHAR(50) NOT NULL,
+	`name` VARCHAR(50) NOT NULL,
+	`provinceId` VARCHAR(50) NOT NULL,
 	
 	PRIMARY KEY (`id`)
 );
-
+drop table t_basicinfo_area;
 CREATE TABLE `t_basicinfo_area` (
-	`id` VARCHAR(255) NOT NULL,
-	`name` VARCHAR(255) NOT NULL,
-	`cityId` VARCHAR(255) NOT NULL,
+	`id` VARCHAR(50) NOT NULL,
+	`name` VARCHAR(50) NOT NULL,
+	`cityId` VARCHAR(50) NOT NULL,
 	
 	PRIMARY KEY (`id`)
 );
@@ -119,7 +119,8 @@ CREATE TABLE `t_goods` (
 	`name` VARCHAR(255) NOT NULL,
 	`summaryDescription` VARCHAR(300) NULL,
 	`detailDescription` VARCHAR(5000) NULL,
-	`mainImgUrl` VARCHAR(255) NOT NULL,
+	`mainImgUrl` VARCHAR(255) NULL,
+	`detailImgUrls` VARCHAR(255) NULL,
 	`price` INT NOT NULL,
 	`currentInventory` INT NOT NULL,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',

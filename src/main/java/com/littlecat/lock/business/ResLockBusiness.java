@@ -88,7 +88,6 @@ public class ResLockBusiness
 			try
 			{
 				resLockDao.add(locks);
-
 				return true;
 			}
 			catch (Exception e)
@@ -110,23 +109,18 @@ public class ResLockBusiness
 		return false;
 	}
 
-	public boolean unLock(String type, String key)
+	public void unLock(String type, String key) throws LittleCatException
 	{
-		try
-		{
-			ResLockMO mo = new ResLockMO();
-			mo.setType(type);
-			mo.setKey(key);
+		ResLockMO mo = new ResLockMO();
+		mo.setType(type);
+		mo.setKey(key);
 
-			resLockDao.delete(mo);
+		resLockDao.delete(mo);
+	}
 
-			return true;
-		}
-		catch (Exception e)
-		{
-			logger.info("unlock error:type={},key={}", type, key);
-			return false;
-		}
+	public void unLock(List<ResLockMO> locks) throws LittleCatException
+	{
+		resLockDao.delete(locks);
 	}
 
 	public void clearLock() throws LittleCatException
