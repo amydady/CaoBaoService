@@ -92,7 +92,7 @@ public class OrderController
 
 		try
 		{
-			orderBusiness.setOrderState2DaiQianShou(id);
+			orderBusiness.payOrder(id);
 		}
 		catch (LittleCatException e)
 		{

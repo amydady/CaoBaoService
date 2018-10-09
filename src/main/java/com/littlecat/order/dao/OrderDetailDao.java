@@ -33,7 +33,7 @@ public class OrderDetailDao
 		{
 			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
-		
+
 		List<Object[]> batchParam = new ArrayList<Object[]>();
 		List<String> ids = new ArrayList<String>();
 		for (OrderDetailMO mo : mos)
@@ -65,14 +65,23 @@ public class OrderDetailDao
 	{
 		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new OrderDetailMO.MOMapper());
 	}
-	
+
+	public List<OrderDetailMO> getByOrderId(String orderId) throws LittleCatException
+	{
+		String sql = "select * from " + TABLE_NAME + " where orderId = ?";
+
+		try
+		{
+			return jdbcTemplate.query(sql, new Object[] { orderId }, new OrderDetailMO.MOMapper());
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
 	public void deleteByOrderId(String orderId) throws LittleCatException
 	{
-		if (StringUtil.isEmpty(orderId))
-		{
-			throw new LittleCatException(ErrorCode.DeleteObjectWithEmptyId.getCode(), ErrorCode.DeleteObjectWithEmptyId.getMsg().replace("{INFO_NAME}", TABLE_NAME));
-		}
-
 		String sql = "delete from " + TABLE_NAME + " where orderId = ?";
 
 		try
@@ -84,7 +93,6 @@ public class OrderDetailDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
-	
 
 	public int getList(QueryParam queryParam, List<OrderDetailMO> mos) throws LittleCatException
 	{

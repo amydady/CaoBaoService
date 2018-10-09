@@ -8,30 +8,43 @@ package com.littlecat.lock.model;
  */
 public class ResLockMO
 {
-	private String type;
+	// 资源锁默认的失效时间（秒）
+	public static final long DEFAULT_DISABLE_TIME = 5;
+
+	/**
+	 * 资源锁的类型
+	 * 
+	 * @author amydady
+	 *
+	 */
+	public static enum ResLockType
+	{
+		goodsinventory,seckillinventory,groupbuyinventory
+	}
+
+	private ResLockType type;
 	private String key;
 	private String createTime;
-	private String disableTime;	//锁失效的时间
-	
-	
+	private String disableTime; // 锁失效的时间
+
 	public ResLockMO()
 	{
-		
+
 	}
-	
-	public ResLockMO(String type, String key, String disableTime)
+
+	public ResLockMO(ResLockType type, String key, String disableTime)
 	{
 		this.type = type;
 		this.key = key;
 		this.disableTime = disableTime;
 	}
 
-	public String getType()
+	public ResLockType getType()
 	{
 		return type;
 	}
 
-	public void setType(String type)
+	public void setType(ResLockType type)
 	{
 		this.type = type;
 	}
