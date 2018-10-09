@@ -11,6 +11,12 @@ public class ResLockMO
 	// 资源锁默认的失效时间（秒）
 	public static final long DEFAULT_DISABLE_TIME = 5;
 
+	// 获取资源锁时默认的超时时间（秒）
+	public static final long DEFAULT_TIMEOUTSECS = 5;
+
+	// 获取资源锁时默认的重试时间间隔（毫秒）
+	public static final long DEFAULT_RETRYTIMESTEP = 100;
+
 	/**
 	 * 资源锁的类型
 	 * 
@@ -19,7 +25,7 @@ public class ResLockMO
 	 */
 	public static enum ResLockType
 	{
-		goodsinventory,seckillinventory,groupbuyinventory
+		goodsinventory, seckillinventory, groupbuyinventory
 	}
 
 	private ResLockType type;
@@ -37,6 +43,12 @@ public class ResLockMO
 		this.type = type;
 		this.key = key;
 		this.disableTime = disableTime;
+	}
+	
+	public ResLockMO(ResLockType type, String key)
+	{
+		this.type = type;
+		this.key = key;
 	}
 
 	public ResLockType getType()

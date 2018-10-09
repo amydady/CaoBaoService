@@ -37,7 +37,7 @@ public class ResLockBusiness
 	 *            重试时间间隔
 	 * @return
 	 */
-	public boolean lock(String type, String key, String disableTime, long timeOutSecs, long retryTimeStep)
+	public boolean lock(ResLockMO.ResLockType type, String key, String disableTime, long timeOutSecs, long retryTimeStep)
 	{
 		long initTime = DateTimeUtil.getCurrentTime();
 
@@ -109,7 +109,7 @@ public class ResLockBusiness
 		return false;
 	}
 
-	public void unLock(String type, String key) throws LittleCatException
+	public void unLock(ResLockMO.ResLockType type, String key) throws LittleCatException
 	{
 		ResLockMO mo = new ResLockMO();
 		mo.setType(type);

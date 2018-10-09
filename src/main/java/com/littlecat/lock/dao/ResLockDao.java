@@ -29,7 +29,7 @@ public class ResLockDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getType(), mo.getKey(), mo.getDisableTime() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getType().name(), mo.getKey(), mo.getDisableTime() });
 
 			if (ret != 1)
 			{
@@ -50,7 +50,7 @@ public class ResLockDao
 
 		for (ResLockMO mo : mos)
 		{
-			params.add(new Object[] { mo.getType(), mo.getKey(), mo.getDisableTime() });
+			params.add(new Object[] { mo.getType().name(), mo.getKey(), mo.getDisableTime() });
 		}
 
 		try
@@ -69,7 +69,7 @@ public class ResLockDao
 
 		try
 		{
-			jdbcTemplate.update(sql, new Object[] { mo.getType(), mo.getKey() });
+			jdbcTemplate.update(sql, new Object[] { mo.getType().name(), mo.getKey() });
 		}
 		catch (DataAccessException e)
 		{
@@ -85,7 +85,7 @@ public class ResLockDao
 
 		for (ResLockMO mo : mos)
 		{
-			params.add(new Object[] { mo.getType(), mo.getKey() });
+			params.add(new Object[] { mo.getType().name(), mo.getKey() });
 		}
 
 		try

@@ -22,6 +22,9 @@ public enum ErrorCode
 	DisableObjectWithIdError("DisableObjectWithIdError","disable {INFO_NAME} with id error. "),
 	EnableObjectWithEmptyId("EnableObjectWithEmptyId","enable {INFO_NAME} with empty id. "),
 	EnableObjectWithIdError("EnableObjectWithIdError","enable {INFO_NAME} with id error. "),
+	
+
+	LockResError("LockResError","lock resource error. "),
 	;
 	
 	private String code;

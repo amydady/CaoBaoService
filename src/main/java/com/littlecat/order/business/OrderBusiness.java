@@ -13,14 +13,19 @@ import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.DateTimeUtil;
+import com.littlecat.common.consts.BuyType;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.OrderState;
 import com.littlecat.goods.business.GoodsBusiness;
 import com.littlecat.goods.model.GoodsMO;
 import com.littlecat.inventory.business.GoodsInventoryBusiness;
+import com.littlecat.lock.business.ResLockBusiness;
+import com.littlecat.lock.model.ResLockMO;
 import com.littlecat.order.dao.OrderDao;
 import com.littlecat.order.model.OrderDetailMO;
 import com.littlecat.order.model.OrderMO;
+import com.littlecat.seckill.business.SecKillPlanBusiness;
+import com.littlecat.seckill.model.SecKillPlanMO;
 
 @Component
 @Transactional
@@ -38,9 +43,25 @@ public class OrderBusiness
 	@Autowired
 	private GoodsInventoryBusiness goodsInventoryBusiness;
 
+	@Autowired
+	private ResLockBusiness resLockBusiness;
+
+	@Autowired
+	private SecKillPlanBusiness secKillPlanBusiness;
+
 	private static final String MODEL_NAME = OrderMO.class.getSimpleName();
 	private static final String MODEL_NAME_ORDERDETAIL = OrderDetailMO.class.getSimpleName();
 	private static final String MODEL_NAME_GOODS = GoodsMO.class.getSimpleName();
+	private static final String MODEL_NAME_SECKILLPLAN = SecKillPlanMO.class.getSimpleName();
+
+	// 资源锁失效时间（秒）
+	public static final long RESLOCK_DISABLE_TIME = ResLockMO.DEFAULT_DISABLE_TIME;
+
+	// 获取资源锁超时时间（秒）
+	public static final long RESLOCK_TIMEOUTSECS = ResLockMO.DEFAULT_TIMEOUTSECS;
+
+	// 获取资源锁重试时间间隔（毫秒）
+	public static final long RESLOCK_RETRYTIMESTEP = ResLockMO.DEFAULT_RETRYTIMESTEP;
 
 	public String addOrder(OrderMO orderMO, List<OrderDetailMO> orderDetailMOs) throws LittleCatException
 	{
@@ -91,7 +112,7 @@ public class OrderBusiness
 
 		if (!lock(lockInfo))
 		{
-			return;
+			throw new LittleCatException(ErrorCode.LockResError.getCode(), ErrorCode.LockResError.getMsg());
 		}
 
 		mo.setState(OrderState.daiqianshou);
@@ -101,7 +122,6 @@ public class OrderBusiness
 		setInventoryInfoByOrderDetail(detailMOs);
 
 		unLock(lockInfo);
-
 	}
 
 	public void setOrderState2YiShouHuo(String id) throws LittleCatException
@@ -203,7 +223,7 @@ public class OrderBusiness
 	 * @param detailMOs
 	 * @return
 	 */
-	private Map<String, List<String>> getResLockInfo(List<OrderDetailMO> detailMOs)
+	private Map<String, List<String>> getResLockInfo(List<OrderDetailMO> detailMOs) throws LittleCatException
 	{
 		// 待锁定的资源，key：锁类型；value：锁资源的key
 		Map<String, List<String>> toBeLocked = new HashMap<String, List<String>>();
@@ -211,7 +231,24 @@ public class OrderBusiness
 		for (OrderDetailMO orderDetailMO : detailMOs)
 		{
 			String lockType = orderDetailMO.getBuyType().getResLockType();
-			String lockKey = orderDetailMO.getResId();
+			String lockKey = orderDetailMO.getResId(); // 使用商品ID作为库存资源锁的key
+
+			if (orderDetailMO.getBuyType() == BuyType.seckill)
+			{
+				SecKillPlanMO secKillPlanMO = secKillPlanBusiness.getById(lockKey);
+
+				if (null == secKillPlanMO)
+				{
+					throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME_SECKILLPLAN).replace("{DETAILINFO}", "id:" + lockKey));
+				}
+
+				lockKey = secKillPlanMO.getGoodsId();
+			}
+
+			if (orderDetailMO.getBuyType() == BuyType.groupbuy)
+			{
+				// TODO:获取产品ID
+			}
 
 			if (toBeLocked.containsKey(lockType))
 			{
@@ -230,12 +267,39 @@ public class OrderBusiness
 
 	private boolean lock(Map<String, List<String>> lockInfo)
 	{
+		for (String lockType : lockInfo.keySet())
+		{
+			ResLockMO.ResLockType resLockType = ResLockMO.ResLockType.valueOf(lockType);
+			List<ResLockMO> locks = new ArrayList<ResLockMO>();
+
+			for (String resId : lockInfo.get(lockType))
+			{
+				locks.add(new ResLockMO(resLockType, resId, DateTimeUtil.getTimeForDisplay(DateTimeUtil.getCurrentTime() + RESLOCK_DISABLE_TIME * 1000, DateTimeUtil.defaultDateFormat)));
+			}
+
+			if (!resLockBusiness.lock(locks, RESLOCK_TIMEOUTSECS, RESLOCK_RETRYTIMESTEP))
+			{
+				return false;
+			}
+		}
+
 		return true;
 	}
 
 	private void unLock(Map<String, List<String>> lockInfo) throws LittleCatException
 	{
+		for (String lockType : lockInfo.keySet())
+		{
+			ResLockMO.ResLockType resLockType = ResLockMO.ResLockType.valueOf(lockType);
+			List<ResLockMO> locks = new ArrayList<ResLockMO>();
 
+			for (String resId : lockInfo.get(lockType))
+			{
+				locks.add(new ResLockMO(resLockType, resId));
+			}
+
+			resLockBusiness.unLock(locks);
+		}
 	}
 
 	private void setInventoryInfoByOrderDetail(List<OrderDetailMO> detailMOs) throws LittleCatException
