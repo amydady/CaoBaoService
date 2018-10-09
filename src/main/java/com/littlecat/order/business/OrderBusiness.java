@@ -65,6 +65,12 @@ public class OrderBusiness
 		return orderId;
 	}
 
+	/**
+	 * 订单支付操作
+	 * 
+	 * @param id
+	 * @throws LittleCatException
+	 */
 	public void payOrder(String id) throws LittleCatException
 	{
 		OrderMO mo = orderDao.getById(id);
@@ -81,10 +87,20 @@ public class OrderBusiness
 			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME_ORDERDETAIL));
 		}
 
+		Map<String, List<String>> lockInfo = getResLockInfo(detailMOs);
+
+		if (!lock(lockInfo))
+		{
+			return;
+		}
+
 		mo.setState(OrderState.daiqianshou);
 		mo.setPayTime(DateTimeUtil.getCurrentTimeForDisplay());
-
 		orderDao.modify(mo);
+
+		setInventoryInfoByOrderDetail(detailMOs);
+
+		unLock(lockInfo);
 
 	}
 
@@ -210,5 +226,20 @@ public class OrderBusiness
 		}
 
 		return toBeLocked;
+	}
+
+	private boolean lock(Map<String, List<String>> lockInfo)
+	{
+		return true;
+	}
+
+	private void unLock(Map<String, List<String>> lockInfo) throws LittleCatException
+	{
+
+	}
+
+	private void setInventoryInfoByOrderDetail(List<OrderDetailMO> detailMOs) throws LittleCatException
+	{
+
 	}
 }
