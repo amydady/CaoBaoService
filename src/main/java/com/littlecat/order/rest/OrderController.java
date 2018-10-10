@@ -85,8 +85,8 @@ public class OrderController
 		return result;
 	}
 
-	@PutMapping(value = "/setOrderState2DaiQianShou/{id}")
-	public RestSimpleRsp setOrderState2DaiQianShou(@PathVariable String id)
+	@PutMapping(value = "/payOrder/{id}")
+	public RestSimpleRsp payOrder(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 

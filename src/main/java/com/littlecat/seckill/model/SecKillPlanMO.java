@@ -19,6 +19,7 @@ public class SecKillPlanMO extends BaseMO
 	private String startTime;
 	private String endTime;
 	private long price;
+	private long currentInventory;
 	private int limitBuyNum;
 	private String enable;
 	private String createTime;
@@ -127,6 +128,16 @@ public class SecKillPlanMO extends BaseMO
 		this.deliveryFeeRuleId = deliveryFeeRuleId;
 	}
 
+	public long getCurrentInventory()
+	{
+		return currentInventory;
+	}
+
+	public void setCurrentInventory(long currentInventory)
+	{
+		this.currentInventory = currentInventory;
+	}
+
 	public static class MOMapper implements RowMapper<SecKillPlanMO>
 	{
 		@Override
@@ -138,6 +149,7 @@ public class SecKillPlanMO extends BaseMO
 			mo.setStartTime(rs.getString("startTime"));
 			mo.setEndTime(rs.getString("endTime"));
 			mo.setPrice(rs.getLong("price"));
+			mo.setCurrentInventory(rs.getLong("currentInventory"));
 			mo.setLimitBuyNum(rs.getInt("limitBuyNum"));
 			mo.setEnable(rs.getString("enable"));
 			mo.setCreateTime(rs.getString("createTime"));

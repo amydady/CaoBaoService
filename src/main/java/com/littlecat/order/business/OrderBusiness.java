@@ -15,10 +15,14 @@ import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.common.consts.BuyType;
 import com.littlecat.common.consts.ErrorCode;
+import com.littlecat.common.consts.InventoryChangeType;
 import com.littlecat.common.consts.OrderState;
 import com.littlecat.goods.business.GoodsBusiness;
 import com.littlecat.goods.model.GoodsMO;
 import com.littlecat.inventory.business.GoodsInventoryBusiness;
+import com.littlecat.inventory.business.SecKillInventoryBusiness;
+import com.littlecat.inventory.model.GoodsInventoryMO;
+import com.littlecat.inventory.model.SecKillInventoryMO;
 import com.littlecat.lock.business.ResLockBusiness;
 import com.littlecat.lock.model.ResLockMO;
 import com.littlecat.order.dao.OrderDao;
@@ -44,6 +48,9 @@ public class OrderBusiness
 	private GoodsInventoryBusiness goodsInventoryBusiness;
 
 	@Autowired
+	private SecKillInventoryBusiness secKillInventoryBusiness;
+
+	@Autowired
 	private ResLockBusiness resLockBusiness;
 
 	@Autowired
@@ -51,8 +58,6 @@ public class OrderBusiness
 
 	private static final String MODEL_NAME = OrderMO.class.getSimpleName();
 	private static final String MODEL_NAME_ORDERDETAIL = OrderDetailMO.class.getSimpleName();
-	private static final String MODEL_NAME_GOODS = GoodsMO.class.getSimpleName();
-	private static final String MODEL_NAME_SECKILLPLAN = SecKillPlanMO.class.getSimpleName();
 
 	// 资源锁失效时间（秒）
 	public static final long RESLOCK_DISABLE_TIME = ResLockMO.DEFAULT_DISABLE_TIME;
@@ -65,7 +70,10 @@ public class OrderBusiness
 
 	public String addOrder(OrderMO orderMO, List<OrderDetailMO> orderDetailMOs) throws LittleCatException
 	{
-		validateReqData(orderMO, orderDetailMOs);
+		if (CollectionUtil.isEmpty(orderDetailMOs))
+		{
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME_ORDERDETAIL));
+		}
 
 		for (OrderDetailMO orderDetail : orderDetailMOs)
 		{
@@ -132,6 +140,7 @@ public class OrderBusiness
 		{
 			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
+
 		mo.setState(OrderState.yishouhuo);
 		mo.setReceiveTime(DateTimeUtil.getCurrentTimeForDisplay());
 
@@ -146,6 +155,7 @@ public class OrderBusiness
 		{
 			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
+
 		mo.setState(OrderState.tuikuanzhong);
 		mo.setReturnApplyTime(DateTimeUtil.getCurrentTimeForDisplay());
 
@@ -160,6 +170,7 @@ public class OrderBusiness
 		{
 			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
+
 		mo.setState(OrderState.yituikuan);
 		mo.setReturnCompleteTime(DateTimeUtil.getCurrentTimeForDisplay());
 
@@ -204,19 +215,6 @@ public class OrderBusiness
 		return orderDetailBusiness.getList(queryParam, mos);
 	}
 
-	private void validateReqData(OrderMO orderMO, List<OrderDetailMO> orderDetailMOs) throws LittleCatException
-	{
-		if (orderMO == null)
-		{
-			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
-		if (CollectionUtil.isEmpty(orderDetailMOs))
-		{
-			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME_ORDERDETAIL));
-		}
-	}
-
 	/**
 	 * 获取订单明细对应的需要锁定的资源
 	 * 
@@ -231,24 +229,7 @@ public class OrderBusiness
 		for (OrderDetailMO orderDetailMO : detailMOs)
 		{
 			String lockType = orderDetailMO.getBuyType().getResLockType();
-			String lockKey = orderDetailMO.getResId(); // 使用商品ID作为库存资源锁的key
-
-			if (orderDetailMO.getBuyType() == BuyType.seckill)
-			{
-				SecKillPlanMO secKillPlanMO = secKillPlanBusiness.getById(lockKey);
-
-				if (null == secKillPlanMO)
-				{
-					throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME_SECKILLPLAN).replace("{DETAILINFO}", "id:" + lockKey));
-				}
-
-				lockKey = secKillPlanMO.getGoodsId();
-			}
-
-			if (orderDetailMO.getBuyType() == BuyType.groupbuy)
-			{
-				// TODO:获取产品ID
-			}
+			String lockKey = orderDetailMO.getGoodsId(); // 使用商品ID作为库存资源锁的key
 
 			if (toBeLocked.containsKey(lockType))
 			{
@@ -272,9 +253,9 @@ public class OrderBusiness
 			ResLockMO.ResLockType resLockType = ResLockMO.ResLockType.valueOf(lockType);
 			List<ResLockMO> locks = new ArrayList<ResLockMO>();
 
-			for (String resId : lockInfo.get(lockType))
+			for (String lockKey : lockInfo.get(lockType))
 			{
-				locks.add(new ResLockMO(resLockType, resId, DateTimeUtil.getTimeForDisplay(DateTimeUtil.getCurrentTime() + RESLOCK_DISABLE_TIME * 1000, DateTimeUtil.defaultDateFormat)));
+				locks.add(new ResLockMO(resLockType, lockKey, DateTimeUtil.getTimeForDisplay(DateTimeUtil.getCurrentTime() + RESLOCK_DISABLE_TIME * 1000, DateTimeUtil.defaultDateFormat)));
 			}
 
 			if (!resLockBusiness.lock(locks, RESLOCK_TIMEOUTSECS, RESLOCK_RETRYTIMESTEP))
@@ -304,6 +285,55 @@ public class OrderBusiness
 
 	private void setInventoryInfoByOrderDetail(List<OrderDetailMO> detailMOs) throws LittleCatException
 	{
+		for (OrderDetailMO orderDetailMO : detailMOs)
+		{
+			String goodsId = orderDetailMO.getGoodsId();
 
+			if (orderDetailMO.getBuyType() == BuyType.normal)
+			{
+				GoodsInventoryMO inventoryMO = new GoodsInventoryMO();
+
+				inventoryMO.setChangeType(InventoryChangeType.dingdankoujian);
+				inventoryMO.setChangeValue(0 - orderDetailMO.getGoodsNum());
+				inventoryMO.setGoodsId(goodsId);
+
+				goodsInventoryBusiness.add(inventoryMO);
+
+				// 重新获取商品最新的库存
+				long currentGoodsInventory = goodsInventoryBusiness.getCurrentValueByGoodsId(goodsId);
+
+				// 修改商品信息中的库存字段
+				GoodsMO goodsMO = goodsBusiness.getById(goodsId);
+				goodsMO.setCurrentInventory(currentGoodsInventory);
+				goodsBusiness.modify(goodsMO);
+			}
+
+			if (orderDetailMO.getBuyType() == BuyType.seckill)
+			{
+				String planId = orderDetailMO.getResId();
+
+				SecKillInventoryMO inventoryMO = new SecKillInventoryMO();
+
+				inventoryMO.setPlanId(planId);
+				inventoryMO.setChangeType(InventoryChangeType.dingdankoujian);
+				inventoryMO.setChangeValue(0 - orderDetailMO.getGoodsNum());
+				inventoryMO.setGoodsId(goodsId);
+
+				secKillInventoryBusiness.add(inventoryMO);
+
+				// 重新获取商品秒杀计划最新的库存
+				long currentGoodsInventory = secKillInventoryBusiness.getCurrentValueByPlanId(planId);
+
+				// 修改商品秒杀计划信息中的库存字段
+				SecKillPlanMO secKillPlanMO = secKillPlanBusiness.getById(planId);
+				secKillPlanMO.setCurrentInventory(currentGoodsInventory);
+				secKillPlanBusiness.modify(secKillPlanMO);
+			}
+
+			if (orderDetailMO.getBuyType() == BuyType.groupbuy)
+			{
+				// TODO:
+			}
+		}
 	}
 }

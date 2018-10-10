@@ -1,6 +1,12 @@
 package com.littlecat.inventory.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
 import com.littlecat.cbb.common.BaseMO;
+import com.littlecat.common.consts.InventoryChangeType;
 
 /**
  * 秒杀库存MO
@@ -13,7 +19,7 @@ public class SecKillInventoryMO extends BaseMO
 	private String planId;
 	private String goodsId;
 	private long changeValue;
-	private String changeType;
+	private InventoryChangeType changeType;
 	private String operatorId;
 	private String description;
 	private String createTime;
@@ -50,12 +56,12 @@ public class SecKillInventoryMO extends BaseMO
 		this.changeValue = changeValue;
 	}
 
-	public String getChangeType()
+	public InventoryChangeType getChangeType()
 	{
 		return changeType;
 	}
 
-	public void setChangeType(String changeType)
+	public void setChangeType(InventoryChangeType changeType)
 	{
 		this.changeType = changeType;
 	}
@@ -108,6 +114,26 @@ public class SecKillInventoryMO extends BaseMO
 	public void setCreateMonth(int createMonth)
 	{
 		this.createMonth = createMonth;
+	}
+	
+	public static class MOMapper implements RowMapper<SecKillInventoryMO>
+	{
+		@Override
+		public SecKillInventoryMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			SecKillInventoryMO mo = new SecKillInventoryMO();
+
+			mo.setId(rs.getString("id"));
+			mo.setPlanId(rs.getString("planId"));
+			mo.setGoodsId(rs.getString("goodsId"));
+			mo.setChangeValue(rs.getLong("changeValue"));
+			mo.setChangeType(InventoryChangeType.valueOf(rs.getString("changeType")));
+			mo.setOperatorId(rs.getString("operatorId"));
+			mo.setDescription(rs.getString("description"));
+			mo.setCreateTime(rs.getString("createTime"));
+
+			return mo;
+		}
 	}
 
 }

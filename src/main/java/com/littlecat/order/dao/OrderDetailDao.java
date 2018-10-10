@@ -44,10 +44,10 @@ public class OrderDetailDao
 				ids.add(mo.getId());
 			}
 
-			batchParam.add(new Object[] { mo.getId(), mo.getOrderId(), mo.getBuyType().name(), mo.getResId(), mo.getPrice(), mo.getGoodsNum(), mo.getFee() });
+			batchParam.add(new Object[] { mo.getId(), mo.getOrderId(), mo.getBuyType().name(), mo.getResId(), mo.getGoodsId(), mo.getPrice(), mo.getGoodsNum(), mo.getFee() });
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,orderId,buyType,resId,price,goodsNum,fee) values(?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,orderId,buyType,resId,goodsId,price,goodsNum,fee) values(?,?,?,?,?,?,?,?)";
 
 		try
 		{

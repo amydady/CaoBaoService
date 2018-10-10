@@ -18,7 +18,8 @@ public class OrderDetailMO extends BaseMO
 {
 	private String orderId;
 	private BuyType buyType;
-	private String resId;
+	private String resId; // 根据butType类型区分，代表商品ID、秒杀计划ID、团购计划ID
+	private String goodsId;
 	private long price;
 	private long goodsNum;
 	private long fee;
@@ -83,6 +84,16 @@ public class OrderDetailMO extends BaseMO
 		this.fee = fee;
 	}
 
+	public String getGoodsId()
+	{
+		return goodsId;
+	}
+
+	public void setGoodsId(String goodsId)
+	{
+		this.goodsId = goodsId;
+	}
+
 	public static class MOMapper implements RowMapper<OrderDetailMO>
 	{
 		@Override
@@ -94,6 +105,7 @@ public class OrderDetailMO extends BaseMO
 			mo.setOrderId(rs.getString("orderId"));
 			mo.setBuyType(BuyType.valueOf(rs.getString("butType")));
 			mo.setResId(rs.getString("resId"));
+			mo.setGoodsId(rs.getString("goodsId"));
 			mo.setPrice(rs.getLong("price"));
 			mo.setGoodsNum(rs.getLong("goodsNum"));
 

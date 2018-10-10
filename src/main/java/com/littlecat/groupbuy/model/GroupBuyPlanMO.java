@@ -1,5 +1,10 @@
 package com.littlecat.groupbuy.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
 import com.littlecat.cbb.common.BaseMO;
 
 /**
@@ -14,7 +19,7 @@ public class GroupBuyPlanMO extends BaseMO
 	private String startTime;
 	private String endTime;
 	private long price;
-	private long initInventory;// 初始库存量
+	private long currentInventory;
 	private int memberNum;
 	private int limitBuyNum;
 	private String enable;
@@ -62,16 +67,6 @@ public class GroupBuyPlanMO extends BaseMO
 	public void setPrice(long price)
 	{
 		this.price = price;
-	}
-
-	public long getInitInventory()
-	{
-		return initInventory;
-	}
-
-	public void setInitInventory(long initInventory)
-	{
-		this.initInventory = initInventory;
 	}
 
 	public int getMemberNum()
@@ -144,4 +139,38 @@ public class GroupBuyPlanMO extends BaseMO
 		this.deliveryFeeRuleId = deliveryFeeRuleId;
 	}
 
+	public long getCurrentInventory()
+	{
+		return currentInventory;
+	}
+
+	public void setCurrentInventory(long currentInventory)
+	{
+		this.currentInventory = currentInventory;
+	}
+
+	public static class MOMapper implements RowMapper<GroupBuyPlanMO>
+	{
+		@Override
+		public GroupBuyPlanMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			GroupBuyPlanMO mo = new GroupBuyPlanMO();
+
+			mo.setId(rs.getString("id"));
+			mo.setGoodsId(rs.getString("goodsId"));
+			mo.setStartTime(rs.getString("startTime"));
+			mo.setEndTime(rs.getString("endTime"));
+			mo.setPrice(rs.getLong("price"));
+			mo.setCurrentInventory(rs.getLong("currentInventory"));
+			mo.setMemberNum(rs.getInt("memberNum"));
+			mo.setLimitBuyNum(rs.getInt("limitBuyNum"));
+			mo.setEnable(rs.getString("enable"));
+			mo.setCreateTime(rs.getString("createTime"));
+			mo.setCreateOperatorId(rs.getString("createOperatorId"));
+			mo.setDeliveryAreaId(rs.getString("deliveryAreaId"));
+			mo.setDeliveryFeeRuleId(rs.getString("deliveryFeeRuleId"));
+
+			return mo;
+		}
+	}
 }
