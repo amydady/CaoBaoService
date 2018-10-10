@@ -1,4 +1,4 @@
-package com.littlecat.seckill.business;
+package com.littlecat.groupbuy.business;
 
 import java.util.List;
 
@@ -13,28 +13,27 @@ import com.littlecat.common.consts.BooleanTag;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.goods.dao.GoodsDao;
 import com.littlecat.goods.model.GoodsMO;
-import com.littlecat.seckill.dao.SecKillPlanDao;
-import com.littlecat.seckill.model.SecKillPlanMO;
+import com.littlecat.groupbuy.dao.GroupBuyPlanDao;
+import com.littlecat.groupbuy.model.GroupBuyPlanMO;
 
 @Component
 @Transactional
-public class SecKillPlanBusiness
+public class GroupBuyPlanBusiness
 {
-	private static final String MODEL_NAME = SecKillPlanMO.class.getSimpleName();
+	private static final String MODEL_NAME = GroupBuyPlanMO.class.getSimpleName();
 	private static final String MODEL_NAME_GOODS = GoodsMO.class.getSimpleName();
 
 	@Autowired
-	private SecKillPlanDao secKillPlanDao;
+	private GroupBuyPlanDao groupBuyPlanDao;
 
 	@Autowired
 	private GoodsDao goodsDao;
 
-	public String add(SecKillPlanMO mo) throws LittleCatException
+	public String add(GroupBuyPlanMO mo) throws LittleCatException
 	{
 		validateReqData(mo);
-		initSettingsForReqData(mo);
 
-		String secKillPlanId = secKillPlanDao.add(mo);
+		String secKillPlanId = groupBuyPlanDao.add(mo);
 
 		GoodsMO goodsMO = goodsDao.getById(mo.getGoodsId());
 		goodsMO.setHasSecKillPlan(BooleanTag.Y.name());
@@ -43,32 +42,31 @@ public class SecKillPlanBusiness
 		return secKillPlanId;
 	}
 
-	public void modify(SecKillPlanMO mo) throws LittleCatException
+	public void modify(GroupBuyPlanMO mo) throws LittleCatException
 	{
 		validateReqData(mo);
-		initSettingsForReqData(mo);
 
-		secKillPlanDao.modify(mo);
+		groupBuyPlanDao.modify(mo);
 	}
 
 	public void delete(String id) throws LittleCatException
 	{
-		secKillPlanDao.delete(id);
+		groupBuyPlanDao.delete(id);
 	}
 
 	public void delete(List<String> ids) throws LittleCatException
 	{
-		secKillPlanDao.delete(ids);
+		groupBuyPlanDao.delete(ids);
 	}
 
-	public SecKillPlanMO getById(String id) throws LittleCatException
+	public GroupBuyPlanMO getById(String id) throws LittleCatException
 	{
-		return secKillPlanDao.getById(id);
+		return groupBuyPlanDao.getById(id);
 	}
 
-	public int getList(QueryParam queryParam, List<SecKillPlanMO> mos) throws LittleCatException
+	public int getList(QueryParam queryParam, List<GroupBuyPlanMO> mos) throws LittleCatException
 	{
-		return secKillPlanDao.getList(queryParam, mos);
+		return groupBuyPlanDao.getList(queryParam, mos);
 	}
 
 	/**
@@ -77,7 +75,7 @@ public class SecKillPlanBusiness
 	 * @param reqData
 	 * @throws LittleCatException
 	 */
-	private void validateReqData(SecKillPlanMO reqData) throws LittleCatException
+	private void validateReqData(GroupBuyPlanMO reqData) throws LittleCatException
 	{
 		if (reqData == null)
 		{
@@ -116,27 +114,5 @@ public class SecKillPlanBusiness
 		// TODO:limitBuyNum校验
 
 		// TODO:deliveryAreaId校验
-	}
-
-	/**
-	 * 请求对象的一些初始化设置
-	 * 
-	 * @param reqData
-	 */
-	private void initSettingsForReqData(SecKillPlanMO reqData)
-	{
-		// 根据时间窗口设置Enable标记
-		long startTime = Long.valueOf(reqData.getStartTime());
-		long endTime = Long.valueOf(reqData.getEndTime());
-		long now = Long.valueOf(DateTimeUtil.getCurrentTimeForDisplay());
-
-		if (now >= startTime && now < endTime)
-		{
-			reqData.setEnable(BooleanTag.Y.name());
-		}
-		else
-		{
-			reqData.setEnable(BooleanTag.N.name());
-		}
 	}
 }

@@ -39,6 +39,7 @@ public enum TableName
 	OrderDetail("t_order_detail"),
 	
 	SecKillPlan("t_seckill_seckillplan"),
+	GroupBuyPlan("t_groupbuy_groupbuyplan"),
 	
 	
 

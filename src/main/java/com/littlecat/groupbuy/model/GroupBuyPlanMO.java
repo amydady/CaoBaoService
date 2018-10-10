@@ -2,10 +2,15 @@ package com.littlecat.groupbuy.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
+import com.littlecat.cbb.utils.DateTimeUtil;
+import com.littlecat.common.consts.BooleanTag;
 
 /**
  * 团购计划MO
@@ -19,10 +24,10 @@ public class GroupBuyPlanMO extends BaseMO
 	private String startTime;
 	private String endTime;
 	private long price;
+	private String enable;
 	private long currentInventory;
 	private int memberNum;
 	private int limitBuyNum;
-	private String enable;
 	private String createTime;
 	private String createOperatorId;
 
@@ -89,16 +94,6 @@ public class GroupBuyPlanMO extends BaseMO
 		this.limitBuyNum = limitBuyNum;
 	}
 
-	public String getEnable()
-	{
-		return enable;
-	}
-
-	public void setEnable(String enable)
-	{
-		this.enable = enable;
-	}
-
 	public String getCreateTime()
 	{
 		return createTime;
@@ -149,11 +144,24 @@ public class GroupBuyPlanMO extends BaseMO
 		this.currentInventory = currentInventory;
 	}
 
+	public String getEnable()
+	{
+		return enable;
+	}
+
+	public void setEnable(String enable)
+	{
+		this.enable = enable;
+	}
+
 	public static class MOMapper implements RowMapper<GroupBuyPlanMO>
 	{
+		private static final Logger logger = LoggerFactory.getLogger(MOMapper.class);
+
 		@Override
 		public GroupBuyPlanMO mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
+
 			GroupBuyPlanMO mo = new GroupBuyPlanMO();
 
 			mo.setId(rs.getString("id"));
@@ -161,10 +169,31 @@ public class GroupBuyPlanMO extends BaseMO
 			mo.setStartTime(rs.getString("startTime"));
 			mo.setEndTime(rs.getString("endTime"));
 			mo.setPrice(rs.getLong("price"));
+
+			try
+			{
+				long startTime = DateTimeUtil.defaultDateFormat.parse(mo.getStartTime()).getTime();
+				long endTime = DateTimeUtil.defaultDateFormat.parse(mo.getEndTime()).getTime();
+				long now = DateTimeUtil.defaultDateFormat.parse(DateTimeUtil.getCurrentTimeForDisplay()).getTime();
+
+				if (now >= startTime && now <= endTime)
+				{
+					mo.setEnable(BooleanTag.Y.name());
+				}
+				else
+				{
+					mo.setEnable(BooleanTag.N.name());
+				}
+			}
+			catch (ParseException e)
+			{
+				logger.error("Parse Time Exception,SecKillPlanId:{},startTime:{},endTime:{}", mo.getId(), mo.getStartTime(), mo.getEndTime());
+				mo.setEnable(BooleanTag.N.name());
+			}
+
 			mo.setCurrentInventory(rs.getLong("currentInventory"));
 			mo.setMemberNum(rs.getInt("memberNum"));
 			mo.setLimitBuyNum(rs.getInt("limitBuyNum"));
-			mo.setEnable(rs.getString("enable"));
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setCreateOperatorId(rs.getString("createOperatorId"));
 			mo.setDeliveryAreaId(rs.getString("deliveryAreaId"));

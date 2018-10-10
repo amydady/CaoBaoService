@@ -1,4 +1,4 @@
-package com.littlecat.seckill.dao;
+package com.littlecat.groupbuy.dao;
 
 import java.util.List;
 
@@ -14,29 +14,29 @@ import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.TableName;
 import com.littlecat.common.utils.DaoUtil;
-import com.littlecat.seckill.model.SecKillPlanMO;
+import com.littlecat.groupbuy.model.GroupBuyPlanMO;
 
 @Component
-public class SecKillPlanDao
+public class GroupBuyPlanDao
 {
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
 
-	private final String TABLE_NAME = TableName.SecKillPlan.getName();
-	private static final String MODEL_NAME = SecKillPlanMO.class.getSimpleName();
+	private final String TABLE_NAME = TableName.GroupBuyPlan.getName();
+	private static final String MODEL_NAME = GroupBuyPlanMO.class.getSimpleName();
 
-	public String add(SecKillPlanMO mo) throws LittleCatException
+	public String add(GroupBuyPlanMO mo) throws LittleCatException
 	{
 		if (StringUtil.isEmpty(mo.getId()))
 		{
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,goodsId,startTime,endTime,price,limitBuyNum,createOperatorId,deliveryAreaId,deliveryFeeRuleId) values(?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,goodsId,startTime,endTime,price,memberNum,limitBuyNum,createOperatorId,deliveryAreaId,deliveryFeeRuleId) values(?,?,?,?,?,?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getGoodsId(), mo.getStartTime(), mo.getEndTime(), mo.getPrice(), mo.getLimitBuyNum(), mo.getCreateOperatorId(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getGoodsId(), mo.getStartTime(), mo.getEndTime(), mo.getPrice(), mo.getMemberNum(), mo.getLimitBuyNum(), mo.getCreateOperatorId(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId() });
 
 			if (ret != 1)
 			{
@@ -51,13 +51,13 @@ public class SecKillPlanDao
 		return mo.getId();
 	}
 
-	public void modify(SecKillPlanMO mo) throws LittleCatException
+	public void modify(GroupBuyPlanMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set startTime = ?,endTime = ?,price = ?,currentInventory = ?,limitBuyNum = ?,deliveryAreaId = ?,deliveryFeeRuleId = ? where id = ?";
+		String sql = "update " + TABLE_NAME + " set startTime = ?,endTime = ?,price = ?,currentInventory = ?,memberNum = ?,limitBuyNum = ?,deliveryAreaId = ?,deliveryFeeRuleId = ? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getStartTime(), mo.getEndTime(), mo.getPrice(),mo.getCurrentInventory(), mo.getLimitBuyNum(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getStartTime(), mo.getEndTime(), mo.getPrice(), mo.getCurrentInventory(), mo.getMemberNum(), mo.getLimitBuyNum(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getId() });
 
 			if (ret != 1)
 			{
@@ -79,14 +79,14 @@ public class SecKillPlanDao
 	{
 		DaoUtil.delete(TABLE_NAME, ids, jdbcTemplate);
 	}
-	
-	public SecKillPlanMO getById(String id) throws LittleCatException
+
+	public GroupBuyPlanMO getById(String id) throws LittleCatException
 	{
-		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new SecKillPlanMO.MOMapper());
+		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new GroupBuyPlanMO.MOMapper());
 	}
 
-	public int getList(QueryParam queryParam, List<SecKillPlanMO> mos) throws LittleCatException
+	public int getList(QueryParam queryParam, List<GroupBuyPlanMO> mos) throws LittleCatException
 	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new SecKillPlanMO.MOMapper());
+		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new GroupBuyPlanMO.MOMapper());
 	}
 }

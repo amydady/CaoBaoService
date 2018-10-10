@@ -1,4 +1,4 @@
-package com.littlecat.seckill.rest;
+package com.littlecat.groupbuy.rest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,26 +21,26 @@ import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
-import com.littlecat.seckill.business.SecKillPlanBusiness;
-import com.littlecat.seckill.model.SecKillPlanMO;
+import com.littlecat.groupbuy.business.GroupBuyPlanBusiness;
+import com.littlecat.groupbuy.model.GroupBuyPlanMO;
 
 @RestController
-@RequestMapping("/rest/littlecat/caobao/seckillplan")
-public class SecKillPlanController
+@RequestMapping("/rest/littlecat/caobao/groupbuyplan")
+public class GroupBuyPlanController
 {
 	@Autowired
-	private SecKillPlanBusiness secKillPlanBusiness;
+	private GroupBuyPlanBusiness groupBuyPlanBusiness;
 
-	private static final Logger logger = LoggerFactory.getLogger(SecKillPlanController.class);
+	private static final Logger logger = LoggerFactory.getLogger(GroupBuyPlanController.class);
 
 	@GetMapping(value = "/getbyid")
-	public RestRsp<SecKillPlanMO> getById(@RequestParam String id)
+	public RestRsp<GroupBuyPlanMO> getById(@RequestParam String id)
 	{
-		RestRsp<SecKillPlanMO> result = new RestRsp<SecKillPlanMO>();
+		RestRsp<GroupBuyPlanMO> result = new RestRsp<GroupBuyPlanMO>();
 
 		try
 		{
-			SecKillPlanMO mo = secKillPlanBusiness.getById(id);
+			GroupBuyPlanMO mo = groupBuyPlanBusiness.getById(id);
 			result.getData().add(mo);
 		}
 		catch (LittleCatException e)
@@ -60,13 +60,13 @@ public class SecKillPlanController
 	}
 
 	@PostMapping(value = "/add")
-	public RestRsp<String> add(@RequestBody SecKillPlanMO mo)
+	public RestRsp<String> add(@RequestBody GroupBuyPlanMO mo)
 	{
 		RestRsp<String> result = new RestRsp<String>();
 
 		try
 		{
-			result.getData().add(secKillPlanBusiness.add(mo));
+			result.getData().add(groupBuyPlanBusiness.add(mo));
 		}
 		catch (LittleCatException e)
 		{
@@ -85,13 +85,13 @@ public class SecKillPlanController
 	}
 
 	@PutMapping(value = "/modify")
-	public RestSimpleRsp modify(@RequestBody SecKillPlanMO mo)
+	public RestSimpleRsp modify(@RequestBody GroupBuyPlanMO mo)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			secKillPlanBusiness.modify(mo);
+			groupBuyPlanBusiness.modify(mo);
 		}
 		catch (LittleCatException e)
 		{
@@ -116,7 +116,8 @@ public class SecKillPlanController
 
 		try
 		{
-			secKillPlanBusiness.delete(id);
+			groupBuyPlanBusiness.delete(id);
+			;
 		}
 		catch (LittleCatException e)
 		{
@@ -141,7 +142,7 @@ public class SecKillPlanController
 
 		try
 		{
-			secKillPlanBusiness.delete(ids);
+			groupBuyPlanBusiness.delete(ids);
 		}
 		catch (LittleCatException e)
 		{
@@ -160,14 +161,14 @@ public class SecKillPlanController
 	}
 
 	@PostMapping(value = "/getList")
-	public RestRsp<SecKillPlanMO> getList(@RequestBody QueryParam queryParam)
+	public RestRsp<GroupBuyPlanMO> getList(@RequestBody QueryParam queryParam)
 	{
-		RestRsp<SecKillPlanMO> result = new RestRsp<SecKillPlanMO>();
+		RestRsp<GroupBuyPlanMO> result = new RestRsp<GroupBuyPlanMO>();
 
 		try
 		{
-			List<SecKillPlanMO> mos = new ArrayList<SecKillPlanMO>();
-			int totalNum = secKillPlanBusiness.getList(queryParam, mos);
+			List<GroupBuyPlanMO> mos = new ArrayList<GroupBuyPlanMO>();
+			int totalNum = groupBuyPlanBusiness.getList(queryParam, mos);
 			result.setTotalNum(totalNum);
 			result.getData().addAll(mos);
 		}

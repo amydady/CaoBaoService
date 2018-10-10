@@ -1,6 +1,6 @@
 CREATE DATABASE `caobaodb` ;
 
-# system
+# 系统
 CREATE TABLE `t_sys_param` (
 	`name` VARCHAR(255) NOT NULL,
 	`value` VARCHAR(255) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE `t_supplier` (
 	UNIQUE KEY `name` (`name`)
 );
 
-# terminaluser
+# 消费者
 
 CREATE TABLE `t_terminaluser` (
 	`id` VARCHAR(255) NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE `t_terminaluser_deliveryaddress` (
 	UNIQUE KEY `name` (`terminalUserId`,`name`)
 );
 
-# basic info
+# 基础信息
 drop table t_basicinfo_province;
 CREATE TABLE `t_basicinfo_province` (
 	`id` VARCHAR(50) NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE `t_basicinfo_area` (
 	PRIMARY KEY (`id`)
 );
 
-#goods --
+#商品 --
 CREATE TABLE `t_goods_classify` (
 	`id` VARCHAR(255) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
@@ -135,6 +135,7 @@ CREATE TABLE `t_goods` (
 	UNIQUE KEY `name` (`name`)
 );
 
+#秒杀
 CREATE TABLE `t_seckill_seckillplan` (
 	`id` VARCHAR(255) NOT NULL,
 	`goodsId` VARCHAR(255) NOT NULL,
@@ -143,7 +144,25 @@ CREATE TABLE `t_seckill_seckillplan` (
 	`price` INT NOT NULL,
 	`currentInventory` INT NOT NULL DEFAULT 0,
 	`limitBuyNum` INT NOT NULL,
-	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`createOperatorId` VARCHAR(255) NOT NULL,
+	`deliveryAreaId` VARCHAR(255) NOT NULL,
+	`deliveryFeeRuleId` VARCHAR(255) NOT NULL,
+	
+	
+	PRIMARY KEY (`id`)
+);
+
+#团购
+CREATE TABLE `t_groupbuy_groupbuyplan` (
+	`id` VARCHAR(255) NOT NULL,
+	`goodsId` VARCHAR(255) NOT NULL,
+	`startTime` DATETIME NOT NULL,
+	`endTime` DATETIME NOT NULL,
+	`price` INT NOT NULL,
+	`currentInventory` INT NOT NULL DEFAULT 0,
+	`memberNum` INT NOT NULL,
+	`limitBuyNum` INT NOT NULL,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`createOperatorId` VARCHAR(255) NOT NULL,
 	`deliveryAreaId` VARCHAR(255) NOT NULL,
@@ -166,7 +185,7 @@ CREATE TABLE `t_shoppingcart` (
 	PRIMARY KEY (`id`)
 );
 
-#order
+#订单
 CREATE TABLE `t_order` (
 	`id` VARCHAR(255) NOT NULL,
 	`terminalUserId` VARCHAR(255) NOT NULL,

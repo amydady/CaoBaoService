@@ -13,5 +13,6 @@ public enum OrderState
 	daiqianshou, // 待签收
 	yishouhuo, // 已收货
 	tuikuanzhong, // 退款中
-	yituikuan// 已退款
+	yituikuan, // 已退款
+	tuangoujiesantuikuan,// 团购解散退款
 }
