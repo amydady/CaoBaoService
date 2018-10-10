@@ -31,17 +31,17 @@ public class OrderDao
 		{
 			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
-		
+
 		if (StringUtil.isEmpty(mo.getId()))
 		{
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,fee,state,provinceId,cityId,areaId,detailInfo) values(?,?,?,?,?,?,?,?,)";
+		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,fee,state,provinceId,cityId,areaId,detailInfo,groupBuyPlanId,groupBuyTaskId) values(?,?,?,?,?,?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvinceId(), mo.getDeliveryAddress().getCityId(), mo.getDeliveryAddress().getAreaId(), mo.getDeliveryAddress().getDetailInfo() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvinceId(), mo.getDeliveryAddress().getCityId(), mo.getDeliveryAddress().getAreaId(), mo.getDeliveryAddress().getDetailInfo(), mo.getGroupBuyPlanId(), mo.getGroupBuyTaskId() });
 
 			if (ret != 1)
 			{
@@ -58,11 +58,11 @@ public class OrderDao
 
 	public void modify(OrderMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set state = ?,payTime = ?,receiveTime = ?,returnApplyTime = ?,returnCompleteTime = ? where id = ?";
+		String sql = "update " + TABLE_NAME + " set state = ?,payTime = ?,receiveTime = ?,returnApplyTime = ?,returnCompleteTime = ?,groupCompleteTime=?,groupCancelTime=? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getState().name(), mo.getPayTime(), mo.getReceiveTime(), mo.getReturnApplyTime(), mo.getReturnCompleteTime(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getState().name(), mo.getPayTime(), mo.getReceiveTime(), mo.getReturnApplyTime(), mo.getReturnCompleteTime(), mo.getGroupCompleteTime(), mo.getGroupCancelTime(), mo.getId() });
 
 			if (ret != 1)
 			{

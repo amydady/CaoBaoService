@@ -21,11 +21,19 @@ public class OrderMO extends BaseMO
 	private long fee;
 	private OrderState state;
 	private AddressMO deliveryAddress; // 发货地址信息
+
 	private String createTime;
 	private String payTime; // 付款时间
 	private String receiveTime;// 收货时间
 	private String returnApplyTime;// 退款申请时间
 	private String returnCompleteTime;// 退款完成时间
+
+	// 团购业务专用
+	private String groupBuyPlanId; // 团购计划ID
+	private String groupBuyTaskId; // 团购任务实例ID
+	private String groupCompleteTime; // 成团时间
+	private String groupCancelTime;// 团购解散退款时间
+	// 团购业务专用end
 
 	public String getTerminalUserId()
 	{
@@ -117,6 +125,46 @@ public class OrderMO extends BaseMO
 		this.returnCompleteTime = returnCompleteTime;
 	}
 
+	public String getGroupBuyPlanId()
+	{
+		return groupBuyPlanId;
+	}
+
+	public void setGroupBuyPlanId(String groupBuyPlanId)
+	{
+		this.groupBuyPlanId = groupBuyPlanId;
+	}
+
+	public String getGroupBuyTaskId()
+	{
+		return groupBuyTaskId;
+	}
+
+	public void setGroupBuyTaskId(String groupBuyTaskId)
+	{
+		this.groupBuyTaskId = groupBuyTaskId;
+	}
+
+	public String getGroupCompleteTime()
+	{
+		return groupCompleteTime;
+	}
+
+	public void setGroupCompleteTime(String groupCompleteTime)
+	{
+		this.groupCompleteTime = groupCompleteTime;
+	}
+
+	public String getGroupCancelTime()
+	{
+		return groupCancelTime;
+	}
+
+	public void setGroupCancelTime(String groupCancelTime)
+	{
+		this.groupCancelTime = groupCancelTime;
+	}
+
 	public static class MOMapper implements RowMapper<OrderMO>
 	{
 		@Override
@@ -137,6 +185,11 @@ public class OrderMO extends BaseMO
 			mo.setReceiveTime(rs.getString("receiveTime"));
 			mo.setReturnApplyTime(rs.getString("returnApplyTime"));
 			mo.setReturnCompleteTime(rs.getString("returnCompleteTime"));
+
+			mo.setGroupBuyPlanId(rs.getString("groupBuyPlanId"));
+			mo.setGroupBuyTaskId(rs.getString("groupBuyTaskId"));
+			mo.setGroupCompleteTime(rs.getString("groupCompleteTime"));
+			mo.setGroupCancelTime(rs.getString("groupCancelTime"));
 
 			return mo;
 		}

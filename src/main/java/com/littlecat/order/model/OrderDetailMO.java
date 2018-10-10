@@ -18,7 +18,7 @@ public class OrderDetailMO extends BaseMO
 {
 	private String orderId;
 	private BuyType buyType;
-	private String resId; // 根据butType类型区分，代表商品ID、秒杀计划ID、团购计划ID
+	private String resId; // 根据butType类型区分，代表商品ID、秒杀计划ID、团购任务实例ID
 	private String goodsId;
 	private long price;
 	private long goodsNum;

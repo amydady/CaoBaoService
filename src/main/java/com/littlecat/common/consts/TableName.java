@@ -40,6 +40,7 @@ public enum TableName
 	
 	SecKillPlan("t_seckill_seckillplan"),
 	GroupBuyPlan("t_groupbuy_groupbuyplan"),
+	GroupBuyTask("t_groupbuy_groupbuytask"),
 	
 	
 

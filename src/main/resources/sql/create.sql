@@ -189,17 +189,23 @@ CREATE TABLE `t_shoppingcart` (
 CREATE TABLE `t_order` (
 	`id` VARCHAR(255) NOT NULL,
 	`terminalUserId` VARCHAR(255) NOT NULL,
-	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`fee` INT NOT NULL,
 	`state` VARCHAR(255) NOT NULL,
 	`provinceId` VARCHAR(255) NOT NULL,
 	`cityId` VARCHAR(255) NOT NULL,
 	`areaId` VARCHAR(255) NOT NULL,
 	`detailInfo` VARCHAR(255) NOT NULL,
-	`payTime` VARCHAR(255) NULL,
-	`receiveTime` VARCHAR(255) NULL,
-	`returnApplyTime` VARCHAR(255) NULL,
-	`returnCompleteTime` VARCHAR(255) NULL,
+	
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`payTime` DATETIME NULL,
+	`receiveTime` DATETIME NULL,
+	`returnApplyTime` DATETIME NULL,
+	`returnCompleteTime` DATETIME NULL,
+	
+	`groupBuyPlanId` VARCHAR(255) NULL,
+	`groupBuyTaskId` VARCHAR(255) NULL,
+	`groupCompleteTime` DATETIME NULL,
+	`groupCancelTime` DATETIME NULL,
 	
 	PRIMARY KEY (`id`)
 );

@@ -18,7 +18,6 @@ public class GroupBuyTaskMO extends BaseMO
 	private String planId;
 	private String createTime;
 	private String createOperatorId; // 开团的消费者
-	private String orders; // 关联的订单，多个订单用逗号隔开
 	private String completeTime;// 成团时间
 
 	public String getPlanId()
@@ -50,17 +49,7 @@ public class GroupBuyTaskMO extends BaseMO
 	{
 		this.createOperatorId = createOperatorId;
 	}
-
-	public String getOrders()
-	{
-		return orders;
-	}
-
-	public void setOrders(String orders)
-	{
-		this.orders = orders;
-	}
-
+	
 	public String getCompleteTime()
 	{
 		return completeTime;
@@ -82,7 +71,6 @@ public class GroupBuyTaskMO extends BaseMO
 			mo.setPlanId(rs.getString("planId"));
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setCreateOperatorId(rs.getString("createOperatorId"));
-			mo.setOrders(rs.getString("orders"));
 			mo.setCompleteTime(rs.getString("completeTime"));
 
 			return mo;
