@@ -25,9 +25,10 @@ public class GroupBuyPlanMO extends BaseMO
 	private String endTime;
 	private long price;
 	private String enable;
+	private long planInventory;	//规划用于团购的库存
 	private long currentInventory;
-	private int memberNum;
-	private int limitBuyNum;
+	private int memberNum;// 成团人员数量
+	private int limitBuyNum; // 每个人的限购数量
 	private String createTime;
 	private String createOperatorId;
 
@@ -154,6 +155,16 @@ public class GroupBuyPlanMO extends BaseMO
 		this.enable = enable;
 	}
 
+	public long getPlanInventory()
+	{
+		return planInventory;
+	}
+
+	public void setPlanInventory(long planInventory)
+	{
+		this.planInventory = planInventory;
+	}
+
 	public static class MOMapper implements RowMapper<GroupBuyPlanMO>
 	{
 		private static final Logger logger = LoggerFactory.getLogger(MOMapper.class);
@@ -192,6 +203,9 @@ public class GroupBuyPlanMO extends BaseMO
 			}
 
 			mo.setCurrentInventory(rs.getLong("currentInventory"));
+			
+			//TODO:planInventory
+			
 			mo.setMemberNum(rs.getInt("memberNum"));
 			mo.setLimitBuyNum(rs.getInt("limitBuyNum"));
 			mo.setCreateTime(rs.getString("createTime"));

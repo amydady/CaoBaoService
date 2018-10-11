@@ -1,5 +1,6 @@
 package com.littlecat.groupbuy.business;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
-import com.littlecat.goods.dao.GoodsDao;
+import com.littlecat.goods.business.GoodsBusiness;
 import com.littlecat.goods.model.GoodsMO;
 import com.littlecat.groupbuy.dao.GroupBuyTaskDao;
+import com.littlecat.groupbuy.model.GroupBuyPlanMO;
 import com.littlecat.groupbuy.model.GroupBuyTaskMO;
+import com.littlecat.inventory.business.GroupBuyInventoryBusiness;
+import com.littlecat.order.business.OrderBusiness;
+import com.littlecat.order.model.OrderDetailMO;
+import com.littlecat.order.model.OrderMO;
 
 @Component
 @Transactional
@@ -22,14 +28,40 @@ public class GroupBuyTaskBusiness
 
 	@Autowired
 	private GroupBuyTaskDao groupBuyTaskDao;
+	
+	@Autowired
+	private GroupBuyPlanBusiness groupBuyPlanBusiness;
 
 	@Autowired
-	private GoodsDao goodsDao;
+	private GoodsBusiness goodsBusiness;
+	
+	@Autowired
+	private GroupBuyInventoryBusiness groupBuyInventoryBusiness;
+	
+	@Autowired
+	private OrderBusiness orderBusiness;
 
 	public String add(GroupBuyTaskMO mo) throws LittleCatException
 	{
-		// TODO:对应的订单信息处理
-		return groupBuyTaskDao.add(mo);
+		String id = groupBuyTaskDao.add(mo);
+		
+		GroupBuyPlanMO groupBuyPlanMO = groupBuyPlanBusiness.getById(mo.getPlanId());
+		
+		if(groupBuyPlanMO == null)
+		{
+			
+		}
+		
+		OrderMO orderMO = new OrderMO();
+		orderMO.setTerminalUserId(mo.getCreateOperatorId());
+		
+		List<OrderDetailMO> orderDetailMOs = new ArrayList<OrderDetailMO>();
+		
+		orderBusiness.addOrder(orderMO, orderDetailMOs);
+		
+		
+		
+		return id;
 	}
 
 	public void modify(GroupBuyTaskMO mo) throws LittleCatException

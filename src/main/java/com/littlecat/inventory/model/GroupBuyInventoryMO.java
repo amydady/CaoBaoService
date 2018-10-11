@@ -1,6 +1,12 @@
 package com.littlecat.inventory.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
 import com.littlecat.cbb.common.BaseMO;
+import com.littlecat.common.consts.InventoryChangeType;
 
 /**
  * 团购库存MO
@@ -13,12 +19,10 @@ public class GroupBuyInventoryMO extends BaseMO
 	private String planId;
 	private String goodsId;
 	private long changeValue;
-	private String changeType;
+	private InventoryChangeType changeType;
 	private String operatorId;
 	private String description;
 	private String createTime;
-	private int createYear;
-	private int createMonth;
 
 	public String getPlanId()
 	{
@@ -50,12 +54,12 @@ public class GroupBuyInventoryMO extends BaseMO
 		this.changeValue = changeValue;
 	}
 
-	public String getChangeType()
+	public InventoryChangeType getChangeType()
 	{
 		return changeType;
 	}
 
-	public void setChangeType(String changeType)
+	public void setChangeType(InventoryChangeType changeType)
 	{
 		this.changeType = changeType;
 	}
@@ -90,24 +94,23 @@ public class GroupBuyInventoryMO extends BaseMO
 		this.createTime = createTime;
 	}
 
-	public int getCreateYear()
+	public static class MOMapper implements RowMapper<GroupBuyInventoryMO>
 	{
-		return createYear;
-	}
+		@Override
+		public GroupBuyInventoryMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			GroupBuyInventoryMO mo = new GroupBuyInventoryMO();
 
-	public void setCreateYear(int createYear)
-	{
-		this.createYear = createYear;
-	}
+			mo.setId(rs.getString("id"));
+			mo.setPlanId(rs.getString("planId"));
+			mo.setGoodsId(rs.getString("goodsId"));
+			mo.setChangeValue(rs.getLong("changeValue"));
+			mo.setChangeType(InventoryChangeType.valueOf(rs.getString("changeType")));
+			mo.setOperatorId(rs.getString("operatorId"));
+			mo.setDescription(rs.getString("description"));
+			mo.setCreateTime(rs.getString("createTime"));
 
-	public int getCreateMonth()
-	{
-		return createMonth;
+			return mo;
+		}
 	}
-
-	public void setCreateMonth(int createMonth)
-	{
-		this.createMonth = createMonth;
-	}
-
 }
