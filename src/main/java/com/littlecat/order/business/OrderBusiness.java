@@ -13,12 +13,17 @@ import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.DateTimeUtil;
+import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.common.consts.BuyType;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.InventoryChangeType;
 import com.littlecat.common.consts.OrderState;
 import com.littlecat.goods.business.GoodsBusiness;
 import com.littlecat.goods.model.GoodsMO;
+import com.littlecat.groupbuy.business.GroupBuyPlanBusiness;
+import com.littlecat.groupbuy.business.GroupBuyTaskBusiness;
+import com.littlecat.groupbuy.model.GroupBuyPlanMO;
+import com.littlecat.groupbuy.model.GroupBuyTaskMO;
 import com.littlecat.inventory.business.GoodsInventoryBusiness;
 import com.littlecat.inventory.business.SecKillInventoryBusiness;
 import com.littlecat.inventory.model.GoodsInventoryMO;
@@ -45,6 +50,12 @@ public class OrderBusiness
 	private GoodsBusiness goodsBusiness;
 
 	@Autowired
+	private GroupBuyTaskBusiness groupBuyTaskBusiness;
+
+	@Autowired
+	private GroupBuyPlanBusiness groupBuyPlanBusiness;
+
+	@Autowired
 	private GoodsInventoryBusiness goodsInventoryBusiness;
 
 	@Autowired
@@ -58,6 +69,8 @@ public class OrderBusiness
 
 	private static final String MODEL_NAME = OrderMO.class.getSimpleName();
 	private static final String MODEL_NAME_ORDERDETAIL = OrderDetailMO.class.getSimpleName();
+	private static final String MODEL_NAME_GROUPBUYTASK = GroupBuyTaskMO.class.getSimpleName();
+	private static final String MODEL_NAME_GROUPBUYPLAN = GroupBuyPlanMO.class.getSimpleName();
 
 	// 资源锁失效时间（秒）
 	public static final long RESLOCK_DISABLE_TIME = ResLockMO.DEFAULT_DISABLE_TIME;
@@ -102,20 +115,21 @@ public class OrderBusiness
 	 */
 	public void payOrder(String id) throws LittleCatException
 	{
-		OrderMO mo = orderDao.getById(id);
+		OrderMO orderMO = orderDao.getById(id);
 
-		if (mo == null)
+		if (orderMO == null)
 		{
 			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
-		List<OrderDetailMO> detailMOs = orderDetailBusiness.getByOrderId(mo.getId());
+		List<OrderDetailMO> detailMOs = orderDetailBusiness.getByOrderId(orderMO.getId());
 
 		if (CollectionUtil.isEmpty(detailMOs))
 		{
 			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME_ORDERDETAIL));
 		}
 
+		String currentTime = DateTimeUtil.getCurrentTimeForDisplay();
 		Map<String, List<String>> lockInfo = getResLockInfo(detailMOs);
 
 		if (!lock(lockInfo))
@@ -123,9 +137,48 @@ public class OrderBusiness
 			throw new LittleCatException(ErrorCode.LockResError.getCode(), ErrorCode.LockResError.getMsg());
 		}
 
-		mo.setState(OrderState.daiqianshou);
-		mo.setPayTime(DateTimeUtil.getCurrentTimeForDisplay());
-		orderDao.modify(mo);
+		String groupBuyPlanId = orderMO.getGroupBuyPlanId();
+		String groupBuyTaskId = orderMO.getGroupBuyTaskId();
+		
+		if (StringUtil.isNotEmpty(groupBuyTaskId))
+		{// 团购订单
+			GroupBuyTaskMO groupBuyTaskMO = groupBuyTaskBusiness.getById(groupBuyTaskId);
+			GroupBuyPlanMO groupBuyPlanMO = groupBuyPlanBusiness.getById(groupBuyPlanId);
+			
+			if(groupBuyTaskMO == null)
+			{
+				throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME_GROUPBUYTASK));
+			}
+			
+			if(groupBuyPlanMO == null)
+			{
+				throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME_GROUPBUYPLAN));
+			}
+			
+			if (groupBuyTaskMO.getCurrentMemberNum() + 1 == groupBuyPlanMO.getMemberNum())
+			{// 加上此单，已成团
+				orderMO.setState(OrderState.daiqianshou);
+				orderMO.setGroupCompleteTime(DateTimeUtil.getCurrentTimeForDisplay());
+				
+				groupBuyTaskMO.setCompleteTime(currentTime);
+			}
+			else 
+			{
+				orderMO.setState(OrderState.daichengtuan);
+			}
+			
+			groupBuyTaskMO.setCurrentMemberNum(groupBuyTaskMO.getCurrentMemberNum() + 1);
+			
+			groupBuyTaskBusiness.modify(groupBuyTaskMO);
+			
+		}
+		else
+		{
+			orderMO.setState(OrderState.daiqianshou);
+		}
+
+		orderMO.setPayTime(currentTime);
+		orderDao.modify(orderMO);
 
 		setInventoryInfoByOrderDetail(detailMOs);
 

@@ -19,6 +19,7 @@ public class GroupBuyTaskMO extends BaseMO
 	private String createTime;
 	private String createOperatorId; // 开团的消费者
 	private String completeTime;// 成团时间
+	private int currentMemberNum; // 已经参团人数（由已支付订单的数量统计）
 
 	public String getPlanId()
 	{
@@ -49,7 +50,7 @@ public class GroupBuyTaskMO extends BaseMO
 	{
 		this.createOperatorId = createOperatorId;
 	}
-	
+
 	public String getCompleteTime()
 	{
 		return completeTime;
@@ -58,6 +59,16 @@ public class GroupBuyTaskMO extends BaseMO
 	public void setCompleteTime(String completeTime)
 	{
 		this.completeTime = completeTime;
+	}
+
+	public int getCurrentMemberNum()
+	{
+		return currentMemberNum;
+	}
+
+	public void setCurrentMemberNum(int currentMemberNum)
+	{
+		this.currentMemberNum = currentMemberNum;
 	}
 
 	public static class MOMapper implements RowMapper<GroupBuyTaskMO>
@@ -72,6 +83,7 @@ public class GroupBuyTaskMO extends BaseMO
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setCreateOperatorId(rs.getString("createOperatorId"));
 			mo.setCompleteTime(rs.getString("completeTime"));
+			mo.setCurrentMemberNum(rs.getInt("currentMemberNum"));
 
 			return mo;
 		}
