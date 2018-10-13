@@ -53,11 +53,11 @@ public class GroupBuyTaskDao
 
 	public void modify(GroupBuyTaskMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set completeTime = ? where id = ?";
+		String sql = "update " + TABLE_NAME + " set completeTime = ?,currentMemberNum=? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getCompleteTime(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getCompleteTime(), mo.getCurrentMemberNum(), mo.getId() });
 
 			if (ret != 1)
 			{

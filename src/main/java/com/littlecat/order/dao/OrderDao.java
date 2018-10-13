@@ -1,5 +1,6 @@
 package com.littlecat.order.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,25 @@ public class OrderDao
 			{
 				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 			}
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
+	public void modify(List<OrderMO> mos) throws LittleCatException
+	{
+		String sql = "update " + TABLE_NAME + " set state = ?,payTime = ?,receiveTime = ?,returnApplyTime = ?,returnCompleteTime = ?,groupCompleteTime=?,groupCancelTime=? where id = ?";
+		List<Object[]> batchParam = new ArrayList<Object[]>();
+		
+		for (OrderMO mo : mos)
+		{
+			batchParam.add(new Object[] { mo.getState().name(), mo.getPayTime(), mo.getReceiveTime(), mo.getReturnApplyTime(), mo.getReturnCompleteTime(), mo.getGroupCompleteTime(), mo.getGroupCancelTime(), mo.getId() });
+		}
+		try
+		{
+			jdbcTemplate.batchUpdate(sql, batchParam);
 		}
 		catch (DataAccessException e)
 		{

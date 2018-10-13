@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
+import com.littlecat.cbb.query.ConditionItem;
+import com.littlecat.cbb.query.ConditionOperatorType;
+import com.littlecat.cbb.query.QueryCondition;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.DateTimeUtil;
@@ -81,6 +84,9 @@ public class OrderBusiness
 	// 获取资源锁重试时间间隔（毫秒）
 	public static final long RESLOCK_RETRYTIMESTEP = ResLockMO.DEFAULT_RETRYTIMESTEP;
 
+	// order中团购任务字段名称
+	private static final String FIELD_NAME_GROUPBUYTASKID = "groupBuyTaskId";
+
 	public String addOrder(OrderMO orderMO, List<OrderDetailMO> orderDetailMOs) throws LittleCatException
 	{
 		if (CollectionUtil.isEmpty(orderDetailMOs))
@@ -139,48 +145,44 @@ public class OrderBusiness
 
 		String groupBuyPlanId = orderMO.getGroupBuyPlanId();
 		String groupBuyTaskId = orderMO.getGroupBuyTaskId();
-		
+
 		if (StringUtil.isNotEmpty(groupBuyTaskId))
 		{// 团购订单
 			GroupBuyTaskMO groupBuyTaskMO = groupBuyTaskBusiness.getById(groupBuyTaskId);
 			GroupBuyPlanMO groupBuyPlanMO = groupBuyPlanBusiness.getById(groupBuyPlanId);
-			
-			if(groupBuyTaskMO == null)
+
+			if (groupBuyTaskMO == null)
 			{
 				throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME_GROUPBUYTASK));
 			}
-			
-			if(groupBuyPlanMO == null)
+
+			if (groupBuyPlanMO == null)
 			{
 				throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME_GROUPBUYPLAN));
 			}
-			
+
 			if (groupBuyTaskMO.getCurrentMemberNum() + 1 == groupBuyPlanMO.getMemberNum())
 			{// 加上此单，已成团
-				orderMO.setState(OrderState.daiqianshou);
-				orderMO.setGroupCompleteTime(DateTimeUtil.getCurrentTimeForDisplay());
-				
+				groupBuyTaskBusiness.completeTask(groupBuyTaskId, currentTime);
 				groupBuyTaskMO.setCompleteTime(currentTime);
 			}
-			else 
+			else
 			{
 				orderMO.setState(OrderState.daichengtuan);
 			}
-			
+
 			groupBuyTaskMO.setCurrentMemberNum(groupBuyTaskMO.getCurrentMemberNum() + 1);
-			
+
 			groupBuyTaskBusiness.modify(groupBuyTaskMO);
-			
 		}
 		else
 		{
 			orderMO.setState(OrderState.daiqianshou);
+			setInventoryInfoByOrderDetail(detailMOs);
 		}
 
 		orderMO.setPayTime(currentTime);
 		orderDao.modify(orderMO);
-
-		setInventoryInfoByOrderDetail(detailMOs);
 
 		unLock(lockInfo);
 	}
@@ -242,6 +244,11 @@ public class OrderBusiness
 		orderDao.modify(mo);
 	}
 
+	public void modifyOrder(List<OrderMO> mos) throws LittleCatException
+	{
+		orderDao.modify(mos);
+	}
+
 	public void deleteOrderById(String id) throws LittleCatException
 	{
 		orderDetailBusiness.deleteByOrderId(id);
@@ -256,6 +263,20 @@ public class OrderBusiness
 	public int getOrderList(QueryParam queryParam, List<OrderMO> mos) throws LittleCatException
 	{
 		return orderDao.getList(queryParam, mos);
+	}
+
+	public List<OrderMO> getOrderListByGroupBuyTaskId(String groupBuyTaskId) throws LittleCatException
+	{
+		List<OrderMO> mos = new ArrayList<OrderMO>();
+		QueryParam queryParam = new QueryParam();
+		QueryCondition condition = new QueryCondition();
+		condition.getCondItems().add(new ConditionItem(FIELD_NAME_GROUPBUYTASKID, groupBuyTaskId, ConditionOperatorType.equal));
+
+		queryParam.setCondition(condition);
+
+		orderDao.getList(queryParam, mos);
+
+		return mos;
 	}
 
 	public OrderDetailMO getOrderDetailById(String id) throws LittleCatException
@@ -381,11 +402,6 @@ public class OrderBusiness
 				SecKillPlanMO secKillPlanMO = secKillPlanBusiness.getById(planId);
 				secKillPlanMO.setCurrentInventory(currentGoodsInventory);
 				secKillPlanBusiness.modify(secKillPlanMO);
-			}
-
-			if (orderDetailMO.getBuyType() == BuyType.groupbuy)
-			{
-				// TODO:
 			}
 		}
 	}
