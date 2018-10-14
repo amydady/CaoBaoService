@@ -117,8 +117,8 @@ CREATE TABLE `t_goods` (
 	`classifyId` VARCHAR(255) NULL,
 	`supplierId` VARCHAR(255) NULL,
 	`name` VARCHAR(255) NOT NULL,
-	`summaryDescription` VARCHAR(300) NULL,
-	`detailDescription` VARCHAR(5000) NULL,
+	`summaryDescription` VARCHAR(500) NULL,
+	#`detailDescription` VARCHAR(5000) NULL,#暂不启用
 	`mainImgUrl` VARCHAR(255) NULL,
 	`detailImgUrls` VARCHAR(255) NULL,
 	`price` INT NOT NULL,

@@ -72,11 +72,11 @@ public class GoodsDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,classifyId,supplierId,name,summaryDescription,detailDescription,mainImgUrl,detailImgUrls,price,createOperatorId,deliveryAreaId,deliveryFeeRuleId) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,classifyId,supplierId,name,summaryDescription,mainImgUrl,detailImgUrls,price,createOperatorId,deliveryAreaId,deliveryFeeRuleId) values(?,?,?,?,?,?,?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mo.getDetailDescription(), mo.getMainImgUrl(), mo.getDetailImgUrls(), mo.getPrice(), mo.getCreateOperatorId(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mo.getMainImgUrl(), mo.getDetailImgUrls(), mo.getPrice(), mo.getCreateOperatorId(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId() });
 
 			if (ret != 1)
 			{
@@ -98,11 +98,11 @@ public class GoodsDao
 			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
-		String sql = "update " + TABLE_NAME + " set classifyId=?,supplierId=?,name=?,summaryDescription=?,detailDescription=?,mainImgUrl=?,detailImgUrls=?price=?,currentInventory = ?,deliveryAreaId=?,deliveryFeeRuleId=?,hasSecKillPlan=?,hasGroupBuyPlan=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set classifyId=?,supplierId=?,name=?,summaryDescription=?,mainImgUrl=?,detailImgUrls=?price=?,currentInventory = ?,deliveryAreaId=?,deliveryFeeRuleId=?,hasSecKillPlan=?,hasGroupBuyPlan=? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mo.getDetailDescription(), mo.getMainImgUrl(), mo.getDetailImgUrls(), mo.getPrice(), mo.getCurrentInventory(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getHasSecKillPlan(), mo.getHasGroupBuyPlan(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mo.getMainImgUrl(), mo.getDetailImgUrls(), mo.getPrice(), mo.getCurrentInventory(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getHasSecKillPlan(), mo.getHasGroupBuyPlan(), mo.getId() });
 
 			if (ret != 1)
 			{

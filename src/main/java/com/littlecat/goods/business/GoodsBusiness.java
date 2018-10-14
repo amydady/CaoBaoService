@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
-import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.goods.dao.GoodsDao;
 import com.littlecat.goods.model.GoodsMO;
 
@@ -16,8 +15,6 @@ import com.littlecat.goods.model.GoodsMO;
 @Transactional
 public class GoodsBusiness
 {
-	private static final String MODEL_NAME = GoodsMO.class.getSimpleName();
-
 	@Autowired
 	private GoodsDao goodsDao;
 
@@ -58,26 +55,16 @@ public class GoodsBusiness
 
 	public String add(GoodsMO mo) throws LittleCatException
 	{
-		validateReqData(mo);
 		return goodsDao.add(mo);
 	}
 
 	public void modify(GoodsMO mo) throws LittleCatException
 	{
-		validateReqData(mo);
 		goodsDao.modify(mo);
 	}
 
 	public int getList(QueryParam queryParam, List<GoodsMO> mos) throws LittleCatException
 	{
 		return goodsDao.getList(queryParam, mos);
-	}
-
-	private void validateReqData(GoodsMO reqData) throws LittleCatException
-	{
-		if (reqData == null)
-		{
-			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
 	}
 }

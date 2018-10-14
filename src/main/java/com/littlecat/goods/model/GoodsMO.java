@@ -19,7 +19,6 @@ public class GoodsMO extends BaseMO
 	private String supplierId;
 	private String name;
 	private String summaryDescription; // 产品概要描述信息
-	private String detailDescription; // 详细描述信息（支持富文本）
 	private String mainImgUrl;
 	private String detailImgUrls;// 详细描述信息（图片，URL间用英文分号;隔开）
 	private long price; // 单位为厘
@@ -132,16 +131,6 @@ public class GoodsMO extends BaseMO
 		this.deliveryFeeRuleId = deliveryFeeRuleId;
 	}
 
-	public String getDetailDescription()
-	{
-		return detailDescription;
-	}
-
-	public void setDetailDescription(String detailDescription)
-	{
-		this.detailDescription = detailDescription;
-	}
-
 	public String getCreateOperatorId()
 	{
 		return createOperatorId;
@@ -202,7 +191,6 @@ public class GoodsMO extends BaseMO
 			mo.setClassifyId(rs.getString("classifyId"));
 			mo.setName(rs.getString("name"));
 			mo.setSummaryDescription(rs.getString("summaryDescription"));
-			mo.setDetailDescription(rs.getString("detailDescription"));
 			mo.setMainImgUrl(rs.getString("mainImgUrl"));
 			mo.setDetailImgUrls(rs.getString("detailImgUrls"));
 			mo.setPrice(rs.getLong("price"));

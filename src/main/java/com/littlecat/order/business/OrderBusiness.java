@@ -176,7 +176,7 @@ public class OrderBusiness
 			groupBuyTaskBusiness.modify(groupBuyTaskMO);
 		}
 		else
-		{
+		{// 普通商品、秒杀商品订单
 			orderMO.setState(OrderState.daiqianshou);
 			setInventoryInfoByOrderDetail(detailMOs);
 		}
