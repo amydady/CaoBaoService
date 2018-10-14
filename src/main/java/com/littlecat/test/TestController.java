@@ -1,21 +1,24 @@
 package com.littlecat.test;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.littlecat.cbb.query.QueryParam;
-import com.littlecat.cbb.rest.RestRsp;
-import com.littlecat.cbb.rest.RestSimpleRsp;
-import com.littlecat.system.model.SysOperatorMO;
+import com.littlecat.cbb.exception.LittleCatException;
+import com.littlecat.cbb.utils.DateTimeUtil;
 
 @RestController
 @RequestMapping("/rest/test")
@@ -42,33 +45,29 @@ public class TestController
 		return "test2:get:";
 	}
 
-	@GetMapping(value = "/")
-	public String test3()
+	@PostMapping(value = "/goodsDetailImg")
+	public void uploadGoodsDetailImg(HttpServletRequest request)
 	{
-		return "test3:get:";
+		TestMO mo = new TestMO();
+		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("goodsDetailImg");
+
+		try
+		{
+			mo.setDateTime(DateTimeUtil.getCurrentTimeForDisplay());
+			mo.setImgData(Base64.encodeBase64String(files.get(0).getBytes()));
+			testDao.add(mo);
+		}
+		catch (LittleCatException | IOException e)
+		{
+
+		}
 	}
 
-	@DeleteMapping(value = "/account/{id}")
-	public RestSimpleRsp deleteById(@PathVariable String id)
+	@GetMapping(value = "/get")
+	public TestMO get()
 	{
-		return null;
-	}
+		TestMO mo = new TestMO();
 
-	@PutMapping(value = "/account")
-	public RestRsp<SysOperatorMO> modify(@RequestBody SysOperatorMO account)
-	{
-		return null;
-	}
-
-	@PostMapping(value = "/account")
-	public RestRsp<SysOperatorMO> add(@RequestBody SysOperatorMO account)
-	{
-		return null;
-	}
-
-	@PostMapping(value = "/accounts")
-	public RestRsp<SysOperatorMO> getList(@RequestBody QueryParam queryParam)
-	{
-		return null;
+		return testDao.getById("3577912f-e5e4-4929-ba5a-6289c28a8062");
 	}
 }

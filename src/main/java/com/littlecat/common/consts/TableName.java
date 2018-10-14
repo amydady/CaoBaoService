@@ -29,7 +29,8 @@ public enum TableName
 	TuanClassify("t_tuan_classify"),
 	TuanGoods("t_quanzi_tuangoods"),
 	TuanMember("t_quanzi_tuanmember"),
-	
+
+	HomeImgs("t_goods_homeimgs"),
 	Goods("t_goods"),
 	GoodsClassify("t_goods_classify"),
 	

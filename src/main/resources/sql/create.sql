@@ -119,7 +119,7 @@ CREATE TABLE `t_goods` (
 	`name` VARCHAR(255) NOT NULL,
 	`summaryDescription` VARCHAR(500) NULL,
 	#`detailDescription` VARCHAR(5000) NULL,#暂不启用
-	`mainImgUrl` VARCHAR(255) NULL,
+	`mainImgData` MediumBlob NULL,
 	`detailImgUrls` VARCHAR(255) NULL,
 	`price` INT NOT NULL,
 	`currentInventory` INT NOT NULL DEFAULT 0,
@@ -133,6 +133,12 @@ CREATE TABLE `t_goods` (
 	
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `name` (`name`)
+);
+
+CREATE TABLE `t_goods_homeimgs` (
+	`id` VARCHAR(255) NOT NULL,
+	`imgData` MediumBlob NULL,
+	PRIMARY KEY (`id`)
 );
 
 #秒杀
@@ -256,8 +262,9 @@ CREATE TABLE `t_quanzi_tuanmember` (
 
 #test
 CREATE TABLE `t_test` (
-	`id` VARCHAR(255) NOT NULL,
+	`id` VARCHAR(255) NULL,
 	`dateTime` DATETIME NULL,
+	`imgData` MediumBlob NULL,
 	
 	PRIMARY KEY (`id`)
 );

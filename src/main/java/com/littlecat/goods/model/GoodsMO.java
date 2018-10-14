@@ -19,8 +19,7 @@ public class GoodsMO extends BaseMO
 	private String supplierId;
 	private String name;
 	private String summaryDescription; // 产品概要描述信息
-	private String mainImgUrl;
-	private String detailImgUrls;// 详细描述信息（图片，URL间用英文分号;隔开）
+	private String mainImgData;
 	private long price; // 单位为厘
 	private long currentInventory;
 	private String enable;
@@ -69,16 +68,6 @@ public class GoodsMO extends BaseMO
 	public void setSummaryDescription(String summaryDescription)
 	{
 		this.summaryDescription = summaryDescription;
-	}
-
-	public String getMainImgUrl()
-	{
-		return mainImgUrl;
-	}
-
-	public void setMainImgUrl(String mainImgUrl)
-	{
-		this.mainImgUrl = mainImgUrl;
 	}
 
 	public long getPrice()
@@ -171,14 +160,14 @@ public class GoodsMO extends BaseMO
 		this.currentInventory = currentInventory;
 	}
 
-	public String getDetailImgUrls()
+	public String getMainImgData()
 	{
-		return detailImgUrls;
+		return mainImgData;
 	}
 
-	public void setDetailImgUrls(String detailImgUrls)
+	public void setMainImgData(String mainImgData)
 	{
-		this.detailImgUrls = detailImgUrls;
+		this.mainImgData = mainImgData;
 	}
 
 	public static class MOMapper implements RowMapper<GoodsMO>
@@ -187,12 +176,12 @@ public class GoodsMO extends BaseMO
 		public GoodsMO mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
 			GoodsMO mo = new GoodsMO();
+			
 			mo.setId(rs.getString("id"));
 			mo.setClassifyId(rs.getString("classifyId"));
 			mo.setName(rs.getString("name"));
 			mo.setSummaryDescription(rs.getString("summaryDescription"));
-			mo.setMainImgUrl(rs.getString("mainImgUrl"));
-			mo.setDetailImgUrls(rs.getString("detailImgUrls"));
+			mo.setMainImgData(rs.getString("mainImgData"));
 			mo.setPrice(rs.getLong("price"));
 			mo.setCurrentInventory(rs.getLong("currentInventory"));
 			mo.setEnable(rs.getString("enable"));

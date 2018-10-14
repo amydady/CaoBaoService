@@ -3,6 +3,9 @@ package com.littlecat.goods.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +17,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
+import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.goods.business.GoodsBusiness;
 import com.littlecat.goods.model.GoodsMO;
 
@@ -219,6 +225,52 @@ public class GoodsController
 		try
 		{
 			goodsBusiness.enable(ids);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	/**
+	 * 上传商品的主图片
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@PostMapping(value = "/uploadmainimg/{id}")
+	public RestSimpleRsp uploadMainImg(@PathVariable String id, HttpServletRequest request)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+		GoodsMO mo = goodsBusiness.getById(id);
+
+		if (mo == null)
+		{
+			logger.error("GoodsController:uploadmainimg:get goodsmo by id return null.");
+		}
+
+		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("goodsDetailImg");
+
+		if (CollectionUtil.isEmpty(files))
+		{
+			logger.error("GoodsController:uploadmainimg:files is null.");
+		}
+
+		try
+		{
+			mo.setMainImgData(Base64.encodeBase64String(files.get(0).getBytes()));
+			goodsBusiness.modify(mo);
 		}
 		catch (LittleCatException e)
 		{
