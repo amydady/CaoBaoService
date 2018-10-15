@@ -31,6 +31,7 @@ public enum TableName
 	TuanMember("t_quanzi_tuanmember"),
 
 	HomeImgs("t_goods_homeimgs"),
+	GoodsDetailImgs("t_goods_detailimgs"),
 	Goods("t_goods"),
 	GoodsClassify("t_goods_classify"),
 	

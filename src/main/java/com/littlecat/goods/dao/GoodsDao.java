@@ -103,7 +103,7 @@ public class GoodsDao
 			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
-		String sql = "update " + TABLE_NAME + " set classifyId=?,supplierId=?,name=?,summaryDescription=?,mainImgUrl=?,detailImgUrls=?price=?,currentInventory = ?,deliveryAreaId=?,deliveryFeeRuleId=?,hasSecKillPlan=?,hasGroupBuyPlan=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set classifyId=?,supplierId=?,name=?,summaryDescription=?,mainImgData=?,price=?,currentInventory = ?,deliveryAreaId=?,deliveryFeeRuleId=?,hasSecKillPlan=?,hasGroupBuyPlan=? where id = ?";
 
 		try
 		{

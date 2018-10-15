@@ -19,16 +19,21 @@ import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.TableName;
 import com.littlecat.common.utils.DaoUtil;
-import com.littlecat.goods.model.HomeImgsMO;
+import com.littlecat.goods.model.GoodsDetailImgsMO;
 
 @Component
-public class HomeImgsDao
+public class GoodsDetailImgsDao
 {
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
 
-	private final String TABLE_NAME = TableName.HomeImgs.getName();
-	private final String MODEL_NAME = HomeImgsMO.class.getSimpleName();
+	private final String TABLE_NAME = TableName.GoodsDetailImgs.getName();
+	private final String MODEL_NAME = GoodsDetailImgsMO.class.getSimpleName();
+
+	public GoodsDetailImgsMO getById(String id) throws LittleCatException
+	{
+		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new GoodsDetailImgsMO.MOMapper());
+	}
 
 	public void delete(String id) throws LittleCatException
 	{
@@ -40,7 +45,7 @@ public class HomeImgsDao
 		DaoUtil.delete(TABLE_NAME, ids, jdbcTemplate);
 	}
 
-	public String add(HomeImgsMO mo) throws LittleCatException
+	public String add(GoodsDetailImgsMO mo) throws LittleCatException
 	{
 		if (mo == null)
 		{
@@ -52,11 +57,11 @@ public class HomeImgsDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,imgData) values(?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,goodsId,title,sortNum,imgData) values(?,?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), new SerialBlob(mo.getImgData().getBytes(Consts.CHARSET_NAME)) });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getGoodsId(), mo.getTitle(), mo.getSortNum(), new SerialBlob(mo.getImgData().getBytes(Consts.CHARSET_NAME)) });
 
 			if (ret != 1)
 			{
@@ -71,8 +76,32 @@ public class HomeImgsDao
 		return mo.getId();
 	}
 
-	public int getList(QueryParam queryParam, List<HomeImgsMO> mos) throws LittleCatException
+	public void modify(GoodsDetailImgsMO mo) throws LittleCatException
 	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new HomeImgsMO.MOMapper());
+		if (mo == null)
+		{
+			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+
+		String sql = "update " + TABLE_NAME + " set title=?,sortNum=? where id = ?";
+
+		try
+		{
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getTitle(), mo.getSortNum(), mo.getId() });
+
+			if (ret != 1)
+			{
+				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+			}
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
+	public int getList(QueryParam queryParam, List<GoodsDetailImgsMO> mos) throws LittleCatException
+	{
+		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new GoodsDetailImgsMO.MOMapper());
 	}
 }

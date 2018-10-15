@@ -118,9 +118,7 @@ CREATE TABLE `t_goods` (
 	`supplierId` VARCHAR(255) NULL,
 	`name` VARCHAR(255) NOT NULL,
 	`summaryDescription` VARCHAR(500) NULL,
-	#`detailDescription` VARCHAR(5000) NULL,#暂不启用
 	`mainImgData` MediumBlob NULL,
-	`detailImgUrls` VARCHAR(255) NULL,
 	`price` INT NOT NULL,
 	`currentInventory` INT NOT NULL DEFAULT 0,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',

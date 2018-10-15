@@ -32,12 +32,12 @@ import com.littlecat.goods.model.HomeImgsMO;
  */
 @RestController
 @RequestMapping("/rest/littlecat/caobao/homeimgs")
-public class HomeImgsController
+public class GoodsDetailImgsController
 {
 	@Autowired
 	private HomeImgsBusiness homeImgsBusiness;
 
-	private static final Logger logger = LoggerFactory.getLogger(HomeImgsController.class);
+	private static final Logger logger = LoggerFactory.getLogger(GoodsDetailImgsController.class);
 
 	@PostMapping(value = "/upload")
 	public RestRsp<String> upload(HttpServletRequest request)
