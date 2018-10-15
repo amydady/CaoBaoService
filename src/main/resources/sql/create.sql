@@ -75,14 +75,14 @@ CREATE TABLE `t_terminaluser_deliveryaddress` (
 );
 
 # 基础信息
-drop table t_basicinfo_province;
+
 CREATE TABLE `t_basicinfo_province` (
 	`id` VARCHAR(50) NOT NULL,
 	`name` VARCHAR(50) NOT NULL,
 	
 	PRIMARY KEY (`id`)
 );
-drop table t_basicinfo_city;
+
 CREATE TABLE `t_basicinfo_city` (
 	`id` VARCHAR(50) NOT NULL,
 	`name` VARCHAR(50) NOT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE `t_basicinfo_city` (
 	
 	PRIMARY KEY (`id`)
 );
-drop table t_basicinfo_area;
+
 CREATE TABLE `t_basicinfo_area` (
 	`id` VARCHAR(50) NOT NULL,
 	`name` VARCHAR(50) NOT NULL,
@@ -136,6 +136,16 @@ CREATE TABLE `t_goods` (
 CREATE TABLE `t_goods_homeimgs` (
 	`id` VARCHAR(255) NOT NULL,
 	`imgData` MediumBlob NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `t_goods_detailimgs` (
+	`id` VARCHAR(255) NOT NULL,
+	`goodsId` VARCHAR(255) NOT NULL,
+	`title` VARCHAR(255) NOT NULL,
+	`sortNum` VARCHAR(255) NOT NULL,
+	`imgData` MediumBlob NULL,
+	
 	PRIMARY KEY (`id`)
 );
 
