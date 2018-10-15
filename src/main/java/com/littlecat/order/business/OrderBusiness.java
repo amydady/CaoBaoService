@@ -93,6 +93,8 @@ public class OrderBusiness
 		{
 			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME_ORDERDETAIL));
 		}
+		
+		orderMO.setState(OrderState.daifukuan);
 
 		for (OrderDetailMO orderDetail : orderDetailMOs)
 		{

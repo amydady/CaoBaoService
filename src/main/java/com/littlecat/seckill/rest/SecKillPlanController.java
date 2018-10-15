@@ -186,4 +186,36 @@ public class SecKillPlanController
 
 		return result;
 	}
+
+	/**
+	 * 查询某个消费者在某个秒杀计划下已经购买的商品数量
+	 * 
+	 * @param secKillPlanId
+	 * @param terminalUserId
+	 * @return
+	 */
+	@GetMapping(value = "/getBuyedNum")
+	public RestRsp<Integer> getBuyedNum(@RequestParam String secKillPlanId, @RequestParam String terminalUserId)
+	{
+		RestRsp<Integer> result = new RestRsp<Integer>();
+
+		try
+		{
+			result.getData().add(secKillPlanBusiness.getBuyedNum(secKillPlanId, terminalUserId));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
 }

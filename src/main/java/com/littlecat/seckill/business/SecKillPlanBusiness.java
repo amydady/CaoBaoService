@@ -13,6 +13,7 @@ import com.littlecat.common.consts.BooleanTag;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.goods.dao.GoodsDao;
 import com.littlecat.goods.model.GoodsMO;
+import com.littlecat.order.dao.OrderDao;
 import com.littlecat.seckill.dao.SecKillPlanDao;
 import com.littlecat.seckill.model.SecKillPlanMO;
 
@@ -28,6 +29,9 @@ public class SecKillPlanBusiness
 
 	@Autowired
 	private GoodsDao goodsDao;
+
+	@Autowired
+	private OrderDao orderDao;
 
 	public String add(SecKillPlanMO mo) throws LittleCatException
 	{
@@ -138,5 +142,17 @@ public class SecKillPlanBusiness
 		{
 			reqData.setEnable(BooleanTag.N.name());
 		}
+	}
+
+	/**
+	 * 查询某个消费者在某个秒杀计划下已经购买的商品数量
+	 * 
+	 * @param planId
+	 * @param terminalUserId
+	 * @return
+	 */
+	public int getBuyedNum(String planId, String terminalUserId) throws LittleCatException
+	{
+		return orderDao.getBuyedNumOfSecKillPlan(planId, terminalUserId);
 	}
 }
