@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f6197d96-c27a-49e2-bab9-c467e001813c",
+		"_postman_id": "750b6b9b-4723-4612-83cf-95e267860ed4",
 		"name": "CaoBao",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -628,6 +628,43 @@
 										"sys",
 										"param",
 										"modify"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Menu",
+					"item": [
+						{
+							"name": "getByParentId",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"condition\":{\n\t\t\"logicType\":\"and\",\n\t\t\"condItems\":[\n\t\t\t\t{\n\t\t\t\t\t\"fieldName\":\"wxCode\",\n\t\t\t\t\t\"opType\":\"startwith\",\n\t\t\t\t\t\"value\":\"wx\"\n\t\t\t\t}\n\t\t\t]\n\t},\n\t\"pageParam\":{\n\t\t\"pageSize\":4,\n\t\t\"pageIndex\":1\n\t},\n\t\"sortFields\":\"wxCode\",\n\t\"sortType\":\"desc\"\n}"
+								},
+								"url": {
+									"raw": "{{hostip}}/rest/littlecat/caobao/sys/param/getlist",
+									"host": [
+										"{{hostip}}"
+									],
+									"path": [
+										"rest",
+										"littlecat",
+										"caobao",
+										"sys",
+										"param",
+										"getlist"
 									]
 								}
 							},
