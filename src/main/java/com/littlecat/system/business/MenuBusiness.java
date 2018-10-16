@@ -1,44 +1,43 @@
 package com.littlecat.system.business;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.littlecat.cbb.exception.LittleCatException;
+import com.littlecat.cbb.query.ConditionItem;
+import com.littlecat.cbb.query.ConditionOperatorType;
+import com.littlecat.cbb.query.QueryCondition;
 import com.littlecat.cbb.query.QueryParam;
-import com.littlecat.cbb.rest.RestRsp;
-import com.littlecat.cbb.rest.RestSimpleRsp;
-import com.littlecat.system.model.SysOperatorMO;
+import com.littlecat.system.dao.MenuDao;
+import com.littlecat.system.model.MenuMO;
 
 @Component
 @Transactional
 public class MenuBusiness
 {
-	public RestRsp<SysOperatorMO> login(SysOperatorMO account)
-	{
-		return null;
-	}
+	@Autowired
+	private MenuDao menuDao;
 
-	public RestRsp<SysOperatorMO> getById(String id)
-	{
-		return null;
-	}
+	private static final String FIELD_NAME_PID = "pid";
+	private static final String FIELD_NAME_SORTNUM = "sortNum";
 
-	public RestSimpleRsp deleteById(String id)
+	public List<MenuMO> getByPid(String pid) throws LittleCatException
 	{
-		return null;
-	}
+		List<MenuMO> menus = new ArrayList<MenuMO>();
 
-	public RestRsp<SysOperatorMO> modify(SysOperatorMO account)
-	{
-		return null;
-	}
+		QueryParam queryParam = new QueryParam();
+		QueryCondition condition = new QueryCondition();
+		condition.getCondItems().add(new ConditionItem(FIELD_NAME_PID, pid, ConditionOperatorType.equal));
+		queryParam.setCondition(condition);
 
-	public RestRsp<SysOperatorMO> add(SysOperatorMO account)
-	{
-		return null;
-	}
+		queryParam.setSortFields(FIELD_NAME_SORTNUM);
 
-	public RestRsp<SysOperatorMO> getList(QueryParam queryParam)
-	{
-		return null;
+		menuDao.getList(queryParam, menus);
+
+		return menus;
 	}
 }

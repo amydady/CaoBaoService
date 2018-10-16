@@ -1,33 +1,29 @@
 package com.littlecat.system.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
+import com.littlecat.cbb.common.BaseMO;
+
 /**
  * 菜单MO
  * 
  * @author amydady
  *
  */
-public class MenuMO
+public class MenuMO extends BaseMO
 {
-	private int id;
 	private String name;
-	private String url;
+	private String targeTurl;
 	private String pid;
-	private int sortNum;
+	private String sortNum;
 	private String enable;
 
 	public MenuMO()
 	{
 		super();
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
 	}
 
 	public String getName()
@@ -40,16 +36,6 @@ public class MenuMO
 		this.name = name;
 	}
 
-	public String getUrl()
-	{
-		return url;
-	}
-
-	public void setUrl(String url)
-	{
-		this.url = url;
-	}
-
 	public String getPid()
 	{
 		return pid;
@@ -60,12 +46,12 @@ public class MenuMO
 		this.pid = pid;
 	}
 
-	public int getSortNum()
+	public String getSortNum()
 	{
 		return sortNum;
 	}
 
-	public void setSortNum(int sortNum)
+	public void setSortNum(String sortNum)
 	{
 		this.sortNum = sortNum;
 	}
@@ -78,6 +64,34 @@ public class MenuMO
 	public void setEnable(String enable)
 	{
 		this.enable = enable;
+	}
+
+	public String getTargeTurl()
+	{
+		return targeTurl;
+	}
+
+	public void setTargeTurl(String targeTurl)
+	{
+		this.targeTurl = targeTurl;
+	}
+
+	public static class MOMapper implements RowMapper<MenuMO>
+	{
+		@Override
+		public MenuMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			MenuMO mo = new MenuMO();
+
+			mo.setId(rs.getString("id"));
+			mo.setName(rs.getString("name"));
+			mo.setTargeTurl(rs.getString("targeTurl"));
+			mo.setPid(rs.getString("pid"));
+			mo.setSortNum(rs.getString("sortNum"));
+			mo.setEnable(rs.getString("enable"));
+
+			return mo;
+		}
 	}
 
 }
