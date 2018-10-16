@@ -23,6 +23,7 @@ public class GroupBuyPlanDao
 	protected JdbcTemplate jdbcTemplate;
 
 	private final String TABLE_NAME = TableName.GroupBuyPlan.getName();
+	private final String TABLE_NAME_GOODS = TableName.Goods.getName();
 	private static final String MODEL_NAME = GroupBuyPlanMO.class.getSimpleName();
 
 	public String add(GroupBuyPlanMO mo) throws LittleCatException
@@ -85,8 +86,63 @@ public class GroupBuyPlanDao
 		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new GroupBuyPlanMO.MOMapper());
 	}
 
+	// public int getList(QueryParam queryParam, List<GroupBuyPlanMO> mos) throws
+	// LittleCatException
+	// {
+	// return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new
+	// GroupBuyPlanMO.MOMapper());
+	// }
+
 	public int getList(QueryParam queryParam, List<GroupBuyPlanMO> mos) throws LittleCatException
 	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new GroupBuyPlanMO.MOMapper());
+		if (queryParam == null)
+		{
+			throw new LittleCatException(ErrorCode.QueryParamIsNull.getCode(), ErrorCode.QueryParamIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+
+		if (mos == null)
+		{
+			throw new LittleCatException("the param mos for filling the data can not be null.");
+		}
+
+		String sql = new StringBuilder()
+				.append("select groupbuyplan.*,")
+				.append("goods.name goodsName,goods.price goodsPrice,goods.mainImgData goodsMainImgData")
+				.append(" from ")
+				.append(TABLE_NAME).append(" groupbuyplan,")
+				.append(TABLE_NAME_GOODS).append(" goods ")
+				.append(" where groupbuyplan.goodsId = goods.id")
+				.append(queryParam.getQueryDataConditionStringWithNoWhereKeyWords())
+				.toString();
+		try
+		{
+			mos.addAll(jdbcTemplate.query(sql, new GroupBuyPlanMO.MOMapper()));
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+
+		return getTotalNum();
+	}
+
+	private int getTotalNum() throws LittleCatException
+	{
+		String sql = new StringBuilder()
+				.append("select count(*) totalNum")
+				.append(" from ")
+				.append(TABLE_NAME).append(" groupbuyplan,")
+				.append(TABLE_NAME_GOODS).append(" goods ")
+				.append(" where groupbuyplan.goodsId = goods.id")
+				.toString();
+
+		try
+		{
+			return jdbcTemplate.queryForObject(sql, new DaoUtil.TotalNumMapper());
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
 	}
 }

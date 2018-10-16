@@ -22,7 +22,7 @@ public final class DaoUtil
 {
 	private final static String FIELD_NAME_ENABLE = "enable";
 
-	private static class TotalNumMapper implements RowMapper<Integer>
+	public static class TotalNumMapper implements RowMapper<Integer>
 	{
 		@Override
 		public Integer mapRow(ResultSet rs, int rowNum) throws SQLException

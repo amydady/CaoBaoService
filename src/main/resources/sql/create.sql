@@ -203,7 +203,7 @@ CREATE TABLE `t_shoppingcart` (
 	`terminalUserId` VARCHAR(255) NOT NULL,
 	`buyType` VARCHAR(20) NOT NULL,
 	`resId` VARCHAR(255) NOT NULL,
-	`goodsNum` INT NOT NULL,
+	`goodsNum` INT NOT NULL DEFAULT 1,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	
 	

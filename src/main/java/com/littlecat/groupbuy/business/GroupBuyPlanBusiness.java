@@ -31,7 +31,7 @@ public class GroupBuyPlanBusiness
 
 	public String add(GroupBuyPlanMO mo) throws LittleCatException
 	{
-		validateReqData(mo);
+//		validateReqData(mo);
 
 		String secKillPlanId = groupBuyPlanDao.add(mo);
 
@@ -81,7 +81,7 @@ public class GroupBuyPlanBusiness
 		{
 			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
-
+		//TODO:startTime转long失败。
 		// 时间窗口校验
 		long startTime = Long.valueOf(reqData.getStartTime());
 		long endTime = Long.valueOf(reqData.getEndTime());

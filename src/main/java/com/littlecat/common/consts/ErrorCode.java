@@ -24,6 +24,9 @@ public enum ErrorCode
 	EnableObjectWithIdError("EnableObjectWithIdError","enable {INFO_NAME} with id error. "),
 	
 
+	DuplicateAddError("DuplicateAdd","DuplicateAdd Error.infoname:{INFO_NAME}"),
+	
+
 	LockResError("LockResError","lock resource error. "),
 	;
 	

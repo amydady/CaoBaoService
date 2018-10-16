@@ -49,11 +49,11 @@ public class ShoppingCartDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,buyType,resId,goodsNum) values(?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,buyType,resId) values(?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getBuyType().name(), mo.getResId(), mo.getGoodsNum() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getBuyType().name(), mo.getResId() });
 
 			if (ret != 1)
 			{

@@ -25,7 +25,7 @@ public class GroupBuyPlanMO extends BaseMO
 	private String endTime;
 	private long price;
 	private String enable;
-	private long planInventory;	//规划用于团购的库存
+	private long planInventory; // 规划用于团购的库存
 	private long currentInventory;
 	private int memberNum;// 成团人员数量
 	private int limitBuyNum; // 每个人的限购数量
@@ -34,6 +34,11 @@ public class GroupBuyPlanMO extends BaseMO
 
 	private String deliveryAreaId; // 配送区域ID
 	private String deliveryFeeRuleId; // 运费规则ID
+
+	// for view
+	private String goodsName;
+	private String goodsMainImgData;
+	private long goodsPrice;
 
 	public String getGoodsId()
 	{
@@ -165,6 +170,36 @@ public class GroupBuyPlanMO extends BaseMO
 		this.planInventory = planInventory;
 	}
 
+	public String getGoodsName()
+	{
+		return goodsName;
+	}
+
+	public void setGoodsName(String goodsName)
+	{
+		this.goodsName = goodsName;
+	}
+
+	public String getGoodsMainImgData()
+	{
+		return goodsMainImgData;
+	}
+
+	public void setGoodsMainImgData(String goodsMainImgData)
+	{
+		this.goodsMainImgData = goodsMainImgData;
+	}
+
+	public long getGoodsPrice()
+	{
+		return goodsPrice;
+	}
+
+	public void setGoodsPrice(long goodsPrice)
+	{
+		this.goodsPrice = goodsPrice;
+	}
+
 	public static class MOMapper implements RowMapper<GroupBuyPlanMO>
 	{
 		private static final Logger logger = LoggerFactory.getLogger(MOMapper.class);
@@ -203,15 +238,18 @@ public class GroupBuyPlanMO extends BaseMO
 			}
 
 			mo.setCurrentInventory(rs.getLong("currentInventory"));
-			
-			//TODO:planInventory
-			
+
+			// TODO:planInventory
+
 			mo.setMemberNum(rs.getInt("memberNum"));
 			mo.setLimitBuyNum(rs.getInt("limitBuyNum"));
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setCreateOperatorId(rs.getString("createOperatorId"));
 			mo.setDeliveryAreaId(rs.getString("deliveryAreaId"));
 			mo.setDeliveryFeeRuleId(rs.getString("deliveryFeeRuleId"));
+			mo.setGoodsName(rs.getString("goodsName"));
+			mo.setGoodsMainImgData(rs.getString("goodsMainImgData"));
+			mo.setGoodsPrice(rs.getLong("goodsPrice"));
 
 			return mo;
 		}
