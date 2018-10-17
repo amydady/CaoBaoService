@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
+import com.littlecat.cbb.utils.StringUtil;
 
 /**
  * 供应商MO
@@ -64,7 +65,7 @@ public class SupplierMO extends BaseMO
 			mo.setId(rs.getString("id"));
 			mo.setName(rs.getString("name"));
 			mo.setRemark(rs.getString("remark"));
-			mo.setCreateTime(rs.getString("createTime"));
+			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
 			mo.setEnable(rs.getString("enable"));
 			
 			return mo;
