@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "750b6b9b-4723-4612-83cf-95e267860ed4",
+		"_postman_id": "59880f19-3c40-4cfe-9717-279b94943559",
 		"name": "CaoBao",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -114,7 +114,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{hostip}}/rest/littlecat/caobao/goods/getbyid?id=b4e72e08-3d68-4f69-96fc-ab21d1d3a6f5",
+							"raw": "{{hostip}}/rest/littlecat/caobao/goods/getbyid?id=710d7a61-8727-4d20-8791-126dd7c8f67b",
 							"host": [
 								"{{hostip}}"
 							],
@@ -128,7 +128,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "b4e72e08-3d68-4f69-96fc-ab21d1d3a6f5"
+									"value": "710d7a61-8727-4d20-8791-126dd7c8f67b"
 								}
 							]
 						}
