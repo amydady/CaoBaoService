@@ -14,5 +14,6 @@ insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('2','商品管理',
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('3','系统管理','../Supplier/SupplierList.html','-1','3');
 
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('101','供应商列表','../Supplier/SupplierList.html','1','1');
+insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('102','百度','https://www.baidu.com','1','1');
 
 	

@@ -16,10 +16,11 @@ import com.littlecat.cbb.common.BaseMO;
 public class MenuMO extends BaseMO
 {
 	private String name;
-	private String targeTurl;
+	private String targetUrl;
 	private String pid;
 	private String sortNum;
 	private String enable;
+	private String isDefault;
 
 	public MenuMO()
 	{
@@ -66,14 +67,24 @@ public class MenuMO extends BaseMO
 		this.enable = enable;
 	}
 
-	public String getTargeTurl()
+	public String getIsDefault()
 	{
-		return targeTurl;
+		return isDefault;
 	}
 
-	public void setTargeTurl(String targeTurl)
+	public void setIsDefault(String isDefault)
 	{
-		this.targeTurl = targeTurl;
+		this.isDefault = isDefault;
+	}
+
+	public String getTargetUrl()
+	{
+		return targetUrl;
+	}
+
+	public void setTargetUrl(String targetUrl)
+	{
+		this.targetUrl = targetUrl;
 	}
 
 	public static class MOMapper implements RowMapper<MenuMO>
@@ -85,10 +96,11 @@ public class MenuMO extends BaseMO
 
 			mo.setId(rs.getString("id"));
 			mo.setName(rs.getString("name"));
-			mo.setTargeTurl(rs.getString("targeTurl"));
+			mo.setTargetUrl(rs.getString("targeTurl"));
 			mo.setPid(rs.getString("pid"));
 			mo.setSortNum(rs.getString("sortNum"));
 			mo.setEnable(rs.getString("enable"));
+			mo.setIsDefault(rs.getString("isDefault"));
 
 			return mo;
 		}

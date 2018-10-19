@@ -4,10 +4,11 @@ CREATE DATABASE `caobaodb` ;
 CREATE TABLE `t_sys_menu` (
 	`id` VARCHAR(255) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
-	`targeTurl` VARCHAR(255) NOT NULL,
+	`targetUrl` VARCHAR(255) NOT NULL,
 	`pid` VARCHAR(255) NOT NULL DEFAULT '-1',
 	`sortNum` VARCHAR(255) NOT NULL,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	`isDeault` VARCHAR(1) NULL,
 	
 	PRIMARY KEY (`id`)
 );
