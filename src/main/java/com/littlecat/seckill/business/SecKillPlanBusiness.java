@@ -1,5 +1,6 @@
 package com.littlecat.seckill.business;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,18 +90,25 @@ public class SecKillPlanBusiness
 		}
 
 		// 时间窗口校验
-		long startTime = Long.valueOf(reqData.getStartTime());
-		long endTime = Long.valueOf(reqData.getEndTime());
-		long now = Long.valueOf(DateTimeUtil.getCurrentTimeForDisplay());
-
-		if (startTime >= endTime)
+		try
 		{
-			throw new LittleCatException(ErrorCode.RequestObjectInvalidate.getCode(), ErrorCode.RequestObjectInvalidate.getMsg().replace("{INFO_NAME}", MODEL_NAME).replace("{DETAILINFO}", "the start time of the seckillplan must be less than the end time."));
+			long startTime = DateTimeUtil.defaultDateFormat.parse(reqData.getStartTime()).getTime();
+			long endTime = DateTimeUtil.defaultDateFormat.parse(reqData.getEndTime()).getTime();
+			long now = DateTimeUtil.defaultDateFormat.parse(DateTimeUtil.getCurrentTimeForDisplay()).getTime();
+
+			if (startTime >= endTime)
+			{
+				throw new LittleCatException(ErrorCode.RequestObjectInvalidate.getCode(), ErrorCode.RequestObjectInvalidate.getMsg().replace("{INFO_NAME}", MODEL_NAME).replace("{DETAILINFO}", "the start time of the seckillplan must be less than the end time."));
+			}
+
+			if (endTime <= now)
+			{
+				throw new LittleCatException(ErrorCode.RequestObjectInvalidate.getCode(), ErrorCode.RequestObjectInvalidate.getMsg().replace("{INFO_NAME}", MODEL_NAME).replace("{DETAILINFO}", "the end time of the seckillplan must be grater than now."));
+			}
 		}
-
-		if (endTime <= now)
+		catch (ParseException e)
 		{
-			throw new LittleCatException(ErrorCode.RequestObjectInvalidate.getCode(), ErrorCode.RequestObjectInvalidate.getMsg().replace("{INFO_NAME}", MODEL_NAME).replace("{DETAILINFO}", "the end time of the seckillplan must be grater than now."));
+			throw new LittleCatException(e.getMessage(), e);
 		}
 
 		GoodsMO goodsMO = goodsDao.getById(reqData.getGoodsId());
@@ -127,21 +135,29 @@ public class SecKillPlanBusiness
 	 * 
 	 * @param reqData
 	 */
-	private void initSettingsForReqData(SecKillPlanMO reqData)
+	private void initSettingsForReqData(SecKillPlanMO reqData) throws LittleCatException
 	{
 		// 根据时间窗口设置Enable标记
-		long startTime = Long.valueOf(reqData.getStartTime());
-		long endTime = Long.valueOf(reqData.getEndTime());
-		long now = Long.valueOf(DateTimeUtil.getCurrentTimeForDisplay());
+		try
+		{
+			long startTime = DateTimeUtil.defaultDateFormat.parse(reqData.getStartTime()).getTime();
+			long endTime = DateTimeUtil.defaultDateFormat.parse(reqData.getEndTime()).getTime();
+			long now = DateTimeUtil.defaultDateFormat.parse(DateTimeUtil.getCurrentTimeForDisplay()).getTime();
 
-		if (now >= startTime && now < endTime)
-		{
-			reqData.setEnable(BooleanTag.Y.name());
+			if (now >= startTime && now < endTime)
+			{
+				reqData.setEnable(BooleanTag.Y.name());
+			}
+			else
+			{
+				reqData.setEnable(BooleanTag.N.name());
+			}
 		}
-		else
+		catch (ParseException e)
 		{
-			reqData.setEnable(BooleanTag.N.name());
+			throw new LittleCatException(e.getMessage(), e);
 		}
+
 	}
 
 	/**

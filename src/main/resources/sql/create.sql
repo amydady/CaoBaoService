@@ -8,7 +8,7 @@ CREATE TABLE `t_sys_menu` (
 	`pid` VARCHAR(255) NOT NULL DEFAULT '-1',
 	`sortNum` VARCHAR(255) NOT NULL,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
-	`isDeault` VARCHAR(1) NULL,
+	`isDefault` VARCHAR(1) NULL DEFAULT 'N',
 	
 	PRIMARY KEY (`id`)
 );
@@ -134,8 +134,8 @@ CREATE TABLE `t_goods` (
 	`price` INT NOT NULL,
 	`currentInventory` INT NOT NULL DEFAULT 0,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
-	`hasSecKillPlan` VARCHAR(1) NOT NULL DEFAULT 'N',
-	`hasGroupBuyPlan` VARCHAR(1) NOT NULL DEFAULT 'N',
+	`hasSecKillPlan` VARCHAR(1) NULL DEFAULT 'N',
+	`hasGroupBuyPlan` VARCHAR(1) NULL DEFAULT 'N',
 	`createOperatorId` VARCHAR(255) NOT NULL,
 	`deliveryAreaId` VARCHAR(255) NOT NULL DEFAULT '-1',
 	`deliveryFeeRuleId` VARCHAR(255) NOT NULL DEFAULT '-1',

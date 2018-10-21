@@ -152,6 +152,34 @@ public class GoodsController
 
 		return result;
 	}
+	
+	@PostMapping(value = "/getDetailImgList")
+	public RestRsp<GoodsDetailImgsMO> getDetailImgList(@RequestBody QueryParam queryParam)
+	{
+		RestRsp<GoodsDetailImgsMO> result = new RestRsp<GoodsDetailImgsMO>();
+
+		try
+		{
+			List<GoodsDetailImgsMO> mos = new ArrayList<GoodsDetailImgsMO>();
+			int totalNum = goodsDetailImgsBusiness.getList(queryParam, mos);
+			result.setTotalNum(totalNum);
+			result.getData().addAll(mos);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
 
 	@PutMapping(value = "/disable/{id}")
 	public RestSimpleRsp disable(@PathVariable String id)

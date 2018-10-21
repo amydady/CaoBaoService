@@ -2,10 +2,18 @@ package com.littlecat.goods.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
+import com.littlecat.cbb.query.ConditionItem;
+import com.littlecat.cbb.query.ConditionOperatorType;
+import com.littlecat.cbb.query.QueryCondition;
+import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.cbb.utils.SpringUtil;
+import com.littlecat.goods.business.GoodsDetailImgsBusiness;
 
 /**
  * 商品MO
@@ -29,6 +37,9 @@ public class GoodsMO extends BaseMO
 	private String deliveryAreaId; // 配送区域ID
 	private String deliveryFeeRuleId; // 运费规则ID
 	private String createTime;
+
+	// for view
+	private List<GoodsDetailImgsMO> detailImgs;
 
 	public String getClassifyId()
 	{
@@ -170,13 +181,25 @@ public class GoodsMO extends BaseMO
 		this.mainImgData = mainImgData;
 	}
 
+	public List<GoodsDetailImgsMO> getDetailImgs()
+	{
+		return detailImgs;
+	}
+
+	public void setDetailImgs(List<GoodsDetailImgsMO> detailImgs)
+	{
+		this.detailImgs = detailImgs;
+	}
+
 	public static class MOMapper implements RowMapper<GoodsMO>
 	{
+		private static final GoodsDetailImgsBusiness goodsDetailImgsBusiness = SpringUtil.getBean(GoodsDetailImgsBusiness.class);
+
 		@Override
 		public GoodsMO mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
 			GoodsMO mo = new GoodsMO();
-			
+
 			mo.setId(rs.getString("id"));
 			mo.setClassifyId(rs.getString("classifyId"));
 			mo.setSupplierId(rs.getString("supplierId"));
@@ -192,6 +215,16 @@ public class GoodsMO extends BaseMO
 			mo.setDeliveryAreaId(rs.getString("deliveryAreaId"));
 			mo.setDeliveryFeeRuleId(rs.getString("deliveryFeeRuleId"));
 			mo.setCreateTime(rs.getString("createTime"));
+
+			// 查询明细图片信息
+			QueryParam queryParam = new QueryParam();
+			QueryCondition condition = new QueryCondition();
+			condition.getCondItems().add(new ConditionItem("goodsId", mo.getId(), ConditionOperatorType.equal));
+			queryParam.setCondition(condition);
+			
+			List<GoodsDetailImgsMO> mos = new ArrayList<GoodsDetailImgsMO>();
+			goodsDetailImgsBusiness.getList(queryParam, mos);
+			mo.setDetailImgs(mos);
 
 			return mo;
 		}
