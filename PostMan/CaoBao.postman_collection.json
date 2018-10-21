@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "59880f19-3c40-4cfe-9717-279b94943559",
+		"_postman_id": "44992d5f-8ea6-4ff6-95f9-725a5648c41e",
 		"name": "CaoBao",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -546,7 +546,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"condition\":{\n\t\t\"logicType\":\"and\",\n\t\t\"condItems\":[\n\t\t\t\t{\n\t\t\t\t\t\"fieldName\":\"wxCode\",\n\t\t\t\t\t\"opType\":\"startwith\",\n\t\t\t\t\t\"value\":\"wx\"\n\t\t\t\t}\n\t\t\t]\n\t},\n\t\"pageParam\":{\n\t\t\"pageSize\":4,\n\t\t\"pageIndex\":1\n\t},\n\t\"sortFields\":\"wxCode\",\n\t\"sortType\":\"desc\"\n}"
+									"raw": ""
 								},
 								"url": {
 									"raw": "{{hostip}}/rest/littlecat/caobao/sys/param/getlist",
@@ -577,7 +577,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"condition\":{\n\t\t\"logicType\":\"and\",\n\t\t\"condItems\":[\n\t\t\t\t{\n\t\t\t\t\t\"fieldName\":\"wxCode\",\n\t\t\t\t\t\"opType\":\"startwith\",\n\t\t\t\t\t\"value\":\"wx\"\n\t\t\t\t}\n\t\t\t]\n\t},\n\t\"pageParam\":{\n\t\t\"pageSize\":4,\n\t\t\"pageIndex\":1\n\t},\n\t\"sortFields\":\"wxCode\",\n\t\"sortType\":\"desc\"\n}"
+									"raw": ""
 								},
 								"url": {
 									"raw": "{{hostip}}/rest/littlecat/caobao/sys/param/getValueByName?name=member_enable_days",
@@ -651,7 +651,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"condition\":{\n\t\t\"logicType\":\"and\",\n\t\t\"condItems\":[\n\t\t\t\t{\n\t\t\t\t\t\"fieldName\":\"wxCode\",\n\t\t\t\t\t\"opType\":\"startwith\",\n\t\t\t\t\t\"value\":\"wx\"\n\t\t\t\t}\n\t\t\t]\n\t},\n\t\"pageParam\":{\n\t\t\"pageSize\":4,\n\t\t\"pageIndex\":1\n\t},\n\t\"sortFields\":\"wxCode\",\n\t\"sortType\":\"desc\"\n}"
+									"raw": ""
 								},
 								"url": {
 									"raw": "{{hostip}}/rest/littlecat/caobao/sys/param/getlist",
@@ -977,7 +977,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"condition\":{\n\t\t\"logicType\":\"and\",\n\t\t\"condItems\":[\n\t\t\t\t{\n\t\t\t\t\t\"fieldName\":\"id\",\n\t\t\t\t\t\"opType\":\"equal\",\n\t\t\t\t\t\"value\":\"ac3a82f7-cbd9-4921-af54-3114ad1ef555\"\n\t\t\t\t}\n\t\t\t]\n\t},\n\t\"pageParam\":{\n\t\t\"pageSize\":4,\n\t\t\"pageIndex\":1\n\t},\n\t\"sortFields\":\"name\",\n\t\"sortType\":\"desc\"\n}"
+							"raw": "{\n\t\"condition\":{\n\t\t\"logicType\":\"and\",\n\t\t\"condItems\":[\n\t\t\t\t{\n\t\t\t\t\t\"fieldName\":\"enable\",\n\t\t\t\t\t\"opType\":\"equal\",\n\t\t\t\t\t\"value\":\"Y\"\n\t\t\t\t}\n\t\t\t]\n\t},\n\t\"pageParam\":{\n\t},\n\t\"sortFields\":\"name\",\n\t\"sortType\":\"desc\"\n}"
 						},
 						"url": {
 							"raw": "{{hostip}}/rest/littlecat/caobao/supplier/getList",

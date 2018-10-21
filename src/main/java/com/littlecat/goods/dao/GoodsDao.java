@@ -1,6 +1,7 @@
 package com.littlecat.goods.dao;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -107,7 +108,14 @@ public class GoodsDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), new SerialBlob(mo.getMainImgData().getBytes(Consts.CHARSET_NAME)), mo.getPrice(), mo.getCurrentInventory(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getHasSecKillPlan(), mo.getHasGroupBuyPlan(), mo.getId() });
+			Blob mainImgData = null;
+			
+			if (StringUtil.isNotEmpty(mo.getMainImgData()))
+			{
+				mainImgData = new SerialBlob(mo.getMainImgData().getBytes(Consts.CHARSET_NAME));
+			}
+			
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mainImgData, mo.getPrice(), mo.getCurrentInventory(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getHasSecKillPlan(), mo.getHasGroupBuyPlan(), mo.getId() });
 
 			if (ret != 1)
 			{

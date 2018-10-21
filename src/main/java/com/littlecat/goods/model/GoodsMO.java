@@ -19,7 +19,7 @@ public class GoodsMO extends BaseMO
 	private String supplierId;
 	private String name;
 	private String summaryDescription; // 产品概要描述信息
-	private String mainImgData;
+	private String mainImgData = "";
 	private long price; // 单位为厘
 	private long currentInventory;
 	private String enable;
@@ -179,6 +179,7 @@ public class GoodsMO extends BaseMO
 			
 			mo.setId(rs.getString("id"));
 			mo.setClassifyId(rs.getString("classifyId"));
+			mo.setSupplierId(rs.getString("supplierId"));
 			mo.setName(rs.getString("name"));
 			mo.setSummaryDescription(rs.getString("summaryDescription"));
 			mo.setMainImgData(rs.getString("mainImgData"));

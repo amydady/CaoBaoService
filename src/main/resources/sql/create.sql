@@ -126,8 +126,8 @@ CREATE TABLE `t_goods_classify` (
 
 CREATE TABLE `t_goods` (
 	`id` VARCHAR(255) NOT NULL,
-	`classifyId` VARCHAR(255) NULL,
-	`supplierId` VARCHAR(255) NULL,
+	`classifyId` VARCHAR(255) NULL DEFAULT '-1',
+	`supplierId` VARCHAR(255) NULL DEFAULT '-1',
 	`name` VARCHAR(255) NOT NULL,
 	`summaryDescription` VARCHAR(500) NULL,
 	`mainImgData` MediumBlob NULL,
@@ -137,8 +137,8 @@ CREATE TABLE `t_goods` (
 	`hasSecKillPlan` VARCHAR(1) NOT NULL DEFAULT 'N',
 	`hasGroupBuyPlan` VARCHAR(1) NOT NULL DEFAULT 'N',
 	`createOperatorId` VARCHAR(255) NOT NULL,
-	`deliveryAreaId` VARCHAR(255) NOT NULL,
-	`deliveryFeeRuleId` VARCHAR(255) NOT NULL,
+	`deliveryAreaId` VARCHAR(255) NOT NULL DEFAULT '-1',
+	`deliveryFeeRuleId` VARCHAR(255) NOT NULL DEFAULT '-1',
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	
 	PRIMARY KEY (`id`),
