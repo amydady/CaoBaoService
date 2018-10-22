@@ -5,9 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.littlecat.cbb.common.BaseMO;
-
-public class ProvinceMO extends BaseMO
+public class ProvinceMO
 {
 	private String name;
 
@@ -28,7 +26,6 @@ public class ProvinceMO extends BaseMO
 		public ProvinceMO mapRow(ResultSet rs, int num) throws SQLException
 		{
 			ProvinceMO mo = new ProvinceMO();
-			mo.setId(rs.getString("id"));
 			mo.setName(rs.getString("name"));
 			
 			return mo;

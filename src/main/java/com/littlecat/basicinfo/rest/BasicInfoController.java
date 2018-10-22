@@ -51,13 +51,13 @@ public class BasicInfoController
 	}
 
 	@GetMapping(value = "/citys")
-	public RestRsp<CityMO> getCityList(@RequestParam("provinceId") String provinceId)
+	public RestRsp<CityMO> getCityList(@RequestParam("province") String province)
 	{
 		RestRsp<CityMO> result = new RestRsp<CityMO>();
 
 		try
 		{
-			result.getData().addAll(basicInfoBusiness.getCityByProvinceId(provinceId));
+			result.getData().addAll(basicInfoBusiness.getCityByProvince(province));
 		}
 		catch (LittleCatException e)
 		{
@@ -76,13 +76,13 @@ public class BasicInfoController
 	}
 
 	@GetMapping(value = "/areas")
-	public RestRsp<AreaMO> getAreaList(@RequestParam("cityId") String cityId)
+	public RestRsp<AreaMO> getAreaList(@RequestParam("city") String city)
 	{
 		RestRsp<AreaMO> result = new RestRsp<AreaMO>();
 
 		try
 		{
-			result.getData().addAll(basicInfoBusiness.getAreaByCityId(cityId));
+			result.getData().addAll(basicInfoBusiness.getAreaByCity(city));
 		}
 		catch (LittleCatException e)
 		{

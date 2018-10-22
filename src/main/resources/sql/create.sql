@@ -89,26 +89,21 @@ CREATE TABLE `t_terminaluser_deliveryaddress` (
 # 基础信息
 
 CREATE TABLE `t_basicinfo_province` (
-	`id` VARCHAR(50) NOT NULL,
 	`name` VARCHAR(50) NOT NULL,
 	
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`name`)
 );
 
 CREATE TABLE `t_basicinfo_city` (
-	`id` VARCHAR(50) NOT NULL,
 	`name` VARCHAR(50) NOT NULL,
-	`provinceId` VARCHAR(50) NOT NULL,
-	
-	PRIMARY KEY (`id`)
+	`province` VARCHAR(50) NOT NULL,
+	UNIQUE KEY `name` (`name`,`province`)
 );
 
 CREATE TABLE `t_basicinfo_area` (
-	`id` VARCHAR(50) NOT NULL,
 	`name` VARCHAR(50) NOT NULL,
-	`cityId` VARCHAR(50) NOT NULL,
-	
-	PRIMARY KEY (`id`)
+	`city` VARCHAR(50) NOT NULL,
+	UNIQUE KEY `name` (`name`,`city`)
 );
 
 #商品 --
@@ -137,8 +132,8 @@ CREATE TABLE `t_goods` (
 	`hasSecKillPlan` VARCHAR(1) NULL DEFAULT 'N',
 	`hasGroupBuyPlan` VARCHAR(1) NULL DEFAULT 'N',
 	`createOperatorId` VARCHAR(255) NOT NULL,
-	`deliveryAreaId` VARCHAR(255) NOT NULL DEFAULT '-1',
-	`deliveryFeeRuleId` VARCHAR(255) NOT NULL DEFAULT '-1',
+	`deliveryAreaId` VARCHAR(255) NULL DEFAULT '-1',
+	`deliveryFeeRuleId` VARCHAR(255) NULL DEFAULT '-1',
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	
 	PRIMARY KEY (`id`),

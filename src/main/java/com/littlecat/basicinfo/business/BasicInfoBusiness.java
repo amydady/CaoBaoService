@@ -23,8 +23,8 @@ import com.littlecat.cbb.query.QueryParam;
 @Transactional
 public class BasicInfoBusiness
 {
-	private final String FIELD_NAME_PROVINCEID = "provinceId";
-	private final String FIELD_NAME_CITYID = "cityId";
+	private final String FIELD_NAME_PROVINCE = "province";
+	private final String FIELD_NAME_CITY = "city";
 
 	@Autowired
 	private ProvinceDao provinceDao;
@@ -42,28 +42,28 @@ public class BasicInfoBusiness
 		return moList;
 	}
 
-	public List<CityMO> getCityByProvinceId(String provinceId) throws LittleCatException
+	public List<CityMO> getCityByProvince(String province) throws LittleCatException
 	{
 		List<CityMO> moList = new ArrayList<CityMO>();
 
 		QueryParam queryParam = new QueryParam();
 		QueryCondition queryCondition = new QueryCondition();
 		queryCondition.getCondItems()
-				.add(new ConditionItem(FIELD_NAME_PROVINCEID, provinceId, ConditionOperatorType.equal));
+				.add(new ConditionItem(FIELD_NAME_PROVINCE, province, ConditionOperatorType.equal));
 		queryParam.setCondition(queryCondition);
 
 		cityDao.getList(queryParam, moList);
 		return moList;
 	}
 
-	public List<AreaMO> getAreaByCityId(String cityId) throws LittleCatException
+	public List<AreaMO> getAreaByCity(String city) throws LittleCatException
 	{
 		List<AreaMO> moList = new ArrayList<AreaMO>();
 
 		QueryParam queryParam = new QueryParam();
 		QueryCondition queryCondition = new QueryCondition();
 		queryCondition.getCondItems()
-				.add(new ConditionItem(FIELD_NAME_CITYID, cityId, ConditionOperatorType.equal));
+				.add(new ConditionItem(FIELD_NAME_CITY, city, ConditionOperatorType.equal));
 		queryParam.setCondition(queryCondition);
 
 		areaDao.getList(queryParam, moList);

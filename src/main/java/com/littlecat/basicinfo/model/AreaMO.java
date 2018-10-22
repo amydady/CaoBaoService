@@ -5,12 +5,10 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.littlecat.cbb.common.BaseMO;
-
-public class AreaMO extends BaseMO
+public class AreaMO
 {
 	private String name;
-	private String cityId;
+	private String city;
 
 	public String getName()
 	{
@@ -22,26 +20,25 @@ public class AreaMO extends BaseMO
 		this.name = name;
 	}
 
-	public String getCityId()
+	public String getCity()
 	{
-		return cityId;
+		return city;
 	}
 
-	public void setCityId(String cityId)
+	public void setCity(String city)
 	{
-		this.cityId = cityId;
+		this.city = city;
 	}
-	
+
 	public static class MOMapper implements RowMapper<AreaMO>
 	{
 		@Override
 		public AreaMO mapRow(ResultSet rs, int num) throws SQLException
 		{
 			AreaMO mo = new AreaMO();
-			mo.setId(rs.getString("id"));
 			mo.setName(rs.getString("name"));
-			mo.setCityId(rs.getString("cityId"));
-			
+			mo.setCity(rs.getString("city"));
+
 			return mo;
 		}
 

@@ -18,3 +18,13 @@ insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('201','�
 
 insert into t_sys_sysoperator(id,username,password,name,wxCode,email,mobile)
 values ('test001','test001',password('123'),'test001','test001','test001','test001');
+
+
+
+//TODO:按照微信小程序的内容修改
+insert into t_basicinfo_province(name) values('江苏');
+insert into t_basicinfo_city(name,province) values('镇江市','江苏');
+insert into t_basicinfo_area(name,city) values('丹阳市','镇江市');
+
+
+
