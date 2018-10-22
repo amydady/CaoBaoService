@@ -282,7 +282,7 @@ CREATE TABLE `t_quanzi_tuanmember` (
 
 #test
 CREATE TABLE `t_test` (
-	`id` VARCHAR(255) NULL,
+	`id` VARCHAR(255) NOT NULL,
 	`dateTime` DATETIME NULL,
 	`imgData` MediumBlob NULL,
 	

@@ -9,6 +9,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -152,7 +153,7 @@ public class GoodsController
 
 		return result;
 	}
-	
+
 	@PostMapping(value = "/getDetailImgList")
 	public RestRsp<GoodsDetailImgsMO> getDetailImgList(@RequestBody QueryParam queryParam)
 	{
@@ -384,6 +385,31 @@ public class GoodsController
 		try
 		{
 			goodsDetailImgsBusiness.modify(mo);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@DeleteMapping(value = "/detailimgs/batchdelete")
+	public RestSimpleRsp batchDeleteDetailImgs(@RequestBody List<String> ids)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			goodsDetailImgsBusiness.delete(ids);
 		}
 		catch (LittleCatException e)
 		{
