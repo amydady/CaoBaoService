@@ -16,3 +16,5 @@ insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('2','商�
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('201','商品列表','../Goods/GoodsList.html','2','1','Y');
 
 
+insert into t_sys_sysoperator(id,username,password,name,wxCode,email,mobile)
+values ('test001','test001',password('123'),'test001','test001','test001','test001');
