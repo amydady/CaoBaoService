@@ -1,11 +1,9 @@
 package com.littlecat.goods.rest;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -59,6 +57,32 @@ public class GoodsController
 		try
 		{
 			GoodsMO mo = goodsBusiness.getById(id);
+			result.getData().add(mo);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/getSummayInfoById")
+	public RestRsp<GoodsMO> getSummayInfoById(@RequestParam String id)
+	{
+		RestRsp<GoodsMO> result = new RestRsp<GoodsMO>();
+
+		try
+		{
+			GoodsMO mo = goodsBusiness.getSummayInfoById(id);
 			result.getData().add(mo);
 		}
 		catch (LittleCatException e)

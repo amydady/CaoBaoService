@@ -22,6 +22,11 @@ public class GoodsBusiness
 	{
 		return goodsDao.getById(id);
 	}
+	
+	public GoodsMO getSummayInfoById(String id) throws LittleCatException
+	{
+		return goodsDao.getSummayInfoById(id);
+	}
 
 	public void delete(String id) throws LittleCatException
 	{

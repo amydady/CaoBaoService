@@ -2,6 +2,7 @@ package com.littlecat.goods.dao;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.common.Consts;
@@ -34,6 +36,38 @@ public class GoodsDao
 	public GoodsMO getById(String id) throws LittleCatException
 	{
 		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new GoodsMO.MOMapper());
+	}
+
+	/**
+	 * 获取指定商品的概要信息
+	 * 
+	 * @param id
+	 * @return
+	 * @throws LittleCatException
+	 */
+	public GoodsMO getSummayInfoById(String id) throws LittleCatException
+	{
+		String sql = "select name,price from " + TABLE_NAME + " where id = ?";
+
+		try
+		{
+			return jdbcTemplate.queryForObject(sql, new Object[] { id }, new RowMapper<GoodsMO>()
+			{
+				@Override
+				public GoodsMO mapRow(ResultSet rs, int rowNum) throws SQLException
+				{
+					GoodsMO mo = new GoodsMO();
+					mo.setName(rs.getString("name"));
+					mo.setPrice(rs.getLong("price"));
+
+					return mo;
+				}
+			});
+		}
+		catch (Exception e)
+		{
+			throw new LittleCatException(e.getMessage(), e);
+		}
 	}
 
 	public void delete(String id) throws LittleCatException
@@ -109,12 +143,12 @@ public class GoodsDao
 		try
 		{
 			Blob mainImgData = null;
-			
+
 			if (StringUtil.isNotEmpty(mo.getMainImgData()))
 			{
 				mainImgData = new SerialBlob(mo.getMainImgData().getBytes(Consts.CHARSET_NAME));
 			}
-			
+
 			int ret = jdbcTemplate.update(sql, new Object[] { mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mainImgData, mo.getPrice(), mo.getCurrentInventory(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getHasSecKillPlan(), mo.getHasGroupBuyPlan(), mo.getId() });
 
 			if (ret != 1)
@@ -132,4 +166,5 @@ public class GoodsDao
 	{
 		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new GoodsMO.MOMapper());
 	}
+
 }
