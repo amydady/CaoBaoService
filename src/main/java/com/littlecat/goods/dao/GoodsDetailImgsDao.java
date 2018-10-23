@@ -57,7 +57,7 @@ public class GoodsDetailImgsDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,goodsId,title,sortNum,imgData) values(?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,goodsId,title,sortNum,imgData) values(?,?,?,?,?)";
 
 		try
 		{

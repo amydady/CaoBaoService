@@ -222,6 +222,7 @@ public class GoodsMO extends BaseMO
 			condition.getCondItems().add(new ConditionItem("goodsId", mo.getId(), ConditionOperatorType.equal));
 			queryParam.setCondition(condition);
 			
+			queryParam.setSortFields("sortNum");
 			List<GoodsDetailImgsMO> mos = new ArrayList<GoodsDetailImgsMO>();
 			goodsDetailImgsBusiness.getList(queryParam, mos);
 			mo.setDetailImgs(mos);

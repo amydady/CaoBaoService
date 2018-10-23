@@ -1,15 +1,16 @@
 package com.littlecat.goods.rest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -402,7 +403,7 @@ public class GoodsController
 		return result;
 	}
 
-	@DeleteMapping(value = "/detailimgs/batchdelete")
+	@PutMapping(value = "/detailimgs/batchdelete")
 	public RestSimpleRsp batchDeleteDetailImgs(@RequestBody List<String> ids)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
