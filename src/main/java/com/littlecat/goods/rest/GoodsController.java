@@ -451,4 +451,34 @@ public class GoodsController
 
 		return result;
 	}
+
+	/**
+	 * 用于微信小程序（展示普通商品列表）
+	 * 
+	 * @return
+	 */
+	@GetMapping(value = "/getList4WxApp")
+	public RestRsp<GoodsMO> getList4WxApp()
+	{
+		RestRsp<GoodsMO> result = new RestRsp<GoodsMO>();
+
+		try
+		{
+			result.getData().addAll(goodsBusiness.getList4WxApp());
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
 }

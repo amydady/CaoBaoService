@@ -169,6 +169,7 @@ CREATE TABLE `t_seckill_seckillplan` (
 	`createOperatorId` VARCHAR(255) NOT NULL,
 	`deliveryAreaId` VARCHAR(255) NOT NULL,
 	`deliveryFeeRuleId` VARCHAR(255) NOT NULL,
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	
 	
 	PRIMARY KEY (`id`)

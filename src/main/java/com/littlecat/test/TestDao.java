@@ -15,7 +15,6 @@ import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.utils.DaoUtil;
-import com.littlecat.goods.model.GoodsMO;
 
 @Component
 public class TestDao

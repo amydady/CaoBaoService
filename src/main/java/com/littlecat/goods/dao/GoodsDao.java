@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -165,6 +166,53 @@ public class GoodsDao
 	public int getList(QueryParam queryParam, List<GoodsMO> mos) throws LittleCatException
 	{
 		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new GoodsMO.MOMapper());
+	}
+
+	/**
+	 * 查询商品列表（微信小程序，展示普通商品）
+	 * 
+	 * @return
+	 */
+	public List<GoodsMO> getList4WxApp()
+	{
+		List<GoodsMO> mos = new ArrayList<GoodsMO>();
+
+		String sql = new StringBuilder()
+				.append("select a.id,a.name,a.summaryDescription,a.currentInventory,a.price,a.mainImgData")
+				.append(" from ").append(TABLE_NAME).append(" a ")
+				.append(" where a.enable='Y'")
+				.append(" and a.hasSecKillPlan='N'")
+				.append(" and a.hasGroupBuyPlan='N'")
+				.toString();
+
+		try
+		{
+			mos.addAll(jdbcTemplate.query(sql, new RowMapper<GoodsMO>()
+			{
+
+				@Override
+				public GoodsMO mapRow(ResultSet rs, int rowNum) throws SQLException
+				{
+					GoodsMO mo = new GoodsMO();
+
+					mo.setId(rs.getString("id"));
+					mo.setName(rs.getString("name"));
+					mo.setSummaryDescription(rs.getString("summaryDescription"));
+					mo.setCurrentInventory(rs.getLong("currentInventory"));
+					mo.setPrice(rs.getLong("price"));
+					mo.setMainImgData(rs.getString("mainImgData"));
+
+					return mo;
+				}
+
+			}));
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+
+		return mos;
 	}
 
 }

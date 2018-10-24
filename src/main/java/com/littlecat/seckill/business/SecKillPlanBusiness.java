@@ -171,4 +171,14 @@ public class SecKillPlanBusiness
 	{
 		return orderDao.getBuyedNumOfSecKillPlan(planId, terminalUserId);
 	}
+	
+	/**
+	 * 秒杀计划列表，用于微信小程序（展示秒杀商品列表）
+	 * 
+	 * @return
+	 */
+	public List<SecKillPlanMO> getList4WxApp()
+	{
+		return secKillPlanDao.getList4WxApp();
+	}
 }

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "44992d5f-8ea6-4ff6-95f9-725a5648c41e",
+		"_postman_id": "e3951803-6f2f-498c-83a4-c8f1d4a96e0e",
 		"name": "CaoBao",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -302,6 +302,36 @@
 								"caobao",
 								"goods",
 								"modify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getList4WxApp",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"classifyId\":\"\",\r\n\t\"supplierId\":\"\",\r\n\t\"name\":\"test001\",\r\n\t\"summaryDescription\":\"summaryDescription\",\r\n\t\"mainImgUrl\":\"mainImgUrl\",\r\n\t \"price\":10001,\r\n\t\"createOperatorId\":\"createOperator001\",\r\n\t\"deliveryAreaId\":\"deliveryArea001\",\r\n\t\"deliveryFeeRuleId\":\"deliveryFeeRule001\"\r\n}"
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/goods/getList4WxApp",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"goods",
+								"getList4WxApp"
 							]
 						}
 					},
@@ -990,6 +1020,41 @@
 								"caobao",
 								"supplier",
 								"getList"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SecKill",
+			"item": [
+				{
+					"name": "getList4WxApp",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"classifyId\":\"\",\r\n\t\"supplierId\":\"\",\r\n\t\"name\":\"test001\",\r\n\t\"summaryDescription\":\"summaryDescription\",\r\n\t\"mainImgUrl\":\"mainImgUrl\",\r\n\t \"price\":10001,\r\n\t\"createOperatorId\":\"createOperator001\",\r\n\t\"deliveryAreaId\":\"deliveryArea001\",\r\n\t\"deliveryFeeRuleId\":\"deliveryFeeRule001\"\r\n}"
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/seckillplan/getList4WxApp",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"seckillplan",
+								"getList4WxApp"
 							]
 						}
 					},

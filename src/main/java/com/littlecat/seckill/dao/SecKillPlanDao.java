@@ -1,10 +1,14 @@
 package com.littlecat.seckill.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
@@ -23,6 +27,8 @@ public class SecKillPlanDao
 	protected JdbcTemplate jdbcTemplate;
 
 	private final String TABLE_NAME = TableName.SecKillPlan.getName();
+	private final String TABLE_NAME_GOODS = TableName.Goods.getName();
+
 	private static final String MODEL_NAME = SecKillPlanMO.class.getSimpleName();
 
 	public String add(SecKillPlanMO mo) throws LittleCatException
@@ -57,7 +63,7 @@ public class SecKillPlanDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getStartTime(), mo.getEndTime(), mo.getPrice(),mo.getCurrentInventory(), mo.getLimitBuyNum(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getStartTime(), mo.getEndTime(), mo.getPrice(), mo.getCurrentInventory(), mo.getLimitBuyNum(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getId() });
 
 			if (ret != 1)
 			{
@@ -79,7 +85,7 @@ public class SecKillPlanDao
 	{
 		DaoUtil.delete(TABLE_NAME, ids, jdbcTemplate);
 	}
-	
+
 	public SecKillPlanMO getById(String id) throws LittleCatException
 	{
 		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new SecKillPlanMO.MOMapper());
@@ -89,4 +95,79 @@ public class SecKillPlanDao
 	{
 		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new SecKillPlanMO.MOMapper());
 	}
+
+	/**
+	 * 秒杀计划列表，用于微信小程序（展示秒杀商品列表）
+	 * 
+	 * @return
+	 */
+	public List<SecKillPlanMO> getList4WxApp()
+	{
+		List<SecKillPlanMO> mos = new ArrayList<SecKillPlanMO>();
+
+		String sql = new StringBuilder()
+				.append("select a.id,a.goodsId,a.currentInventory,a.price,b.name goodsName,b.price goodsPrice,b.mainImgData goodsMainImgData")
+				.append(" from ").append(TABLE_NAME).append(" a ")
+				.append(" inner join ").append(TABLE_NAME_GOODS).append(" b on a.goodsId=b.id")
+				.append(" where CURRENT_TIMESTAMP between a.startTime and a.endTime")
+				.append(" and a.enable='Y'")
+				.append(" and b.enable='Y'")
+				.toString();
+
+		try
+		{
+			mos.addAll(jdbcTemplate.query(sql, new RowMapper<SecKillPlanMO>()
+			{
+
+				@Override
+				public SecKillPlanMO mapRow(ResultSet rs, int rowNum) throws SQLException
+				{
+					SecKillPlanMO mo = new SecKillPlanMO();
+
+					mo.setId(rs.getString("id"));
+					mo.setGoodsId(rs.getString("goodsId"));
+					mo.setPrice(rs.getLong("price"));
+					mo.setCurrentInventory(rs.getLong("currentInventory"));
+					mo.setGoodsName(rs.getString("goodsName"));
+					mo.setGoodsPrice(rs.getLong("goodsPrice"));
+					mo.setGoodsMainImgData(rs.getString("goodsMainImgData"));
+
+					return mo;
+				}
+
+			}));
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+
+		return mos;
+	}
+
+	public List<SecKillPlanMO> getList4WebApp()
+	{
+		List<SecKillPlanMO> mos = new ArrayList<SecKillPlanMO>();
+
+		String sql = new StringBuilder()
+				.append("select a.id,a.goodsId,a,startTime,a.endTime,a.limitBuyNum,a.currentInventory,a.price,a.createTime,b.name goodsName,b.price goodsPrice,b.mainImgData goodsMainImgData")
+				.append(" from ").append(TABLE_NAME).append(" a ")
+				.append(" inner join ").append(TABLE_NAME_GOODS).append(" b on a.goodsId=b.id")
+				.append(" where CURRENT_TIMESTAMP <= a.endTime")
+				.append(" and b.enable='Y'")
+				.append(" order by enable desc,startTime asc ")
+				.toString();
+
+		try
+		{
+			mos.addAll(jdbcTemplate.query(sql, new SecKillPlanMO.MOMapper4WebList()));
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+
+		return mos;
+	}
+
 }

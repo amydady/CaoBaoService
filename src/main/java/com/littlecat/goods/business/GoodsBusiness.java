@@ -72,4 +72,14 @@ public class GoodsBusiness
 	{
 		return goodsDao.getList(queryParam, mos);
 	}
+	
+	/**
+	 * 查询商品列表（微信小程序，展示普通商品）
+	 * 
+	 * @return
+	 */
+	public List<GoodsMO> getList4WxApp()
+	{
+		return goodsDao.getList4WxApp();
+	}
 }

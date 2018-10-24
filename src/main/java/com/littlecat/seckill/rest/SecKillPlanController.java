@@ -6,7 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -109,7 +108,7 @@ public class SecKillPlanController
 		return result;
 	}
 
-	@DeleteMapping(value = "/delete/{id}")
+	@PutMapping(value = "/delete/{id}")
 	public RestSimpleRsp delete(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
@@ -134,7 +133,7 @@ public class SecKillPlanController
 		return result;
 	}
 
-	@DeleteMapping(value = "/batchdelete")
+	@PutMapping(value = "/batchdelete")
 	public RestSimpleRsp batchDelete(@RequestBody List<String> ids)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
@@ -202,6 +201,36 @@ public class SecKillPlanController
 		try
 		{
 			result.getData().add(secKillPlanBusiness.getBuyedNum(secKillPlanId, terminalUserId));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+	
+	/**
+	 * 秒杀计划列表，用于微信小程序（展示秒杀商品列表）
+	 * 
+	 * @return
+	 */
+	@GetMapping(value = "/getList4WxApp")
+	public RestRsp<SecKillPlanMO> getList4WxApp()
+	{
+		RestRsp<SecKillPlanMO> result = new RestRsp<SecKillPlanMO>();
+
+		try
+		{
+			result.getData().addAll(secKillPlanBusiness.getList4WxApp());
 		}
 		catch (LittleCatException e)
 		{
