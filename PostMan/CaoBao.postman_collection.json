@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e3951803-6f2f-498c-83a4-c8f1d4a96e0e",
+		"_postman_id": "9af518e3-295c-4085-93f1-7592b2c58c09",
 		"name": "CaoBao",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -319,7 +319,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"classifyId\":\"\",\r\n\t\"supplierId\":\"\",\r\n\t\"name\":\"test001\",\r\n\t\"summaryDescription\":\"summaryDescription\",\r\n\t\"mainImgUrl\":\"mainImgUrl\",\r\n\t \"price\":10001,\r\n\t\"createOperatorId\":\"createOperator001\",\r\n\t\"deliveryAreaId\":\"deliveryArea001\",\r\n\t\"deliveryFeeRuleId\":\"deliveryFeeRule001\"\r\n}"
+							"raw": ""
 						},
 						"url": {
 							"raw": "{{hostip}}/rest/littlecat/caobao/goods/getList4WxApp",
@@ -1042,7 +1042,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"classifyId\":\"\",\r\n\t\"supplierId\":\"\",\r\n\t\"name\":\"test001\",\r\n\t\"summaryDescription\":\"summaryDescription\",\r\n\t\"mainImgUrl\":\"mainImgUrl\",\r\n\t \"price\":10001,\r\n\t\"createOperatorId\":\"createOperator001\",\r\n\t\"deliveryAreaId\":\"deliveryArea001\",\r\n\t\"deliveryFeeRuleId\":\"deliveryFeeRule001\"\r\n}"
+							"raw": ""
 						},
 						"url": {
 							"raw": "{{hostip}}/rest/littlecat/caobao/seckillplan/getList4WxApp",
@@ -1055,6 +1055,41 @@
 								"caobao",
 								"seckillplan",
 								"getList4WxApp"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ShoppingCart",
+			"item": [
+				{
+					"name": "GetList",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n}"
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/shoppingcart/getList",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"shoppingcart",
+								"getList"
 							]
 						}
 					},
