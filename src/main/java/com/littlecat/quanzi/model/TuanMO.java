@@ -127,7 +127,7 @@ public class TuanMO extends BaseMO
 			mo.setName(rs.getString("name"));
 			mo.setRemark(rs.getString("remark"));
 			mo.setIdCard(new IdCardMO(IdCardType.valueOf(rs.getString("idCardType")), rs.getString("idCardCode"), rs.getString("idCardImgUrlFront"), rs.getString("idCardImgUrlBack")));
-			mo.setAddressInfo(new AddressMO(rs.getString("provinceId"), rs.getString("cityId"), rs.getString("areaId"), rs.getString("detailInfo")));
+			mo.setAddressInfo(new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo")));
 			mo.setLabels(StringUtil.split2List(rs.getString("labels")));
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setEnable(rs.getString("enable"));

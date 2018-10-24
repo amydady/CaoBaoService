@@ -2,6 +2,7 @@ package com.littlecat.seckill.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.utils.SpringUtil;
 import com.littlecat.goods.business.GoodsBusiness;
+import com.littlecat.goods.model.GoodsDetailImgsMO;
 import com.littlecat.goods.model.GoodsMO;
 
 /**
@@ -35,8 +37,12 @@ public class SecKillPlanMO extends BaseMO
 
 	// just for view
 	private String goodsName;
+	private String goodsSummaryDescription;
 	private long goodsPrice;
+	private long goodsCurrentInventory;
 	private String goodsMainImgData;
+	private List<GoodsDetailImgsMO> goodsDetailImgs;
+	
 	private String createOperatorName;
 
 	public String getGoodsId()
@@ -179,6 +185,36 @@ public class SecKillPlanMO extends BaseMO
 		this.goodsMainImgData = goodsMainImgData;
 	}
 
+	public List<GoodsDetailImgsMO> getGoodsDetailImgs()
+	{
+		return goodsDetailImgs;
+	}
+
+	public void setGoodsDetailImgs(List<GoodsDetailImgsMO> goodsDetailImgs)
+	{
+		this.goodsDetailImgs = goodsDetailImgs;
+	}
+
+	public String getGoodsSummaryDescription()
+	{
+		return goodsSummaryDescription;
+	}
+
+	public void setGoodsSummaryDescription(String goodsSummaryDescription)
+	{
+		this.goodsSummaryDescription = goodsSummaryDescription;
+	}
+
+	public long getGoodsCurrentInventory()
+	{
+		return goodsCurrentInventory;
+	}
+
+	public void setGoodsCurrentInventory(long goodsCurrentInventory)
+	{
+		this.goodsCurrentInventory = goodsCurrentInventory;
+	}
+
 	public static class MOMapper4WebList implements RowMapper<SecKillPlanMO>
 	{
 		@Override
@@ -230,6 +266,10 @@ public class SecKillPlanMO extends BaseMO
 			{
 				mo.setGoodsName(goodsMo.getName());
 				mo.setGoodsPrice(goodsMo.getPrice());
+				mo.setGoodsCurrentInventory(goodsMo.getCurrentInventory());
+				mo.setGoodsMainImgData(goodsMo.getMainImgData());
+				mo.setGoodsDetailImgs(goodsMo.getDetailImgs());
+				mo.setGoodsSummaryDescription(goodsMo.getSummaryDescription());
 			}
 			else
 			{

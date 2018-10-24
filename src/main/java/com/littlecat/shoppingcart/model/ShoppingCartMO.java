@@ -6,10 +6,14 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
+import com.littlecat.cbb.common.Consts;
+import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.utils.SpringUtil;
 import com.littlecat.common.consts.BuyType;
 import com.littlecat.goods.business.GoodsBusiness;
 import com.littlecat.goods.model.GoodsMO;
+import com.littlecat.seckill.business.SecKillPlanBusiness;
+import com.littlecat.seckill.model.SecKillPlanMO;
 
 /**
  * 购物车MO
@@ -24,9 +28,8 @@ public class ShoppingCartMO extends BaseMO
 	private String resId;
 	private long goodsNum;
 	private String createTime;
-	
 
-	//for view
+	// for view
 	private String goodsName;
 	private String goodsMainImgData;
 	private long goodsPrice;
@@ -80,8 +83,6 @@ public class ShoppingCartMO extends BaseMO
 	{
 		this.createTime = createTime;
 	}
-	
-	
 
 	public String getGoodsName()
 	{
@@ -113,14 +114,13 @@ public class ShoppingCartMO extends BaseMO
 		this.goodsPrice = goodsPrice;
 	}
 
-
-
 	public static class MOMapper implements RowMapper<ShoppingCartMO>
 	{
+		private static final SecKillPlanBusiness secKillPlanBusiness = SpringUtil.getBean(SecKillPlanBusiness.class);
 		private static final GoodsBusiness goodsBusiness = SpringUtil.getBean(GoodsBusiness.class);
 
 		@Override
-		public ShoppingCartMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		public ShoppingCartMO mapRow(ResultSet rs, int rowNum) throws SQLException, LittleCatException
 		{
 			ShoppingCartMO mo = new ShoppingCartMO();
 
@@ -130,9 +130,27 @@ public class ShoppingCartMO extends BaseMO
 			mo.setResId(rs.getString("resId"));
 			mo.setGoodsNum(rs.getLong("goodsNum"));
 			mo.setCreateTime(rs.getString("createTime"));
+
+			String goodsId = mo.getResId();
 			
-			//设置关联的产品信息
-			GoodsMO goodsMo = goodsBusiness.getById(mo.getResId());
+			if(mo.getBuyType()==BuyType.seckill)
+			{
+				SecKillPlanMO secKillPlanMO = secKillPlanBusiness.getById(mo.getResId());
+				
+				if (secKillPlanMO == null)
+				{
+					throw new LittleCatException(Consts.ERROR_CODE_UNKNOW, "ShoppingCartMO:mapRow:get secKillPlan by id return null,planid=" + mo.getResId());
+				}
+				
+				goodsId = secKillPlanMO.getGoodsId();
+			}
+			
+			// 设置关联的产品信息
+			GoodsMO goodsMo = goodsBusiness.getById(goodsId);
+			if (goodsMo == null)
+			{
+				throw new LittleCatException(Consts.ERROR_CODE_UNKNOW, "ShoppingCartMO:mapRow:get goods by id return null,goodsid=" + mo.getResId());
+			}
 			mo.setGoodsName(goodsMo.getName());
 			mo.setGoodsMainImgData(goodsMo.getMainImgData());
 			mo.setGoodsPrice(goodsMo.getPrice());

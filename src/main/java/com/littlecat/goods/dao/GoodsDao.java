@@ -225,7 +225,7 @@ public class GoodsDao
 		List<GoodsMO> mos = new ArrayList<GoodsMO>();
 
 		String sql = new StringBuilder()
-				.append("select a.id,a.name,a.summaryDescription,a.currentInventory,a.price,a.mainImgData")
+				.append("select a.id,a.name,a.summaryDescription,a.currentInventory,a.price,a.enable,a.createTime")
 				.append(" from ").append(TABLE_NAME).append(" a ")
 				.toString();
 
@@ -244,7 +244,8 @@ public class GoodsDao
 					mo.setSummaryDescription(rs.getString("summaryDescription"));
 					mo.setCurrentInventory(rs.getLong("currentInventory"));
 					mo.setPrice(rs.getLong("price"));
-					mo.setMainImgData(rs.getString("mainImgData"));
+					mo.setEnable(rs.getString("enable"));
+					mo.setCreateTime(rs.getString("createTime"));
 
 					return mo;
 				}

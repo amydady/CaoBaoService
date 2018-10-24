@@ -70,7 +70,7 @@ public class DeliveryAddressMO extends BaseMO
 			mo.setId(rs.getString("id"));
 			mo.setTerminalUserId(rs.getString("terminalUserId"));
 			mo.setName(rs.getString("name"));
-			mo.setAddressInfo(new AddressMO(rs.getString("provinceId"), rs.getString("cityId"), rs.getString("areaId"), rs.getString("detailInfo")));
+			mo.setAddressInfo(new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo")));
 			mo.setIsDefault(rs.getString("isDefault"));
 
 			return mo;

@@ -22,9 +22,16 @@ values ('test001','test001',password('123'),'test001','test001','test001','test0
 
 
 //TODO:按照微信小程序的内容修改
-insert into t_basicinfo_province(name) values('江苏');
-insert into t_basicinfo_city(name,province) values('镇江市','江苏');
+insert into t_basicinfo_province(name) values('江苏省');
+insert into t_basicinfo_city(name,province) values('镇江市','江苏省');
+insert into t_basicinfo_area(name,city) values('京口区','镇江市');
+insert into t_basicinfo_area(name,city) values('润州区','镇江市');
+insert into t_basicinfo_area(name,city) values('丹徒区','镇江市');
 insert into t_basicinfo_area(name,city) values('丹阳市','镇江市');
+insert into t_basicinfo_area(name,city) values('扬中市','镇江市');
+insert into t_basicinfo_area(name,city) values('句容市','镇江市');
+insert into t_basicinfo_area(name,city) values('丹徒新区','镇江市');
+insert into t_basicinfo_area(name,city) values('镇江新区','镇江市');
 
 
 

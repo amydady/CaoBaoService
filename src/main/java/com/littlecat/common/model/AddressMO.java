@@ -2,52 +2,58 @@ package com.littlecat.common.model;
 
 public class AddressMO
 {
-	private String provinceId;
-	private String cityId;
-	private String areaId;
+	private String province;
+	private String city;
+	private String area;
 	private String detailInfo;
-	
-	public AddressMO(String provinceId, String cityId, String areaId, String detailInfo)
+
+	public AddressMO(String province, String city, String area, String detailInfo)
 	{
 		super();
-		this.provinceId = provinceId;
-		this.cityId = cityId;
-		this.areaId = areaId;
+		this.province = province;
+		this.city = city;
+		this.area = area;
 		this.detailInfo = detailInfo;
 	}
-	
-	public String getProvinceId()
-	{
-		return provinceId;
-	}
-	public void setProvinceId(String provinceId)
-	{
-		this.provinceId = provinceId;
-	}
-	public String getCityId()
-	{
-		return cityId;
-	}
-	public void setCityId(String cityId)
-	{
-		this.cityId = cityId;
-	}
-	public String getAreaId()
-	{
-		return areaId;
-	}
-	public void setAreaId(String areaId)
-	{
-		this.areaId = areaId;
-	}
+
 	public String getDetailInfo()
 	{
 		return detailInfo;
 	}
+
 	public void setDetailInfo(String detailInfo)
 	{
 		this.detailInfo = detailInfo;
 	}
-	
-	
+
+	public String getProvince()
+	{
+		return province;
+	}
+
+	public void setProvince(String province)
+	{
+		this.province = province;
+	}
+
+	public String getCity()
+	{
+		return city;
+	}
+
+	public void setCity(String city)
+	{
+		this.city = city;
+	}
+
+	public String getArea()
+	{
+		return area;
+	}
+
+	public void setArea(String area)
+	{
+		this.area = area;
+	}
+
 }

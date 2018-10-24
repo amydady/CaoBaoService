@@ -40,11 +40,11 @@ public class OrderDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,fee,state,provinceId,cityId,areaId,detailInfo,groupBuyPlanId,groupBuyTaskId) values(?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,fee,state,province,city,area,detailInfo,groupBuyPlanId,groupBuyTaskId) values(?,?,?,?,?,?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvinceId(), mo.getDeliveryAddress().getCityId(), mo.getDeliveryAddress().getAreaId(), mo.getDeliveryAddress().getDetailInfo(), mo.getGroupBuyPlanId(), mo.getGroupBuyTaskId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvince(), mo.getDeliveryAddress().getCity(), mo.getDeliveryAddress().getArea(), mo.getDeliveryAddress().getDetailInfo(), mo.getGroupBuyPlanId(), mo.getGroupBuyTaskId() });
 
 			if (ret != 1)
 			{

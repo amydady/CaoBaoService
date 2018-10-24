@@ -80,16 +80,16 @@ public class TuanDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,tuanZhangId,name,remark,idCardType,idCardCode,idCardImgUrlFront,idCardImgUrlBack,provinceId,cityId,areaId,detailInfo,labels) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,tuanZhangId,name,remark,idCardType,idCardCode,idCardImgUrlFront,idCardImgUrlBack,province,city,area,detailInfo,labels) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		try
 		{
 			int ret = jdbcTemplate.update(sql,
 					new Object[] { mo.getId(), mo.getTuanZhangId(), mo.getName(), mo.getRemark(),
 							mo.getIdCard().getType().name(), mo.getIdCard().getCode(), mo.getIdCard().getImgUrlFront(),
-							mo.getIdCard().getImgUrlBack(), mo.getAddressInfo().getProvinceId(),
-							mo.getAddressInfo().getCityId(), mo.getAddressInfo().getAreaId(),
-							mo.getAddressInfo().getAreaId(), mo.getAddressInfo().getDetailInfo(),
+							mo.getIdCard().getImgUrlBack(), mo.getAddressInfo().getProvince(),
+							mo.getAddressInfo().getCity(), mo.getAddressInfo().getArea(),
+							mo.getAddressInfo().getDetailInfo(),
 							ListUtil.join2String(mo.getLabels()) });
 
 			if (ret != 1)
@@ -107,15 +107,15 @@ public class TuanDao
 
 	public void modify(TuanMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set tuanZhangId=?,name=?,remark=?,idCardType=?,idCardCode=?,idCardImgUrlFront=?,idCardImgUrlBack=?,provinceId=?,cityId=?,areaId=?,detailInfo=?,labels=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set tuanZhangId=?,name=?,remark=?,idCardType=?,idCardCode=?,idCardImgUrlFront=?,idCardImgUrlBack=?,province=?,city=?,area=?,detailInfo=?,labels=? where id = ?";
 
 		try
 		{
 			int ret = jdbcTemplate.update(sql, new Object[] { mo.getTuanZhangId(), mo.getName(), mo.getRemark(),
 					mo.getIdCard().getType().name(), mo.getIdCard().getCode(), mo.getIdCard().getImgUrlFront(),
-					mo.getIdCard().getImgUrlBack(), mo.getAddressInfo().getProvinceId(),
-					mo.getAddressInfo().getCityId(), mo.getAddressInfo().getAreaId(),
-					mo.getAddressInfo().getAreaId(), mo.getAddressInfo().getDetailInfo(),
+					mo.getIdCard().getImgUrlBack(), mo.getAddressInfo().getProvince(),
+					mo.getAddressInfo().getCity(), mo.getAddressInfo().getArea(),
+					 mo.getAddressInfo().getDetailInfo(),
 					ListUtil.join2String(mo.getLabels()), mo.getId() });
 
 			if (ret != 1)

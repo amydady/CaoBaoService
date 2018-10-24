@@ -43,11 +43,11 @@ public class DeliveryAddressDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,name,provinceId,cityId,areaId,detailInfo,isDefault) values(?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,name,province,city,area,detailInfo,isDefault) values(?,?,?,?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getName(), mo.getAddressInfo().getProvinceId(), mo.getAddressInfo().getCityId(), mo.getAddressInfo().getAreaId(), mo.getAddressInfo().getDetailInfo(), mo.getIsDefault() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getName(), mo.getAddressInfo().getProvince(), mo.getAddressInfo().getCity(), mo.getAddressInfo().getArea(), mo.getAddressInfo().getDetailInfo(), mo.getIsDefault() });
 
 			if (ret != 1)
 			{
@@ -69,11 +69,11 @@ public class DeliveryAddressDao
 			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
-		String sql = "update " + TABLE_NAME + " set name = ?,provinceId = ?,cityId = ?,areaId = ?,detailInfo = ?,isDefault = ? where id = ?";
+		String sql = "update " + TABLE_NAME + " set name = ?,province = ?,city = ?,area = ?,detailInfo = ?,isDefault = ? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getName(), mo.getAddressInfo().getProvinceId(), mo.getAddressInfo().getCityId(), mo.getAddressInfo().getAreaId(), mo.getAddressInfo().getDetailInfo(), mo.getIsDefault(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getName(), mo.getAddressInfo().getProvince(), mo.getAddressInfo().getCity(), mo.getAddressInfo().getArea(), mo.getAddressInfo().getDetailInfo(), mo.getIsDefault(), mo.getId() });
 
 			if (ret != 1)
 			{

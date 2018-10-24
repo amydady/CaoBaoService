@@ -178,7 +178,7 @@ public class OrderMO extends BaseMO
 			mo.setFee(rs.getLong("fee"));
 			mo.setState(OrderState.valueOf(rs.getString("state")));
 
-			AddressMO deliveryaddress = new AddressMO(rs.getString("provinceId"), rs.getString("cityId"), rs.getString("areaId"), rs.getString("detailInfo"));
+			AddressMO deliveryaddress = new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo"));
 
 			mo.setDeliveryAddress(deliveryaddress);
 			mo.setPayTime(rs.getString("payTime"));
