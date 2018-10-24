@@ -247,4 +247,29 @@ public class SecKillPlanController
 
 		return result;
 	}
+	
+	@GetMapping(value = "/getList4WebApp")
+	public RestRsp<SecKillPlanMO> getList4WebApp(@RequestParam String goodsId)
+	{
+		RestRsp<SecKillPlanMO> result = new RestRsp<SecKillPlanMO>();
+
+		try
+		{
+			result.getData().addAll(secKillPlanBusiness.getList4WebApp(goodsId));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
 }

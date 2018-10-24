@@ -481,4 +481,29 @@ public class GoodsController
 
 		return result;
 	}
+	
+	@GetMapping(value = "/getList4WebApp")
+	public RestRsp<GoodsMO> getList4WebApp()
+	{
+		RestRsp<GoodsMO> result = new RestRsp<GoodsMO>();
+
+		try
+		{
+			result.getData().addAll(goodsBusiness.getList4WebApp());
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
 }

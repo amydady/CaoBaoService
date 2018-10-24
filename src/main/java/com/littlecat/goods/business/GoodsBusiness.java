@@ -82,4 +82,9 @@ public class GoodsBusiness
 	{
 		return goodsDao.getList4WxApp();
 	}
+	
+	public List<GoodsMO> getList4WebApp()
+	{
+		return goodsDao.getList4WebApp();
+	}
 }

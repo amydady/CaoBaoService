@@ -2,7 +2,6 @@ package com.littlecat.seckill.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.SpringUtil;
-import com.littlecat.common.consts.BooleanTag;
 import com.littlecat.goods.business.GoodsBusiness;
 import com.littlecat.goods.model.GoodsMO;
 
@@ -30,8 +27,6 @@ public class SecKillPlanMO extends BaseMO
 	private long price;
 	private long currentInventory;
 	private int limitBuyNum;
-	private String enable;
-	private String timeIsValid;// 秒杀计划的时间窗口是否有效（Y、N）
 	private String createTime;
 	private String createOperatorId;
 
@@ -92,16 +87,6 @@ public class SecKillPlanMO extends BaseMO
 	public void setLimitBuyNum(int limitBuyNum)
 	{
 		this.limitBuyNum = limitBuyNum;
-	}
-
-	public String getEnable()
-	{
-		return enable;
-	}
-
-	public void setEnable(String enable)
-	{
-		this.enable = enable;
 	}
 
 	public String getCreateTime()
@@ -174,16 +159,6 @@ public class SecKillPlanMO extends BaseMO
 		this.goodsPrice = goodsPrice;
 	}
 
-	public String getTimeIsValid()
-	{
-		return timeIsValid;
-	}
-
-	public void setTimeIsValid(String timeIsValid)
-	{
-		this.timeIsValid = timeIsValid;
-	}
-
 	public String getCreateOperatorName()
 	{
 		return createOperatorName;
@@ -203,6 +178,7 @@ public class SecKillPlanMO extends BaseMO
 	{
 		this.goodsMainImgData = goodsMainImgData;
 	}
+
 	public static class MOMapper4WebList implements RowMapper<SecKillPlanMO>
 	{
 		@Override
@@ -243,28 +219,6 @@ public class SecKillPlanMO extends BaseMO
 			mo.setPrice(rs.getLong("price"));
 			mo.setCurrentInventory(rs.getLong("currentInventory"));
 			mo.setLimitBuyNum(rs.getInt("limitBuyNum"));
-			mo.setEnable(rs.getString("enable"));
-
-			try
-			{
-				long startTime = DateTimeUtil.defaultDateFormat.parse(mo.getStartTime()).getTime();
-				long endTime = DateTimeUtil.defaultDateFormat.parse(mo.getEndTime()).getTime();
-				long now = DateTimeUtil.defaultDateFormat.parse(DateTimeUtil.getCurrentTimeForDisplay()).getTime();
-
-				if (now >= startTime && now <= endTime)
-				{
-					mo.setTimeIsValid(BooleanTag.Y.name());
-				}
-				else
-				{
-					mo.setTimeIsValid(BooleanTag.N.name());
-				}
-			}
-			catch (ParseException e)
-			{
-				logger.error("Parse Time Exception,SecKillPlanId:{},startTime:{},endTime:{}", mo.getId(), mo.getStartTime(), mo.getEndTime());
-				mo.setTimeIsValid(BooleanTag.N.name());
-			}
 
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setCreateOperatorId(rs.getString("createOperatorId"));

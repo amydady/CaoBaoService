@@ -37,7 +37,6 @@ public class SecKillPlanBusiness
 	public String add(SecKillPlanMO mo) throws LittleCatException
 	{
 		validateReqData(mo);
-		initSettingsForReqData(mo);
 
 		String secKillPlanId = secKillPlanDao.add(mo);
 
@@ -51,7 +50,6 @@ public class SecKillPlanBusiness
 	public void modify(SecKillPlanMO mo) throws LittleCatException
 	{
 		validateReqData(mo);
-		initSettingsForReqData(mo);
 
 		secKillPlanDao.modify(mo);
 	}
@@ -130,35 +128,6 @@ public class SecKillPlanBusiness
 		// TODO:deliveryAreaId校验
 	}
 
-	/**
-	 * 请求对象的一些初始化设置
-	 * 
-	 * @param reqData
-	 */
-	private void initSettingsForReqData(SecKillPlanMO reqData) throws LittleCatException
-	{
-		// 根据时间窗口设置Enable标记
-		try
-		{
-			long startTime = DateTimeUtil.defaultDateFormat.parse(reqData.getStartTime()).getTime();
-			long endTime = DateTimeUtil.defaultDateFormat.parse(reqData.getEndTime()).getTime();
-			long now = DateTimeUtil.defaultDateFormat.parse(DateTimeUtil.getCurrentTimeForDisplay()).getTime();
-
-			if (now >= startTime && now < endTime)
-			{
-				reqData.setEnable(BooleanTag.Y.name());
-			}
-			else
-			{
-				reqData.setEnable(BooleanTag.N.name());
-			}
-		}
-		catch (ParseException e)
-		{
-			throw new LittleCatException(e.getMessage(), e);
-		}
-
-	}
 
 	/**
 	 * 查询某个消费者在某个秒杀计划下已经购买的商品数量
@@ -180,5 +149,10 @@ public class SecKillPlanBusiness
 	public List<SecKillPlanMO> getList4WxApp()
 	{
 		return secKillPlanDao.getList4WxApp();
+	}
+	
+	public List<SecKillPlanMO> getList4WebApp(String goodsId)
+	{
+		return secKillPlanDao.getList4WebApp(goodsId);
 	}
 }

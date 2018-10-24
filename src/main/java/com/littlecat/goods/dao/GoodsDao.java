@@ -214,5 +214,48 @@ public class GoodsDao
 
 		return mos;
 	}
+	
+	/**
+	 * 查询商品列表（web管理端）
+	 * 
+	 * @return
+	 */
+	public List<GoodsMO> getList4WebApp()
+	{
+		List<GoodsMO> mos = new ArrayList<GoodsMO>();
 
+		String sql = new StringBuilder()
+				.append("select a.id,a.name,a.summaryDescription,a.currentInventory,a.price,a.mainImgData")
+				.append(" from ").append(TABLE_NAME).append(" a ")
+				.toString();
+
+		try
+		{
+			mos.addAll(jdbcTemplate.query(sql, new RowMapper<GoodsMO>()
+			{
+
+				@Override
+				public GoodsMO mapRow(ResultSet rs, int rowNum) throws SQLException
+				{
+					GoodsMO mo = new GoodsMO();
+
+					mo.setId(rs.getString("id"));
+					mo.setName(rs.getString("name"));
+					mo.setSummaryDescription(rs.getString("summaryDescription"));
+					mo.setCurrentInventory(rs.getLong("currentInventory"));
+					mo.setPrice(rs.getLong("price"));
+					mo.setMainImgData(rs.getString("mainImgData"));
+
+					return mo;
+				}
+
+			}));
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+
+		return mos;
+	}
 }

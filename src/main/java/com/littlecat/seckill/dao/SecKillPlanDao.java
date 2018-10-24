@@ -145,22 +145,26 @@ public class SecKillPlanDao
 		return mos;
 	}
 
-	public List<SecKillPlanMO> getList4WebApp()
+	public List<SecKillPlanMO> getList4WebApp(String goodsId)
 	{
 		List<SecKillPlanMO> mos = new ArrayList<SecKillPlanMO>();
 
-		String sql = new StringBuilder()
-				.append("select a.id,a.goodsId,a,startTime,a.endTime,a.limitBuyNum,a.currentInventory,a.price,a.createTime,b.name goodsName,b.price goodsPrice,b.mainImgData goodsMainImgData")
+		StringBuilder sql = new StringBuilder()
+				.append("select a.id,a.goodsId,a.startTime,a.endTime,a.limitBuyNum,a.currentInventory,a.price,a.createTime,a.enable,b.name goodsName,b.price goodsPrice,b.mainImgData goodsMainImgData")
 				.append(" from ").append(TABLE_NAME).append(" a ")
 				.append(" inner join ").append(TABLE_NAME_GOODS).append(" b on a.goodsId=b.id")
-				.append(" where CURRENT_TIMESTAMP <= a.endTime")
-				.append(" and b.enable='Y'")
-				.append(" order by enable desc,startTime asc ")
-				.toString();
+				.append(" where CURRENT_TIMESTAMP <= a.endTime");
+
+		if (StringUtil.isNotEmpty(goodsId))
+		{
+			sql.append(" and a.goodsId='").append(goodsId).append("'");
+		}
+
+		sql.append(" order by a.enable desc,a.startTime asc ");
 
 		try
 		{
-			mos.addAll(jdbcTemplate.query(sql, new SecKillPlanMO.MOMapper4WebList()));
+			mos.addAll(jdbcTemplate.query(sql.toString(), new SecKillPlanMO.MOMapper4WebList()));
 		}
 		catch (DataAccessException e)
 		{
