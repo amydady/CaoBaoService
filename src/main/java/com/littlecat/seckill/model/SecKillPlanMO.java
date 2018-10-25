@@ -229,6 +229,7 @@ public class SecKillPlanMO extends BaseMO
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setPrice(rs.getLong("price"));
 			mo.setCurrentInventory(rs.getLong("currentInventory"));
+			mo.setLimitBuyNum(rs.getInt("limitBuyNum"));
 			mo.setGoodsName(rs.getString("goodsName"));
 			mo.setGoodsPrice(rs.getLong("goodsPrice"));
 			mo.setGoodsMainImgData(rs.getString("goodsMainImgData"));

@@ -150,7 +150,7 @@ public class SecKillPlanDao
 		List<SecKillPlanMO> mos = new ArrayList<SecKillPlanMO>();
 
 		StringBuilder sql = new StringBuilder()
-				.append("select a.id,a.goodsId,a.startTime,a.endTime,a.limitBuyNum,a.currentInventory,a.price,a.createTime,a.enable,b.name goodsName,b.price goodsPrice,b.mainImgData goodsMainImgData")
+				.append("select a.id,a.goodsId,date_format(a.startTime,'%Y-%m-%d %T') startTime,date_format(a.endTime,'%Y-%m-%d %T') endTime,a.limitBuyNum,a.currentInventory,a.price,date_format(a.createTime,'%Y-%m-%d %T') createTime,a.enable,b.name goodsName,b.price goodsPrice,b.mainImgData goodsMainImgData")
 				.append(" from ").append(TABLE_NAME).append(" a ")
 				.append(" inner join ").append(TABLE_NAME_GOODS).append(" b on a.goodsId=b.id")
 				.append(" where CURRENT_TIMESTAMP <= a.endTime");

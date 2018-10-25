@@ -225,8 +225,9 @@ public class GoodsDao
 		List<GoodsMO> mos = new ArrayList<GoodsMO>();
 
 		String sql = new StringBuilder()
-				.append("select a.id,a.name,a.summaryDescription,a.currentInventory,a.price,a.enable,a.createTime")
+				.append("select a.id,a.name,a.summaryDescription,a.price,a.currentInventory,a.enable,date_format(a.createTime,'%Y-%m-%d %T') createTime")
 				.append(" from ").append(TABLE_NAME).append(" a ")
+				.append(" order by a.enable desc,a.createTime asc")
 				.toString();
 
 		try
@@ -242,10 +243,10 @@ public class GoodsDao
 					mo.setId(rs.getString("id"));
 					mo.setName(rs.getString("name"));
 					mo.setSummaryDescription(rs.getString("summaryDescription"));
-					mo.setCurrentInventory(rs.getLong("currentInventory"));
 					mo.setPrice(rs.getLong("price"));
 					mo.setEnable(rs.getString("enable"));
 					mo.setCreateTime(rs.getString("createTime"));
+					mo.setCurrentInventory(rs.getLong("currentInventory"));
 
 					return mo;
 				}

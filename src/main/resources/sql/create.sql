@@ -4,7 +4,7 @@ CREATE DATABASE `caobaodb` ;
 CREATE TABLE `t_sys_menu` (
 	`id` VARCHAR(255) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
-	`targetUrl` VARCHAR(255) NOT NULL,
+	`targetUrl` VARCHAR(255) NULL,
 	`pid` VARCHAR(255) NOT NULL DEFAULT '-1',
 	`sortNum` VARCHAR(255) NOT NULL,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
@@ -205,6 +205,21 @@ CREATE TABLE `t_shoppingcart` (
 	
 	PRIMARY KEY (`id`)
 );
+
+#商品库存
+CREATE TABLE `t_inventory_goods` (
+	`id` VARCHAR(255) NOT NULL,
+	`goodsId` VARCHAR(255) NOT NULL,
+	`changeValue` INT NOT NULL,
+	`changeType` VARCHAR(255) NOT NULL,
+	`operatorId` VARCHAR(255) NOT NULL,
+	`description` VARCHAR(255) NULL DEFAULT 0,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	
+	
+	PRIMARY KEY (`id`)
+);
+
 
 #订单
 CREATE TABLE `t_order` (

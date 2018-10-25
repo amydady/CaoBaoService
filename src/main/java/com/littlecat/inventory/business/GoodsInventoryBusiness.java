@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.goods.business.GoodsBusiness;
+import com.littlecat.goods.model.GoodsMO;
 import com.littlecat.inventory.dao.GoodsInventoryDao;
 import com.littlecat.inventory.model.GoodsInventoryMO;
 
@@ -17,10 +19,19 @@ public class GoodsInventoryBusiness
 {
 	@Autowired
 	private GoodsInventoryDao goodsInventoryDao;
+	@Autowired
+	private GoodsBusiness goodsBusiness;
 
 	public String add(GoodsInventoryMO mo) throws LittleCatException
 	{
-		return goodsInventoryDao.add(mo);
+		String id = goodsInventoryDao.add(mo);
+		
+		//刷新产品最新可用库存
+		GoodsMO goodsMO = goodsBusiness.getById(mo.getGoodsId());
+		goodsMO.setCurrentInventory(goodsInventoryDao.getCurrentValueByGoodsId(mo.getGoodsId()));
+		goodsBusiness.modify(goodsMO);
+		
+		return id;
 	}
 
 	public long getCurrentValueByGoodsId(String goodsId) throws LittleCatException
@@ -31,5 +42,9 @@ public class GoodsInventoryBusiness
 	public int getList(QueryParam queryParam, List<GoodsInventoryMO> mos) throws LittleCatException
 	{
 		return goodsInventoryDao.getList(queryParam, mos);
+	}
+	public List<GoodsInventoryMO> getListByGoodsId(String goodsId) throws LittleCatException
+	{
+		return goodsInventoryDao.getListByGoodsId(goodsId);
 	}
 }
