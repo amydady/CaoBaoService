@@ -108,14 +108,14 @@ public class SecKillPlanController
 		return result;
 	}
 
-	@PutMapping(value = "/delete/{id}")
-	public RestSimpleRsp delete(@PathVariable String id)
+	@PutMapping(value = "/disale/{id}")
+	public RestSimpleRsp disale(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			secKillPlanBusiness.delete(id);
+			secKillPlanBusiness.disable(id);
 		}
 		catch (LittleCatException e)
 		{
@@ -133,14 +133,14 @@ public class SecKillPlanController
 		return result;
 	}
 
-	@PutMapping(value = "/batchdelete")
-	public RestSimpleRsp batchDelete(@RequestBody List<String> ids)
+	@PutMapping(value = "/batchdisable")
+	public RestSimpleRsp batchDisable(@RequestBody List<String> ids)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			secKillPlanBusiness.delete(ids);
+			secKillPlanBusiness.disable(ids);
 		}
 		catch (LittleCatException e)
 		{

@@ -291,6 +291,10 @@ public class OrderBusiness
 	{
 		return orderDetailBusiness.getList(queryParam, mos);
 	}
+	public int getBuyedNumOfSecKillPlan(String secKillPlanId, String terminalUserId) throws LittleCatException
+	{
+		return orderDao.getBuyedNumOfSecKillPlan(secKillPlanId, terminalUserId);
+	}
 
 	/**
 	 * 获取订单明细对应的需要锁定的资源
@@ -394,7 +398,6 @@ public class OrderBusiness
 				inventoryMO.setPlanId(planId);
 				inventoryMO.setChangeType(InventoryChangeType.dingdankoujian);
 				inventoryMO.setChangeValue(0 - orderDetailMO.getGoodsNum());
-				inventoryMO.setGoodsId(goodsId);
 
 				secKillInventoryBusiness.add(inventoryMO);
 

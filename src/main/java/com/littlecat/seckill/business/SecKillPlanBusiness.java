@@ -3,6 +3,8 @@ package com.littlecat.seckill.business;
 import java.text.ParseException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +14,12 @@ import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.common.consts.BooleanTag;
 import com.littlecat.common.consts.ErrorCode;
-import com.littlecat.goods.dao.GoodsDao;
+import com.littlecat.common.consts.InventoryChangeType;
+import com.littlecat.goods.business.GoodsBusiness;
 import com.littlecat.goods.model.GoodsMO;
-import com.littlecat.order.dao.OrderDao;
+import com.littlecat.inventory.business.SecKillInventoryBusiness;
+import com.littlecat.inventory.model.SecKillInventoryMO;
+import com.littlecat.order.business.OrderBusiness;
 import com.littlecat.seckill.dao.SecKillPlanDao;
 import com.littlecat.seckill.model.SecKillPlanMO;
 
@@ -22,6 +27,8 @@ import com.littlecat.seckill.model.SecKillPlanMO;
 @Transactional
 public class SecKillPlanBusiness
 {
+	private static final Logger logger = LoggerFactory.getLogger(SecKillPlanBusiness.class);
+
 	private static final String MODEL_NAME = SecKillPlanMO.class.getSimpleName();
 	private static final String MODEL_NAME_GOODS = GoodsMO.class.getSimpleName();
 
@@ -29,10 +36,13 @@ public class SecKillPlanBusiness
 	private SecKillPlanDao secKillPlanDao;
 
 	@Autowired
-	private GoodsDao goodsDao;
+	private SecKillInventoryBusiness secKillInventoryBusiness;
 
 	@Autowired
-	private OrderDao orderDao;
+	private GoodsBusiness goodsBusiness;
+
+	@Autowired
+	private OrderBusiness orderBusiness;
 
 	public String add(SecKillPlanMO mo) throws LittleCatException
 	{
@@ -40,9 +50,9 @@ public class SecKillPlanBusiness
 
 		String secKillPlanId = secKillPlanDao.add(mo);
 
-		GoodsMO goodsMO = goodsDao.getById(mo.getGoodsId());
+		GoodsMO goodsMO = goodsBusiness.getById(mo.getGoodsId());
 		goodsMO.setHasSecKillPlan(BooleanTag.Y.name());
-		goodsDao.modify(goodsMO);
+		goodsBusiness.modify(goodsMO);
 
 		return secKillPlanId;
 	}
@@ -54,14 +64,38 @@ public class SecKillPlanBusiness
 		secKillPlanDao.modify(mo);
 	}
 
-	public void delete(String id) throws LittleCatException
+	public void disable(String id) throws LittleCatException
 	{
-		secKillPlanDao.delete(id);
+		secKillPlanDao.disable(id);
+
+		long currentInventoryValue = secKillInventoryBusiness.getCurrentValueByPlanId(id);
+
+		if (currentInventoryValue > 0)
+		{
+			SecKillInventoryMO secKillInventoryMO = new SecKillInventoryMO();
+
+			secKillInventoryMO.setChangeType(InventoryChangeType.miaoshaguihuachexiao);
+			secKillInventoryMO.setChangeValue(0 - currentInventoryValue);
+			secKillInventoryMO.setPlanId(id);
+
+			secKillInventoryBusiness.add(secKillInventoryMO);
+		}
 	}
 
-	public void delete(List<String> ids) throws LittleCatException
+	public void disable(List<String> ids)
 	{
-		secKillPlanDao.delete(ids);
+		for (String id : ids)
+		{
+			try
+			{
+				disable(id);
+			}
+			catch (Exception e)
+			{
+				logger.error(e.getMessage(), e);
+				continue;
+			}
+		}
 	}
 
 	public SecKillPlanMO getById(String id) throws LittleCatException
@@ -109,7 +143,7 @@ public class SecKillPlanBusiness
 			throw new LittleCatException(e.getMessage(), e);
 		}
 
-		GoodsMO goodsMO = goodsDao.getById(reqData.getGoodsId());
+		GoodsMO goodsMO = goodsBusiness.getById(reqData.getGoodsId());
 
 		if (goodsMO == null)
 		{
@@ -128,7 +162,6 @@ public class SecKillPlanBusiness
 		// TODO:deliveryAreaId校验
 	}
 
-
 	/**
 	 * 查询某个消费者在某个秒杀计划下已经购买的商品数量
 	 * 
@@ -138,9 +171,9 @@ public class SecKillPlanBusiness
 	 */
 	public int getBuyedNum(String planId, String terminalUserId) throws LittleCatException
 	{
-		return orderDao.getBuyedNumOfSecKillPlan(planId, terminalUserId);
+		return orderBusiness.getBuyedNumOfSecKillPlan(planId, terminalUserId);
 	}
-	
+
 	/**
 	 * 秒杀计划列表，用于微信小程序（展示秒杀商品列表）
 	 * 
@@ -150,7 +183,7 @@ public class SecKillPlanBusiness
 	{
 		return secKillPlanDao.getList4WxApp();
 	}
-	
+
 	public List<SecKillPlanMO> getList4WebApp(String goodsId)
 	{
 		return secKillPlanDao.getList4WebApp(goodsId);

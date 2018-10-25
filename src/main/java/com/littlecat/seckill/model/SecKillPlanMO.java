@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.utils.SpringUtil;
+import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.goods.business.GoodsBusiness;
 import com.littlecat.goods.model.GoodsDetailImgsMO;
 import com.littlecat.goods.model.GoodsMO;
@@ -27,10 +28,13 @@ public class SecKillPlanMO extends BaseMO
 	private String startTime;
 	private String endTime;
 	private long price;
-	private long currentInventory;
+	private long planInventory; // 规划库存
+	private long currentInventory; // 实际剩余库存
 	private int limitBuyNum;
 	private String createTime;
 	private String createOperatorId;
+	private String enable;
+	
 
 	private String deliveryAreaId; // 配送区域ID
 	private String deliveryFeeRuleId; // 运费规则ID
@@ -42,7 +46,7 @@ public class SecKillPlanMO extends BaseMO
 	private long goodsCurrentInventory;
 	private String goodsMainImgData;
 	private List<GoodsDetailImgsMO> goodsDetailImgs;
-	
+
 	private String createOperatorName;
 
 	public String getGoodsId()
@@ -215,6 +219,26 @@ public class SecKillPlanMO extends BaseMO
 		this.goodsCurrentInventory = goodsCurrentInventory;
 	}
 
+	public long getPlanInventory()
+	{
+		return planInventory;
+	}
+
+	public void setPlanInventory(long planInventory)
+	{
+		this.planInventory = planInventory;
+	}
+
+	public String getEnable()
+	{
+		return enable;
+	}
+
+	public void setEnable(String enable)
+	{
+		this.enable = enable;
+	}
+
 	public static class MOMapper4WebList implements RowMapper<SecKillPlanMO>
 	{
 		@Override
@@ -228,8 +252,11 @@ public class SecKillPlanMO extends BaseMO
 			mo.setEndTime(rs.getString("endTime"));
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setPrice(rs.getLong("price"));
+			mo.setPlanInventory(rs.getLong("planInventory"));
 			mo.setCurrentInventory(rs.getLong("currentInventory"));
 			mo.setLimitBuyNum(rs.getInt("limitBuyNum"));
+			mo.setEnable(rs.getString("enable"));
+			
 			mo.setGoodsName(rs.getString("goodsName"));
 			mo.setGoodsPrice(rs.getLong("goodsPrice"));
 			mo.setGoodsMainImgData(rs.getString("goodsMainImgData"));
@@ -251,13 +278,13 @@ public class SecKillPlanMO extends BaseMO
 
 			mo.setId(rs.getString("id"));
 			mo.setGoodsId(rs.getString("goodsId"));
-			mo.setStartTime(rs.getString("startTime"));
-			mo.setEndTime(rs.getString("endTime"));
+			mo.setStartTime(StringUtil.replace(rs.getString("startTime"), ".0", ""));
+			mo.setEndTime(StringUtil.replace(rs.getString("endTime"), ".0", ""));
 			mo.setPrice(rs.getLong("price"));
+			mo.setPlanInventory(rs.getLong("planInventory"));
 			mo.setCurrentInventory(rs.getLong("currentInventory"));
 			mo.setLimitBuyNum(rs.getInt("limitBuyNum"));
-
-			mo.setCreateTime(rs.getString("createTime"));
+			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
 			mo.setCreateOperatorId(rs.getString("createOperatorId"));
 			mo.setDeliveryAreaId(rs.getString("deliveryAreaId"));
 			mo.setDeliveryFeeRuleId(rs.getString("deliveryFeeRuleId"));

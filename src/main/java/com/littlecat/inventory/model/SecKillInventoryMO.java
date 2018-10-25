@@ -17,14 +17,11 @@ import com.littlecat.common.consts.InventoryChangeType;
 public class SecKillInventoryMO extends BaseMO
 {
 	private String planId;
-	private String goodsId;
 	private long changeValue;
 	private InventoryChangeType changeType;
 	private String operatorId;
 	private String description;
 	private String createTime;
-	private int createYear;
-	private int createMonth;
 
 	public String getPlanId()
 	{
@@ -34,16 +31,6 @@ public class SecKillInventoryMO extends BaseMO
 	public void setPlanId(String planId)
 	{
 		this.planId = planId;
-	}
-
-	public String getGoodsId()
-	{
-		return goodsId;
-	}
-
-	public void setGoodsId(String goodsId)
-	{
-		this.goodsId = goodsId;
 	}
 
 	public long getChangeValue()
@@ -96,26 +83,6 @@ public class SecKillInventoryMO extends BaseMO
 		this.createTime = createTime;
 	}
 
-	public int getCreateYear()
-	{
-		return createYear;
-	}
-
-	public void setCreateYear(int createYear)
-	{
-		this.createYear = createYear;
-	}
-
-	public int getCreateMonth()
-	{
-		return createMonth;
-	}
-
-	public void setCreateMonth(int createMonth)
-	{
-		this.createMonth = createMonth;
-	}
-	
 	public static class MOMapper implements RowMapper<SecKillInventoryMO>
 	{
 		@Override
@@ -125,7 +92,6 @@ public class SecKillInventoryMO extends BaseMO
 
 			mo.setId(rs.getString("id"));
 			mo.setPlanId(rs.getString("planId"));
-			mo.setGoodsId(rs.getString("goodsId"));
 			mo.setChangeValue(rs.getLong("changeValue"));
 			mo.setChangeType(InventoryChangeType.valueOf(rs.getString("changeType")));
 			mo.setOperatorId(rs.getString("operatorId"));

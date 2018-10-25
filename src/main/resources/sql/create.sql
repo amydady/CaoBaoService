@@ -163,12 +163,14 @@ CREATE TABLE `t_seckill_seckillplan` (
 	`startTime` DATETIME NOT NULL,
 	`endTime` DATETIME NOT NULL,
 	`price` INT NOT NULL,
+	`planInventory` INT NOT NULL DEFAULT 0,
 	`currentInventory` INT NOT NULL DEFAULT 0,
 	`limitBuyNum` INT NOT NULL,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`createOperatorId` VARCHAR(255) NOT NULL,
 	`deliveryAreaId` VARCHAR(255) NOT NULL,
 	`deliveryFeeRuleId` VARCHAR(255) NOT NULL,
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	
 	
 	PRIMARY KEY (`id`)
@@ -212,13 +214,27 @@ CREATE TABLE `t_inventory_goods` (
 	`goodsId` VARCHAR(255) NOT NULL,
 	`changeValue` INT NOT NULL,
 	`changeType` VARCHAR(255) NOT NULL,
-	`operatorId` VARCHAR(255) NOT NULL,
+	`operatorId` VARCHAR(255) NULL,
 	`description` VARCHAR(255) NULL DEFAULT 0,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	
 	
 	PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `t_inventory_seckill` (
+	`id` VARCHAR(255) NOT NULL,
+	`planId` VARCHAR(255) NOT NULL,
+	`changeValue` INT NOT NULL,
+	`changeType` VARCHAR(255) NOT NULL,
+	`operatorId` VARCHAR(255) NULL,
+	`description` VARCHAR(255) NULL DEFAULT 0,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	
+	
+	PRIMARY KEY (`id`)
+);
+
 
 
 #订单

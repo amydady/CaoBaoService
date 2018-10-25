@@ -14,7 +14,9 @@ import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.inventory.business.GoodsInventoryBusiness;
+import com.littlecat.inventory.business.SecKillInventoryBusiness;
 import com.littlecat.inventory.model.GoodsInventoryMO;
+import com.littlecat.inventory.model.SecKillInventoryMO;
 
 @RestController
 @RequestMapping("/rest/littlecat/caobao/inventory")
@@ -22,6 +24,9 @@ public class InventoryController
 {
 	@Autowired
 	private GoodsInventoryBusiness goodsInventoryBusiness;
+	
+	@Autowired
+	private SecKillInventoryBusiness secKillInventoryBusiness;
 
 	private static final Logger logger = LoggerFactory.getLogger(InventoryController.class);
 
@@ -49,6 +54,7 @@ public class InventoryController
 
 		return result;
 	}
+	
 
 	@GetMapping(value = "/goods/getListByGoodsId")
 	public RestRsp<GoodsInventoryMO> getListByGoodsId(@RequestParam String goodsId)
@@ -74,4 +80,55 @@ public class InventoryController
 
 		return result;
 	}
+	
+	@PostMapping(value = "/seckill/add")
+	public RestRsp<String> addSecKillInventory(@RequestBody SecKillInventoryMO mo)
+	{
+		RestRsp<String> result = new RestRsp<String>();
+
+		try
+		{
+			result.getData().add(secKillInventoryBusiness.add(mo));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+	
+	@GetMapping(value = "/seckill/getListByPlanId")
+	public RestRsp<SecKillInventoryMO> getSecKillInventoryListByPlanId(@RequestParam String planId)
+	{
+		RestRsp<SecKillInventoryMO> result = new RestRsp<SecKillInventoryMO>();
+
+		try
+		{
+			result.getData().addAll(secKillInventoryBusiness.getListByPlanId(planId));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+	
 }

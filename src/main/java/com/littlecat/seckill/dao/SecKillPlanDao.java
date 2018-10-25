@@ -59,11 +59,11 @@ public class SecKillPlanDao
 
 	public void modify(SecKillPlanMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set startTime = ?,endTime = ?,price = ?,currentInventory = ?,limitBuyNum = ?,deliveryAreaId = ?,deliveryFeeRuleId = ? where id = ?";
+		String sql = "update " + TABLE_NAME + " set startTime = ?,endTime = ?,price = ?,planInventory=?,currentInventory = ?,limitBuyNum = ?,deliveryAreaId = ?,deliveryFeeRuleId = ? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getStartTime(), mo.getEndTime(), mo.getPrice(), mo.getCurrentInventory(), mo.getLimitBuyNum(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getStartTime(), mo.getEndTime(), mo.getPrice(), mo.getPlanInventory(),mo.getCurrentInventory(), mo.getLimitBuyNum(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getId() });
 
 			if (ret != 1)
 			{
@@ -75,15 +75,10 @@ public class SecKillPlanDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
-
-	public void delete(String id) throws LittleCatException
+	
+	public void disable(String id) throws LittleCatException
 	{
-		DaoUtil.delete(TABLE_NAME, id, jdbcTemplate);
-	}
-
-	public void delete(List<String> ids) throws LittleCatException
-	{
-		DaoUtil.delete(TABLE_NAME, ids, jdbcTemplate);
+		DaoUtil.disable(TABLE_NAME, id, jdbcTemplate);
 	}
 
 	public SecKillPlanMO getById(String id) throws LittleCatException
@@ -150,7 +145,7 @@ public class SecKillPlanDao
 		List<SecKillPlanMO> mos = new ArrayList<SecKillPlanMO>();
 
 		StringBuilder sql = new StringBuilder()
-				.append("select a.id,a.goodsId,date_format(a.startTime,'%Y-%m-%d %T') startTime,date_format(a.endTime,'%Y-%m-%d %T') endTime,a.limitBuyNum,a.currentInventory,a.price,date_format(a.createTime,'%Y-%m-%d %T') createTime,a.enable,b.name goodsName,b.price goodsPrice,b.mainImgData goodsMainImgData")
+				.append("select a.id,a.goodsId,date_format(a.startTime,'%Y-%m-%d %T') startTime,date_format(a.endTime,'%Y-%m-%d %T') endTime,a.limitBuyNum,a.planInventory,a.currentInventory,a.price,date_format(a.createTime,'%Y-%m-%d %T') createTime,a.enable,b.name goodsName,b.price goodsPrice,b.mainImgData goodsMainImgData")
 				.append(" from ").append(TABLE_NAME).append(" a ")
 				.append(" inner join ").append(TABLE_NAME_GOODS).append(" b on a.goodsId=b.id")
 				.append(" where CURRENT_TIMESTAMP <= a.endTime");
