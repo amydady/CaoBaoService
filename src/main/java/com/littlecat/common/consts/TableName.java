@@ -20,6 +20,9 @@ public enum TableName
 	
 	Supplier("t_supplier"),
 	
+	DeliveryArea("t_delivery_area"),
+	DeliveryFeeRule("t_delivery_feerule"),
+	
 	Province("t_basicinfo_province"),
 	City("t_basicinfo_city"),
 	Area("t_basicinfo_area"),

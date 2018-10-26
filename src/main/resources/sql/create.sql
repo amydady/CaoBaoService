@@ -58,6 +58,33 @@ CREATE TABLE `t_supplier` (
 	UNIQUE KEY `name` (`name`)
 );
 
+#物流
+CREATE TABLE `t_delivery_area` (
+	`id` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	`cityInfo` VARCHAR(255) NOT NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `name` (`name`)
+);
+
+CREATE TABLE `t_delivery_feerule` (
+	`id` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	`deliveryAreaId` VARCHAR(255) NOT NULL,
+	`calcType` VARCHAR(255) NOT NULL,
+	`beginValue` int NOT NULL,
+	`endValue` int NOT NULL,
+	`fee` int NOT NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `name` (`name`)
+);
+
 # 消费者
 
 CREATE TABLE `t_terminaluser` (
@@ -128,7 +155,7 @@ CREATE TABLE `t_goods` (
 	`mainImgData` MediumBlob NULL,
 	`price` INT NOT NULL,
 	`currentInventory` INT NOT NULL DEFAULT 0,
-	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'N',
 	`hasSecKillPlan` VARCHAR(1) NULL DEFAULT 'N',
 	`hasGroupBuyPlan` VARCHAR(1) NULL DEFAULT 'N',
 	`createOperatorId` VARCHAR(255) NOT NULL,
