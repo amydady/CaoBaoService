@@ -22,7 +22,9 @@ public class OrderDetailMO extends BaseMO
 	private String goodsId;
 	private long price;
 	private long goodsNum;
-	private long fee;
+
+	private String goodsName;
+	private String goodsMainImgData = "";
 
 	public String getOrderId()
 	{
@@ -74,16 +76,6 @@ public class OrderDetailMO extends BaseMO
 		this.price = price;
 	}
 
-	public long getFee()
-	{
-		return fee;
-	}
-
-	public void setFee(long fee)
-	{
-		this.fee = fee;
-	}
-
 	public String getGoodsId()
 	{
 		return goodsId;
@@ -92,6 +84,26 @@ public class OrderDetailMO extends BaseMO
 	public void setGoodsId(String goodsId)
 	{
 		this.goodsId = goodsId;
+	}
+
+	public String getGoodsName()
+	{
+		return goodsName;
+	}
+
+	public void setGoodsName(String goodsName)
+	{
+		this.goodsName = goodsName;
+	}
+
+	public String getGoodsMainImgData()
+	{
+		return goodsMainImgData;
+	}
+
+	public void setGoodsMainImgData(String goodsMainImgData)
+	{
+		this.goodsMainImgData = goodsMainImgData;
 	}
 
 	public static class MOMapper implements RowMapper<OrderDetailMO>
@@ -103,11 +115,13 @@ public class OrderDetailMO extends BaseMO
 
 			mo.setId(rs.getString("id"));
 			mo.setOrderId(rs.getString("orderId"));
-			mo.setBuyType(BuyType.valueOf(rs.getString("butType")));
+			mo.setBuyType(BuyType.valueOf(rs.getString("buyType")));
 			mo.setResId(rs.getString("resId"));
 			mo.setGoodsId(rs.getString("goodsId"));
 			mo.setPrice(rs.getLong("price"));
 			mo.setGoodsNum(rs.getLong("goodsNum"));
+			mo.setGoodsName(rs.getString("goodsName"));
+			mo.setGoodsMainImgData(rs.getString("goodsMainImgData"));
 
 			return mo;
 		}

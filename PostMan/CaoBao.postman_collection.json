@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9af518e3-295c-4085-93f1-7592b2c58c09",
+		"_postman_id": "1fc153d4-4287-4f6c-a85d-4ea1161463af",
 		"name": "CaoBao",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -74,36 +74,6 @@
 		{
 			"name": "Goods",
 			"item": [
-				{
-					"name": "AddGoods",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n\t\"classifyId\":\"\",\r\n\t\"supplierId\":\"\",\r\n\t\"name\":\"test001\",\r\n\t\"summaryDescription\":\"summaryDescription\",\r\n\t\"mainImgUrl\":\"mainImgUrl\",\r\n\t \"price\":10001,\r\n\t\"createOperatorId\":\"createOperator001\",\r\n\t\"deliveryAreaId\":\"deliveryArea001\",\r\n\t\"deliveryFeeRuleId\":\"deliveryFeeRule001\"\r\n}"
-						},
-						"url": {
-							"raw": "{{hostip}}/rest/littlecat/caobao/goods/add",
-							"host": [
-								"{{hostip}}"
-							],
-							"path": [
-								"rest",
-								"littlecat",
-								"caobao",
-								"goods",
-								"add"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "GetGoodsById",
 					"request": {
@@ -1090,6 +1060,41 @@
 								"caobao",
 								"shoppingcart",
 								"getList"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"orderMO\":{\n\t\"terminalUserId\":\"todo\",\n\t\"fee\":1000,\n\t\"state\":\"daifukuan\",\n\t\"deliveryAddress\":{\n\t\t\"province\":\"江苏省\",\n\t\t\"city\":\"镇江市\",\n\t\t\"area\":\"丹阳市\",\n\t\t\"detailInfo\":\"老挝\"\n\t\t\n\t}\n\t},\n\t\"orderDetailMOs\":\n\t[{\n\t\t\"buyType\":\"normal\",\n\t\t\"resId\":\"79876e23-f649-4093-9358-e3edafaba13c\",\n\t\t\"goodsId\":\"79876e23-f649-4093-9358-e3edafaba13c\",\n\t\t\"price\":100,\n\t\t\"goodsNum\":10,\n\t\t\"fee\":1000\n\t}\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{hostip}}/rest/littlecat/caobao/order/create",
+							"host": [
+								"{{hostip}}"
+							],
+							"path": [
+								"rest",
+								"littlecat",
+								"caobao",
+								"order",
+								"create"
 							]
 						}
 					},

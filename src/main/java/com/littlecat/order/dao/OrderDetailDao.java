@@ -1,13 +1,19 @@
 package com.littlecat.order.dao;
 
+import java.io.UnsupportedEncodingException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
@@ -44,10 +50,18 @@ public class OrderDetailDao
 				ids.add(mo.getId());
 			}
 
-			batchParam.add(new Object[] { mo.getId(), mo.getOrderId(), mo.getBuyType().name(), mo.getResId(), mo.getGoodsId(), mo.getPrice(), mo.getGoodsNum(), mo.getFee() });
+			try
+			{
+				Blob mainImgData = new SerialBlob(mo.getGoodsMainImgData().getBytes(Consts.CHARSET_NAME));
+				batchParam.add(new Object[] { mo.getId(), mo.getOrderId(), mo.getBuyType().name(), mo.getResId(), mo.getGoodsId(), mo.getPrice(), mo.getGoodsNum(), mo.getGoodsName(), mainImgData });
+			}
+			catch (UnsupportedEncodingException | SQLException e)
+			{
+				throw new LittleCatException(Consts.ERROR_CODE_UNKNOW, "add order detail:UnsupportedEncodingException | SQLException e", e);
+			}
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,orderId,buyType,resId,goodsId,price,goodsNum,fee) values(?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,orderId,buyType,resId,goodsId,price,goodsNum,goodsName,goodsMainImgData) values(?,?,?,?,?,?,?,?,?)";
 
 		try
 		{

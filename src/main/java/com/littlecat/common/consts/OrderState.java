@@ -10,6 +10,7 @@ public enum OrderState
 {
 	daifukuan, // 待付款
 	daichengtuan, // 待成团
+	daifahuo, // 待发货
 	daiqianshou, // 待签收
 	yishouhuo, // 已收货
 	tuikuanzhong, // 退款中

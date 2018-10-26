@@ -100,7 +100,14 @@ public class CommissionGoodsMO extends BaseMO
 			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
 			mo.setEnable(rs.getString("enable"));
 
-			mo.setCommissionTypeName(rs.getString("commissionTypeName"));
+			try
+			{
+				mo.setCommissionTypeName(rs.getString("commissionTypeName"));
+			}
+			catch (Exception e)
+			{
+
+			}
 
 			return mo;
 		}

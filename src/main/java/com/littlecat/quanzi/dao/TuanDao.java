@@ -1,12 +1,18 @@
 package com.littlecat.quanzi.dao;
 
+import java.io.UnsupportedEncodingException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.List;
+
+import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.ConditionItem;
 import com.littlecat.cbb.query.ConditionOperatorType;
@@ -80,14 +86,14 @@ public class TuanDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,tuanZhangId,name,remark,idCardType,idCardCode,idCardImgUrlFront,idCardImgUrlBack,province,city,area,detailInfo,labels) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,tuanZhangId,name,mobile,idCardType,idCardCode,province,city,area,detailInfo,labels) values(?,?,?,?,?,?,?,?,?,?,?)";
 
 		try
 		{
 			int ret = jdbcTemplate.update(sql,
-					new Object[] { mo.getId(), mo.getTuanZhangId(), mo.getName(), mo.getRemark(),
-							mo.getIdCard().getType().name(), mo.getIdCard().getCode(), mo.getIdCard().getImgUrlFront(),
-							mo.getIdCard().getImgUrlBack(), mo.getAddressInfo().getProvince(),
+					new Object[] { mo.getId(), mo.getTuanZhangId(), mo.getName(), mo.getMobile(),
+							mo.getIdCard().getType().name(), mo.getIdCard().getCode(),
+							mo.getAddressInfo().getProvince(),
 							mo.getAddressInfo().getCity(), mo.getAddressInfo().getArea(),
 							mo.getAddressInfo().getDetailInfo(),
 							ListUtil.join2String(mo.getLabels()) });
@@ -107,15 +113,18 @@ public class TuanDao
 
 	public void modify(TuanMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set tuanZhangId=?,name=?,remark=?,idCardType=?,idCardCode=?,idCardImgUrlFront=?,idCardImgUrlBack=?,province=?,city=?,area=?,detailInfo=?,labels=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set tuanZhangId=?,name=?,mobile=?,idCardType=?,idCardCode=?,idCardImgUrlFront=?,idCardImgUrlBack=?,province=?,city=?,area=?,detailInfo=?,labels=? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getTuanZhangId(), mo.getName(), mo.getRemark(),
-					mo.getIdCard().getType().name(), mo.getIdCard().getCode(), mo.getIdCard().getImgUrlFront(),
-					mo.getIdCard().getImgUrlBack(), mo.getAddressInfo().getProvince(),
+			Blob imgDataFront = new SerialBlob(mo.getIdCard().getImgDataFront().getBytes(Consts.CHARSET_NAME));
+			Blob imgDataBack = new SerialBlob(mo.getIdCard().getImgDataBack().getBytes(Consts.CHARSET_NAME));
+
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getTuanZhangId(), mo.getName(), mo.getMobile(),
+					mo.getIdCard().getType().name(), mo.getIdCard().getCode(), imgDataFront,
+					imgDataBack, mo.getAddressInfo().getProvince(),
 					mo.getAddressInfo().getCity(), mo.getAddressInfo().getArea(),
-					 mo.getAddressInfo().getDetailInfo(),
+					mo.getAddressInfo().getDetailInfo(),
 					ListUtil.join2String(mo.getLabels()), mo.getId() });
 
 			if (ret != 1)
@@ -123,7 +132,7 @@ public class TuanDao
 				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 			}
 		}
-		catch (DataAccessException e)
+		catch (DataAccessException | UnsupportedEncodingException | SQLException e)
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}

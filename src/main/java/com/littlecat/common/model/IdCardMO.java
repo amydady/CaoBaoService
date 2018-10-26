@@ -12,17 +12,17 @@ public class IdCardMO
 {
 	private IdCardType type = IdCardType.juminshenfenzheng;
 	private String code; // 证件号码
-	private String imgUrlFront;
-	private String imgUrlBack;
+	private String imgDataFront;
+	private String imgDataBack;
 
 	
-	public IdCardMO(IdCardType type, String code, String imgUrlFront, String imgUrlBack)
+	public IdCardMO(IdCardType type, String code, String imgDataFront, String imgDataBack)
 	{
 		super();
 		this.type = type;
 		this.code = code;
-		this.imgUrlFront = imgUrlFront;
-		this.imgUrlBack = imgUrlBack;
+		this.setImgDataFront(imgDataFront);
+		this.setImgDataBack(imgDataBack);
 	}
 
 	public IdCardType getType()
@@ -45,24 +45,24 @@ public class IdCardMO
 		this.code = code;
 	}
 
-	public String getImgUrlFront()
+	public String getImgDataFront()
 	{
-		return imgUrlFront;
+		return imgDataFront;
 	}
 
-	public void setImgUrlFront(String imgUrlFront)
+	public void setImgDataFront(String imgDataFront)
 	{
-		this.imgUrlFront = imgUrlFront;
+		this.imgDataFront = imgDataFront;
 	}
 
-	public String getImgUrlBack()
+	public String getImgDataBack()
 	{
-		return imgUrlBack;
+		return imgDataBack;
 	}
 
-	public void setImgUrlBack(String imgUrlBack)
+	public void setImgDataBack(String imgDataBack)
 	{
-		this.imgUrlBack = imgUrlBack;
+		this.imgDataBack = imgDataBack;
 	}
 
 }

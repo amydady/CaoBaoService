@@ -23,7 +23,7 @@ public class TuanMO extends BaseMO
 {
 	private String tuanZhangId;
 	private String name;
-	private String remark;
+	private String mobile;
 	private IdCardMO idCard;
 	private AddressMO addressInfo;
 	private String createTime;
@@ -43,16 +43,6 @@ public class TuanMO extends BaseMO
 	public void setName(String name)
 	{
 		this.name = name;
-	}
-
-	public String getRemark()
-	{
-		return remark;
-	}
-
-	public void setRemark(String remark)
-	{
-		this.remark = remark;
 	}
 
 	public String getCreateTime()
@@ -115,6 +105,16 @@ public class TuanMO extends BaseMO
 		this.labels = labels;
 	}
 
+	public String getMobile()
+	{
+		return mobile;
+	}
+
+	public void setMobile(String mobile)
+	{
+		this.mobile = mobile;
+	}
+
 	public static class MOMapper implements RowMapper<TuanMO>
 	{
 		@Override
@@ -125,8 +125,8 @@ public class TuanMO extends BaseMO
 			mo.setId(rs.getString("id"));
 			mo.setTuanZhangId(rs.getString("tuanZhangId"));
 			mo.setName(rs.getString("name"));
-			mo.setRemark(rs.getString("remark"));
-			mo.setIdCard(new IdCardMO(IdCardType.valueOf(rs.getString("idCardType")), rs.getString("idCardCode"), rs.getString("idCardImgUrlFront"), rs.getString("idCardImgUrlBack")));
+			mo.setMobile(rs.getString("mobile"));
+			mo.setIdCard(new IdCardMO(IdCardType.valueOf(rs.getString("idCardType")), rs.getString("idCardCode"), rs.getString("idCardImgDataFront"), rs.getString("idCardImgDataBack")));
 			mo.setAddressInfo(new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo")));
 			mo.setLabels(StringUtil.split2List(rs.getString("labels")));
 			mo.setCreateTime(rs.getString("createTime"));

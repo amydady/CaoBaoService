@@ -30,6 +30,7 @@ public class ShoppingCartMO extends BaseMO
 	private String createTime;
 
 	// for view
+	private String goodsId;
 	private String goodsName;
 	private String goodsMainImgData;
 	private long goodsPrice;
@@ -82,6 +83,16 @@ public class ShoppingCartMO extends BaseMO
 	public void setCreateTime(String createTime)
 	{
 		this.createTime = createTime;
+	}
+	
+	public String getGoodsId()
+	{
+		return goodsId;
+	}
+
+	public void setGoodsId(String goodsId)
+	{
+		this.goodsId = goodsId;
 	}
 
 	public String getGoodsName()
@@ -151,6 +162,8 @@ public class ShoppingCartMO extends BaseMO
 			{
 				throw new LittleCatException(Consts.ERROR_CODE_UNKNOW, "ShoppingCartMO:mapRow:get goods by id return null,goodsid=" + mo.getResId());
 			}
+			
+			mo.setGoodsId(goodsId);
 			mo.setGoodsName(goodsMo.getName());
 			mo.setGoodsMainImgData(goodsMo.getMainImgData());
 			mo.setGoodsPrice(goodsMo.getPrice());

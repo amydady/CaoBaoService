@@ -2,12 +2,16 @@ package com.littlecat.order.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
+import com.littlecat.cbb.utils.SpringUtil;
 import com.littlecat.common.consts.OrderState;
 import com.littlecat.common.model.AddressMO;
+import com.littlecat.order.business.OrderDetailBusiness;
 
 /**
  * 订单MO
@@ -21,7 +25,9 @@ public class OrderMO extends BaseMO
 	private long fee;
 	private OrderState state;
 	private AddressMO deliveryAddress; // 发货地址信息
-
+	private String contactName;
+	private String contactMobile;
+	
 	private String createTime;
 	private String payTime; // 付款时间
 	private String receiveTime;// 收货时间
@@ -34,6 +40,9 @@ public class OrderMO extends BaseMO
 	private String groupCompleteTime; // 成团时间
 	private String groupCancelTime;// 团购解散退款时间
 	// 团购业务专用end
+	
+	//just for view
+	private List<OrderDetailMO> details = new ArrayList<OrderDetailMO>();
 
 	public String getTerminalUserId()
 	{
@@ -165,8 +174,40 @@ public class OrderMO extends BaseMO
 		this.groupCancelTime = groupCancelTime;
 	}
 
+	public String getContactName()
+	{
+		return contactName;
+	}
+
+	public void setContactName(String contactName)
+	{
+		this.contactName = contactName;
+	}
+
+	public String getContactMobile()
+	{
+		return contactMobile;
+	}
+
+	public void setContactMobile(String contactMobile)
+	{
+		this.contactMobile = contactMobile;
+	}
+
+	public List<OrderDetailMO> getDetails()
+	{
+		return details;
+	}
+
+	public void setDetails(List<OrderDetailMO> details)
+	{
+		this.details = details;
+	}
+
 	public static class MOMapper implements RowMapper<OrderMO>
 	{
+		private static final OrderDetailBusiness orderDetailBusiness = SpringUtil.getBean(OrderDetailBusiness.class);
+
 		@Override
 		public OrderMO mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
@@ -181,6 +222,9 @@ public class OrderMO extends BaseMO
 			AddressMO deliveryaddress = new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo"));
 
 			mo.setDeliveryAddress(deliveryaddress);
+			mo.setContactName(rs.getString("contactName"));
+			mo.setContactMobile(rs.getString("contactMobile"));
+			
 			mo.setPayTime(rs.getString("payTime"));
 			mo.setReceiveTime(rs.getString("receiveTime"));
 			mo.setReturnApplyTime(rs.getString("returnApplyTime"));
@@ -190,6 +234,10 @@ public class OrderMO extends BaseMO
 			mo.setGroupBuyTaskId(rs.getString("groupBuyTaskId"));
 			mo.setGroupCompleteTime(rs.getString("groupCompleteTime"));
 			mo.setGroupCancelTime(rs.getString("groupCancelTime"));
+			
+			
+			//get view info
+			mo.setDetails(orderDetailBusiness.getByOrderId(mo.getId()));
 
 			return mo;
 		}

@@ -99,8 +99,8 @@ CREATE TABLE `t_commission_type` (
 CREATE TABLE `t_commission_goods` (
 	`id` VARCHAR(255) NOT NULL,
 	`goodsId` VARCHAR(255) NOT NULL,
-	`commissionTypeId` VARCHAR(255) NOT NULL,
-	`commissionRate` decimal(2,1) NOT NULL,
+	`commissionTypeId` VARCHAR(255) NOT NULL DEFAULT '-1',
+	`commissionRate` decimal(5,2) NOT NULL,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	
@@ -295,6 +295,8 @@ CREATE TABLE `t_order` (
 	`terminalUserId` VARCHAR(255) NOT NULL,
 	`fee` INT NOT NULL,
 	`state` VARCHAR(255) NOT NULL,
+	`contactName` VARCHAR(255) NOT NULL,
+	`contactMobile` VARCHAR(255) NOT NULL,
 	`province` VARCHAR(255) NOT NULL,
 	`city` VARCHAR(255) NOT NULL,
 	`area` VARCHAR(255) NOT NULL,
@@ -322,7 +324,8 @@ CREATE TABLE `t_order_detail` (
 	`goodsId` VARCHAR(255) NOT NULL,
 	`price` INT NOT NULL,
 	`goodsNum` INT NOT NULL,
-	`fee` INT NOT NULL,
+	`goodsName` VARCHAR(255) NOT NULL,
+	`goodsMainImgData` MediumBlob NULL,
 	
 	PRIMARY KEY (`id`)
 );
@@ -332,11 +335,11 @@ CREATE TABLE `t_quanzi_tuan` (
 	`id` VARCHAR(255) NOT NULL,
 	`tuanZhangId` VARCHAR(255) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
-	`remark` VARCHAR(255) NULL,
+	`mobile` VARCHAR(255) NULL,
 	`idCardType` VARCHAR(255) NOT NULL,
 	`idCardCode` VARCHAR(255) NOT NULL,
-	`idCardImgUrlFront` VARCHAR(255) NOT NULL,
-	`idCardImgUrlBack` VARCHAR(255) NOT NULL,
+	`idCardImgDataFront` MediumBlob NULL,
+	`idCardImgDataBack` MediumBlob NULL,
 	`province` VARCHAR(255) NOT NULL,
 	`city` VARCHAR(255) NOT NULL,
 	`area` VARCHAR(255) NOT NULL,

@@ -96,12 +96,6 @@ public class OrderBusiness
 
 		orderMO.setState(OrderState.daifukuan);
 
-		for (OrderDetailMO orderDetail : orderDetailMOs)
-		{
-			orderDetail.setFee(orderDetail.getPrice() * orderDetail.getGoodsNum());
-			orderMO.setFee(orderMO.getFee() + orderDetail.getFee());
-		}
-
 		// 创建订单
 		String orderId = orderDao.add(orderMO);
 
