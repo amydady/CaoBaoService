@@ -21,6 +21,10 @@ public enum TableName
 	Supplier("t_supplier"),
 	
 	DeliveryArea("t_delivery_area"),
+	CommissionType("t_commission_type"),
+	GoodsCommission("t_commission_goods"),
+	
+
 	DeliveryFeeRule("t_delivery_feerule"),
 	
 	Province("t_basicinfo_province"),

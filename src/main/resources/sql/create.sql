@@ -85,6 +85,31 @@ CREATE TABLE `t_delivery_feerule` (
 	UNIQUE KEY `name` (`name`)
 );
 
+#佣金
+CREATE TABLE `t_commission_type` (
+	`id` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `name` (`name`)
+);
+
+CREATE TABLE `t_commission_goods` (
+	`id` VARCHAR(255) NOT NULL,
+	`goodsId` VARCHAR(255) NOT NULL,
+	`commissionTypeId` VARCHAR(255) NOT NULL,
+	`commissionRate` INT NOT NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `commissionType` (`goodsId`,`commissionTypeId`)
+);
+
+
+
 # 消费者
 
 CREATE TABLE `t_terminaluser` (
