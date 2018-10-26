@@ -72,7 +72,7 @@ public class CommissionTypeDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,name) values(?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,name) values(?,?)";
 
 		try
 		{

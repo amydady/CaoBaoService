@@ -1,5 +1,6 @@
 package com.littlecat.commission.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -18,7 +19,7 @@ public class CommissionGoodsMO extends BaseMO
 {
 	private String goodsId;
 	private String commissionTypeId;
-	private int commissionRate;
+	private BigDecimal commissionRate;
 	private String createTime;
 	private String enable;
 
@@ -45,12 +46,12 @@ public class CommissionGoodsMO extends BaseMO
 		this.commissionTypeId = commissionTypeId;
 	}
 
-	public int getCommissionRate()
+	public BigDecimal getCommissionRate()
 	{
 		return commissionRate;
 	}
 
-	public void setCommissionRate(int commissionRate)
+	public void setCommissionRate(BigDecimal commissionRate)
 	{
 		this.commissionRate = commissionRate;
 	}
@@ -95,7 +96,7 @@ public class CommissionGoodsMO extends BaseMO
 			mo.setId(rs.getString("id"));
 			mo.setGoodsId(rs.getString("goodsId"));
 			mo.setCommissionTypeId(rs.getString("commissionTypeId"));
-			mo.setCommissionRate(rs.getInt("commissionRate"));
+			mo.setCommissionRate(rs.getBigDecimal("commissionRate"));
 			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
 			mo.setEnable(rs.getString("enable"));
 

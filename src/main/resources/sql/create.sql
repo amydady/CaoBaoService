@@ -100,7 +100,7 @@ CREATE TABLE `t_commission_goods` (
 	`id` VARCHAR(255) NOT NULL,
 	`goodsId` VARCHAR(255) NOT NULL,
 	`commissionTypeId` VARCHAR(255) NOT NULL,
-	`commissionRate` INT NOT NULL,
+	`commissionRate` decimal(2,1) NOT NULL,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	

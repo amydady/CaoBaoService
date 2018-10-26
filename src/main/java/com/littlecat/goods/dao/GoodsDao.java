@@ -214,25 +214,30 @@ public class GoodsDao
 
 		return mos;
 	}
-	
+
 	/**
 	 * 查询商品列表（web管理端）
 	 * 
 	 * @return
 	 */
-	public List<GoodsMO> getList4WebApp()
+	public List<GoodsMO> getList4WebApp(String name)
 	{
 		List<GoodsMO> mos = new ArrayList<GoodsMO>();
 
-		String sql = new StringBuilder()
+		StringBuilder sql = new StringBuilder()
 				.append("select a.id,a.name,a.summaryDescription,a.price,a.currentInventory,a.enable,date_format(a.createTime,'%Y-%m-%d %T') createTime")
-				.append(" from ").append(TABLE_NAME).append(" a ")
-				.append(" order by a.enable desc,a.createTime asc")
-				.toString();
+				.append(" from ").append(TABLE_NAME).append(" a ");
+
+		if (StringUtil.isNotEmpty(name))
+		{
+			sql.append(" where a.name like '%").append(name).append("%'");
+		}
+
+		sql.append(" order by a.enable desc,a.createTime asc");
 
 		try
 		{
-			mos.addAll(jdbcTemplate.query(sql, new RowMapper<GoodsMO>()
+			mos.addAll(jdbcTemplate.query(sql.toString(), new RowMapper<GoodsMO>()
 			{
 
 				@Override

@@ -24,16 +24,16 @@ import com.littlecat.commission.business.CommissionTypeBusiness;
 import com.littlecat.commission.model.CommissionTypeMO;
 
 @RestController
-@RequestMapping("/rest/littlecat/caobao/commission")
-public class CommissionController
+@RequestMapping("/rest/littlecat/caobao/commission/type")
+public class CommissionTypeController
 {
 	@Autowired
 	private CommissionTypeBusiness commissionTypeBusiness;
 
-	private static final Logger logger = LoggerFactory.getLogger(CommissionController.class);
+	private static final Logger logger = LoggerFactory.getLogger(CommissionTypeController.class);
 
-	@GetMapping(value = "/type/getbyid")
-	public RestRsp<CommissionTypeMO> getTypeById(@RequestParam String id)
+	@GetMapping(value = "/getbyid")
+	public RestRsp<CommissionTypeMO> getById(@RequestParam String id)
 	{
 		RestRsp<CommissionTypeMO> result = new RestRsp<CommissionTypeMO>();
 
@@ -58,8 +58,8 @@ public class CommissionController
 		return result;
 	}
 
-	@PutMapping(value = "/type/modify")
-	public RestSimpleRsp modifyType(@RequestBody CommissionTypeMO mo)
+	@PutMapping(value = "/modify")
+	public RestSimpleRsp modify(@RequestBody CommissionTypeMO mo)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
@@ -83,8 +83,8 @@ public class CommissionController
 		return result;
 	}
 
-	@PostMapping(value = "/type/add")
-	public RestRsp<String> addType(@RequestBody CommissionTypeMO mo)
+	@PostMapping(value = "/add")
+	public RestRsp<String> add(@RequestBody CommissionTypeMO mo)
 	{
 		RestRsp<String> result = new RestRsp<String>();
 
@@ -108,8 +108,8 @@ public class CommissionController
 		return result;
 	}
 
-	@PostMapping(value = "/Type/getList")
-	public RestRsp<CommissionTypeMO> getTypeList(@RequestBody QueryParam queryParam)
+	@PostMapping(value = "/getList")
+	public RestRsp<CommissionTypeMO> getList(@RequestBody QueryParam queryParam)
 	{
 		RestRsp<CommissionTypeMO> result = new RestRsp<CommissionTypeMO>();
 
@@ -136,8 +136,8 @@ public class CommissionController
 		return result;
 	}
 
-	@PutMapping(value = "/type/disable/{id}")
-	public RestSimpleRsp disableType(@PathVariable String id)
+	@PutMapping(value = "/disable/{id}")
+	public RestSimpleRsp disable(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
@@ -161,8 +161,8 @@ public class CommissionController
 		return result;
 	}
 
-	@PutMapping(value = "/type/batchdisable")
-	public RestSimpleRsp batchDisableType(@RequestBody List<String> ids)
+	@PutMapping(value = "/batchdisable")
+	public RestSimpleRsp batchDisable(@RequestBody List<String> ids)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
@@ -186,8 +186,8 @@ public class CommissionController
 		return result;
 	}
 
-	@PutMapping(value = "/type/enable/{id}")
-	public RestSimpleRsp enableType(@PathVariable String id)
+	@PutMapping(value = "/enable/{id}")
+	public RestSimpleRsp enable(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
@@ -211,8 +211,8 @@ public class CommissionController
 		return result;
 	}
 
-	@PutMapping(value = "/type/batchenable")
-	public RestSimpleRsp batchEnableType(@RequestBody List<String> ids)
+	@PutMapping(value = "/batchenable")
+	public RestSimpleRsp batchEnable(@RequestBody List<String> ids)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 

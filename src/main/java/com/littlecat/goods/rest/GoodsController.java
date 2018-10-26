@@ -9,6 +9,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -483,13 +484,13 @@ public class GoodsController
 	}
 	
 	@GetMapping(value = "/getList4WebApp")
-	public RestRsp<GoodsMO> getList4WebApp()
+	public RestRsp<GoodsMO> getList4WebApp(@RequestParam @Nullable String name)
 	{
 		RestRsp<GoodsMO> result = new RestRsp<GoodsMO>();
 
 		try
 		{
-			result.getData().addAll(goodsBusiness.getList4WebApp());
+			result.getData().addAll(goodsBusiness.getList4WebApp(name));
 		}
 		catch (LittleCatException e)
 		{
