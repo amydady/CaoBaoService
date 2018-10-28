@@ -50,4 +50,7 @@ insert into t_basicinfo_area(name,city) values('丹徒新区','镇江市');
 insert into t_basicinfo_area(name,city) values('镇江新区','镇江市');
 
 
+insert into t_basicinfo_city(name,province) values('南京市','江苏省');
+insert into t_basicinfo_area(name,city) values('江宁区','南京市');
+
 
