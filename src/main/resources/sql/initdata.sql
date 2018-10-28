@@ -16,7 +16,7 @@ insert into t_sys_menu(id,name,pid,sortNum,isDefault) values('2','商品管理',
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('201','商品列表','../Goods/GoodsList.html','2','1','Y');
 
 insert into t_sys_menu(id,name,pid,sortNum) values('3','物流管理','-1','3');
-insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('301','配送范围管理','../Delivery/DeliveryAreaMgr.html','3','1','Y');
+insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('301','配送范围管理','../delivery/DeliveryAreaMgr.html','3','1','Y');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('302','快递费用管理','../Delivery/DeliveryFeeRuleMgr.html','3','2');
 
 insert into t_sys_menu(id,name,pid,sortNum) values('4','佣金管理','-1','4');
