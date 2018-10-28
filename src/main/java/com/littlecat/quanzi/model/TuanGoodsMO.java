@@ -18,7 +18,7 @@ public class TuanGoodsMO extends BaseMO
 {
 	private String tuanId;
 	private BuyType buyType;
-	private String goodsId; // 商品ID，秒杀计划ID，团购计划ID，取决于buyType
+	private String resId; // 商品ID，秒杀计划ID，团购计划ID，取决于buyType
 
 	public TuanGoodsMO()
 	{
@@ -45,14 +45,14 @@ public class TuanGoodsMO extends BaseMO
 		this.buyType = buyType;
 	}
 
-	public String getGoodsId()
+	public String getResId()
 	{
-		return goodsId;
+		return resId;
 	}
 
-	public void setGoodsId(String goodsId)
+	public void setResId(String resId)
 	{
-		this.goodsId = goodsId;
+		this.resId = resId;
 	}
 
 	public static class MOMapper implements RowMapper<TuanGoodsMO>
@@ -65,7 +65,7 @@ public class TuanGoodsMO extends BaseMO
 			mo.setId(rs.getString("id"));
 			mo.setTuanId(rs.getString("tuanId"));
 			mo.setBuyType(BuyType.valueOf(rs.getString("buyType")));
-			mo.setGoodsId(rs.getString("goodsId"));
+			mo.setResId(rs.getString("resId"));
 
 			return mo;
 		}

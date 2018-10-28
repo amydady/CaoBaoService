@@ -42,8 +42,7 @@ public class TuanDao
 		QueryParam queryParam = new QueryParam();
 		QueryCondition condition = new QueryCondition();
 
-		condition.getCondItems()
-				.add(new ConditionItem(FIELDS_NAME_TUANZHANGID, tuanZhangId, ConditionOperatorType.equal));
+		condition.getCondItems().add(new ConditionItem(FIELDS_NAME_TUANZHANGID, tuanZhangId, ConditionOperatorType.equal));
 		queryParam.setCondition(condition);
 
 		return DaoUtil.getObject(TABLE_NAME, queryParam, jdbcTemplate, new TuanMO.MOMapper());
@@ -86,17 +85,23 @@ public class TuanDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,tuanZhangId,name,mobile,idCardType,idCardCode,province,city,area,detailInfo,labels) values(?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,tuanZhangId,name,idCardType,idCardCode,province,city,area,detailInfo,labels) values(?,?,?,?,?,?,?,?,?,?)";
 
 		try
 		{
 			int ret = jdbcTemplate.update(sql,
-					new Object[] { mo.getId(), mo.getTuanZhangId(), mo.getName(), mo.getMobile(),
-							mo.getIdCard().getType().name(), mo.getIdCard().getCode(),
+					new Object[] {
+							mo.getId(),
+							mo.getTuanZhangId(),
+							mo.getName(),
+							mo.getIdCard().getType().name(),
+							mo.getIdCard().getCode(),
 							mo.getAddressInfo().getProvince(),
-							mo.getAddressInfo().getCity(), mo.getAddressInfo().getArea(),
+							mo.getAddressInfo().getCity(),
+							mo.getAddressInfo().getArea(),
 							mo.getAddressInfo().getDetailInfo(),
-							ListUtil.join2String(mo.getLabels()) });
+							ListUtil.join2String(mo.getLabels())
+					});
 
 			if (ret != 1)
 			{
@@ -113,19 +118,25 @@ public class TuanDao
 
 	public void modify(TuanMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set tuanZhangId=?,name=?,mobile=?,idCardType=?,idCardCode=?,idCardImgUrlFront=?,idCardImgUrlBack=?,province=?,city=?,area=?,detailInfo=?,labels=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set name=?,idCardType=?,idCardCode=?,idCardImgUrlFront=?,idCardImgUrlBack=?,province=?,city=?,area=?,detailInfo=?,labels=? where id = ?";
 
 		try
 		{
 			Blob imgDataFront = new SerialBlob(mo.getIdCard().getImgDataFront().getBytes(Consts.CHARSET_NAME));
 			Blob imgDataBack = new SerialBlob(mo.getIdCard().getImgDataBack().getBytes(Consts.CHARSET_NAME));
 
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getTuanZhangId(), mo.getName(), mo.getMobile(),
-					mo.getIdCard().getType().name(), mo.getIdCard().getCode(), imgDataFront,
-					imgDataBack, mo.getAddressInfo().getProvince(),
-					mo.getAddressInfo().getCity(), mo.getAddressInfo().getArea(),
+			int ret = jdbcTemplate.update(sql, new Object[] {
+					mo.getName(),
+					mo.getIdCard().getType().name(),
+					mo.getIdCard().getCode(),
+					imgDataFront, imgDataBack,
+					mo.getAddressInfo().getProvince(),
+					mo.getAddressInfo().getCity(),
+					mo.getAddressInfo().getArea(),
 					mo.getAddressInfo().getDetailInfo(),
-					ListUtil.join2String(mo.getLabels()), mo.getId() });
+					ListUtil.join2String(mo.getLabels()),
+					mo.getId()
+			});
 
 			if (ret != 1)
 			{

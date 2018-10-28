@@ -51,12 +51,12 @@ public class TuanGoodsDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,tuanId,buyType,goodsId) values(?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,tuanId,buyType,ressId) values(?,?,?,?)";
 
 		try
 		{
 			int ret = jdbcTemplate.update(sql,
-					new Object[] { mo.getId(), mo.getTuanId(), mo.getBuyType().name(), mo.getGoodsId() });
+					new Object[] { mo.getId(), mo.getTuanId(), mo.getBuyType().name(), mo.getResId() });
 
 			if (ret != 1)
 			{
@@ -81,7 +81,7 @@ public class TuanGoodsDao
 		}
 
 		List<String> ids = new ArrayList<String>();
-		String sql = "insert into " + TABLE_NAME + "(id,tuanId,buyType,goodsId) values(?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,tuanId,buyType,resId) values(?,?,?,?)";
 		List<Object[]> sqlParams = new ArrayList<>();
 
 		for (TuanGoodsMO mo : mos)
@@ -93,7 +93,7 @@ public class TuanGoodsDao
 
 			ids.add(mo.getId());
 
-			sqlParams.add(new Object[] { mo.getId(), mo.getTuanId(), mo.getBuyType().name(), mo.getGoodsId() });
+			sqlParams.add(new Object[] { mo.getId(), mo.getTuanId(), mo.getBuyType().name(), mo.getResId() });
 		}
 
 		try

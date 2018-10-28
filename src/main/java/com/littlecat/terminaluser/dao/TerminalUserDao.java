@@ -11,7 +11,6 @@ import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
-import com.littlecat.common.consts.BooleanTag;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.TableName;
 import com.littlecat.common.utils.DaoUtil;
@@ -43,11 +42,11 @@ public class TerminalUserDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,wxCode) values(?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,wxCode,mobile) values(?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getWxCode() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getWxCode(), mo.getMobile() });
 
 			if (ret != 1)
 			{
@@ -62,90 +61,13 @@ public class TerminalUserDao
 		return mo.getId();
 	}
 
-	public void setTuanZhangYes(String id) throws LittleCatException
+	public void modify(TerminalUserMO mo) throws LittleCatException
 	{
-		if (StringUtil.isEmpty(id))
-		{
-			throw new LittleCatException(ErrorCode.UpdateObjectWithEmptyId.getCode(), ErrorCode.UpdateObjectWithEmptyId.getMsg().replace("{INFO_NAME}", TABLE_NAME));
-		}
-
-		String sql = "update " + TABLE_NAME + " set isTuanZhang = ? where id = ?";
+		String sql = "update " + TABLE_NAME + " set mobile=?,isMaiShou=?,isTuanZhang = ? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { BooleanTag.Y.name(), id });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
-		}
-		catch (DataAccessException e)
-		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
-		}
-	}
-
-	public void setTuanZhangNo(String id) throws LittleCatException
-	{
-		if (StringUtil.isEmpty(id))
-		{
-			throw new LittleCatException(ErrorCode.UpdateObjectWithEmptyId.getCode(), ErrorCode.UpdateObjectWithEmptyId.getMsg().replace("{INFO_NAME}", TABLE_NAME));
-		}
-
-		String sql = "update " + TABLE_NAME + " set isTuanZhang = ? where id = ?";
-
-		try
-		{
-			int ret = jdbcTemplate.update(sql, new Object[] { BooleanTag.N.name(), id });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
-		}
-		catch (DataAccessException e)
-		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
-		}
-	}
-
-	public void setMaiShouYes(String id) throws LittleCatException
-	{
-		if (StringUtil.isEmpty(id))
-		{
-			throw new LittleCatException(ErrorCode.UpdateObjectWithEmptyId.getCode(), ErrorCode.UpdateObjectWithEmptyId.getMsg().replace("{INFO_NAME}", TABLE_NAME));
-		}
-
-		String sql = "update " + TABLE_NAME + " set isMaiShou = ? where id = ?";
-
-		try
-		{
-			int ret = jdbcTemplate.update(sql, new Object[] { BooleanTag.Y.name(), id });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
-		}
-		catch (DataAccessException e)
-		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
-		}
-	}
-
-	public void setMaiShouNo(String id) throws LittleCatException
-	{
-		if (StringUtil.isEmpty(id))
-		{
-			throw new LittleCatException(ErrorCode.UpdateObjectWithEmptyId.getCode(), ErrorCode.UpdateObjectWithEmptyId.getMsg().replace("{INFO_NAME}", TABLE_NAME));
-		}
-
-		String sql = "update " + TABLE_NAME + " set isMaiShou = ? where id = ?";
-
-		try
-		{
-			int ret = jdbcTemplate.update(sql, new Object[] { BooleanTag.N.name(), id });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getMobile(), mo.getIsMaiShou(), mo.getIsTuanZhang(), mo.getId() });
 
 			if (ret != 1)
 			{

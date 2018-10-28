@@ -58,89 +58,14 @@ public class TerminalUserController
 		return result;
 	}
 
-	@PutMapping(value = "/settuanzhangyes/{id}")
-	public RestSimpleRsp setTuanZhangYes(@PathVariable String id)
+	@PutMapping(value = "/modify")
+	public RestSimpleRsp modify(@RequestBody TerminalUserMO mo)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			terminalUserBusiness.setTuanZhangYes(id);
-		}
-		catch (LittleCatException e)
-		{
-			result.setCode(e.getErrorCode());
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-		catch (Exception e)
-		{
-			result.setCode(Consts.ERROR_CODE_UNKNOW);
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-
-		return result;
-	}
-
-	@PutMapping(value = "/settuanzhangno/{id}")
-	public RestSimpleRsp setTuanZhangNo(@PathVariable String id)
-	{
-		RestSimpleRsp result = new RestSimpleRsp();
-
-		try
-		{
-			terminalUserBusiness.setTuanZhangNo(id);
-		}
-		catch (LittleCatException e)
-		{
-			result.setCode(e.getErrorCode());
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-		catch (Exception e)
-		{
-			result.setCode(Consts.ERROR_CODE_UNKNOW);
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-
-		return result;
-	}
-
-	@PutMapping(value = "/setmaishouyes/{id}")
-	public RestSimpleRsp setMaiShouYes(@PathVariable String id)
-	{
-		RestSimpleRsp result = new RestSimpleRsp();
-
-		try
-		{
-			terminalUserBusiness.setMaiShouYes(id);
-		}
-		catch (LittleCatException e)
-		{
-			result.setCode(e.getErrorCode());
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-		catch (Exception e)
-		{
-			result.setCode(Consts.ERROR_CODE_UNKNOW);
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-
-		return result;
-	}
-
-	@PutMapping(value = "/setmaishouno/{id}")
-	public RestSimpleRsp setMaiShouNo(@PathVariable String id)
-	{
-		RestSimpleRsp result = new RestSimpleRsp();
-
-		try
-		{
-			terminalUserBusiness.setMaiShouNo(id);
+			terminalUserBusiness.modify(mo);
 		}
 		catch (LittleCatException e)
 		{

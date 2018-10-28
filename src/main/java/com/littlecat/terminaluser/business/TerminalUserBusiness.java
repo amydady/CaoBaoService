@@ -53,23 +53,8 @@ public class TerminalUserBusiness
 		return terminalUserDao.getList(queryParam, mos);
 	}
 
-	public void setTuanZhangYes(String id) throws LittleCatException
+	public void modify(TerminalUserMO mo) throws LittleCatException
 	{
-		terminalUserDao.setTuanZhangYes(id);
-	}
-
-	public void setTuanZhangNo(String id) throws LittleCatException
-	{
-		terminalUserDao.setTuanZhangNo(id);
-	}
-
-	public void setMaiShouYes(String id) throws LittleCatException
-	{
-		terminalUserDao.setMaiShouYes(id);
-	}
-
-	public void setMaiShouNo(String id) throws LittleCatException
-	{
-		terminalUserDao.setMaiShouNo(id);
+		terminalUserDao.modify(mo);
 	}
 }

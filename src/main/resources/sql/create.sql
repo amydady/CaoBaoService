@@ -62,7 +62,7 @@ CREATE TABLE `t_supplier` (
 CREATE TABLE `t_delivery_area` (
 	`id` VARCHAR(255) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
-	`cityInfo` VARCHAR(255) NOT NULL,
+	`cityInfo` VARCHAR(255) NULL,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	
@@ -115,6 +115,7 @@ CREATE TABLE `t_commission_goods` (
 CREATE TABLE `t_terminaluser` (
 	`id` VARCHAR(255) NOT NULL,
 	`wxCode` VARCHAR(255) NOT NULL,
+	`mobile` VARCHAR(15) NULL,
 	`isTuanZhang` VARCHAR(1) NOT NULL DEFAULT 'N',
 	`isMaiShou` VARCHAR(1) NOT NULL DEFAULT 'N',
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -335,7 +336,6 @@ CREATE TABLE `t_quanzi_tuan` (
 	`id` VARCHAR(255) NOT NULL,
 	`tuanZhangId` VARCHAR(255) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
-	`mobile` VARCHAR(255) NULL,
 	`idCardType` VARCHAR(255) NOT NULL,
 	`idCardCode` VARCHAR(255) NOT NULL,
 	`idCardImgDataFront` MediumBlob NULL,
@@ -350,6 +350,16 @@ CREATE TABLE `t_quanzi_tuan` (
 	
 	PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `t_quanzi_tuangoods` (
+	`id` VARCHAR(255) NOT NULL,
+	`tuanId` VARCHAR(255) NOT NULL,
+	`buyType` VARCHAR(255) NOT NULL,
+	`resId` VARCHAR(255) NOT NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
 
 CREATE TABLE `t_quanzi_tuanmember` (
 	`id` VARCHAR(255) NOT NULL,

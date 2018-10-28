@@ -8,10 +8,13 @@ import java.util.List;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
+import com.littlecat.cbb.utils.SpringUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.common.consts.IdCardType;
 import com.littlecat.common.model.AddressMO;
 import com.littlecat.common.model.IdCardMO;
+import com.littlecat.terminaluser.business.TerminalUserBusiness;
+import com.littlecat.terminaluser.model.TerminalUserMO;
 
 /**
  * 团MO
@@ -21,14 +24,17 @@ import com.littlecat.common.model.IdCardMO;
  */
 public class TuanMO extends BaseMO
 {
-	private String tuanZhangId;
+	private String tuanZhangId; // 消费者ID
 	private String name;
-	private String mobile;
 	private IdCardMO idCard;
 	private AddressMO addressInfo;
 	private String createTime;
 	private List<String> labels = new ArrayList<String>(); // 团标签
 	private String enable;
+
+	// just for view
+
+	private String tuanZhangMobile;
 
 	public TuanMO()
 	{
@@ -105,18 +111,20 @@ public class TuanMO extends BaseMO
 		this.labels = labels;
 	}
 
-	public String getMobile()
+	public String getTuanZhangMobile()
 	{
-		return mobile;
+		return tuanZhangMobile;
 	}
 
-	public void setMobile(String mobile)
+	public void setTuanZhangMobile(String tuanZhangMobile)
 	{
-		this.mobile = mobile;
+		this.tuanZhangMobile = tuanZhangMobile;
 	}
 
 	public static class MOMapper implements RowMapper<TuanMO>
 	{
+		private static TerminalUserBusiness terminalUserBusiness = SpringUtil.getBean(TerminalUserBusiness.class);
+
 		@Override
 		public TuanMO mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
@@ -125,12 +133,14 @@ public class TuanMO extends BaseMO
 			mo.setId(rs.getString("id"));
 			mo.setTuanZhangId(rs.getString("tuanZhangId"));
 			mo.setName(rs.getString("name"));
-			mo.setMobile(rs.getString("mobile"));
 			mo.setIdCard(new IdCardMO(IdCardType.valueOf(rs.getString("idCardType")), rs.getString("idCardCode"), rs.getString("idCardImgDataFront"), rs.getString("idCardImgDataBack")));
 			mo.setAddressInfo(new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo")));
 			mo.setLabels(StringUtil.split2List(rs.getString("labels")));
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setEnable(rs.getString("enable"));
+
+			TerminalUserMO terminalUserMO = terminalUserBusiness.getById(mo.getTuanZhangId());
+			mo.setTuanZhangMobile(terminalUserMO.getMobile());
 
 			return mo;
 		}

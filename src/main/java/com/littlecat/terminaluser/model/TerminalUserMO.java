@@ -16,6 +16,7 @@ import com.littlecat.cbb.common.BaseMO;
 public class TerminalUserMO extends BaseMO
 {
 	private String wxCode;
+	private String mobile;
 	private String createTime;
 	private String isTuanZhang; // 是否为团长（社圈长）
 	private String isMaiShou; // 是否为买手
@@ -77,6 +78,16 @@ public class TerminalUserMO extends BaseMO
 		this.enable = enable;
 	}
 
+	public String getMobile()
+	{
+		return mobile;
+	}
+
+	public void setMobile(String mobile)
+	{
+		this.mobile = mobile;
+	}
+
 	public static class MOMapper implements RowMapper<TerminalUserMO>
 	{
 		@Override
@@ -86,6 +97,7 @@ public class TerminalUserMO extends BaseMO
 			
 			mo.setId(rs.getString("id"));
 			mo.setWxCode(rs.getString("wxCode"));
+			mo.setMobile(rs.getString("mobile"));
 			mo.setIsTuanZhang(rs.getString("isTuanZhang"));
 			mo.setIsMaiShou(rs.getString("isMaiShou"));
 			mo.setCreateTime(rs.getString("createTime"));
