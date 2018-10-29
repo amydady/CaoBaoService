@@ -17,7 +17,7 @@ insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('201','�
 
 insert into t_sys_menu(id,name,pid,sortNum) values('3','物流管理','-1','3');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('301','配送范围管理','../delivery/DeliveryAreaMgr.html','3','1','Y');
-insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('302','快递费用管理','../Delivery/DeliveryFeeRuleMgr.html','3','2');
+insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('302','物流费用管理','../delivery/DeliveryFeeRuleMgr.html','3','2');
 
 insert into t_sys_menu(id,name,pid,sortNum) values('4','佣金管理','-1','4');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('401','佣金类目管理','../commission/CommissionTypeMgr.html','4','1','Y');
