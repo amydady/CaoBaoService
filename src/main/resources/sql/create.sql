@@ -75,14 +75,23 @@ CREATE TABLE `t_delivery_feerule` (
 	`name` VARCHAR(255) NOT NULL,
 	`deliveryAreaId` VARCHAR(255) NOT NULL,
 	`calcType` VARCHAR(255) NOT NULL,
-	`beginValue` int NOT NULL,
-	`endValue` int NOT NULL,
-	`fee` int NOT NULL,
+	`beginValue` decimal(10,2) NOT NULL,
+	`endValue` decimal(10,2) NOT NULL,
+	`fee` decimal(10,2) NOT NULL,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `name` (`name`)
+);
+
+###############物流费用计算类型
+CREATE TABLE `t_delivery_feecalctype` (
+	`id` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	`sortNum` VARCHAR(3) NOT NULL DEFAULT '0',
+	
+	PRIMARY KEY (`id`)
 );
 
 #佣金

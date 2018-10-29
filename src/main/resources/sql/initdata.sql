@@ -31,13 +31,13 @@ insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('501','�
 insert into t_sys_menu(id,name,pid,sortNum) values('99','系统管理','-1','99');
 
 
-
+#系统操作用户
 insert into t_sys_sysoperator(id,username,password,name,wxCode,email,mobile)
 values ('test001','test001',password('123'),'test001','test001','test001','test001');
 
 
 
-//TODO:按照微信小程序的内容修改
+#地市信息
 insert into t_basicinfo_province(name) values('江苏省');
 insert into t_basicinfo_city(name,province) values('镇江市','江苏省');
 insert into t_basicinfo_area(name,city) values('京口区','镇江市');
@@ -53,4 +53,7 @@ insert into t_basicinfo_area(name,city) values('镇江新区','镇江市');
 insert into t_basicinfo_city(name,province) values('南京市','江苏省');
 insert into t_basicinfo_area(name,city) values('江宁区','南京市');
 
+#字典类信息
+insert into t_delivery_feecalctype(id,name,sortNum) values('1','按订单金额','1');
+insert into t_delivery_feecalctype(id,name,sortNum) values('2','按订单重量','2');
 

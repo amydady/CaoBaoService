@@ -20,26 +20,27 @@ import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
-import com.littlecat.delivery.business.DeliveryAreaBusiness;
-import com.littlecat.delivery.model.DeliveryAreaMO;
+import com.littlecat.delivery.business.DeliveryFeeRuleBusiness;
+import com.littlecat.delivery.model.DeliveryFeeCalcTypeMO;
+import com.littlecat.delivery.model.DeliveryFeeRuleMO;
 
 @RestController
-@RequestMapping("/rest/littlecat/caobao/delivery")
-public class DeliveryController
+@RequestMapping("/rest/littlecat/caobao/delivery/feerule")
+public class DeliveryFeeRuleController
 {
 	@Autowired
-	private DeliveryAreaBusiness deliveryAreaBusiness;
+	private DeliveryFeeRuleBusiness deliveryFeeRuleBusiness;
 
-	private static final Logger logger = LoggerFactory.getLogger(DeliveryController.class);
+	private static final Logger logger = LoggerFactory.getLogger(DeliveryFeeRuleController.class);
 
-	@GetMapping(value = "/area/getbyid")
-	public RestRsp<DeliveryAreaMO> getAreaById(@RequestParam String id)
+	@GetMapping(value = "/getbyid")
+	public RestRsp<DeliveryFeeRuleMO> getById(@RequestParam String id)
 	{
-		RestRsp<DeliveryAreaMO> result = new RestRsp<DeliveryAreaMO>();
+		RestRsp<DeliveryFeeRuleMO> result = new RestRsp<DeliveryFeeRuleMO>();
 
 		try
 		{
-			result.getData().add(deliveryAreaBusiness.getById(id));
+			result.getData().add(deliveryFeeRuleBusiness.getById(id));
 		}
 		catch (LittleCatException e)
 		{
@@ -57,14 +58,14 @@ public class DeliveryController
 		return result;
 	}
 
-	@PutMapping(value = "/area/modify")
-	public RestSimpleRsp modifyArea(@RequestBody DeliveryAreaMO mo)
+	@PutMapping(value = "/modify")
+	public RestSimpleRsp modify(@RequestBody DeliveryFeeRuleMO mo)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			deliveryAreaBusiness.modify(mo);
+			deliveryFeeRuleBusiness.modify(mo);
 		}
 		catch (LittleCatException e)
 		{
@@ -82,14 +83,14 @@ public class DeliveryController
 		return result;
 	}
 
-	@PostMapping(value = "/area/add")
-	public RestRsp<String> addArea(@RequestBody DeliveryAreaMO mo)
+	@PostMapping(value = "/add")
+	public RestRsp<String> add(@RequestBody DeliveryFeeRuleMO mo)
 	{
 		RestRsp<String> result = new RestRsp<String>();
 
 		try
 		{
-			result.getData().add(deliveryAreaBusiness.add(mo));
+			result.getData().add(deliveryFeeRuleBusiness.add(mo));
 		}
 		catch (LittleCatException e)
 		{
@@ -107,15 +108,15 @@ public class DeliveryController
 		return result;
 	}
 
-	@PostMapping(value = "/area/getList")
-	public RestRsp<DeliveryAreaMO> getAreaList(@RequestBody QueryParam queryParam)
+	@PostMapping(value = "/getList")
+	public RestRsp<DeliveryFeeRuleMO> getList(@RequestBody QueryParam queryParam)
 	{
-		RestRsp<DeliveryAreaMO> result = new RestRsp<DeliveryAreaMO>();
+		RestRsp<DeliveryFeeRuleMO> result = new RestRsp<DeliveryFeeRuleMO>();
 
 		try
 		{
-			List<DeliveryAreaMO> mos = new ArrayList<DeliveryAreaMO>();
-			int totalNum = deliveryAreaBusiness.getList(queryParam, mos);
+			List<DeliveryFeeRuleMO> mos = new ArrayList<DeliveryFeeRuleMO>();
+			int totalNum = deliveryFeeRuleBusiness.getList(queryParam, mos);
 			result.setTotalNum(totalNum);
 			result.getData().addAll(mos);
 		}
@@ -135,14 +136,14 @@ public class DeliveryController
 		return result;
 	}
 
-	@PutMapping(value = "/area/disable/{id}")
-	public RestSimpleRsp disableArea(@PathVariable String id)
+	@PutMapping(value = "/disable/{id}")
+	public RestSimpleRsp disable(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			deliveryAreaBusiness.disable(id);
+			deliveryFeeRuleBusiness.disable(id);
 		}
 		catch (LittleCatException e)
 		{
@@ -160,14 +161,14 @@ public class DeliveryController
 		return result;
 	}
 
-	@PutMapping(value = "/area/batchdisable")
-	public RestSimpleRsp batchDisableArea(@RequestBody List<String> ids)
+	@PutMapping(value = "/batchdisable")
+	public RestSimpleRsp batchDisable(@RequestBody List<String> ids)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			deliveryAreaBusiness.disable(ids);
+			deliveryFeeRuleBusiness.disable(ids);
 		}
 		catch (LittleCatException e)
 		{
@@ -185,14 +186,14 @@ public class DeliveryController
 		return result;
 	}
 
-	@PutMapping(value = "/area/enable/{id}")
-	public RestSimpleRsp enableArea(@PathVariable String id)
+	@PutMapping(value = "/enable/{id}")
+	public RestSimpleRsp enable(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			deliveryAreaBusiness.enable(id);
+			deliveryFeeRuleBusiness.enable(id);
 		}
 		catch (LittleCatException e)
 		{
@@ -210,14 +211,39 @@ public class DeliveryController
 		return result;
 	}
 
-	@PutMapping(value = "/area/batchenable")
-	public RestSimpleRsp batchEnableArea(@RequestBody List<String> ids)
+	@PutMapping(value = "/batchenable")
+	public RestSimpleRsp batchEnable(@RequestBody List<String> ids)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			deliveryAreaBusiness.enable(ids);
+			deliveryFeeRuleBusiness.enable(ids);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/getFeeCalcTypeList")
+	public RestRsp<DeliveryFeeCalcTypeMO> getFeeCalcTypeList()
+	{
+		RestRsp<DeliveryFeeCalcTypeMO> result = new RestRsp<DeliveryFeeCalcTypeMO>();
+
+		try
+		{
+			result.getData().addAll(deliveryFeeRuleBusiness.getFeeCalcTypeList());
 		}
 		catch (LittleCatException e)
 		{
