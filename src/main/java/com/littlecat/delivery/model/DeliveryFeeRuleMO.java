@@ -23,8 +23,15 @@ public class DeliveryFeeRuleMO extends BaseMO
 	private BigDecimal beginValue;
 	private BigDecimal endValue;
 	private BigDecimal fee;
+	private String createOperatorId;
 	private String createTime;
 	private String enable;
+	
+	//just for view
+
+	private String deliveryAreaName;
+	private String calcTypeName;
+	private String createOperatorName;
 
 	public String getName()
 	{
@@ -106,6 +113,46 @@ public class DeliveryFeeRuleMO extends BaseMO
 		this.enable = enable;
 	}
 
+	public String getCreateOperatorId()
+	{
+		return createOperatorId;
+	}
+
+	public void setCreateOperatorId(String createOperatorId)
+	{
+		this.createOperatorId = createOperatorId;
+	}
+
+	public String getCreateOperatorName()
+	{
+		return createOperatorName;
+	}
+
+	public void setCreateOperatorName(String createOperatorName)
+	{
+		this.createOperatorName = createOperatorName;
+	}
+
+	public String getCalcTypeName()
+	{
+		return calcTypeName;
+	}
+
+	public void setCalcTypeName(String calcTypeName)
+	{
+		this.calcTypeName = calcTypeName;
+	}
+
+	public String getDeliveryAreaName()
+	{
+		return deliveryAreaName;
+	}
+
+	public void setDeliveryAreaName(String deliveryAreaName)
+	{
+		this.deliveryAreaName = deliveryAreaName;
+	}
+
 	public static class MOMapper implements RowMapper<DeliveryFeeRuleMO>
 	{
 		@Override
@@ -120,9 +167,13 @@ public class DeliveryFeeRuleMO extends BaseMO
 			mo.setBeginValue(rs.getBigDecimal("beginValue"));
 			mo.setEndValue(rs.getBigDecimal("endValue"));
 			mo.setFee(rs.getBigDecimal("fee"));
+			mo.setCreateOperatorId(rs.getString("createOperatorId"));
 			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
 			mo.setEnable(rs.getString("enable"));
+			
 
+			mo.setCreateOperatorName(rs.getString("createOperatorName"));
+			
 			return mo;
 		}
 	}

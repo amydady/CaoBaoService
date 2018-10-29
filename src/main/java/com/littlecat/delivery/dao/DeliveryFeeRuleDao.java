@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
@@ -31,10 +30,18 @@ public class DeliveryFeeRuleDao
 	private final String MODEL_NAME = DeliveryFeeRuleMO.class.getSimpleName();
 
 	private final String TABLE_NAME_FEECALCTYPE = TableName.DeliveryFeeCalcType.getName();
+	private final String TABLE_NAME_DELIVERYAREA = TableName.DeliveryArea.getName();
+	private final String TABLE_NAME_SYSOPERATOR = TableName.SysOperator.getName();
 
 	public DeliveryFeeRuleMO getById(String id) throws LittleCatException
 	{
-		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new DeliveryFeeRuleMO.MOMapper());
+		StringBuilder sql = new StringBuilder()
+				.append("select a.*,b.name createOperatorName from ")
+				.append(TABLE_NAME).append(" a ")
+				.append(" left join ").append(TABLE_NAME_SYSOPERATOR).append(" b ").append(" on a.createOperatorId=b.id ")
+				.append(" where a.id=?");
+
+		return jdbcTemplate.queryForObject(sql.toString(), new Object[] { id }, new DeliveryFeeRuleMO.MOMapper());
 	}
 
 	public void enable(String id) throws LittleCatException
@@ -112,9 +119,52 @@ public class DeliveryFeeRuleDao
 		}
 	}
 
-	public int getList(QueryParam queryParam, List<DeliveryFeeRuleMO> mos) throws LittleCatException
+	public List<DeliveryFeeRuleMO> getList()
 	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new DeliveryFeeRuleMO.MOMapper());
+		List<DeliveryFeeRuleMO> mos = new ArrayList<DeliveryFeeRuleMO>();
+
+		StringBuilder sql = new StringBuilder()
+				.append("select a.*,b.name deliveryAreaName,c.name calcTypeName,d.name createOperatorName from ")
+				.append(TABLE_NAME).append(" a")
+				.append(" inner join ").append(TABLE_NAME_DELIVERYAREA).append(" b ").append(" on a.deliveryAreaId=b.id")
+				.append(" inner join ").append(TABLE_NAME_FEECALCTYPE).append(" c ").append(" on a.calcType = c.id")
+				.append(" left join ").append(TABLE_NAME_SYSOPERATOR).append(" d ").append("on a.createOperatorId=d.id");
+
+		try
+		{
+			mos.addAll(jdbcTemplate.query(sql.toString(), new RowMapper<DeliveryFeeRuleMO>()
+			{
+				@Override
+				public DeliveryFeeRuleMO mapRow(ResultSet rs, int rowNum) throws SQLException
+				{
+					DeliveryFeeRuleMO mo = new DeliveryFeeRuleMO();
+
+					mo.setId(rs.getString("id"));
+					mo.setName(rs.getString("name"));
+					mo.setDeliveryAreaId(rs.getString("deliveryAreaId"));
+					mo.setCalcType(rs.getString("calcType"));
+					mo.setBeginValue(rs.getBigDecimal("beginValue"));
+					mo.setEndValue(rs.getBigDecimal("endValue"));
+					mo.setFee(rs.getBigDecimal("fee"));
+					mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
+					mo.setEnable(rs.getString("enable"));
+
+					// just for view
+
+					mo.setDeliveryAreaName(rs.getString("deliveryAreaName"));
+					mo.setCalcTypeName(rs.getString("calcTypeName"));
+					mo.setCreateOperatorName(rs.getString("createOperatorName"));
+
+					return mo;
+				}
+			}));
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+
+		return mos;
 	}
 
 	/**

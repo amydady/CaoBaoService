@@ -1,6 +1,5 @@
 package com.littlecat.delivery.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.delivery.business.DeliveryFeeRuleBusiness;
@@ -108,17 +106,14 @@ public class DeliveryFeeRuleController
 		return result;
 	}
 
-	@PostMapping(value = "/getList")
-	public RestRsp<DeliveryFeeRuleMO> getList(@RequestBody QueryParam queryParam)
+	@GetMapping(value = "/getList")
+	public RestRsp<DeliveryFeeRuleMO> getList()
 	{
 		RestRsp<DeliveryFeeRuleMO> result = new RestRsp<DeliveryFeeRuleMO>();
 
 		try
 		{
-			List<DeliveryFeeRuleMO> mos = new ArrayList<DeliveryFeeRuleMO>();
-			int totalNum = deliveryFeeRuleBusiness.getList(queryParam, mos);
-			result.setTotalNum(totalNum);
-			result.getData().addAll(mos);
+			result.getData().addAll(deliveryFeeRuleBusiness.getList());
 		}
 		catch (LittleCatException e)
 		{

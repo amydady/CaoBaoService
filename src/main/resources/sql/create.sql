@@ -78,6 +78,7 @@ CREATE TABLE `t_delivery_feerule` (
 	`beginValue` decimal(10,2) NOT NULL,
 	`endValue` decimal(10,2) NOT NULL,
 	`fee` decimal(10,2) NOT NULL,
+	`createOperatorId` VARCHAR(255) NULL,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	

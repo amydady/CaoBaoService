@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.delivery.dao.DeliveryFeeRuleDao;
 import com.littlecat.delivery.model.DeliveryFeeCalcTypeMO;
 import com.littlecat.delivery.model.DeliveryFeeRuleMO;
@@ -54,9 +53,9 @@ public class DeliveryFeeRuleBusiness
 		deliveryFeeRuleDao.modify(mo);
 	}
 
-	public int getList(QueryParam queryParam, List<DeliveryFeeRuleMO> mos) throws LittleCatException
+	public List<DeliveryFeeRuleMO> getList()
 	{
-		return deliveryFeeRuleDao.getList(queryParam, mos);
+		return deliveryFeeRuleDao.getList();
 	}
 	
 	public List<DeliveryFeeCalcTypeMO> getFeeCalcTypeList()
