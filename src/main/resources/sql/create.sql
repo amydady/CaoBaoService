@@ -50,7 +50,7 @@ CREATE TABLE `t_sys_sysoperator` (
 CREATE TABLE `t_supplier` (
 	`id` VARCHAR(255) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
-	`remark` VARCHAR(255) NOT NULL,
+	`remark` VARCHAR(255) NULL,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
 	
