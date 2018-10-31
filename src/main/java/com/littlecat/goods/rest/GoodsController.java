@@ -348,7 +348,7 @@ public class GoodsController
 
 		if (mo == null)
 		{
-			logger.error("GoodsController:uploadmainimg:get goodsmo by id return null.");
+			throw new LittleCatException("GoodsController:uploadmainimg:get goodsmo by id return null.");
 		}
 
 		// 上传的产品图片（主图）
@@ -356,7 +356,7 @@ public class GoodsController
 
 		if (CollectionUtil.isEmpty(files))
 		{
-			logger.error("GoodsController:uploadmainimg:files is null.");
+			throw new LittleCatException("GoodsController:uploadmainimg:files is null.");
 		}
 
 		try
@@ -395,7 +395,7 @@ public class GoodsController
 
 		if (CollectionUtil.isEmpty(files))
 		{
-			logger.error("GoodsController:uploadmainimg:files is null.");
+			throw new LittleCatException("GoodsController:uploadmainimg:files is null.");
 		}
 
 		try
@@ -427,7 +427,7 @@ public class GoodsController
 
 		if (mo == null)
 		{
-			logger.error("GoodsController:modifyDetailImgsInfo:get goods detailimgsmo by id return null.");
+			throw new LittleCatException("GoodsController:modifyDetailImgsInfo:get goods detailimgsmo by id return null.");
 		}
 
 		mo.setTitle(title);

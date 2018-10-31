@@ -1,5 +1,6 @@
 package com.littlecat.quanzi.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
+import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.cbb.utils.CollectionUtil;
@@ -36,15 +39,18 @@ public class TuanController
 	@Autowired
 	private TuanBusiness tuanBusiness;
 
-	@GetMapping(value = "/getByTuanZhangId")
-	public RestRsp<TuanMO> getByTuanZhangId(@RequestParam String tuanZhangId)
+	@GetMapping(value = "/getById")
+	public RestRsp<TuanMO> getById(@RequestParam String id)
 	{
 		RestRsp<TuanMO> result = new RestRsp<TuanMO>();
 
 		try
 		{
-			TuanMO mo = tuanBusiness.getByTuanZhangId(tuanZhangId);
-			result.getData().add(mo);
+			TuanMO mo = tuanBusiness.getById(id);
+			if (mo != null)
+			{
+				result.getData().add(mo);
+			}
 		}
 		catch (LittleCatException e)
 		{
@@ -87,7 +93,7 @@ public class TuanController
 		return result;
 	}
 
-	@PutMapping(value = "/modify")
+	@PostMapping(value = "/modify")
 	public RestSimpleRsp modify(@RequestBody TuanMO mo)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
@@ -262,29 +268,17 @@ public class TuanController
 		return result;
 	}
 
-	@PostMapping(value = "/uploadIdCardFrontImg/{tuanZhangId}")
-	public RestSimpleRsp uploadIdCardFrontImg(@PathVariable String tuanZhangId, HttpServletRequest request)
+	@PostMapping(value = "/getList")
+	public RestRsp<TuanMO> getList(@RequestBody QueryParam queryParam)
 	{
-		RestSimpleRsp result = new RestSimpleRsp();
-		TuanMO mo = tuanBusiness.getByTuanZhangId(tuanZhangId);
-
-		if (mo == null)
-		{
-			logger.error("TuanController:uploadIdCardFrontImg:get TuanMO by id return null.");
-		}
-
-		// 上传的产品图片（主图）
-		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("idCardFrontImg");
-
-		if (CollectionUtil.isEmpty(files))
-		{
-			logger.error("TuanController:uploadIdCardFrontImg:files is null.");
-		}
+		RestRsp<TuanMO> result = new RestRsp<TuanMO>();
 
 		try
 		{
-			mo.getIdCard().setImgDataFront(Base64.encodeBase64String(files.get(0).getBytes()));
-			tuanBusiness.modify(mo);
+			List<TuanMO> mos = new ArrayList<TuanMO>();
+			int totalNum = tuanBusiness.getList(queryParam, mos);
+			result.setTotalNum(totalNum);
+			result.getData().addAll(mos);
 		}
 		catch (LittleCatException e)
 		{
@@ -302,29 +296,95 @@ public class TuanController
 		return result;
 	}
 
-	@PostMapping(value = "/uploadIdCardBackImg/{tuanZhangId}")
-	public RestSimpleRsp uploadIdCardBackImg(@PathVariable String tuanZhangId, HttpServletRequest request)
+	@GetMapping(value = "/getList")
+	public RestRsp<TuanMO> getList(@RequestParam @Nullable String approveResult, @RequestParam @Nullable String enable, @RequestParam @Nullable String name)
 	{
-		RestSimpleRsp result = new RestSimpleRsp();
-		TuanMO mo = tuanBusiness.getByTuanZhangId(tuanZhangId);
+		RestRsp<TuanMO> result = new RestRsp<TuanMO>();
+
+		try
+		{
+			List<TuanMO> mos = new ArrayList<TuanMO>();
+			result.getData().addAll(tuanBusiness.getList(approveResult, enable, name));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PostMapping(value = "/uploadIdCardFrontImg/{id}")
+	public RestRsp<String> uploadIdCardFrontImg(@PathVariable String id, HttpServletRequest request)
+	{
+		RestRsp<String> result = new RestRsp<String>();
+		TuanMO mo = tuanBusiness.getById(id);
 
 		if (mo == null)
 		{
-			logger.error("TuanController:uploadIdCardBackImg:get TuanMO by id return null.");
+			throw new LittleCatException("TuanController:uploadIdCardFrontImg:get TuanMO by id return null.");
 		}
 
-		// 上传的产品图片（主图）
-		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("idCardBackImg");
+		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("idCardFrontImg");
 
 		if (CollectionUtil.isEmpty(files))
 		{
-			logger.error("TuanController:uploadIdCardBackImg:files is null.");
+			throw new LittleCatException("TuanController:uploadIdCardFrontImg:files is null.");
 		}
 
 		try
 		{
-			mo.getIdCard().setImgDataBack(Base64.encodeBase64String(files.get(0).getBytes()));
+			mo.setIdCardImgDataFront(Base64.encodeBase64String(files.get(0).getBytes()));
 			tuanBusiness.modify(mo);
+			result.getData().add(mo.getIdCardImgDataFront());
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PostMapping(value = "/uploadIdCardBackImg/{id}")
+	public RestRsp<String> uploadIdCardBackImg(@PathVariable String id, HttpServletRequest request)
+	{
+		RestRsp<String> result = new RestRsp<String>();
+		TuanMO mo = tuanBusiness.getById(id);
+
+		if (mo == null)
+		{
+			throw new LittleCatException("TuanController:uploadIdCardBackImg:get TuanMO by id return null.");
+		}
+
+		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("idCardBackImg");
+
+		if (CollectionUtil.isEmpty(files))
+		{
+			throw new LittleCatException("TuanController:uploadIdCardBackImg:files is null.");
+		}
+
+		try
+		{
+			mo.setIdCardImgDataBack(Base64.encodeBase64String(files.get(0).getBytes()));
+			tuanBusiness.modify(mo);
+			result.getData().add(mo.getIdCardImgDataBack());
 		}
 		catch (LittleCatException e)
 		{

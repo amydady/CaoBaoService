@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
+import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.quanzi.dao.TuanDao;
 import com.littlecat.quanzi.model.TuanMO;
 
@@ -17,9 +18,9 @@ public class TuanBusiness
 	@Autowired
 	private TuanDao tuanDao;
 
-	public TuanMO getByTuanZhangId(String tuanZhangId) throws LittleCatException
+	public TuanMO getById(String tuanZhangOpenId) throws LittleCatException
 	{
-		return tuanDao.getByTuanZhangId(tuanZhangId);
+		return tuanDao.getById(tuanZhangOpenId);
 	}
 
 	public String add(TuanMO mo) throws LittleCatException
@@ -55,6 +56,16 @@ public class TuanBusiness
 	public void disable(List<String> ids) throws LittleCatException
 	{
 		tuanDao.disable(ids);
+	}
+
+	public int getList(QueryParam queryParam, List<TuanMO> mos) throws LittleCatException
+	{
+		return tuanDao.getList(queryParam, mos);
+	}
+	
+	public List<TuanMO> getList(String approveResult,String enable,String name)
+	{
+		return tuanDao.getList(approveResult, enable, name);
 	}
 
 	public void modify(TuanMO mo) throws LittleCatException

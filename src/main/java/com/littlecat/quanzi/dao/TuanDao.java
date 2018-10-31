@@ -3,6 +3,7 @@ package com.littlecat.quanzi.dao;
 import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -14,11 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.ConditionItem;
-import com.littlecat.cbb.query.ConditionOperatorType;
-import com.littlecat.cbb.query.QueryCondition;
 import com.littlecat.cbb.query.QueryParam;
-import com.littlecat.cbb.utils.ListUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
@@ -29,23 +26,22 @@ import com.littlecat.quanzi.model.TuanMO;
 @Component
 public class TuanDao
 {
-	private static final String FIELDS_NAME_TUANZHANGID = "tuanZhangId";
-
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
 
 	private final String TABLE_NAME = TableName.Tuan.getName();
 	private final String MODEL_NAME = TuanMO.class.getSimpleName();
 
-	public TuanMO getByTuanZhangId(String tuanZhangId) throws LittleCatException
+	public TuanMO getById(String tuanZhangOpenId) throws LittleCatException
 	{
-		QueryParam queryParam = new QueryParam();
-		QueryCondition condition = new QueryCondition();
-
-		condition.getCondItems().add(new ConditionItem(FIELDS_NAME_TUANZHANGID, tuanZhangId, ConditionOperatorType.equal));
-		queryParam.setCondition(condition);
-
-		return DaoUtil.getObject(TABLE_NAME, queryParam, jdbcTemplate, new TuanMO.MOMapper());
+		try
+		{
+			return DaoUtil.getById(TABLE_NAME, tuanZhangOpenId, jdbcTemplate, new TuanMO.MOMapper());
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
 	}
 
 	public void delete(String id) throws LittleCatException
@@ -85,22 +81,20 @@ public class TuanDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,tuanZhangId,name,idCardType,idCardCode,province,city,area,detailInfo,labels) values(?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,tuanZhangName,name,province,city,area,detailInfo,mobile) values(?,?,?,?,?,?,?,?)";
 
 		try
 		{
 			int ret = jdbcTemplate.update(sql,
 					new Object[] {
 							mo.getId(),
-							mo.getTuanZhangId(),
+							mo.getTuanZhangName(),
 							mo.getName(),
-							mo.getIdCard().getType().name(),
-							mo.getIdCard().getCode(),
 							mo.getAddressInfo().getProvince(),
 							mo.getAddressInfo().getCity(),
 							mo.getAddressInfo().getArea(),
 							mo.getAddressInfo().getDetailInfo(),
-							ListUtil.join2String(mo.getLabels())
+							mo.getMobile()
 					});
 
 			if (ret != 1)
@@ -116,25 +110,39 @@ public class TuanDao
 		return mo.getId();
 	}
 
+	public int getList(QueryParam queryParam, List<TuanMO> mos) throws LittleCatException
+	{
+		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new TuanMO.MOMapper());
+	}
+
 	public void modify(TuanMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set name=?,idCardType=?,idCardCode=?,idCardImgUrlFront=?,idCardImgUrlBack=?,province=?,city=?,area=?,detailInfo=?,labels=?,approveTime=?,approveResult=?,approveRemark=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set name=?,tuanZhangName=?,idCardImgDataFront=?,idCardImgDataBack=?,province=?,city=?,area=?,detailInfo=?,mobile=?,approveTime=?,approveResult=?,approveRemark=? where id = ?";
 
 		try
 		{
-			Blob imgDataFront = new SerialBlob(mo.getIdCard().getImgDataFront().getBytes(Consts.CHARSET_NAME));
-			Blob imgDataBack = new SerialBlob(mo.getIdCard().getImgDataBack().getBytes(Consts.CHARSET_NAME));
-
+			Blob imgDataFront = null;
+			if (StringUtil.isNotEmpty(mo.getIdCardImgDataFront()))
+			{
+				imgDataFront = new SerialBlob(mo.getIdCardImgDataFront().getBytes(Consts.CHARSET_NAME));
+			}
+			
+			Blob imgDataBack = null;
+			
+			if (StringUtil.isNotEmpty(mo.getIdCardImgDataBack()))
+			{
+				imgDataBack = new SerialBlob(mo.getIdCardImgDataBack().getBytes(Consts.CHARSET_NAME));
+			}
+			
 			int ret = jdbcTemplate.update(sql, new Object[] {
 					mo.getName(),
-					mo.getIdCard().getType().name(),
-					mo.getIdCard().getCode(),
+					mo.getTuanZhangName(),
 					imgDataFront, imgDataBack,
 					mo.getAddressInfo().getProvince(),
 					mo.getAddressInfo().getCity(),
 					mo.getAddressInfo().getArea(),
 					mo.getAddressInfo().getDetailInfo(),
-					ListUtil.join2String(mo.getLabels()),
+					mo.getMobile(),
 					mo.getApproveTime(),
 					mo.getApproveResult(),
 					mo.getApproveResult(),
@@ -150,6 +158,44 @@ public class TuanDao
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
+	}
+	
+	public List<TuanMO> getList(String approveResult, String enable, String name)
+	{
+		List<TuanMO> mos = new ArrayList<TuanMO>();
+		
+		StringBuilder sql = new StringBuilder()
+				.append("select a.* ")
+				.append(" from ").append(TABLE_NAME).append(" a ")
+				.append(" where 1=1 ");
+
+		if (StringUtil.isNotEmpty(approveResult))
+		{
+			sql.append(" and a.approveResult = '").append(approveResult).append("'");
+		}
+		
+		if (StringUtil.isNotEmpty(enable))
+		{
+			sql.append(" and a.enable = '").append(enable).append("'");
+		}
+		
+		if (StringUtil.isNotEmpty(name))
+		{
+			sql.append(" and (a.name like '%").append(name).append("%' or a.tuanZhangName like '").append(name).append("%'");
+		}
+
+		sql.append(" order by a.name,a.tuanZhangName");
+		
+		try
+		{
+			mos.addAll(jdbcTemplate.query(sql.toString(), new TuanMO.MOMapper()));
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+		
+		return mos;
 	}
 
 }
