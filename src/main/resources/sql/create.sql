@@ -191,7 +191,7 @@ CREATE TABLE `t_goods` (
 	`mainImgData` MediumBlob NULL,
 	`price` INT NOT NULL,
 	`currentInventory` INT NOT NULL DEFAULT 0,
-	`enable` VARCHAR(1) NOT NULL DEFAULT 'N',
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'I',
 	`hasSecKillPlan` VARCHAR(1) NULL DEFAULT 'N',
 	`hasGroupBuyPlan` VARCHAR(1) NULL DEFAULT 'N',
 	`createOperatorId` VARCHAR(255) NOT NULL,

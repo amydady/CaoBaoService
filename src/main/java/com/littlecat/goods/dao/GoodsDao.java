@@ -220,18 +220,25 @@ public class GoodsDao
 	 * 
 	 * @return
 	 */
-	public List<GoodsMO> getList4WebApp(String name)
+	public List<GoodsMO> getList4WebApp(String name,String enable)
 	{
 		List<GoodsMO> mos = new ArrayList<GoodsMO>();
 
 		StringBuilder sql = new StringBuilder()
 				.append("select a.id,a.name,a.summaryDescription,a.price,a.currentInventory,a.enable,date_format(a.createTime,'%Y-%m-%d %T') createTime")
-				.append(" from ").append(TABLE_NAME).append(" a ");
+				.append(" from ").append(TABLE_NAME).append(" a ")
+				.append(" where 1=1 ");
 
 		if (StringUtil.isNotEmpty(name))
 		{
-			sql.append(" where a.name like '%").append(name).append("%'");
+			sql.append(" and a.name like '%").append(name).append("%'");
 		}
+		
+		if (StringUtil.isNotEmpty(enable))
+		{
+			sql.append(" and a.enable = '").append(enable).append("'");
+		}
+
 
 		sql.append(" order by a.enable desc,a.createTime asc");
 

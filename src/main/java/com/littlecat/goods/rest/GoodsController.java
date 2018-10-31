@@ -257,6 +257,31 @@ public class GoodsController
 
 		return result;
 	}
+	
+	@PutMapping(value = "/batchdelete")
+	public RestSimpleRsp batchDelete(@RequestBody List<String> ids)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			goodsBusiness.delete(ids);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
 
 	@PutMapping(value = "/enable/{id}")
 	public RestSimpleRsp enable(@PathVariable String id)
@@ -484,13 +509,13 @@ public class GoodsController
 	}
 	
 	@GetMapping(value = "/getList4WebApp")
-	public RestRsp<GoodsMO> getList4WebApp(@RequestParam @Nullable String name)
+	public RestRsp<GoodsMO> getList4WebApp(@RequestParam @Nullable String name,@RequestParam @Nullable String enable)
 	{
 		RestRsp<GoodsMO> result = new RestRsp<GoodsMO>();
 
 		try
 		{
-			result.getData().addAll(goodsBusiness.getList4WebApp(name));
+			result.getData().addAll(goodsBusiness.getList4WebApp(name,enable));
 		}
 		catch (LittleCatException e)
 		{
