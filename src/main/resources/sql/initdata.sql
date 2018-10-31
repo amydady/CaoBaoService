@@ -9,20 +9,18 @@ insert into t_sys_param(name,value) values('clear_reslock_process_cyc','60');
 
 #系统菜单==========================================================
 
-insert into t_sys_menu(id,name,pid,sortNum) values('1','供应商管理','-1','2');
-insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('101','供应商列表','../Supplier/SupplierList.html','1','1','Y');
+insert into t_sys_menu(id,name,pid,sortNum,isDefault) values('1','运营管理','-1','1','Y');
+insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('101','商品管理','../Goods/GoodsList.html','1','1','Y');
+insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('102','供应商管理','../Supplier/SupplierList.html','1','2','N');
+insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('103','合作伙伴管理','../quanzi/QuanziList.html','1','3','N');
 
-insert into t_sys_menu(id,name,pid,sortNum,isDefault) values('2','商品管理','-1','1','Y');
-insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('201','商品列表','../Goods/GoodsList.html','2','1','Y');
 
 insert into t_sys_menu(id,name,pid,sortNum) values('3','基础配置','-1','3');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('301','配送区域管理','../delivery/DeliveryAreaMgr.html','3','1','Y');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('302','物流费用管理','../delivery/DeliveryFeeRuleMgr.html','3','2');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('303','佣金类目管理','../commission/CommissionTypeMgr.html','3','3','N');
 
-
-insert into t_sys_menu(id,name,pid,sortNum) values('5','消费者管理','-1','5');
-insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('501','消费者列表','../terminaluser/TerminalUserList.html','5','1','Y');
+insert into t_sys_menu(id,name,pid,sortNum) values('88','统计分析','-1','88');
 
 insert into t_sys_menu(id,name,pid,sortNum) values('99','系统管理','-1','99');
 

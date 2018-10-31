@@ -355,10 +355,14 @@ CREATE TABLE `t_quanzi_tuan` (
 	`area` VARCHAR(255) NOT NULL,
 	`detailInfo` VARCHAR(255) NOT NULL,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`labels` VARCHAR(255) NOT NULL,
+	`labels` VARCHAR(255) NULL,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	`approveTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`approveResult` VARCHAR(1) NOT NULL DEFAULT 'I',
+	`approveRemark` VARCHAR(255) NULL,
 	
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `name` (`name`)
 );
 
 CREATE TABLE `t_quanzi_tuangoods` (

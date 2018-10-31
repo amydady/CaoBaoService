@@ -31,6 +31,9 @@ public class TuanMO extends BaseMO
 	private String createTime;
 	private List<String> labels = new ArrayList<String>(); // 团标签
 	private String enable;
+	private String approveTime;
+	private String approveResult;
+	private String approveRemark;
 
 	// just for view
 
@@ -121,6 +124,36 @@ public class TuanMO extends BaseMO
 		this.tuanZhangMobile = tuanZhangMobile;
 	}
 
+	public String getApproveTime()
+	{
+		return approveTime;
+	}
+
+	public void setApproveTime(String approveTime)
+	{
+		this.approveTime = approveTime;
+	}
+
+	public String getApproveRemark()
+	{
+		return approveRemark;
+	}
+
+	public void setApproveRemark(String approveRemark)
+	{
+		this.approveRemark = approveRemark;
+	}
+
+	public String getApproveResult()
+	{
+		return approveResult;
+	}
+
+	public void setApproveResult(String approveResult)
+	{
+		this.approveResult = approveResult;
+	}
+
 	public static class MOMapper implements RowMapper<TuanMO>
 	{
 		private static TerminalUserBusiness terminalUserBusiness = SpringUtil.getBean(TerminalUserBusiness.class);
@@ -138,6 +171,10 @@ public class TuanMO extends BaseMO
 			mo.setLabels(StringUtil.split2List(rs.getString("labels")));
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setEnable(rs.getString("enable"));
+			mo.setApproveTime(rs.getString("approveTime"));
+			mo.setApproveResult(rs.getString("approveResult"));
+			mo.setApproveRemark(rs.getString("approveRemark"));
+
 
 			TerminalUserMO terminalUserMO = terminalUserBusiness.getById(mo.getTuanZhangId());
 			mo.setTuanZhangMobile(terminalUserMO.getMobile());
