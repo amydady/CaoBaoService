@@ -117,7 +117,7 @@ public class TuanDao
 
 	public void modify(TuanMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set name=?,tuanZhangName=?,idCardImgDataFront=?,idCardImgDataBack=?,province=?,city=?,area=?,detailInfo=?,mobile=?,enable=?,approveTime=?,approveRemark=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set name=?,tuanZhangName=?,idCardImgDataFront=?,idCardImgDataBack=?,province=?,city=?,area=?,detailInfo=?,mobile=?,enable=?,approveTime=?,approveRemark=?,isDeliverySite=? where id = ?";
 
 		try
 		{
@@ -146,6 +146,7 @@ public class TuanDao
 					mo.getEnable(),
 					mo.getApproveTime(),
 					mo.getApproveRemark(),
+					mo.getIsDeliverySite(),
 					mo.getId()
 			});
 
@@ -193,5 +194,32 @@ public class TuanDao
 		
 		return mos;
 	}
+	
+	public List<TuanMO> getDeliveryList(String name)
+	{
+		List<TuanMO> mos = new ArrayList<TuanMO>();
+		
+		StringBuilder sql = new StringBuilder()
+				.append("select a.* ")
+				.append(" from ").append(TABLE_NAME).append(" a ")
+				.append(" where a.enable='Y' and a.isDeliverySite='Y' ");
+		
+		if (StringUtil.isNotEmpty(name))
+		{
+			sql.append(" and (a.name like '%").append(name).append("%' or a.tuanZhangName like '").append(name).append("%')");
+		}
 
+		sql.append(" order by a.name,a.tuanZhangName");
+		
+		try
+		{
+			mos.addAll(jdbcTemplate.query(sql.toString(), new TuanMO.MOMapper()));
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+		
+		return mos;
+	}
 }

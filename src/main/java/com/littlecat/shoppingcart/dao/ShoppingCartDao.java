@@ -49,11 +49,11 @@ public class ShoppingCartDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,buyType,resId) values(?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,buyType,resId,tuanZhangId) values(?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getBuyType().name(), mo.getResId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getBuyType().name(), mo.getResId(),mo.getTuanZhangId() });
 
 			if (ret != 1)
 			{
@@ -75,11 +75,11 @@ public class ShoppingCartDao
 			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
-		String sql = "update " + TABLE_NAME + " set goodsNum = ? where id = ?";
+		String sql = "update " + TABLE_NAME + " set goodsNum = ?,tuanZhangId=? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getGoodsNum(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getGoodsNum(),mo.getTuanZhangId(), mo.getId() });
 
 			if (ret != 1)
 			{
@@ -103,10 +103,10 @@ public class ShoppingCartDao
 
 		for (ShoppingCartMO mo : mos)
 		{
-			batchParam.add(new Object[] { mo.getGoodsNum(), mo.getId() });
+			batchParam.add(new Object[] { mo.getGoodsNum(),mo.getTuanZhangId(), mo.getId() });
 		}
 
-		String sql = "update " + TABLE_NAME + " set goodsNum = ? where id = ?";
+		String sql = "update " + TABLE_NAME + " set goodsNum = ?,tuanZhangId=? where id = ?";
 
 		try
 		{

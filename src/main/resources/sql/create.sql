@@ -264,6 +264,7 @@ CREATE TABLE `t_shoppingcart` (
 	`terminalUserId` VARCHAR(255) NOT NULL,
 	`buyType` VARCHAR(20) NOT NULL,
 	`resId` VARCHAR(255) NOT NULL,
+	`tuanZhangId` VARCHAR(255) NULL,
 	`goodsNum` INT NOT NULL DEFAULT 1,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	
@@ -335,6 +336,7 @@ CREATE TABLE `t_order_detail` (
 	`goodsId` VARCHAR(255) NOT NULL,
 	`price` INT NOT NULL,
 	`goodsNum` INT NOT NULL,
+	`tuanZhangId` VARCHAR(255) NULL,
 	`goodsName` VARCHAR(255) NOT NULL,
 	`goodsMainImgData` MediumBlob NULL,
 	

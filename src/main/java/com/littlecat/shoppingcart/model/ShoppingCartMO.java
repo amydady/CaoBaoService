@@ -27,6 +27,7 @@ public class ShoppingCartMO extends BaseMO
 	private BuyType buyType;
 	private String resId;
 	private long goodsNum;
+	private String tuanZhangId;
 	private String createTime;
 
 	// for view
@@ -125,6 +126,16 @@ public class ShoppingCartMO extends BaseMO
 		this.goodsPrice = goodsPrice;
 	}
 
+	public String getTuanZhangId()
+	{
+		return tuanZhangId;
+	}
+
+	public void setTuanZhangId(String tuanZhangId)
+	{
+		this.tuanZhangId = tuanZhangId;
+	}
+
 	public static class MOMapper implements RowMapper<ShoppingCartMO>
 	{
 		private static final SecKillPlanBusiness secKillPlanBusiness = SpringUtil.getBean(SecKillPlanBusiness.class);
@@ -139,6 +150,7 @@ public class ShoppingCartMO extends BaseMO
 			mo.setTerminalUserId(rs.getString("terminalUserId"));
 			mo.setBuyType(BuyType.valueOf(rs.getString("buyType")));
 			mo.setResId(rs.getString("resId"));
+			mo.setTuanZhangId(rs.getString("tuanZhangId"));
 			mo.setGoodsNum(rs.getLong("goodsNum"));
 			mo.setCreateTime(rs.getString("createTime"));
 
