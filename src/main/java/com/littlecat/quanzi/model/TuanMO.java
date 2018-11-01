@@ -27,6 +27,7 @@ public class TuanMO
 	private String enable;
 	private String approveTime;
 	private String approveRemark;
+	private String isDeliverySite;// 是否为发货站点
 
 	public String getName()
 	{
@@ -138,13 +139,23 @@ public class TuanMO
 		this.id = id;
 	}
 
+	public String getIsDeliverySite()
+	{
+		return isDeliverySite;
+	}
+
+	public void setIsDeliverySite(String isDeliverySite)
+	{
+		this.isDeliverySite = isDeliverySite;
+	}
+
 	public static class MOMapper implements RowMapper<TuanMO>
 	{
 		@Override
 		public TuanMO mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
 			TuanMO mo = new TuanMO();
-			
+
 			mo.setId(rs.getString("id"));
 			mo.setTuanZhangName(rs.getString("tuanZhangName"));
 			mo.setName(rs.getString("name"));
@@ -152,10 +163,11 @@ public class TuanMO
 			mo.setIdCardImgDataBack(rs.getString("idCardImgDataBack"));
 			mo.setAddressInfo(new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo")));
 			mo.setMobile(rs.getString("mobile"));
-			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"),".0",""));
+			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
 			mo.setEnable(rs.getString("enable"));
-			mo.setApproveTime(StringUtil.replace(rs.getString("approveTime"),".0",""));
+			mo.setApproveTime(StringUtil.replace(rs.getString("approveTime"), ".0", ""));
 			mo.setApproveRemark(rs.getString("approveRemark"));
+			mo.setIsDeliverySite(rs.getString("isDeliverySite"));
 
 			return mo;
 		}

@@ -357,6 +357,8 @@ CREATE TABLE `t_quanzi_tuan` (
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'I',
 	`approveTime` DATETIME NULL,
 	`approveRemark` VARCHAR(255) NULL,
+	`isDeliverySite` VARCHAR(1) NULL DEFAULT 'N',
+	
 	
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `name` (`name`)
