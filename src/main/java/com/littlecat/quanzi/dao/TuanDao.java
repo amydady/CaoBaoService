@@ -117,7 +117,7 @@ public class TuanDao
 
 	public void modify(TuanMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set name=?,tuanZhangName=?,idCardImgDataFront=?,idCardImgDataBack=?,province=?,city=?,area=?,detailInfo=?,mobile=?,approveTime=?,approveResult=?,approveRemark=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set name=?,tuanZhangName=?,idCardImgDataFront=?,idCardImgDataBack=?,province=?,city=?,area=?,detailInfo=?,mobile=?,enable=?,approveTime=?,approveRemark=? where id = ?";
 
 		try
 		{
@@ -143,9 +143,9 @@ public class TuanDao
 					mo.getAddressInfo().getArea(),
 					mo.getAddressInfo().getDetailInfo(),
 					mo.getMobile(),
+					mo.getEnable(),
 					mo.getApproveTime(),
-					mo.getApproveResult(),
-					mo.getApproveResult(),
+					mo.getApproveRemark(),
 					mo.getId()
 			});
 
@@ -160,7 +160,7 @@ public class TuanDao
 		}
 	}
 	
-	public List<TuanMO> getList(String approveResult, String enable, String name)
+	public List<TuanMO> getList(String enable, String name)
 	{
 		List<TuanMO> mos = new ArrayList<TuanMO>();
 		
@@ -169,10 +169,6 @@ public class TuanDao
 				.append(" from ").append(TABLE_NAME).append(" a ")
 				.append(" where 1=1 ");
 
-		if (StringUtil.isNotEmpty(approveResult))
-		{
-			sql.append(" and a.approveResult = '").append(approveResult).append("'");
-		}
 		
 		if (StringUtil.isNotEmpty(enable))
 		{
@@ -181,7 +177,7 @@ public class TuanDao
 		
 		if (StringUtil.isNotEmpty(name))
 		{
-			sql.append(" and (a.name like '%").append(name).append("%' or a.tuanZhangName like '").append(name).append("%'");
+			sql.append(" and (a.name like '%").append(name).append("%' or a.tuanZhangName like '").append(name).append("%')");
 		}
 
 		sql.append(" order by a.name,a.tuanZhangName");

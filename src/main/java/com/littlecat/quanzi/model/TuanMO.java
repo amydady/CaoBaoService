@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.common.model.AddressMO;
 
 /**
@@ -25,7 +26,6 @@ public class TuanMO
 	private String createTime;
 	private String enable;
 	private String approveTime;
-	private String approveResult;
 	private String approveRemark;
 
 	public String getName()
@@ -86,16 +86,6 @@ public class TuanMO
 	public void setApproveTime(String approveTime)
 	{
 		this.approveTime = approveTime;
-	}
-
-	public String getApproveResult()
-	{
-		return approveResult;
-	}
-
-	public void setApproveResult(String approveResult)
-	{
-		this.approveResult = approveResult;
 	}
 
 	public String getApproveRemark()
@@ -162,10 +152,9 @@ public class TuanMO
 			mo.setIdCardImgDataBack(rs.getString("idCardImgDataBack"));
 			mo.setAddressInfo(new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo")));
 			mo.setMobile(rs.getString("mobile"));
-			mo.setCreateTime(rs.getString("createTime"));
+			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"),".0",""));
 			mo.setEnable(rs.getString("enable"));
-			mo.setApproveTime(rs.getString("approveTime"));
-			mo.setApproveResult(rs.getString("approveResult"));
+			mo.setApproveTime(StringUtil.replace(rs.getString("approveTime"),".0",""));
 			mo.setApproveRemark(rs.getString("approveRemark"));
 
 			return mo;

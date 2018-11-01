@@ -29,6 +29,7 @@ import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.quanzi.business.TuanBusiness;
 import com.littlecat.quanzi.model.TuanMO;
+import com.littlecat.quanzi.model.TuanShenheReqInfo;
 
 @RestController
 @RequestMapping("/rest/littlecat/caobao/tuan")
@@ -267,6 +268,31 @@ public class TuanController
 
 		return result;
 	}
+	
+	@PutMapping(value = "/shenhe")
+	public RestSimpleRsp shenHe(@RequestBody TuanShenheReqInfo tuanShenheReqInfo)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			tuanBusiness.shenHe(tuanShenheReqInfo);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
 
 	@PostMapping(value = "/getList")
 	public RestRsp<TuanMO> getList(@RequestBody QueryParam queryParam)
@@ -297,14 +323,13 @@ public class TuanController
 	}
 
 	@GetMapping(value = "/getList")
-	public RestRsp<TuanMO> getList(@RequestParam @Nullable String approveResult, @RequestParam @Nullable String enable, @RequestParam @Nullable String name)
+	public RestRsp<TuanMO> getList(@RequestParam @Nullable String enable, @RequestParam @Nullable String name)
 	{
 		RestRsp<TuanMO> result = new RestRsp<TuanMO>();
 
 		try
 		{
-			List<TuanMO> mos = new ArrayList<TuanMO>();
-			result.getData().addAll(tuanBusiness.getList(approveResult, enable, name));
+			result.getData().addAll(tuanBusiness.getList(enable, name));
 		}
 		catch (LittleCatException e)
 		{

@@ -354,9 +354,8 @@ CREATE TABLE `t_quanzi_tuan` (
 	`detailInfo` VARCHAR(255) NOT NULL,
 	`mobile` VARCHAR(15) NOT NULL,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	`enable` VARCHAR(1) NOT NULL DEFAULT 'I',
 	`approveTime` DATETIME NULL,
-	`approveResult` VARCHAR(1) NULL DEFAULT 'I',
 	`approveRemark` VARCHAR(255) NULL,
 	
 	PRIMARY KEY (`id`),

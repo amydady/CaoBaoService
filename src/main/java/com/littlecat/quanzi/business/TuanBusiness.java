@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.quanzi.dao.TuanDao;
 import com.littlecat.quanzi.model.TuanMO;
+import com.littlecat.quanzi.model.TuanShenheReqInfo;
 
 @Component
 @Transactional
@@ -62,14 +64,23 @@ public class TuanBusiness
 	{
 		return tuanDao.getList(queryParam, mos);
 	}
-	
-	public List<TuanMO> getList(String approveResult,String enable,String name)
+
+	public List<TuanMO> getList(String enable, String name)
 	{
-		return tuanDao.getList(approveResult, enable, name);
+		return tuanDao.getList(enable, name);
 	}
 
 	public void modify(TuanMO mo) throws LittleCatException
 	{
+		tuanDao.modify(mo);
+	}
+
+	public void shenHe(TuanShenheReqInfo tuanShenheReqInfo) throws LittleCatException
+	{
+		TuanMO mo = tuanDao.getById(tuanShenheReqInfo.getId());
+		mo.setApproveTime(DateTimeUtil.getCurrentTimeForDisplay());
+		mo.setApproveRemark(tuanShenheReqInfo.getApproveRemark());
+		mo.setEnable(tuanShenheReqInfo.getEnable());
 		tuanDao.modify(mo);
 	}
 }
