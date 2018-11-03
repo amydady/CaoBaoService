@@ -2,6 +2,8 @@ package com.littlecat.commission.business;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,16 +11,21 @@ import org.springframework.transaction.annotation.Transactional;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
+import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.commission.dao.CommissionCalcDao;
 import com.littlecat.commission.model.CommissionCalcCreateReqInfo;
 import com.littlecat.commission.model.CommissionCalcDetailMO;
 import com.littlecat.commission.model.CommissionCalcMO;
 import com.littlecat.order.business.OrderBusiness;
+import com.littlecat.order.model.OrderDetailMO;
+import com.littlecat.order.model.OrderMO;
 
 @Component
 @Transactional
 public class CommissionCalcBusiness
 {
+	private static final Logger logger = LoggerFactory.getLogger(CommissionCalcBusiness.class);
+
 	@Autowired
 	private CommissionCalcDao commissionCalcDao;
 
@@ -76,6 +83,32 @@ public class CommissionCalcBusiness
 	 */
 	public void doCalc() throws LittleCatException
 	{
+		List<OrderMO> orderList = orderBusiness.getNeedCommissionCalcOrderList();
+		
+		if(CollectionUtil.isEmpty(orderList))
+		{
+			return;
+		}
+		
+		for(OrderMO order:orderList)
+		{
+			List<OrderDetailMO> orderDetailList = order.getDetails();
+			if(CollectionUtil.isEmpty(orderDetailList))
+			{
+				logger.error("CommissionCalcBusiness:doCalc:orderDetailList is empty,orderid={}",order.getId());
+				continue;
+			}
+			
+			if(StringUtil.isEmpty(order.getShareTuanZhangId()))
+			{//非团长推荐
+				
+			}
+			else
+			{//团长推荐
+				
+			}
+		}
+		
 		
 	}
 

@@ -104,7 +104,22 @@ public class OrderDao
 
 	public int getList(QueryParam queryParam, List<OrderMO> mos) throws LittleCatException
 	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new OrderMO.MOMapper());
+		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new OrderMO.MOMapperWithGoodsDetail());
+	}
+	
+	/**
+	 * 获取需要佣金计算的订单
+	 * @return
+	 */
+	public List<OrderMO> getNeedCommissionCalcList()
+	{
+		StringBuilder sql = new StringBuilder()
+				.append("select * from ").append(TABLE_NAME)
+				.append(" where receiveTime is not null")
+				.append(" and commissionCalcTime is null")
+				.append(" and returnApplyTime is null");
+		
+		return jdbcTemplate.query(sql.toString(), new OrderMO.MOMapper());
 	}
 
 	/**

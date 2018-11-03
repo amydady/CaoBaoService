@@ -261,6 +261,11 @@ public class OrderBusiness
 	{
 		return orderDao.getList(queryParam, mos);
 	}
+	
+	public List<OrderMO> getNeedCommissionCalcOrderList()
+	{
+		return orderDao.getNeedCommissionCalcList();
+	}
 
 	public List<OrderMO> getOrderListByGroupBuyTaskId(String groupBuyTaskId) throws LittleCatException
 	{

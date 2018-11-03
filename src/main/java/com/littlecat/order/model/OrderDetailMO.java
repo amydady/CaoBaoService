@@ -105,8 +105,27 @@ public class OrderDetailMO extends BaseMO
 	{
 		this.goodsMainImgData = goodsMainImgData;
 	}
-
+	
 	public static class MOMapper implements RowMapper<OrderDetailMO>
+	{
+		@Override
+		public OrderDetailMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			OrderDetailMO mo = new OrderDetailMO();
+
+			mo.setId(rs.getString("id"));
+			mo.setOrderId(rs.getString("orderId"));
+			mo.setBuyType(BuyType.valueOf(rs.getString("buyType")));
+			mo.setResId(rs.getString("resId"));
+			mo.setGoodsId(rs.getString("goodsId"));
+			mo.setPrice(rs.getLong("price"));
+			mo.setGoodsNum(rs.getLong("goodsNum"));
+
+			return mo;
+		}
+	}
+
+	public static class MOMapperWithGoodsDetail implements RowMapper<OrderDetailMO>
 	{
 		@Override
 		public OrderDetailMO mapRow(ResultSet rs, int rowNum) throws SQLException

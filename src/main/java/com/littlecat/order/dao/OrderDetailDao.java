@@ -77,9 +77,35 @@ public class OrderDetailDao
 
 	public OrderDetailMO getById(String id) throws LittleCatException
 	{
-		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new OrderDetailMO.MOMapper());
+		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new OrderDetailMO.MOMapperWithGoodsDetail());
 	}
 
+	/**
+	 * 查询订单的明细信息（包含商品明细信息）
+	 * @param orderId
+	 * @return
+	 * @throws LittleCatException
+	 */
+	public List<OrderDetailMO> getByOrderIdWithGoodsDetail(String orderId) throws LittleCatException
+	{
+		String sql = "select * from " + TABLE_NAME + " where orderId = ?";
+
+		try
+		{
+			return jdbcTemplate.query(sql, new Object[] { orderId }, new OrderDetailMO.MOMapperWithGoodsDetail());
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+	
+	/**
+	 * 查询订单的明细信息
+	 * @param orderId
+	 * @return
+	 * @throws LittleCatException
+	 */
 	public List<OrderDetailMO> getByOrderId(String orderId) throws LittleCatException
 	{
 		String sql = "select * from " + TABLE_NAME + " where orderId = ?";
@@ -110,6 +136,6 @@ public class OrderDetailDao
 
 	public int getList(QueryParam queryParam, List<OrderDetailMO> mos) throws LittleCatException
 	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new OrderDetailMO.MOMapper());
+		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new OrderDetailMO.MOMapperWithGoodsDetail());
 	}
 }

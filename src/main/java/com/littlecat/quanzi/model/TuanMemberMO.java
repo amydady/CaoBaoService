@@ -8,9 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
-import com.littlecat.cbb.utils.DateTimeUtil;
-import com.littlecat.common.consts.BooleanTag;
-import com.littlecat.common.utils.SysParamUtil;
 
 /**
  * 团成员（粉丝）MO

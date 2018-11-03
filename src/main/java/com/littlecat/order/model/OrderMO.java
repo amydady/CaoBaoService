@@ -269,7 +269,13 @@ public class OrderMO extends BaseMO
 	{
 		this.commissionCalcTime = commissionCalcTime;
 	}
-
+	
+	/**
+	 * 模型映射，不包含商品明细信息
+	 * 
+	 * @author amydady
+	 *
+	 */
 	public static class MOMapper implements RowMapper<OrderMO>
 	{
 		private static final OrderDetailBusiness orderDetailBusiness = SpringUtil.getBean(OrderDetailBusiness.class);
@@ -311,6 +317,52 @@ public class OrderMO extends BaseMO
 
 			// get view info
 			mo.setDetails(orderDetailBusiness.getByOrderId(mo.getId()));
+
+			return mo;
+		}
+	}
+
+	public static class MOMapperWithGoodsDetail implements RowMapper<OrderMO>
+	{
+		private static final OrderDetailBusiness orderDetailBusiness = SpringUtil.getBean(OrderDetailBusiness.class);
+
+		@Override
+		public OrderMO mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			OrderMO mo = new OrderMO();
+
+			mo.setId(rs.getString("id"));
+			mo.setTerminalUserId(rs.getString("terminalUserId"));
+			mo.setCreateTime(rs.getString("createTime"));
+			mo.setFee(rs.getLong("fee"));
+			mo.setDeliveryFee(rs.getBigDecimal("deliveryFee"));
+			mo.setState(OrderState.valueOf(rs.getString("state")));
+			
+
+			mo.setShareTuanZhangId(rs.getString("shareTuanZhangId"));
+			mo.setDeliveryTuanZhangId(rs.getString("deliveryTuanZhangId"));
+
+			AddressMO deliveryaddress = new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo"));
+
+			mo.setDeliveryAddress(deliveryaddress);
+			mo.setContactName(rs.getString("contactName"));
+			mo.setContactMobile(rs.getString("contactMobile"));
+
+			mo.setPayTime(rs.getString("payTime"));
+			mo.setDeliveryTime(rs.getString("deliveryTime"));
+			mo.setReceiveTime(rs.getString("receiveTime"));
+			mo.setDeliverySiteReceiveTime(rs.getString("deliverySiteReceiveTime"));
+			mo.setReturnApplyTime(rs.getString("returnApplyTime"));
+			mo.setReturnCompleteTime(rs.getString("returnCompleteTime"));
+			mo.setCommissionCalcTime(rs.getString("commissionCalcTime"));
+
+			mo.setGroupBuyPlanId(rs.getString("groupBuyPlanId"));
+			mo.setGroupBuyTaskId(rs.getString("groupBuyTaskId"));
+			mo.setGroupCompleteTime(rs.getString("groupCompleteTime"));
+			mo.setGroupCancelTime(rs.getString("groupCancelTime"));
+
+			// get view info
+			mo.setDetails(orderDetailBusiness.getByOrderIdWithGoodsDetail(mo.getId()));
 
 			return mo;
 		}
