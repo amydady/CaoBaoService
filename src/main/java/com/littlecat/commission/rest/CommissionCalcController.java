@@ -56,6 +56,31 @@ public class CommissionCalcController
 
 		return result;
 	}
+	
+	@GetMapping(value = "/doCalc")
+	public RestSimpleRsp doCalc()
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			commissionCalcBusiness.doCalc();
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
 
 	@PostMapping(value = "/create")
 	public RestRsp<String> add(@RequestBody CommissionCalcCreateReqInfo mo)

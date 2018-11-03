@@ -39,7 +39,7 @@ public class OrderMO extends BaseMO
 	private String deliverySiteReceiveTime;// 自提点签收时间
 	private String returnApplyTime;// 退款申请时间
 	private String returnCompleteTime;// 退款完成时间
-
+	private String commissionCalcTime;// 佣金计算时间
 	// 团购业务专用
 	private String groupBuyPlanId; // 团购计划ID
 	private String groupBuyTaskId; // 团购任务实例ID
@@ -260,6 +260,16 @@ public class OrderMO extends BaseMO
 		this.deliveryTime = deliveryTime;
 	}
 
+	public String getCommissionCalcTime()
+	{
+		return commissionCalcTime;
+	}
+
+	public void setCommissionCalcTime(String commissionCalcTime)
+	{
+		this.commissionCalcTime = commissionCalcTime;
+	}
+
 	public static class MOMapper implements RowMapper<OrderMO>
 	{
 		private static final OrderDetailBusiness orderDetailBusiness = SpringUtil.getBean(OrderDetailBusiness.class);
@@ -292,6 +302,7 @@ public class OrderMO extends BaseMO
 			mo.setDeliverySiteReceiveTime(rs.getString("deliverySiteReceiveTime"));
 			mo.setReturnApplyTime(rs.getString("returnApplyTime"));
 			mo.setReturnCompleteTime(rs.getString("returnCompleteTime"));
+			mo.setCommissionCalcTime(rs.getString("commissionCalcTime"));
 
 			mo.setGroupBuyPlanId(rs.getString("groupBuyPlanId"));
 			mo.setGroupBuyTaskId(rs.getString("groupBuyTaskId"));

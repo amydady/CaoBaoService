@@ -22,7 +22,6 @@ public class OrderDetailMO extends BaseMO
 	private String goodsId;
 	private long price;
 	private long goodsNum;
-	private String tuanZhangId;
 
 	private String goodsName;
 	private String goodsMainImgData = "";
@@ -107,16 +106,6 @@ public class OrderDetailMO extends BaseMO
 		this.goodsMainImgData = goodsMainImgData;
 	}
 
-	public String getTuanZhangId()
-	{
-		return tuanZhangId;
-	}
-
-	public void setTuanZhangId(String tuanZhangId)
-	{
-		this.tuanZhangId = tuanZhangId;
-	}
-
 	public static class MOMapper implements RowMapper<OrderDetailMO>
 	{
 		@Override
@@ -131,7 +120,6 @@ public class OrderDetailMO extends BaseMO
 			mo.setGoodsId(rs.getString("goodsId"));
 			mo.setPrice(rs.getLong("price"));
 			mo.setGoodsNum(rs.getLong("goodsNum"));
-			mo.setTuanZhangId(rs.getString("tuanZhangId"));
 			
 			
 			mo.setGoodsName(rs.getString("goodsName"));

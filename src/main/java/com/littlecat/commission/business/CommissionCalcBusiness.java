@@ -13,6 +13,7 @@ import com.littlecat.commission.dao.CommissionCalcDao;
 import com.littlecat.commission.model.CommissionCalcCreateReqInfo;
 import com.littlecat.commission.model.CommissionCalcDetailMO;
 import com.littlecat.commission.model.CommissionCalcMO;
+import com.littlecat.order.business.OrderBusiness;
 
 @Component
 @Transactional
@@ -23,6 +24,10 @@ public class CommissionCalcBusiness
 
 	@Autowired
 	private CommissionCalcDetailBusiness commissionCalcDetailBusiness;
+	
+
+	@Autowired
+	private OrderBusiness orderBusiness;
 
 	public CommissionCalcMO getById(String id) throws LittleCatException
 	{
@@ -63,6 +68,15 @@ public class CommissionCalcBusiness
 	public void modify(CommissionCalcMO mo) throws LittleCatException
 	{
 		commissionCalcDao.modify(mo);
+	}
+	
+	/**
+	 * 佣金计算
+	 * @throws LittleCatException
+	 */
+	public void doCalc() throws LittleCatException
+	{
+		
 	}
 
 	public int getList(QueryParam queryParam, List<CommissionCalcMO> mos) throws LittleCatException

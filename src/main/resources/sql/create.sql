@@ -347,6 +347,7 @@ CREATE TABLE `t_order` (
 	`receiveTime` DATETIME NULL,
 	`returnApplyTime` DATETIME NULL,
 	`returnCompleteTime` DATETIME NULL,
+	`commissionCalcTime` DATETIME NULL,
 	
 	`groupBuyPlanId` VARCHAR(255) NULL,
 	`groupBuyTaskId` VARCHAR(255) NULL,
@@ -364,7 +365,6 @@ CREATE TABLE `t_order_detail` (
 	`goodsId` VARCHAR(255) NOT NULL,
 	`price` INT NOT NULL,
 	`goodsNum` INT NOT NULL,
-	`tuanZhangId` VARCHAR(255) NULL,
 	`goodsName` VARCHAR(255) NOT NULL,
 	`goodsMainImgData` MediumBlob NULL,
 	
