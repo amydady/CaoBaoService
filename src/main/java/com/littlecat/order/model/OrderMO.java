@@ -1,5 +1,6 @@
 package com.littlecat.order.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,15 +23,20 @@ import com.littlecat.order.business.OrderDetailBusiness;
 public class OrderMO extends BaseMO
 {
 	private String terminalUserId;
-	private long fee;
+	private long fee;// 订单总费用（商品费用+物流费用）
+	private BigDecimal deliveryFee; // 物流费用（非自提点收货时填写）
 	private OrderState state;
+	private String shareTuanZhangId;//分享产品的团长ID
+	private String deliveryTuanZhangId; // 发货接收的自提点（填团长ID）
 	private AddressMO deliveryAddress; // 发货地址信息
 	private String contactName;
 	private String contactMobile;
-	
+
 	private String createTime;
 	private String payTime; // 付款时间
+	private String deliveryTime;// 发货时间（发货至外部物流或自提点的时间）
 	private String receiveTime;// 收货时间
+	private String deliverySiteReceiveTime;// 自提点签收时间
 	private String returnApplyTime;// 退款申请时间
 	private String returnCompleteTime;// 退款完成时间
 
@@ -40,8 +46,8 @@ public class OrderMO extends BaseMO
 	private String groupCompleteTime; // 成团时间
 	private String groupCancelTime;// 团购解散退款时间
 	// 团购业务专用end
-	
-	//just for view
+
+	// just for view
 	private List<OrderDetailMO> details = new ArrayList<OrderDetailMO>();
 
 	public String getTerminalUserId()
@@ -204,6 +210,56 @@ public class OrderMO extends BaseMO
 		this.details = details;
 	}
 
+	public BigDecimal getDeliveryFee()
+	{
+		return deliveryFee;
+	}
+
+	public void setDeliveryFee(BigDecimal deliveryFee)
+	{
+		this.deliveryFee = deliveryFee;
+	}
+
+	public String getDeliveryTuanZhangId()
+	{
+		return deliveryTuanZhangId;
+	}
+
+	public void setDeliveryTuanZhangId(String deliveryTuanZhangId)
+	{
+		this.deliveryTuanZhangId = deliveryTuanZhangId;
+	}
+
+	public String getShareTuanZhangId()
+	{
+		return shareTuanZhangId;
+	}
+
+	public void setShareTuanZhangId(String shareTuanZhangId)
+	{
+		this.shareTuanZhangId = shareTuanZhangId;
+	}
+
+	public String getDeliverySiteReceiveTime()
+	{
+		return deliverySiteReceiveTime;
+	}
+
+	public void setDeliverySiteReceiveTime(String deliverySiteReceiveTime)
+	{
+		this.deliverySiteReceiveTime = deliverySiteReceiveTime;
+	}
+
+	public String getDeliveryTime()
+	{
+		return deliveryTime;
+	}
+
+	public void setDeliveryTime(String deliveryTime)
+	{
+		this.deliveryTime = deliveryTime;
+	}
+
 	public static class MOMapper implements RowMapper<OrderMO>
 	{
 		private static final OrderDetailBusiness orderDetailBusiness = SpringUtil.getBean(OrderDetailBusiness.class);
@@ -217,16 +273,23 @@ public class OrderMO extends BaseMO
 			mo.setTerminalUserId(rs.getString("terminalUserId"));
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setFee(rs.getLong("fee"));
+			mo.setDeliveryFee(rs.getBigDecimal("deliveryFee"));
 			mo.setState(OrderState.valueOf(rs.getString("state")));
+			
+
+			mo.setShareTuanZhangId(rs.getString("shareTuanZhangId"));
+			mo.setDeliveryTuanZhangId(rs.getString("deliveryTuanZhangId"));
 
 			AddressMO deliveryaddress = new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo"));
 
 			mo.setDeliveryAddress(deliveryaddress);
 			mo.setContactName(rs.getString("contactName"));
 			mo.setContactMobile(rs.getString("contactMobile"));
-			
+
 			mo.setPayTime(rs.getString("payTime"));
+			mo.setDeliveryTime(rs.getString("deliveryTime"));
 			mo.setReceiveTime(rs.getString("receiveTime"));
+			mo.setDeliverySiteReceiveTime(rs.getString("deliverySiteReceiveTime"));
 			mo.setReturnApplyTime(rs.getString("returnApplyTime"));
 			mo.setReturnCompleteTime(rs.getString("returnCompleteTime"));
 
@@ -234,9 +297,8 @@ public class OrderMO extends BaseMO
 			mo.setGroupBuyTaskId(rs.getString("groupBuyTaskId"));
 			mo.setGroupCompleteTime(rs.getString("groupCompleteTime"));
 			mo.setGroupCancelTime(rs.getString("groupCancelTime"));
-			
-			
-			//get view info
+
+			// get view info
 			mo.setDetails(orderDetailBusiness.getByOrderId(mo.getId()));
 
 			return mo;

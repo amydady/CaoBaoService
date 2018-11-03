@@ -30,21 +30,16 @@ public class OrderDao
 
 	public String add(OrderMO mo) throws LittleCatException
 	{
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		if (StringUtil.isEmpty(mo.getId()))
 		{
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,fee,state,province,city,area,detailInfo,contactName,contactMobile,groupBuyPlanId,groupBuyTaskId) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,fee,state,province,city,area,detailInfo,contactName,contactMobile,groupBuyPlanId,groupBuyTaskId,deliveryFee,shareTuanZhangId,deliveryTuanZhangId) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvince(), mo.getDeliveryAddress().getCity(), mo.getDeliveryAddress().getArea(), mo.getDeliveryAddress().getDetailInfo(), mo.getContactName(),mo.getContactMobile(),mo.getGroupBuyPlanId(), mo.getGroupBuyTaskId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvince(), mo.getDeliveryAddress().getCity(), mo.getDeliveryAddress().getArea(), mo.getDeliveryAddress().getDetailInfo(), mo.getContactName(), mo.getContactMobile(), mo.getGroupBuyPlanId(), mo.getGroupBuyTaskId(), mo.getDeliveryFee(), mo.getShareTuanZhangId(), mo.getDeliveryTuanZhangId() });
 
 			if (ret != 1)
 			{
@@ -61,11 +56,11 @@ public class OrderDao
 
 	public void modify(OrderMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set state = ?,payTime = ?,receiveTime = ?,returnApplyTime = ?,returnCompleteTime = ?,groupCompleteTime=?,groupCancelTime=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set state = ?,payTime = ?,receiveTime = ?,returnApplyTime = ?,returnCompleteTime = ?,groupCompleteTime=?,groupCancelTime=?,deliveryTime=?,deliverySiteReceiveTime=?  where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getState().name(), mo.getPayTime(), mo.getReceiveTime(), mo.getReturnApplyTime(), mo.getReturnCompleteTime(), mo.getGroupCompleteTime(), mo.getGroupCancelTime(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getState().name(), mo.getPayTime(), mo.getReceiveTime(), mo.getReturnApplyTime(), mo.getReturnCompleteTime(), mo.getGroupCompleteTime(), mo.getGroupCancelTime(), mo.getDeliveryTime(), mo.getDeliverySiteReceiveTime(), mo.getId() });
 
 			if (ret != 1)
 			{
@@ -80,12 +75,12 @@ public class OrderDao
 
 	public void modify(List<OrderMO> mos) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set state = ?,payTime = ?,receiveTime = ?,returnApplyTime = ?,returnCompleteTime = ?,groupCompleteTime=?,groupCancelTime=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set state = ?,payTime = ?,receiveTime = ?,returnApplyTime = ?,returnCompleteTime = ?,groupCompleteTime=?,groupCancelTime=?,deliveryTime=?,deliverySiteReceiveTime=? where id = ?";
 		List<Object[]> batchParam = new ArrayList<Object[]>();
 
 		for (OrderMO mo : mos)
 		{
-			batchParam.add(new Object[] { mo.getState().name(), mo.getPayTime(), mo.getReceiveTime(), mo.getReturnApplyTime(), mo.getReturnCompleteTime(), mo.getGroupCompleteTime(), mo.getGroupCancelTime(), mo.getId() });
+			batchParam.add(new Object[] { mo.getState().name(), mo.getPayTime(), mo.getReceiveTime(), mo.getReturnApplyTime(), mo.getReturnCompleteTime(), mo.getGroupCompleteTime(), mo.getGroupCancelTime(), mo.getDeliveryTime(), mo.getDeliverySiteReceiveTime(), mo.getId() });
 		}
 		try
 		{
