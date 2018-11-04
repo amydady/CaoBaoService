@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -106,6 +107,31 @@ public class CommissionCalcController
 		return result;
 	}
 
+	@PutMapping(value = "/batchPay")
+	public RestSimpleRsp batchPay(@RequestBody List<String> ids)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			commissionCalcBusiness.batchPay(ids);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
 	@PutMapping(value = "/modify")
 	public RestSimpleRsp modify(@RequestBody CommissionCalcMO mo)
 	{
@@ -114,6 +140,31 @@ public class CommissionCalcController
 		try
 		{
 			commissionCalcBusiness.modify(mo);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/getListByTuanZhangId")
+	public RestRsp<CommissionCalcMO> getListByTuanZhangId(@RequestParam @Nullable String tuanZhangId, @RequestParam @Nullable Boolean hasPayed)
+	{
+		RestRsp<CommissionCalcMO> result = new RestRsp<CommissionCalcMO>();
+
+		try
+		{
+			result.getData().addAll(commissionCalcBusiness.getList(tuanZhangId, hasPayed));
 		}
 		catch (LittleCatException e)
 		{

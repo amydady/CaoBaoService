@@ -24,9 +24,57 @@ public class CommissionCalcMO extends BaseMO
 	private long goodsFee;
 	private String commissionTypeId;
 	private long calcFee; // 结算的佣金总额
-	private String payOperatorId;//佣金支付人员ID
+	private String payOperatorId;// 佣金支付人员ID
 	private String payTime;
 	private String remark;
+
+	// just for view
+
+	private String tuanZhangName;
+	private String goodsName;
+	private String commissionTypeName;
+
+	public String getTuanZhangName()
+	{
+		return tuanZhangName;
+	}
+
+	public void setTuanZhangName(String tuanZhangName)
+	{
+		this.tuanZhangName = tuanZhangName;
+	}
+
+	public String getGoodsName()
+	{
+		return goodsName;
+	}
+
+	public void setGoodsName(String goodsName)
+	{
+		this.goodsName = goodsName;
+	}
+
+	public String getCommissionTypeName()
+	{
+		return commissionTypeName;
+	}
+
+	public void setCommissionTypeName(String commissionTypeName)
+	{
+		this.commissionTypeName = commissionTypeName;
+	}
+
+	public String getPayOperatorName()
+	{
+		return payOperatorName;
+	}
+
+	public void setPayOperatorName(String payOperatorName)
+	{
+		this.payOperatorName = payOperatorName;
+	}
+
+	private String payOperatorName;
 
 	public String getOrderId()
 	{
@@ -146,6 +194,10 @@ public class CommissionCalcMO extends BaseMO
 			mo.setPayOperatorId(rs.getString("payOperatorId"));
 			mo.setPayTime(StringUtil.replace(rs.getString("payTime"), ".0", ""));
 			mo.setRemark(rs.getString("remark"));
+
+			mo.setTuanZhangName(rs.getString("tuanZhangName"));
+			mo.setGoodsName(rs.getString("goodsName"));
+			mo.setCommissionTypeName(rs.getString("commissionTypeName"));
 
 			return mo;
 		}

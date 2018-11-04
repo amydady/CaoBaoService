@@ -8,6 +8,9 @@ insert into t_sys_param(name,value) values('clear_reslock_process_cyc','60');
 #===============佣金计算周期（秒）（秒）
 insert into t_sys_param(name,value) values('calc_commission_process_cyc','60');
 
+#佣金计算冻结期天数（相对于用户签收时间）
+insert into t_sys_param(name,value) values('calc_commission_delay_day','7');
+
 
 #系统菜单==========================================================
 
@@ -15,7 +18,7 @@ insert into t_sys_menu(id,name,pid,sortNum,isDefault) values('1','运营管理',
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('101','商品管理','../Goods/GoodsList.html','1','1','Y');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('102','供应商管理','../Supplier/SupplierList.html','1','2','N');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('103','合作伙伴管理','../quanzi/QuanziList.html','1','3','N');
-
+insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('104','佣金支付登记','../commission/CommissionPayMgr.html','1','4','N');
 
 insert into t_sys_menu(id,name,pid,sortNum) values('3','基础配置','-1','3');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('301','配送区域管理','../delivery/DeliveryAreaMgr.html','3','1','Y');
@@ -52,4 +55,8 @@ insert into t_basicinfo_area(name,city) values('江宁区','南京市');
 #字典类信息
 insert into t_delivery_feecalctype(id,name,sortNum) values('1','按订单金额','1');
 insert into t_delivery_feecalctype(id,name,sortNum) values('2','按订单重量','2');
+
+INSERT INTO `t_commission_type` (`id`, `name`, `commissionRate`) VALUES ('deliverysite', '物流佣金', 11);
+INSERT INTO `t_commission_type` (`id`, `name`, `commissionRate`) VALUES ('share', '推广佣金', 12);
+
 
