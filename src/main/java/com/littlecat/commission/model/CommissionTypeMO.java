@@ -1,15 +1,15 @@
 package com.littlecat.commission.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
-import com.littlecat.cbb.utils.StringUtil;
 
 /**
- * 供应商MO
+ * 佣金类别MO
  * 
  * @author amydady
  *
@@ -17,8 +17,7 @@ import com.littlecat.cbb.utils.StringUtil;
 public class CommissionTypeMO extends BaseMO
 {
 	private String name;
-	private String createTime;
-	private String enable;
+	private BigDecimal commissionRate; // 默认的结算比例
 
 	public String getName()
 	{
@@ -30,24 +29,14 @@ public class CommissionTypeMO extends BaseMO
 		this.name = name;
 	}
 
-	public String getCreateTime()
+	public BigDecimal getCommissionRate()
 	{
-		return createTime;
+		return commissionRate;
 	}
 
-	public void setCreateTime(String createTime)
+	public void setCommissionRate(BigDecimal commissionRate)
 	{
-		this.createTime = createTime;
-	}
-
-	public String getEnable()
-	{
-		return enable;
-	}
-
-	public void setEnable(String enable)
-	{
-		this.enable = enable;
+		this.commissionRate = commissionRate;
 	}
 
 	public static class MOMapper implements RowMapper<CommissionTypeMO>
@@ -59,8 +48,7 @@ public class CommissionTypeMO extends BaseMO
 
 			mo.setId(rs.getString("id"));
 			mo.setName(rs.getString("name"));
-			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
-			mo.setEnable(rs.getString("enable"));
+			mo.setCommissionRate(rs.getBigDecimal("commissionRate"));
 
 			return mo;
 		}

@@ -99,11 +99,9 @@ CREATE TABLE `t_delivery_feecalctype` (
 CREATE TABLE `t_commission_type` (
 	`id` VARCHAR(255) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
-	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
+	`commissionRate` decimal(5,2) NOT NULL,
 	
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `name` (`name`)
+	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `t_commission_goods` (
@@ -122,26 +120,17 @@ CREATE TABLE `t_commission_calc` (
 	`id` VARCHAR(255) NOT NULL,
 	`orderId` VARCHAR(255) NOT NULL,
 	`tuanZhangId` VARCHAR(255) NOT NULL,
-	`calcFee` decimal(10,2) NOT NULL,
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`payFee` decimal(10,2) NULL,
+	`goodsId` VARCHAR(255) NOT NULL,
+	`goodsFee` INT NOT NULL,
+	`commissionTypeId` VARCHAR(255) NOT NULL,
+	`calcFee` INT NOT NULL,
+	`payOperatorId` VARCHAR(255) NULL,
 	`payTime` DATETIME NULL,
 	`remark` VARCHAR(255) NULL,
 	
 	PRIMARY KEY (`id`)
 );
-
-CREATE TABLE `t_commission_calcdetail` (
-	`id` VARCHAR(255) NOT NULL,
-	`calcId` VARCHAR(255) NOT NULL,
-	`goodsId` VARCHAR(255) NOT NULL,
-	`goodsFee` decimal(10,2) NOT NULL,
-	`commissionTypeId` VARCHAR(255) NOT NULL,
-	`calcFee` decimal(10,2) NOT NULL,
-	
-	PRIMARY KEY (`id`)
-);
-
 
 
 # 消费者

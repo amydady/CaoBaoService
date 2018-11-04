@@ -99,7 +99,7 @@ public class TuanMemberDao
 	 * @return
 	 * @throws LittleCatException
 	 */
-	public String getCurrentEnableTuan(String terminalUserId) throws LittleCatException
+	public TuanMemberMO getCurrentEnableTuan(String terminalUserId) throws LittleCatException
 	{
 		String sql = "select * from " + TABLE_NAME + " where terminalUserId = ? and enable=?";
 
@@ -109,10 +109,10 @@ public class TuanMemberDao
 
 			if (CollectionUtil.isEmpty(mos))
 			{
-				return "";
+				return null;
 			}
 
-			return mos.get(0).getTuanId();
+			return mos.get(0);
 		}
 
 		catch (DataAccessException e)

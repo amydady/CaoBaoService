@@ -1,6 +1,5 @@
 package com.littlecat.commission.model;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -19,9 +18,13 @@ public class CommissionCalcMO extends BaseMO
 {
 	private String orderId;
 	private String tuanZhangId; // 团长ID（结算的目标对象）
-	private BigDecimal calcFee; // 结算的佣金总额
 	private String createTime;
-	private BigDecimal payFee; // 实际支付金额
+
+	private String goodsId;
+	private long goodsFee;
+	private String commissionTypeId;
+	private long calcFee; // 结算的佣金总额
+	private String payOperatorId;//佣金支付人员ID
 	private String payTime;
 	private String remark;
 
@@ -45,12 +48,12 @@ public class CommissionCalcMO extends BaseMO
 		this.tuanZhangId = tuanZhangId;
 	}
 
-	public BigDecimal getCalcFee()
+	public long getCalcFee()
 	{
 		return calcFee;
 	}
 
-	public void setCalcFee(BigDecimal calcFee)
+	public void setCalcFee(long calcFee)
 	{
 		this.calcFee = calcFee;
 	}
@@ -85,14 +88,44 @@ public class CommissionCalcMO extends BaseMO
 		this.remark = remark;
 	}
 
-	public BigDecimal getPayFee()
+	public String getGoodsId()
 	{
-		return payFee;
+		return goodsId;
 	}
 
-	public void setPayFee(BigDecimal payFee)
+	public void setGoodsId(String goodsId)
 	{
-		this.payFee = payFee;
+		this.goodsId = goodsId;
+	}
+
+	public long getGoodsFee()
+	{
+		return goodsFee;
+	}
+
+	public void setGoodsFee(long goodsFee)
+	{
+		this.goodsFee = goodsFee;
+	}
+
+	public String getCommissionTypeId()
+	{
+		return commissionTypeId;
+	}
+
+	public void setCommissionTypeId(String commissionTypeId)
+	{
+		this.commissionTypeId = commissionTypeId;
+	}
+
+	public String getPayOperatorId()
+	{
+		return payOperatorId;
+	}
+
+	public void setPayOperatorId(String payOperatorId)
+	{
+		this.payOperatorId = payOperatorId;
 	}
 
 	public static class MOMapper implements RowMapper<CommissionCalcMO>
@@ -105,9 +138,12 @@ public class CommissionCalcMO extends BaseMO
 			mo.setId(rs.getString("id"));
 			mo.setOrderId(rs.getString("orderId"));
 			mo.setTuanZhangId(rs.getString("tuanZhangId"));
-			mo.setCalcFee(rs.getBigDecimal("calcFee"));
 			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
-			mo.setPayFee(rs.getBigDecimal("payFee"));
+			mo.setGoodsId(rs.getString("goodsId"));
+			mo.setGoodsFee(rs.getLong("goodsFee"));
+			mo.setCommissionTypeId(rs.getString("commissionTypeId"));
+			mo.setCalcFee(rs.getLong("calcFee"));
+			mo.setPayOperatorId(rs.getString("payOperatorId"));
 			mo.setPayTime(StringUtil.replace(rs.getString("payTime"), ".0", ""));
 			mo.setRemark(rs.getString("remark"));
 

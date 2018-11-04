@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.BuyType;
@@ -92,6 +93,26 @@ public class OrderDao
 		}
 	}
 
+	/**
+	 * 设置佣金计算时间
+	 * 
+	 * @param orderId
+	 * @throws LittleCatException
+	 */
+	public void setCommissionCalcTime(String id) throws LittleCatException
+	{
+		String sql = "update " + TABLE_NAME + " set commissionCalcTime = ? where id = ?";
+
+		try
+		{
+			jdbcTemplate.update(sql, new Object[] { DateTimeUtil.getCurrentTimeForDisplay(), id });
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
 	public void delete(String id) throws LittleCatException
 	{
 		DaoUtil.delete(TABLE_NAME, id, jdbcTemplate);
@@ -106,9 +127,10 @@ public class OrderDao
 	{
 		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new OrderMO.MOMapperWithGoodsDetail());
 	}
-	
+
 	/**
 	 * 获取需要佣金计算的订单
+	 * 
 	 * @return
 	 */
 	public List<OrderMO> getNeedCommissionCalcList()
@@ -118,7 +140,7 @@ public class OrderDao
 				.append(" where receiveTime is not null")
 				.append(" and commissionCalcTime is null")
 				.append(" and returnApplyTime is null");
-		
+
 		return jdbcTemplate.query(sql.toString(), new OrderMO.MOMapper());
 	}
 

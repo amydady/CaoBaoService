@@ -23,41 +23,6 @@ public class CommissionTypeBusiness
 		return commissionTypeDao.getById(id);
 	}
 
-	public void delete(String id) throws LittleCatException
-	{
-		commissionTypeDao.delete(id);
-	}
-
-	public void delete(List<String> ids) throws LittleCatException
-	{
-		commissionTypeDao.delete(ids);
-	}
-
-	public void enable(String id) throws LittleCatException
-	{
-		commissionTypeDao.enable(id);
-	}
-
-	public void enable(List<String> ids) throws LittleCatException
-	{
-		commissionTypeDao.enable(ids);
-	}
-
-	public void disable(String id) throws LittleCatException
-	{
-		commissionTypeDao.disable(id);
-	}
-
-	public void disable(List<String> ids) throws LittleCatException
-	{
-		commissionTypeDao.disable(ids);
-	}
-
-	public String add(CommissionTypeMO mo) throws LittleCatException
-	{
-		return commissionTypeDao.add(mo);
-	}
-
 	public void modify(CommissionTypeMO mo) throws LittleCatException
 	{
 		commissionTypeDao.modify(mo);

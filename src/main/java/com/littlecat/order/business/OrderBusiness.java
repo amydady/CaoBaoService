@@ -228,6 +228,11 @@ public class OrderBusiness
 
 		orderDao.modify(mo);
 	}
+	
+	public void setCommissionCalcTime(String id) throws LittleCatException
+	{
+		orderDao.setCommissionCalcTime(id);
+	}
 
 	/**
 	 * 修改订单信息

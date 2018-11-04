@@ -20,7 +20,6 @@ import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.commission.business.CommissionCalcBusiness;
-import com.littlecat.commission.model.CommissionCalcCreateReqInfo;
 import com.littlecat.commission.model.CommissionCalcMO;
 
 @RestController
@@ -56,7 +55,7 @@ public class CommissionCalcController
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/doCalc")
 	public RestSimpleRsp doCalc()
 	{
@@ -82,14 +81,14 @@ public class CommissionCalcController
 		return result;
 	}
 
-	@PostMapping(value = "/create")
-	public RestRsp<String> add(@RequestBody CommissionCalcCreateReqInfo mo)
+	@PostMapping(value = "/add")
+	public RestSimpleRsp add(@RequestBody List<CommissionCalcMO> mos)
 	{
-		RestRsp<String> result = new RestRsp<String>();
+		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			result.getData().add(commissionCalcBusiness.create(mo));
+			commissionCalcBusiness.add(mos);
 		}
 		catch (LittleCatException e)
 		{

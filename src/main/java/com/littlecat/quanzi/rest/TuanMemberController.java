@@ -113,9 +113,9 @@ public class TuanMemberController
 	}
 
 	@GetMapping(value = "/getCurrentEnableTuan")
-	public RestRsp<String> getCurrentEnableTuan(@RequestParam String terminalUserId)
+	public RestRsp<TuanMemberMO> getCurrentEnableTuan(@RequestParam String terminalUserId)
 	{
-		RestRsp<String> result = new RestRsp<String>();
+		RestRsp<TuanMemberMO> result = new RestRsp<TuanMemberMO>();
 
 		try
 		{

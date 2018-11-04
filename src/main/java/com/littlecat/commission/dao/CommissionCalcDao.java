@@ -1,5 +1,6 @@
 package com.littlecat.commission.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
+import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.commission.model.CommissionCalcMO;
@@ -30,35 +32,34 @@ public class CommissionCalcDao
 		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new CommissionCalcMO.MOMapper());
 	}
 
-	public String add(CommissionCalcMO mo) throws LittleCatException
+	public void add(List<CommissionCalcMO> mos) throws LittleCatException
 	{
-		if (mo == null)
+		if (CollectionUtil.isEmpty(mos))
 		{
-			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+			throw new LittleCatException("CommissionCalcDao:add:CommissionCalcMO list is empty.");
 		}
 
-		if (StringUtil.isEmpty(mo.getId()))
+		String sql = "insert into " + TABLE_NAME + "(id,orderId,tuanZhangId,goodsId,goodsFee,commissionTypeId,calcFee) values(?,?,?,?)";
+
+		List<Object[]> batchParams = new ArrayList<Object[]>();
+
+		for (CommissionCalcMO mo : mos)
 		{
-			mo.setId(UUIDUtil.createUUID());
+			if (StringUtil.isEmpty(mo.getId()))
+			{
+				mo.setId(UUIDUtil.createUUID());
+			}
+
+			batchParams.add(new Object[] { mo.getId(), mo.getOrderId(), mo.getTuanZhangId(), mo.getGoodsId(), mo.getGoodsFee(), mo.getCommissionTypeId(), mo.getCalcFee() });
 		}
-
-		String sql = "insert into " + TABLE_NAME + "(id,orderId,tuanZhangId,calcFee) values(?,?,?,?)";
-
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getOrderId(), mo.getTuanZhangId(), mo.getCalcFee() });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(), ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
+			jdbcTemplate.batchUpdate(sql, batchParams);
 		}
 		catch (DataAccessException e)
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
-
-		return mo.getId();
 	}
 
 	public void modify(CommissionCalcMO mo) throws LittleCatException
@@ -68,11 +69,11 @@ public class CommissionCalcDao
 			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
 		}
 
-		String sql = "update " + TABLE_NAME + " set payFee=?,payTime = ?,remark=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set payTime = ?,remark=?,payOperatorId=? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getPayFee(), mo.getPayTime(), mo.getRemark(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getPayTime(), mo.getRemark(),mo.getPayOperatorId(), mo.getId() });
 
 			if (ret != 1)
 			{
