@@ -1,6 +1,5 @@
 package com.littlecat.order.model;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,22 +23,23 @@ public class OrderMO extends BaseMO
 {
 	private String terminalUserId;
 	private long fee;// 订单总费用（商品费用+物流费用）
-	private BigDecimal deliveryFee; // 物流费用（非自提点收货时填写）
+	private long deliveryFee; // 物流费用（非自提点收货时填写）
 	private OrderState state;
-	private String shareTuanZhangId;//分享产品的团长ID
+	private String shareTuanZhangId;// 分享产品的团长ID
 	private String deliveryTuanZhangId; // 发货接收的自提点（填团长ID）
 	private AddressMO deliveryAddress; // 发货地址信息
 	private String contactName;
 	private String contactMobile;
 
-	private String createTime;
+	private String createTime;	//订单创建时间
 	private String payTime; // 付款时间
 	private String deliveryTime;// 发货时间（发货至外部物流或自提点的时间）
-	private String receiveTime;// 收货时间
+	private String receiveTime;// 客户收货时间
 	private String deliverySiteReceiveTime;// 自提点签收时间
 	private String returnApplyTime;// 退款申请时间
 	private String returnCompleteTime;// 退款完成时间
 	private String commissionCalcTime;// 佣金计算时间
+	
 	// 团购业务专用
 	private String groupBuyPlanId; // 团购计划ID
 	private String groupBuyTaskId; // 团购任务实例ID
@@ -210,12 +210,12 @@ public class OrderMO extends BaseMO
 		this.details = details;
 	}
 
-	public BigDecimal getDeliveryFee()
+	public long getDeliveryFee()
 	{
 		return deliveryFee;
 	}
 
-	public void setDeliveryFee(BigDecimal deliveryFee)
+	public void setDeliveryFee(long deliveryFee)
 	{
 		this.deliveryFee = deliveryFee;
 	}
@@ -269,7 +269,7 @@ public class OrderMO extends BaseMO
 	{
 		this.commissionCalcTime = commissionCalcTime;
 	}
-	
+
 	/**
 	 * 模型映射，不包含商品明细信息
 	 * 
@@ -289,9 +289,8 @@ public class OrderMO extends BaseMO
 			mo.setTerminalUserId(rs.getString("terminalUserId"));
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setFee(rs.getLong("fee"));
-			mo.setDeliveryFee(rs.getBigDecimal("deliveryFee"));
+			mo.setDeliveryFee(rs.getLong("deliveryFee"));
 			mo.setState(OrderState.valueOf(rs.getString("state")));
-			
 
 			mo.setShareTuanZhangId(rs.getString("shareTuanZhangId"));
 			mo.setDeliveryTuanZhangId(rs.getString("deliveryTuanZhangId"));
@@ -335,9 +334,8 @@ public class OrderMO extends BaseMO
 			mo.setTerminalUserId(rs.getString("terminalUserId"));
 			mo.setCreateTime(rs.getString("createTime"));
 			mo.setFee(rs.getLong("fee"));
-			mo.setDeliveryFee(rs.getBigDecimal("deliveryFee"));
+			mo.setDeliveryFee(rs.getLong("deliveryFee"));
 			mo.setState(OrderState.valueOf(rs.getString("state")));
-			
 
 			mo.setShareTuanZhangId(rs.getString("shareTuanZhangId"));
 			mo.setDeliveryTuanZhangId(rs.getString("deliveryTuanZhangId"));

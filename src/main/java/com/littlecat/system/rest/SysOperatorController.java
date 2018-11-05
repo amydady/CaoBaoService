@@ -41,8 +41,7 @@ public class SysOperatorController
 
 		try
 		{
-			SysOperatorMO sysOperatorMO = sysOperatorBusiness.login(loginReqInfo.getId(), loginReqInfo.getPwd());
-			result.getData().add(sysOperatorMO);
+			result.getData().add(sysOperatorBusiness.login(loginReqInfo.getIdentity(), loginReqInfo.getPwd()));
 		}
 		catch (LittleCatException e)
 		{
@@ -94,31 +93,6 @@ public class SysOperatorController
 		{
 			SysOperatorMO sysOperatorMO = sysOperatorBusiness.getById(id);
 			result.getData().add(sysOperatorMO);
-		}
-		catch (LittleCatException e)
-		{
-			result.setCode(e.getErrorCode());
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-		catch (Exception e)
-		{
-			result.setCode(Consts.ERROR_CODE_UNKNOW);
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-
-		return result;
-	}
-
-	@PutMapping(value = "/delete/{id}")
-	public RestSimpleRsp deleteById(@PathVariable String id)
-	{
-		RestSimpleRsp result = new RestSimpleRsp();
-
-		try
-		{
-			sysOperatorBusiness.deleteById(id);
 		}
 		catch (LittleCatException e)
 		{
@@ -214,14 +188,89 @@ public class SysOperatorController
 		return result;
 	}
 
-	@PutMapping(value = "/batchdelete")
-	public RestSimpleRsp batchDelete(@RequestBody List<String> ids)
+	@PutMapping(value = "/disable/{id}")
+	public RestSimpleRsp disable(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			sysOperatorBusiness.deleteByIdList(ids);
+			sysOperatorBusiness.disable(id);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PutMapping(value = "/batchdisable")
+	public RestSimpleRsp batchDisable(@RequestBody List<String> ids)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			sysOperatorBusiness.disable(ids);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PutMapping(value = "/enable/{id}")
+	public RestSimpleRsp enable(@PathVariable String id)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			sysOperatorBusiness.enable(id);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PutMapping(value = "/batchenable")
+	public RestSimpleRsp batchEnable(@RequestBody List<String> ids)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			sysOperatorBusiness.enable(ids);
 		}
 		catch (LittleCatException e)
 		{

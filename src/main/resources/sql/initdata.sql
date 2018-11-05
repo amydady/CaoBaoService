@@ -32,7 +32,7 @@ insert into t_sys_menu(id,name,pid,sortNum) values('99','系统管理','-1','99'
 
 #系统操作用户
 insert into t_sys_sysoperator(id,username,password,name,wxCode,email,mobile)
-values ('test001','test001',password('123'),'test001','test001','test001','test001');
+values ('test001','test001',password('123'),'test001','test001','test001@qq.com','18888888888');
 
 
 

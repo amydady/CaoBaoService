@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
+import com.littlecat.cbb.utils.StringUtil;
 
 /**
  * 系统操作人员
@@ -20,6 +21,8 @@ public class SysOperatorMO extends BaseMO
 	private String wxCode;
 	private String email;
 	private String mobile;
+	private String createTime;
+	private String enable;
 
 	public SysOperatorMO()
 	{
@@ -86,6 +89,26 @@ public class SysOperatorMO extends BaseMO
 		this.mobile = mobile;
 	}
 	
+	public String getCreateTime()
+	{
+		return createTime;
+	}
+
+	public void setCreateTime(String createTime)
+	{
+		this.createTime = createTime;
+	}
+
+	public String getEnable()
+	{
+		return enable;
+	}
+
+	public void setEnable(String enable)
+	{
+		this.enable = enable;
+	}
+
 	public static class MOMapper implements RowMapper<SysOperatorMO>
 	{
 		@Override
@@ -99,6 +122,8 @@ public class SysOperatorMO extends BaseMO
 			mo.setWxCode(rs.getString("wxCode"));
 			mo.setEmail(rs.getString("email"));
 			mo.setMobile(rs.getString("mobile"));
+			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
+			mo.setEnable(rs.getString("enable"));
 			
 			return mo;
 		}

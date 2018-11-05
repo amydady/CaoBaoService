@@ -25,20 +25,39 @@ public class SysOperatorDao
 
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
-
-	public SysOperatorMO login(String id, String pwd) throws LittleCatException
+	
+	public void enable(String id) throws LittleCatException
 	{
-		String sql = "select * from " + TABLE_NAME
-				+ " where (wxCode =? or username=? or email=? or mobile=?) and password=password(?)";
+		DaoUtil.enable(TABLE_NAME, id, jdbcTemplate);
+	}
 
-		List<SysOperatorMO> mos;
+	public void enable(List<String> ids) throws LittleCatException
+	{
+		DaoUtil.enable(TABLE_NAME, ids, jdbcTemplate);
+	}
+
+	public void disable(String id) throws LittleCatException
+	{
+		DaoUtil.disable(TABLE_NAME, id, jdbcTemplate);
+	}
+
+	public void disable(List<String> ids) throws LittleCatException
+	{
+		DaoUtil.disable(TABLE_NAME, ids, jdbcTemplate);
+	}
+	
+
+	public SysOperatorMO login(String identity, String pwd) throws LittleCatException
+	{
+		String sql = "select * from " + TABLE_NAME + " where (wxCode =? or username=? or email=? or mobile=?) and password=password(?)";
+
 		try
 		{
-			mos = jdbcTemplate.query(sql, new Object[] { id, id, id, id, pwd }, new SysOperatorMO.MOMapper());
+			List<SysOperatorMO> mos = jdbcTemplate.query(sql, new Object[] { identity, identity, identity, identity, pwd }, new SysOperatorMO.MOMapper());
 
 			if (CollectionUtil.isEmpty(mos))
 			{
-				throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME) + " id=" + id);
+				throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME) + " identity=" + identity);
 			}
 
 			return mos.get(0);
@@ -77,23 +96,16 @@ public class SysOperatorDao
 
 	public String add(SysOperatorMO mo) throws LittleCatException
 	{
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		if (StringUtil.isEmpty(mo.getId()))
 		{
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME
-				+ "(id,username,password,name,wxCode,email,mobile) values(?,?,password(?),?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,username,password,name,wxCode,email,mobile) values(?,?,password(?),?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getUsername(), mo.getPassword(), mo.getName(),
-					mo.getWxCode(), mo.getEmail(), mo.getMobile() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getUsername(), mo.getPassword(), mo.getName(), mo.getWxCode(), mo.getEmail(), mo.getMobile() });
 
 			if (ret != 1)
 			{
@@ -110,11 +122,6 @@ public class SysOperatorDao
 
 	public void modify(SysOperatorMO mo) throws LittleCatException
 	{
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		String sql = "update " + TABLE_NAME + " set name = ?,wxCode = ?,email = ?,mobile = ? where id = ?";
 
 		try
@@ -130,16 +137,6 @@ public class SysOperatorDao
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
-	}
-
-	public void delete(String id) throws LittleCatException
-	{
-		DaoUtil.delete(TABLE_NAME, id, jdbcTemplate);
-	}
-
-	public void delete(List<String> ids) throws LittleCatException
-	{
-		DaoUtil.delete(TABLE_NAME, ids, jdbcTemplate);
 	}
 
 	public SysOperatorMO getById(String id) throws LittleCatException
