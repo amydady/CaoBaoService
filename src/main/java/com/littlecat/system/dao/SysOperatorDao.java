@@ -25,7 +25,7 @@ public class SysOperatorDao
 
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
-	
+
 	public void enable(String id) throws LittleCatException
 	{
 		DaoUtil.enable(TABLE_NAME, id, jdbcTemplate);
@@ -45,7 +45,6 @@ public class SysOperatorDao
 	{
 		DaoUtil.disable(TABLE_NAME, ids, jdbcTemplate);
 	}
-	
 
 	public SysOperatorMO login(String identity, String pwd) throws LittleCatException
 	{
@@ -68,14 +67,18 @@ public class SysOperatorDao
 		}
 	}
 
-	public boolean changePassword(String id, String pwd) throws LittleCatException
+	public void changePassword(String id, String oldPwd, String pwd) throws LittleCatException
 	{
-		if (StringUtil.isEmpty(id))
+		String sql = "select count(1) from " + TABLE_NAME + " where password = password(?) and id = ?";
+
+		int count = jdbcTemplate.queryForObject(sql, new Object[] { oldPwd, id }, Integer.class);
+
+		if (count < 1)
 		{
-			throw new LittleCatException(ErrorCode.UpdateObjectWithEmptyId.getCode(), ErrorCode.UpdateObjectWithEmptyId.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+			throw new LittleCatException(ErrorCode.OldPwdIsError.getCode(), ErrorCode.OldPwdIsError.getMsg());
 		}
 
-		String sql = "update " + TABLE_NAME + " set password = password(?) where id = ?";
+		sql = "update " + TABLE_NAME + " set password = password(?) where id = ?";
 
 		try
 		{
@@ -90,8 +93,6 @@ public class SysOperatorDao
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
-
-		return true;
 	}
 
 	public String add(SysOperatorMO mo) throws LittleCatException

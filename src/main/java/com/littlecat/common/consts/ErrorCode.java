@@ -23,6 +23,8 @@ public enum ErrorCode
 	EnableObjectWithEmptyId("EnableObjectWithEmptyId","enable {INFO_NAME} with empty id. "),
 	EnableObjectWithIdError("EnableObjectWithIdError","enable {INFO_NAME} with id error. "),
 	
+	OldPwdIsError("OldPwdIsError","the old password is error."),
+
 
 	DuplicateAddError("DuplicateAdd","DuplicateAdd Error.infoname:{INFO_NAME}"),
 	

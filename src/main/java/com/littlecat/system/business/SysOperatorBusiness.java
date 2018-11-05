@@ -43,9 +43,9 @@ public class SysOperatorBusiness
 		return sysOperatorDao.login(identity, pwd);
 	}
 
-	public boolean changePassword(String id, String pwd) throws LittleCatException
+	public void changePassword(String id, String oldPwd, String pwd) throws LittleCatException
 	{
-		return sysOperatorDao.changePassword(id, pwd);
+		sysOperatorDao.changePassword(id, oldPwd,pwd);
 	}
 
 	public SysOperatorMO getById(String id) throws LittleCatException

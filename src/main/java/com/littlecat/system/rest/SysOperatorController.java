@@ -41,7 +41,8 @@ public class SysOperatorController
 
 		try
 		{
-			result.getData().add(sysOperatorBusiness.login(loginReqInfo.getIdentity(), loginReqInfo.getPwd()));
+			SysOperatorMO mo = sysOperatorBusiness.login(loginReqInfo.getIdentity(), loginReqInfo.getPwd());
+			result.getData().add(mo);
 		}
 		catch (LittleCatException e)
 		{
@@ -60,13 +61,13 @@ public class SysOperatorController
 	}
 
 	@PostMapping(value = "/changepassword")
-	public RestSimpleRsp changePassword(@RequestBody ChangePasswordReqInfo changePasswordReqInfo)
+	public RestSimpleRsp changePassword(@RequestBody ChangePasswordReqInfo req)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			sysOperatorBusiness.changePassword(changePasswordReqInfo.getId(), changePasswordReqInfo.getPwd());
+			sysOperatorBusiness.changePassword(req.getId(),req.getOldPwd(), req.getPwd());
 		}
 		catch (LittleCatException e)
 		{

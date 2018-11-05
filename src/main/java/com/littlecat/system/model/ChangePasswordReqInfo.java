@@ -9,6 +9,7 @@ package com.littlecat.system.model;
 public class ChangePasswordReqInfo
 {
 	private String id;
+	private String oldPwd;
 	private String pwd;
 
 	public String getId()
@@ -29,6 +30,16 @@ public class ChangePasswordReqInfo
 	public void setPwd(String pwd)
 	{
 		this.pwd = pwd;
+	}
+
+	public String getOldPwd()
+	{
+		return oldPwd;
+	}
+
+	public void setOldPwd(String oldPwd)
+	{
+		this.oldPwd = oldPwd;
 	}
 
 }

@@ -28,6 +28,8 @@ insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('303','�
 insert into t_sys_menu(id,name,pid,sortNum) values('88','统计分析','-1','88');
 
 insert into t_sys_menu(id,name,pid,sortNum) values('99','系统管理','-1','99');
+insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('9901','密码修改','../sys/changepwd.html','99','1','Y');
+
 
 
 #系统操作用户
