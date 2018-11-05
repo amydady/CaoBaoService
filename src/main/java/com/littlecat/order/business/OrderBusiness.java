@@ -2,8 +2,10 @@ package com.littlecat.order.business;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -174,12 +176,24 @@ public class OrderBusiness
 		}
 		else
 		{// 普通商品、秒杀商品订单
-			orderMO.setState(OrderState.daiqianshou);
+			orderMO.setState(OrderState.daifahuo);
 			setInventoryInfoByOrderDetail(detailMOs);
 		}
 
 		orderMO.setPayTime(currentTime);
 		orderDao.modify(orderMO);
+		
+		//设置粉丝信息
+		Set<String> shareTuanZhangIds = new HashSet<String>();
+		for(OrderDetailMO orderDetailMO:detailMOs)
+		{
+			String shareTuanZhangId = orderDetailMO.getShareTuanZhangId();
+			if(StringUtil.isNotEmpty(shareTuanZhangId))
+			{
+				shareTuanZhangIds.add(shareTuanZhangId);
+			}
+		}
+		
 
 		unLock(lockInfo);
 	}

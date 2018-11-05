@@ -121,23 +121,6 @@ public class CommissionCalcBusiness
 				continue;
 			}
 
-			// 本单推荐团长
-			String shareTuanZhangId = null;
-
-			if (StringUtil.isNotEmpty(order.getShareTuanZhangId()))
-			{// 本单有推荐团长
-				shareTuanZhangId = order.getShareTuanZhangId();
-			}
-			else
-			{// 本单没有推荐的团长
-				// 查找该用户当前归属的团长
-				TuanMemberMO tuanMemberMo = tuanMemberBusiness.getCurrentEnableTuan(order.getTerminalUserId());
-				if (tuanMemberMo != null)
-				{
-					shareTuanZhangId = tuanMemberMo.getTuanId();
-				}
-			}
-
 			// 自提点团长ID
 			String deliverySiteTuanZhangId = order.getDeliveryTuanZhangId();
 
@@ -146,6 +129,23 @@ public class CommissionCalcBusiness
 
 			for (OrderDetailMO orderDetail : orderDetailList)
 			{
+				// 本商品推荐团长
+				String shareTuanZhangId = null;
+
+				if (StringUtil.isNotEmpty(orderDetail.getShareTuanZhangId()))
+				{// 本商品有推荐团长
+					shareTuanZhangId = orderDetail.getShareTuanZhangId();
+				}
+				else
+				{// 本商品没有推荐的团长
+					// 查找该用户当前归属的团长
+					TuanMemberMO tuanMemberMo = tuanMemberBusiness.getCurrentEnableTuan(order.getTerminalUserId());
+					if (tuanMemberMo != null)
+					{
+						shareTuanZhangId = tuanMemberMo.getTuanId();
+					}
+				}
+				
 				List<CommissionGoodsMO> commissionGoodsMOList = commissionGoodsBusiness.getListByGoodsId(orderDetail.getGoodsId());
 
 				double commissionRateShare = commissionTypeShare.getCommissionRate().doubleValue();

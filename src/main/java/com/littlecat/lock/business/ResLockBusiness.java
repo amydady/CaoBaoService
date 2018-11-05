@@ -92,7 +92,7 @@ public class ResLockBusiness
 			}
 			catch (Exception e)
 			{
-				logger.info("get lock error.");
+				logger.info("get lock error.",e);
 
 				try
 				{

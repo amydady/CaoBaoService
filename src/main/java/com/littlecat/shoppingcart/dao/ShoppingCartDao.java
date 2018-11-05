@@ -49,11 +49,11 @@ public class ShoppingCartDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,buyType,resId,tuanZhangId) values(?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,buyType,resId,shareTuanZhangId) values(?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getBuyType().name(), mo.getResId(),mo.getTuanZhangId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getBuyType().name(), mo.getResId(),mo.getShareTuanZhangId() });
 
 			if (ret != 1)
 			{
@@ -79,7 +79,7 @@ public class ShoppingCartDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getGoodsNum(),mo.getTuanZhangId(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getGoodsNum(),mo.getShareTuanZhangId(), mo.getId() });
 
 			if (ret != 1)
 			{
@@ -103,7 +103,7 @@ public class ShoppingCartDao
 
 		for (ShoppingCartMO mo : mos)
 		{
-			batchParam.add(new Object[] { mo.getGoodsNum(),mo.getTuanZhangId(), mo.getId() });
+			batchParam.add(new Object[] { mo.getGoodsNum(),mo.getShareTuanZhangId(), mo.getId() });
 		}
 
 		String sql = "update " + TABLE_NAME + " set goodsNum = ?,tuanZhangId=? where id = ?";

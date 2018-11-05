@@ -25,7 +25,7 @@ public class ResLockDao
 
 	public void add(ResLockMO mo) throws LittleCatException
 	{
-		String sql = "insert into " + TABLE_NAME + "(type,key,disableTime) values(?,?)";
+		String sql = "insert into " + TABLE_NAME + "(`type`,`key`,disableTime) values(?,?)";
 
 		try
 		{
@@ -44,7 +44,7 @@ public class ResLockDao
 
 	public void add(List<ResLockMO> mos) throws LittleCatException
 	{
-		String sql = "insert into " + TABLE_NAME + "(type,key,disableTime) values(?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(`type`,`key`,disableTime) values(?,?,?)";
 
 		List<Object[]> params = new ArrayList<Object[]>();
 
@@ -65,7 +65,7 @@ public class ResLockDao
 
 	public void delete(ResLockMO mo) throws LittleCatException
 	{
-		String sql = "delete from " + TABLE_NAME + " where type = ? and key = ?";
+		String sql = "delete from " + TABLE_NAME + " where `type` = ? and `key` = ?";
 
 		try
 		{
@@ -79,7 +79,7 @@ public class ResLockDao
 
 	public void delete(List<ResLockMO> mos) throws LittleCatException
 	{
-		String sql = "delete from " + TABLE_NAME + " where type = ? and key = ?";
+		String sql = "delete from " + TABLE_NAME + " where `type` = ? and `key` = ?";
 
 		List<Object[]> params = new ArrayList<Object[]>();
 

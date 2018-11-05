@@ -25,7 +25,6 @@ public class OrderMO extends BaseMO
 	private long fee;// 订单总费用（商品费用+物流费用）
 	private long deliveryFee; // 物流费用（非自提点收货时填写）
 	private OrderState state;
-	private String shareTuanZhangId;// 分享产品的团长ID
 	private String deliveryTuanZhangId; // 发货接收的自提点（填团长ID）
 	private AddressMO deliveryAddress; // 发货地址信息
 	private String contactName;
@@ -230,16 +229,6 @@ public class OrderMO extends BaseMO
 		this.deliveryTuanZhangId = deliveryTuanZhangId;
 	}
 
-	public String getShareTuanZhangId()
-	{
-		return shareTuanZhangId;
-	}
-
-	public void setShareTuanZhangId(String shareTuanZhangId)
-	{
-		this.shareTuanZhangId = shareTuanZhangId;
-	}
-
 	public String getDeliverySiteReceiveTime()
 	{
 		return deliverySiteReceiveTime;
@@ -292,7 +281,6 @@ public class OrderMO extends BaseMO
 			mo.setDeliveryFee(rs.getLong("deliveryFee"));
 			mo.setState(OrderState.valueOf(rs.getString("state")));
 
-			mo.setShareTuanZhangId(rs.getString("shareTuanZhangId"));
 			mo.setDeliveryTuanZhangId(rs.getString("deliveryTuanZhangId"));
 
 			AddressMO deliveryaddress = new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo"));
@@ -337,7 +325,6 @@ public class OrderMO extends BaseMO
 			mo.setDeliveryFee(rs.getLong("deliveryFee"));
 			mo.setState(OrderState.valueOf(rs.getString("state")));
 
-			mo.setShareTuanZhangId(rs.getString("shareTuanZhangId"));
 			mo.setDeliveryTuanZhangId(rs.getString("deliveryTuanZhangId"));
 
 			AddressMO deliveryaddress = new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo"));

@@ -27,7 +27,7 @@ public class ShoppingCartMO extends BaseMO
 	private BuyType buyType;
 	private String resId;
 	private long goodsNum;
-	private String tuanZhangId;
+	private String shareTuanZhangId;
 	private String createTime;
 
 	// for view
@@ -126,14 +126,14 @@ public class ShoppingCartMO extends BaseMO
 		this.goodsPrice = goodsPrice;
 	}
 
-	public String getTuanZhangId()
+	public String getShareTuanZhangId()
 	{
-		return tuanZhangId;
+		return shareTuanZhangId;
 	}
 
-	public void setTuanZhangId(String tuanZhangId)
+	public void setShareTuanZhangId(String shareTuanZhangId)
 	{
-		this.tuanZhangId = tuanZhangId;
+		this.shareTuanZhangId = shareTuanZhangId;
 	}
 
 	public static class MOMapper implements RowMapper<ShoppingCartMO>
@@ -150,7 +150,7 @@ public class ShoppingCartMO extends BaseMO
 			mo.setTerminalUserId(rs.getString("terminalUserId"));
 			mo.setBuyType(BuyType.valueOf(rs.getString("buyType")));
 			mo.setResId(rs.getString("resId"));
-			mo.setTuanZhangId(rs.getString("tuanZhangId"));
+			mo.setShareTuanZhangId(rs.getString("shareTuanZhangId"));
 			mo.setGoodsNum(rs.getLong("goodsNum"));
 			mo.setCreateTime(rs.getString("createTime"));
 
