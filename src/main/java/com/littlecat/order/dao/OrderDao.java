@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
-import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.BuyType;
@@ -40,7 +39,7 @@ public class OrderDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvince(), mo.getDeliveryAddress().getCity(), mo.getDeliveryAddress().getArea(), mo.getDeliveryAddress().getDetailInfo(), mo.getContactName(), mo.getContactMobile(), mo.getGroupBuyPlanId(), mo.getGroupBuyTaskId(), mo.getDeliveryFee(),  mo.getDeliveryTuanZhangId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvince(), mo.getDeliveryAddress().getCity(), mo.getDeliveryAddress().getArea(), mo.getDeliveryAddress().getDetailInfo(), mo.getContactName(), mo.getContactMobile(), mo.getGroupBuyPlanId(), mo.getGroupBuyTaskId(), mo.getDeliveryFee(), mo.getDeliveryTuanZhangId() });
 
 			if (ret != 1)
 			{
@@ -57,11 +56,11 @@ public class OrderDao
 
 	public void modify(OrderMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set state = ?,payTime = ?,receiveTime = ?,returnApplyTime = ?,returnCompleteTime = ?,groupCompleteTime=?,groupCancelTime=?,deliveryTime=?,deliverySiteReceiveTime=?  where id = ?";
+		String sql = "update " + TABLE_NAME + " set state = ?,payTime = ?,receiveTime = ?,returnApplyTime = ?,returnCompleteTime = ?,groupCompleteTime=?,groupCancelTime=?,deliveryTime=?,deliverySiteReceiveTime=?,commissionCalcTime=?  where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getState().name(), mo.getPayTime(), mo.getReceiveTime(), mo.getReturnApplyTime(), mo.getReturnCompleteTime(), mo.getGroupCompleteTime(), mo.getGroupCancelTime(), mo.getDeliveryTime(), mo.getDeliverySiteReceiveTime(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getState().name(), mo.getPayTime(), mo.getReceiveTime(), mo.getReturnApplyTime(), mo.getReturnCompleteTime(), mo.getGroupCompleteTime(), mo.getGroupCancelTime(), mo.getDeliveryTime(), mo.getDeliverySiteReceiveTime(),mo.getCommissionCalcTime(), mo.getId() });
 
 			if (ret != 1)
 			{
@@ -86,26 +85,6 @@ public class OrderDao
 		try
 		{
 			jdbcTemplate.batchUpdate(sql, batchParam);
-		}
-		catch (DataAccessException e)
-		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
-		}
-	}
-
-	/**
-	 * 设置佣金计算时间
-	 * 
-	 * @param orderId
-	 * @throws LittleCatException
-	 */
-	public void setCommissionCalcTime(String id) throws LittleCatException
-	{
-		String sql = "update " + TABLE_NAME + " set commissionCalcTime = ? where id = ?";
-
-		try
-		{
-			jdbcTemplate.update(sql, new Object[] { DateTimeUtil.getCurrentTimeForDisplay(), id });
 		}
 		catch (DataAccessException e)
 		{

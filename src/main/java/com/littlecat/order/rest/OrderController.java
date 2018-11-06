@@ -109,14 +109,14 @@ public class OrderController
 		return result;
 	}
 
-	@PutMapping(value = "/setOrderState2YiShouHuo/{id}")
-	public RestSimpleRsp setOrderState2YiShouHuo(@PathVariable String id)
+	@PutMapping(value = "/terminalUserReceive/{id}")
+	public RestSimpleRsp terminalUserReceive(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			orderBusiness.setOrderState2YiShouHuo(id);
+			orderBusiness.terminalUserReceive(id);
 		}
 		catch (LittleCatException e)
 		{
@@ -134,14 +134,14 @@ public class OrderController
 		return result;
 	}
 
-	@PutMapping(value = "/setOrderState2TuiKuanZhong/{id}")
-	public RestSimpleRsp setOrderState2TuiKuanZhong(@PathVariable String id)
+	@PutMapping(value = "/tuiKuanShenqing/{id}")
+	public RestSimpleRsp tuiKuanShenqing(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			orderBusiness.setOrderState2TuiKuanZhong(id);
+			orderBusiness.tuiKuanShenqing(id);
 		}
 		catch (LittleCatException e)
 		{
@@ -159,14 +159,14 @@ public class OrderController
 		return result;
 	}
 
-	@PutMapping(value = "/setOrderState2YiTuiKuan/{id}")
-	public RestSimpleRsp setOrderState2YiTuiKuan(@PathVariable String id)
+	@PutMapping(value = "/completeTuiKuan/{id}")
+	public RestSimpleRsp completeTuiKuan(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			orderBusiness.setOrderState2YiTuiKuan(id);
+			orderBusiness.completeTuiKuan(id);
 		}
 		catch (LittleCatException e)
 		{

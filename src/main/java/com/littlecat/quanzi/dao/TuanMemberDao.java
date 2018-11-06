@@ -34,11 +34,6 @@ public class TuanMemberDao
 
 	public String add(TuanMemberMO mo) throws LittleCatException
 	{
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		if (StringUtil.isEmpty(mo.getId()))
 		{
 			mo.setId(UUIDUtil.createUUID());
@@ -63,7 +58,7 @@ public class TuanMemberDao
 		return mo.getId();
 	}
 
-	public void setLastActiveTime(String id) throws LittleCatException
+	public void updateLastActiveTime(String id) throws LittleCatException
 	{
 		if (StringUtil.isEmpty(id))
 		{

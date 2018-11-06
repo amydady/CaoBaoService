@@ -36,6 +36,9 @@ insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('9901','�
 insert into t_sys_sysoperator(id,username,password,name,wxCode,email,mobile)
 values ('test001','test001',password('123'),'test001','test001','test001@qq.com','18888888888');
 
+insert into t_sys_sysoperator(id,username,password,name,wxCode,email,mobile)
+values ('admin','admin',password('admin'),'系统管理员','admin','admin@qq.com','18888888889');
+
 
 
 #地市信息

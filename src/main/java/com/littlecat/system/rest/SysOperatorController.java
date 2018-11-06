@@ -59,6 +59,31 @@ public class SysOperatorController
 
 		return result;
 	}
+	
+	@PutMapping(value = "/resetPassword/{id}")
+	public RestSimpleRsp resetPassword(@PathVariable String id)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			sysOperatorBusiness.resetPassword(id);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
 
 	@PostMapping(value = "/changepassword")
 	public RestSimpleRsp changePassword(@RequestBody ChangePasswordReqInfo req)
@@ -161,7 +186,7 @@ public class SysOperatorController
 		return result;
 	}
 
-	@PostMapping(value = "/getlist")
+	@PostMapping(value = "/getList")
 	public RestRsp<SysOperatorMO> getList(@RequestBody QueryParam queryParam)
 	{
 		RestRsp<SysOperatorMO> result = new RestRsp<SysOperatorMO>();

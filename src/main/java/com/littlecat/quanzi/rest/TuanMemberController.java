@@ -57,15 +57,14 @@ public class TuanMemberController
 		return result;
 	}
 
-	@PutMapping(value = "/setLastActiveTime/{id}")
-	public RestSimpleRsp setLastActiveTime(@PathVariable String id)
+	@PutMapping(value = "/updateLastActiveTime/{id}")
+	public RestSimpleRsp updateLastActiveTime(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			tuanMemberBusiness.setLastActiveTime(id);
-			;
+			tuanMemberBusiness.updateLastActiveTime(id);
 		}
 		catch (LittleCatException e)
 		{

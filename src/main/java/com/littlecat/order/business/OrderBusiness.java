@@ -2,10 +2,8 @@ package com.littlecat.order.business;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,6 +36,8 @@ import com.littlecat.lock.model.ResLockMO;
 import com.littlecat.order.dao.OrderDao;
 import com.littlecat.order.model.OrderDetailMO;
 import com.littlecat.order.model.OrderMO;
+import com.littlecat.quanzi.business.TuanMemberBusiness;
+import com.littlecat.quanzi.model.TuanMemberMO;
 import com.littlecat.seckill.business.SecKillPlanBusiness;
 import com.littlecat.seckill.model.SecKillPlanMO;
 
@@ -71,6 +71,9 @@ public class OrderBusiness
 
 	@Autowired
 	private SecKillPlanBusiness secKillPlanBusiness;
+
+	@Autowired
+	private TuanMemberBusiness tuanMemberBusiness;
 
 	private static final String MODEL_NAME = OrderMO.class.getSimpleName();
 	private static final String MODEL_NAME_ORDERDETAIL = OrderDetailMO.class.getSimpleName();
@@ -113,7 +116,7 @@ public class OrderBusiness
 	}
 
 	/**
-	 * 订单支付操作
+	 * 订单支付成功后的操作
 	 * 
 	 * @param id
 	 * @throws LittleCatException
@@ -182,23 +185,20 @@ public class OrderBusiness
 
 		orderMO.setPayTime(currentTime);
 		orderDao.modify(orderMO);
-		
-		//设置粉丝信息
-		Set<String> shareTuanZhangIds = new HashSet<String>();
-		for(OrderDetailMO orderDetailMO:detailMOs)
-		{
-			String shareTuanZhangId = orderDetailMO.getShareTuanZhangId();
-			if(StringUtil.isNotEmpty(shareTuanZhangId))
-			{
-				shareTuanZhangIds.add(shareTuanZhangId);
-			}
-		}
-		
+
+		// 设置粉丝信息
+		setTuanMemberInfo(orderMO.getTerminalUserId(), detailMOs);
 
 		unLock(lockInfo);
 	}
 
-	public void setOrderState2YiShouHuo(String id) throws LittleCatException
+	/**
+	 * 用户签收
+	 * 
+	 * @param id
+	 * @throws LittleCatException
+	 */
+	public void terminalUserReceive(String id) throws LittleCatException
 	{
 		OrderMO mo = orderDao.getById(id);
 
@@ -213,7 +213,12 @@ public class OrderBusiness
 		orderDao.modify(mo);
 	}
 
-	public void setOrderState2TuiKuanZhong(String id) throws LittleCatException
+	/**
+	 * 退款申请
+	 * @param id
+	 * @throws LittleCatException
+	 */
+	public void tuiKuanShenqing(String id) throws LittleCatException
 	{
 		OrderMO mo = orderDao.getById(id);
 
@@ -228,7 +233,13 @@ public class OrderBusiness
 		orderDao.modify(mo);
 	}
 
-	public void setOrderState2YiTuiKuan(String id) throws LittleCatException
+	/**
+	 * 完成退款
+	 * 
+	 * @param id
+	 * @throws LittleCatException
+	 */
+	public void completeTuiKuan(String id) throws LittleCatException
 	{
 		OrderMO mo = orderDao.getById(id);
 
@@ -242,10 +253,24 @@ public class OrderBusiness
 
 		orderDao.modify(mo);
 	}
-	
-	public void setCommissionCalcTime(String id) throws LittleCatException
+
+	/**
+	 * 标记佣金计算完成（设置佣金计算时间）
+	 * @param id
+	 * @throws LittleCatException
+	 */
+	public void completeCommissionCalc(String id) throws LittleCatException
 	{
-		orderDao.setCommissionCalcTime(id);
+		OrderMO mo = orderDao.getById(id);
+
+		if (mo == null)
+		{
+			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+		}
+
+		mo.setCommissionCalcTime(DateTimeUtil.getCurrentTimeForDisplay());
+
+		orderDao.modify(mo);
 	}
 
 	/**
@@ -280,7 +305,7 @@ public class OrderBusiness
 	{
 		return orderDao.getList(queryParam, mos);
 	}
-	
+
 	public List<OrderMO> getNeedCommissionCalcOrderList()
 	{
 		return orderDao.getNeedCommissionCalcList();
@@ -300,18 +325,46 @@ public class OrderBusiness
 		return mos;
 	}
 
-	public OrderDetailMO getOrderDetailById(String id) throws LittleCatException
-	{
-		return orderDetailBusiness.getById(id);
-	}
-
-	public int getOrderDetailList(QueryParam queryParam, List<OrderDetailMO> mos) throws LittleCatException
-	{
-		return orderDetailBusiness.getList(queryParam, mos);
-	}
 	public int getBuyedNumOfSecKillPlan(String secKillPlanId, String terminalUserId) throws LittleCatException
 	{
 		return orderDao.getBuyedNumOfSecKillPlan(secKillPlanId, terminalUserId);
+	}
+
+	/**
+	 * 设置粉丝信息
+	 * 
+	 * @param terminalUserId
+	 * @param detailMOs
+	 */
+	private void setTuanMemberInfo(String terminalUserId, List<OrderDetailMO> detailMOs)
+	{
+		// 当前归属的团
+		TuanMemberMO ownerTuan = tuanMemberBusiness.getCurrentEnableTuan(terminalUserId);
+	
+		if (ownerTuan != null)
+		{// 用户当前有归属的团长
+			tuanMemberBusiness.updateLastActiveTime(ownerTuan.getId());
+		}
+		else
+		{// 用户当前没有归属的团长
+			/**
+			 * 将当前订单明细中的推荐团长设置为归属团长,如果本次订单涉及多个推荐团长，使用第一个（先到先得）
+			 */
+	
+			for (OrderDetailMO orderDetailMO : detailMOs)
+			{
+				String shareTuanZhangId = orderDetailMO.getShareTuanZhangId();
+				if (StringUtil.isNotEmpty(shareTuanZhangId))
+				{// 当前订单中有推荐团长
+					ownerTuan = new TuanMemberMO();
+					ownerTuan.setTuanId(shareTuanZhangId);
+					ownerTuan.setTerminalUserId(terminalUserId);
+					tuanMemberBusiness.add(ownerTuan);
+	
+					break;
+				}
+			}
+		}
 	}
 
 	/**

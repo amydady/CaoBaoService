@@ -201,7 +201,7 @@ public class CommissionCalcBusiness
 			commissionCalcDao.add(commissionCalcMOList);
 
 			// 设置订单的佣金计算时间（表示已经计算过佣金）
-			orderBusiness.setCommissionCalcTime(order.getId());
+			orderBusiness.completeCommissionCalc(order.getId());
 		}
 	}
 	

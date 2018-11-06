@@ -23,9 +23,9 @@ public class TuanMemberBusiness
 		return tuanMemberDao.add(mo);
 	}
 
-	public void setLastActiveTime(String id) throws LittleCatException
+	public void updateLastActiveTime(String id) throws LittleCatException
 	{
-		tuanMemberDao.setLastActiveTime(id);
+		tuanMemberDao.updateLastActiveTime(id);
 	}
 
 	public int getList(QueryParam queryParam, List<TuanMemberMO> mos) throws LittleCatException

@@ -66,6 +66,25 @@ public class SysOperatorDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
+	
+	public void setPassword(String id,String pwd) throws LittleCatException
+	{
+		String sql = "update " + TABLE_NAME + " set password = password(?) where id = ?";
+
+		try
+		{
+			int ret = jdbcTemplate.update(sql, new Object[] { pwd, id });
+
+			if (ret != 1)
+			{
+				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
+			}
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
 
 	public void changePassword(String id, String oldPwd, String pwd) throws LittleCatException
 	{
