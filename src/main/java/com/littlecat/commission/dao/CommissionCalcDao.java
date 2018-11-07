@@ -3,6 +3,8 @@ package com.littlecat.commission.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,6 +22,8 @@ import com.littlecat.common.consts.TableName;
 @Component
 public class CommissionCalcDao
 {
+	private static final Logger logger = LoggerFactory.getLogger(CommissionCalcDao.class);
+
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
 
@@ -123,7 +127,7 @@ public class CommissionCalcDao
 	public List<CommissionCalcMO> getList(String tuanZhangId, String state) throws LittleCatException
 	{
 		StringBuilder sql = new StringBuilder()
-				.append(" select a.*,b.name tuanZhangName,c.name goodsName,d.name commissionTypeName,f.name terminalUserName,f.image terminalUserImg ")
+				.append(" select a.*,b.name tuanZhangName,c.name goodsName,c.mainImgData goodsMainImgData,d.name commissionTypeName,f.name terminalUserName,f.image terminalUserImg ")
 				.append(" from ").append(TABLE_NAME).append(" a ")
 				.append(" inner join ").append(TABLE_NAME_TUAN).append(" b  on a.tuanZhangId=b.id ")
 				.append(" inner join ").append(TABLE_NAME_GOODS).append(" c on a.goodsId=c.id ")
@@ -146,13 +150,71 @@ public class CommissionCalcDao
 
 		return jdbcTemplate.query(sql.toString(), new CommissionCalcMO.MOMapper());
 	}
-	
+
 	public List<String> getNeedEnableList() throws LittleCatException
 	{
 		StringBuilder sql = new StringBuilder()
 				.append("select id from  ").append(TABLE_NAME)
 				.append(" where state=").append(CommissionState.calced);
-		
+
 		return jdbcTemplate.queryForList(sql.toString(), String.class);
 	}
+
+	/**
+	 * 查询累计发放佣金
+	 * 
+	 * @param tuanZhangId
+	 * @return
+	 */
+	public long getTotalPayedFee(String tuanZhangId)
+	{
+		StringBuilder sql = new StringBuilder()
+				.append("select sum(calcFee) totalPayedFee from  ").append(TABLE_NAME)
+				.append(" where tuanZhangId='").append(tuanZhangId).append("'")
+				.append(" and state='").append(CommissionState.payed).append("'");
+		try
+		{
+			return jdbcTemplate.queryForObject(sql.toString(), Long.class);
+		}
+		catch (Exception e)
+		{
+			logger.error("getTotalPayedFee error", e.getMessage());
+			return 0;
+		}
+	}
+
+	public long getTotalCanApplyFee(String tuanZhangId)
+	{
+		StringBuilder sql = new StringBuilder()
+				.append("select sum(calcFee) totalPayedFee from  ").append(TABLE_NAME)
+				.append(" where tuanZhangId='").append(tuanZhangId).append("'")
+				.append(" and state='").append(CommissionState.canapply).append("'");
+		try
+		{
+			return jdbcTemplate.queryForObject(sql.toString(), Long.class);
+		}
+		catch (Exception e)
+		{
+			logger.error("getTotalCanApplyFee error", e.getMessage());
+			return 0;
+		}
+	}
+
+	public List<String> getApplyHis(String tuanZhangId)
+	{
+		StringBuilder sql = new StringBuilder()
+				.append("select concat(applyTime,',',calcFee) from  ").append(TABLE_NAME)
+				.append(" where tuanZhangId='").append(tuanZhangId).append("'")
+				.append(" and applyTime is not null");
+		try
+		{
+			return jdbcTemplate.queryForList(sql.toString(), String.class);
+		}
+		catch (Exception e)
+		{
+			logger.error("getTotalCanApplyFee error", e.getMessage());
+			return null;
+		}
+	}
+
 }

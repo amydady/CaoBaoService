@@ -20,6 +20,7 @@ import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.commission.business.CommissionCalcBusiness;
 import com.littlecat.commission.model.CommissionCalcMO;
+import com.littlecat.commission.model.CommissionReport;
 
 @RestController
 @RequestMapping("/rest/littlecat/caobao/commission/calc")
@@ -188,6 +189,31 @@ public class CommissionCalcController
 		try
 		{
 			result.getData().addAll(commissionCalcBusiness.getList(tuanZhangId, state));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+	
+	@GetMapping(value = "/getCommissionReport")
+	public RestRsp<CommissionReport> getCommissionReport(@RequestParam String tuanZhangId)
+	{
+		RestRsp<CommissionReport> result = new RestRsp<CommissionReport>();
+
+		try
+		{
+			result.getData().add(commissionCalcBusiness.getCommissionReport(tuanZhangId));
 		}
 		catch (LittleCatException e)
 		{

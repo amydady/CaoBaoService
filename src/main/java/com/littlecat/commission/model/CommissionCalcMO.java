@@ -36,6 +36,7 @@ public class CommissionCalcMO extends BaseMO
 	private String terminalUserImg;
 	private String tuanZhangName;
 	private String goodsName;
+	private String goodsMainImgData;
 	private String commissionTypeName;
 
 	public String getTuanZhangName()
@@ -220,6 +221,16 @@ public class CommissionCalcMO extends BaseMO
 		this.terminalUserImg = terminalUserImg;
 	}
 
+	public String getGoodsMainImgData()
+	{
+		return goodsMainImgData;
+	}
+
+	public void setGoodsMainImgData(String goodsMainImgData)
+	{
+		this.goodsMainImgData = goodsMainImgData;
+	}
+
 	public static class MOMapper implements RowMapper<CommissionCalcMO>
 	{
 		@Override
@@ -236,6 +247,7 @@ public class CommissionCalcMO extends BaseMO
 			mo.setCommissionTypeId(rs.getString("commissionTypeId"));
 			mo.setCalcFee(rs.getLong("calcFee"));
 			mo.setPayOperatorId(rs.getString("payOperatorId"));
+			mo.setApplyTime(StringUtil.replace(rs.getString("applyTime"), ".0", ""));
 			mo.setPayTime(StringUtil.replace(rs.getString("payTime"), ".0", ""));
 			mo.setDisableTime(StringUtil.replace(rs.getString("disableTime"), ".0", ""));
 			mo.setState(CommissionState.valueOf(rs.getString("state")));
@@ -246,6 +258,7 @@ public class CommissionCalcMO extends BaseMO
 			mo.setTuanZhangName(rs.getString("tuanZhangName"));
 			mo.setGoodsName(rs.getString("goodsName"));
 			mo.setCommissionTypeName(rs.getString("commissionTypeName"));
+			mo.setGoodsMainImgData(rs.getString("goodsMainImgData"));
 
 			return mo;
 		}

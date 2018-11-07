@@ -96,18 +96,26 @@ public class TuanMemberDao
 	 */
 	public TuanMemberMO getCurrentEnableTuan(String terminalUserId) throws LittleCatException
 	{
-		String sql = "select * from " + TABLE_NAME + " where terminalUserId = ? and enable=?";
+		String sql = "select * from " + TABLE_NAME + " where terminalUserId = ?";
 
 		try
 		{
-			List<TuanMemberMO> mos = jdbcTemplate.query(sql, new Object[] { terminalUserId, BooleanTag.Y.name() }, new TuanMemberMO.MOMapper());
+			List<TuanMemberMO> mos = jdbcTemplate.query(sql, new Object[] { terminalUserId }, new TuanMemberMO.MOMapper());
 
 			if (CollectionUtil.isEmpty(mos))
 			{
 				return null;
 			}
 
-			return mos.get(0);
+			for (TuanMemberMO mo : mos)
+			{
+				if (mo.getEnable() == BooleanTag.Y.name())
+				{
+					return mo;
+				}
+			}
+
+			return null;
 		}
 
 		catch (DataAccessException e)

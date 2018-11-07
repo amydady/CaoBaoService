@@ -17,6 +17,7 @@ import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.commission.dao.CommissionCalcDao;
 import com.littlecat.commission.model.CommissionCalcMO;
 import com.littlecat.commission.model.CommissionGoodsMO;
+import com.littlecat.commission.model.CommissionReport;
 import com.littlecat.commission.model.CommissionTypeMO;
 import com.littlecat.common.consts.CommissionState;
 import com.littlecat.common.consts.CommissionType;
@@ -282,5 +283,15 @@ public class CommissionCalcBusiness
 	public List<CommissionCalcMO> getList(String tuanZhangId, String state) throws LittleCatException
 	{
 		return commissionCalcDao.getList(tuanZhangId, state);
+	}
+	
+	public CommissionReport getCommissionReport(String tuanZhangId)
+	{
+		CommissionReport commissionReport = new CommissionReport();
+		commissionReport.setTotalPayedFee(commissionCalcDao.getTotalPayedFee(tuanZhangId));
+		commissionReport.setTotalCanApplyFee(commissionCalcDao.getTotalCanApplyFee(tuanZhangId));
+		commissionReport.setApplyHistory(commissionCalcDao.getApplyHis(tuanZhangId));
+		
+		return commissionReport;
 	}
 }
