@@ -35,11 +35,11 @@ public class OrderDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,fee,state,province,city,area,detailInfo,contactName,contactMobile,groupBuyPlanId,groupBuyTaskId,deliveryFee,deliveryTuanZhangId) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,terminalUserId,fee,state,province,city,area,detailInfo,contactName,contactMobile,groupBuyPlanId,groupBuyTaskId,deliveryFee,deliveryTuanZhangId,shareTuanZhangId) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvince(), mo.getDeliveryAddress().getCity(), mo.getDeliveryAddress().getArea(), mo.getDeliveryAddress().getDetailInfo(), mo.getContactName(), mo.getContactMobile(), mo.getGroupBuyPlanId(), mo.getGroupBuyTaskId(), mo.getDeliveryFee(), mo.getDeliveryTuanZhangId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvince(), mo.getDeliveryAddress().getCity(), mo.getDeliveryAddress().getArea(), mo.getDeliveryAddress().getDetailInfo(), mo.getContactName(), mo.getContactMobile(), mo.getGroupBuyPlanId(), mo.getGroupBuyTaskId(), mo.getDeliveryFee(), mo.getDeliveryTuanZhangId(),mo.getShareTuanZhangId() });
 
 			if (ret != 1)
 			{
@@ -108,7 +108,7 @@ public class OrderDao
 	}
 
 	/**
-	 * 获取需要佣金计算的订单
+	 * 获取需要佣金计算的订单（已支付的订单）
 	 * 
 	 * @return
 	 */
@@ -116,9 +116,8 @@ public class OrderDao
 	{
 		StringBuilder sql = new StringBuilder()
 				.append("select * from ").append(TABLE_NAME)
-				.append(" where receiveTime is not null")
-				.append(" and commissionCalcTime is null")
-				.append(" and returnApplyTime is null");
+				.append(" where payTime is not null")
+				.append(" and commissionCalcTime is null");
 
 		return jdbcTemplate.query(sql.toString(), new OrderMO.MOMapper());
 	}

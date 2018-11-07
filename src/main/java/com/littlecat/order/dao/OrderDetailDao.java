@@ -53,7 +53,7 @@ public class OrderDetailDao
 			try
 			{
 				Blob mainImgData = new SerialBlob(mo.getGoodsMainImgData().getBytes(Consts.CHARSET_NAME));
-				batchParam.add(new Object[] { mo.getId(), mo.getOrderId(), mo.getBuyType().name(), mo.getResId(), mo.getGoodsId(), mo.getPrice(), mo.getGoodsNum(), mo.getGoodsName(), mainImgData,mo.getShareTuanZhangId() });
+				batchParam.add(new Object[] { mo.getId(), mo.getOrderId(), mo.getBuyType().name(), mo.getResId(), mo.getGoodsId(), mo.getPrice(), mo.getGoodsNum(), mo.getGoodsName(), mainImgData });
 			}
 			catch (UnsupportedEncodingException | SQLException e)
 			{
@@ -61,7 +61,7 @@ public class OrderDetailDao
 			}
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,orderId,buyType,resId,goodsId,price,goodsNum,goodsName,goodsMainImgData,shareTuanZhangId) values(?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,orderId,buyType,resId,goodsId,price,goodsNum,goodsName,goodsMainImgData) values(?,?,?,?,?,?,?,?,?)";
 
 		try
 		{

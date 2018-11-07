@@ -17,6 +17,7 @@ import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.StringUtil;
+import com.littlecat.commission.business.CommissionCalcBusiness;
 import com.littlecat.common.consts.BuyType;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.InventoryChangeType;
@@ -74,6 +75,9 @@ public class OrderBusiness
 
 	@Autowired
 	private TuanMemberBusiness tuanMemberBusiness;
+
+	@Autowired
+	private CommissionCalcBusiness commissionCalcBusiness;
 
 	private static final String MODEL_NAME = OrderMO.class.getSimpleName();
 	private static final String MODEL_NAME_ORDERDETAIL = OrderDetailMO.class.getSimpleName();
@@ -182,13 +186,17 @@ public class OrderBusiness
 			orderMO.setState(OrderState.daifahuo);
 			setInventoryInfoByOrderDetail(detailMOs);
 		}
-
+		
+		//修改订单支付时间
 		orderMO.setPayTime(currentTime);
 		orderDao.modify(orderMO);
 
 		// 设置粉丝信息
-		setTuanMemberInfo(orderMO.getTerminalUserId(), detailMOs);
+		setTuanMemberInfo(orderMO.getTerminalUserId(), orderMO.getShareTuanZhangId());
 
+		//计算佣金
+		commissionCalcBusiness.doCalc(orderMO);
+		
 		unLock(lockInfo);
 	}
 
@@ -215,6 +223,7 @@ public class OrderBusiness
 
 	/**
 	 * 退款申请
+	 * 
 	 * @param id
 	 * @throws LittleCatException
 	 */
@@ -256,6 +265,7 @@ public class OrderBusiness
 
 	/**
 	 * 标记佣金计算完成（设置佣金计算时间）
+	 * 
 	 * @param id
 	 * @throws LittleCatException
 	 */
@@ -280,12 +290,12 @@ public class OrderBusiness
 	 * @return
 	 * @throws LittleCatException
 	 */
-	public void modifyOrder(OrderMO mo) throws LittleCatException
+	public void modify(OrderMO mo) throws LittleCatException
 	{
 		orderDao.modify(mo);
 	}
 
-	public void modifyOrder(List<OrderMO> mos) throws LittleCatException
+	public void modify(List<OrderMO> mos) throws LittleCatException
 	{
 		orderDao.modify(mos);
 	}
@@ -334,35 +344,29 @@ public class OrderBusiness
 	 * 设置粉丝信息
 	 * 
 	 * @param terminalUserId
-	 * @param detailMOs
+	 * @param shareTuanZhangId
+	 *            当前订单中分享的团长ID
 	 */
-	private void setTuanMemberInfo(String terminalUserId, List<OrderDetailMO> detailMOs)
+	private void setTuanMemberInfo(String terminalUserId, String shareTuanZhangId)
 	{
 		// 当前归属的团
 		TuanMemberMO ownerTuan = tuanMemberBusiness.getCurrentEnableTuan(terminalUserId);
-	
+
 		if (ownerTuan != null)
 		{// 用户当前有归属的团长
-			tuanMemberBusiness.updateLastActiveTime(ownerTuan.getId());
+			if (StringUtil.isEmpty(shareTuanZhangId) || shareTuanZhangId == ownerTuan.getTuanId())
+			{
+				tuanMemberBusiness.updateLastActiveTime(ownerTuan.getId());
+			}
 		}
 		else
 		{// 用户当前没有归属的团长
-			/**
-			 * 将当前订单明细中的推荐团长设置为归属团长,如果本次订单涉及多个推荐团长，使用第一个（先到先得）
-			 */
-	
-			for (OrderDetailMO orderDetailMO : detailMOs)
+			if (StringUtil.isNotEmpty(shareTuanZhangId))
 			{
-				String shareTuanZhangId = orderDetailMO.getShareTuanZhangId();
-				if (StringUtil.isNotEmpty(shareTuanZhangId))
-				{// 当前订单中有推荐团长
-					ownerTuan = new TuanMemberMO();
-					ownerTuan.setTuanId(shareTuanZhangId);
-					ownerTuan.setTerminalUserId(terminalUserId);
-					tuanMemberBusiness.add(ownerTuan);
-	
-					break;
-				}
+				ownerTuan = new TuanMemberMO();
+				ownerTuan.setTuanId(shareTuanZhangId);
+				ownerTuan.setTerminalUserId(terminalUserId);
+				tuanMemberBusiness.add(ownerTuan);
 			}
 		}
 	}

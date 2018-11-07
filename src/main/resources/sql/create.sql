@@ -332,6 +332,7 @@ CREATE TABLE `t_order` (
 	`fee` INT NOT NULL,
 	`deliveryFee` INT NULL DEFAULT 0,
 	`state` VARCHAR(255) NOT NULL,
+	`shareTuanZhangId` VARCHAR(255) NULL,
 	`deliveryTuanZhangId` VARCHAR(255) NULL,
 	`contactName` VARCHAR(255) NOT NULL,
 	`contactMobile` VARCHAR(255) NOT NULL,
@@ -367,7 +368,6 @@ CREATE TABLE `t_order_detail` (
 	`goodsNum` INT NOT NULL,
 	`goodsName` VARCHAR(255) NOT NULL,
 	`goodsMainImgData` MediumBlob NULL,
-	`shareTuanZhangId` VARCHAR(255) NULL,
 	
 	PRIMARY KEY (`id`)
 );

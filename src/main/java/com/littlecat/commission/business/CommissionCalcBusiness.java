@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
@@ -20,7 +19,6 @@ import com.littlecat.commission.model.CommissionCalcMO;
 import com.littlecat.commission.model.CommissionGoodsMO;
 import com.littlecat.commission.model.CommissionTypeMO;
 import com.littlecat.common.consts.CommissionType;
-import com.littlecat.common.utils.SysParamUtil;
 import com.littlecat.order.business.OrderBusiness;
 import com.littlecat.order.model.OrderDetailMO;
 import com.littlecat.order.model.OrderMO;
@@ -33,7 +31,6 @@ public class CommissionCalcBusiness
 {
 	private static final Logger logger = LoggerFactory.getLogger(CommissionCalcBusiness.class);
 
-	private static final int CALC_COMMISSION_DELAY_DAY_DEFAULT = 7;
 	@Autowired
 	private CommissionCalcDao commissionCalcDao;
 
@@ -58,7 +55,7 @@ public class CommissionCalcBusiness
 	{
 		commissionCalcDao.add(mos);
 	}
-	
+
 	public void modify(List<CommissionCalcMO> mos) throws LittleCatException
 	{
 		commissionCalcDao.modify(mos);
@@ -70,55 +67,50 @@ public class CommissionCalcBusiness
 	}
 
 	/**
-	 * 佣金计算
+	 * 佣金计算 订单支付后开始计算，计算后佣金状态为冻结，待用户签收X天后置为可发放状态；
 	 * 
 	 * @throws LittleCatException
 	 */
 	public void doCalc() throws LittleCatException
 	{
-		List<OrderMO> orderList = orderBusiness.getNeedCommissionCalcOrderList();
+		doCalc(orderBusiness.getNeedCommissionCalcOrderList());
+	}
+	
+	public void doCalc(OrderMO order) throws LittleCatException
+	{
+		List<OrderMO> orderList = new ArrayList<OrderMO>();
+		orderList.add(order);
+		doCalc(orderList);
+	}
 
+	public void doCalc(List<OrderMO> orderList) throws LittleCatException
+	{
 		if (CollectionUtil.isEmpty(orderList))
 		{
 			return;
 		}
-
+		
 		CommissionTypeMO commissionTypeShare = commissionTypeBusiness.getById(CommissionType.share.name());
 		if (commissionTypeShare == null || commissionTypeShare.getCommissionRate() == null)
 		{
 			logger.error("CommissionCalcBusiness:doCalc:get commissionTypeShare error.");
+			return;
 		}
 
 		CommissionTypeMO commissionTypeDelivery = commissionTypeBusiness.getById(CommissionType.deliverysite.name());
 		if (commissionTypeDelivery == null || commissionTypeDelivery.getCommissionRate() == null)
 		{
 			logger.error("CommissionCalcBusiness:doCalc:get commissionTypeDelivery error.");
+			return;
 		}
-
+		
 		for (OrderMO order : orderList)
 		{
-			// 用户签收X天后，才计算佣金
-			int calcCommissionDelayDay = CALC_COMMISSION_DELAY_DAY_DEFAULT;
-
-			try
-			{
-				calcCommissionDelayDay = Integer.parseInt(SysParamUtil.getValueByName(Consts.PARAM_NAME_CALC_COMMISSION_DELAY_DAY));
-			}
-			catch (Exception e)
-			{
-				logger.error("CommissionCalcBusiness:doCalc:get calcCommissionDelayDay error:" + e.getMessage());
-			}
-
-			if (DateTimeUtil.getDurationDays(order.getReceiveTime()) < calcCommissionDelayDay)
-			{
-				continue;
-			}
-
 			List<OrderDetailMO> orderDetailList = order.getDetails();
 			if (CollectionUtil.isEmpty(orderDetailList))
 			{
 				logger.error("CommissionCalcBusiness:doCalc:orderDetailList is empty,orderid={}", order.getId());
-				continue;
+				return;
 			}
 
 			// 自提点团长ID
@@ -127,25 +119,25 @@ public class CommissionCalcBusiness
 			// 计算佣金=========================
 			List<CommissionCalcMO> commissionCalcMOList = new ArrayList<CommissionCalcMO>();
 
+			// 本商品推荐团长
+			String shareTuanZhangId = null;
+
+			if (StringUtil.isNotEmpty(order.getShareTuanZhangId()))
+			{// 本商品有推荐团长
+				shareTuanZhangId = order.getShareTuanZhangId();
+			}
+			else
+			{// 本商品没有推荐的团长
+				// 查找该用户当前归属的团长
+				TuanMemberMO tuanMemberMo = tuanMemberBusiness.getCurrentEnableTuan(order.getTerminalUserId());
+				if (tuanMemberMo != null)
+				{
+					shareTuanZhangId = tuanMemberMo.getTuanId();
+				}
+			}
+
 			for (OrderDetailMO orderDetail : orderDetailList)
 			{
-				// 本商品推荐团长
-				String shareTuanZhangId = null;
-
-				if (StringUtil.isNotEmpty(orderDetail.getShareTuanZhangId()))
-				{// 本商品有推荐团长
-					shareTuanZhangId = orderDetail.getShareTuanZhangId();
-				}
-				else
-				{// 本商品没有推荐的团长
-					// 查找该用户当前归属的团长
-					TuanMemberMO tuanMemberMo = tuanMemberBusiness.getCurrentEnableTuan(order.getTerminalUserId());
-					if (tuanMemberMo != null)
-					{
-						shareTuanZhangId = tuanMemberMo.getTuanId();
-					}
-				}
-				
 				List<CommissionGoodsMO> commissionGoodsMOList = commissionGoodsBusiness.getListByGoodsId(orderDetail.getGoodsId());
 
 				double commissionRateShare = commissionTypeShare.getCommissionRate().doubleValue();
@@ -187,7 +179,7 @@ public class CommissionCalcBusiness
 					CommissionCalcMO deliveryCommissionCalcMO = new CommissionCalcMO();
 
 					deliveryCommissionCalcMO.setOrderId(order.getId());
-					deliveryCommissionCalcMO.setTuanZhangId(shareTuanZhangId);
+					deliveryCommissionCalcMO.setTuanZhangId(deliverySiteTuanZhangId);
 					deliveryCommissionCalcMO.setGoodsId(orderDetail.getGoodsId());
 					deliveryCommissionCalcMO.setGoodsFee(orderDetail.getGoodsNum() * orderDetail.getPrice());
 					deliveryCommissionCalcMO.setCommissionTypeId(CommissionType.deliverysite.name());
@@ -204,21 +196,21 @@ public class CommissionCalcBusiness
 			orderBusiness.completeCommissionCalc(order.getId());
 		}
 	}
-	
+
 	public void batchPay(List<String> ids) throws LittleCatException
 	{
 		List<CommissionCalcMO> mos = new ArrayList<CommissionCalcMO>();
-		for(String id:ids)
+		for (String id : ids)
 		{
 			CommissionCalcMO mo = commissionCalcDao.getById(id);
 			mo.setPayTime(DateTimeUtil.getCurrentTimeForDisplay());
-			
+
 			mos.add(mo);
 		}
-		
+
 		commissionCalcDao.modify(mos);
 	}
-	
+
 	public List<CommissionCalcMO> getList(String tuanZhangId, Boolean hasPayed) throws LittleCatException
 	{
 		return commissionCalcDao.getList(tuanZhangId, hasPayed);

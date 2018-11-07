@@ -76,7 +76,7 @@ public class GroupBuyTaskBusiness
 			orderMO.setState(OrderState.daiqianshou);
 		}
 
-		orderBusiness.modifyOrder(mos);
+		orderBusiness.modify(mos);
 
 	}
 }
