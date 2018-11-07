@@ -9,7 +9,7 @@ insert into t_sys_param(name,value) values('clear_reslock_process_cyc','60');
 insert into t_sys_param(name,value) values('calc_commission_process_cyc','60');
 
 #佣金计算冻结期天数（相对于用户签收时间）
-insert into t_sys_param(name,value) values('calc_commission_delay_day','7');
+insert into t_sys_param(name,value) values('enable_commission_delay_day','7');
 
 
 #系统菜单==========================================================

@@ -1,6 +1,5 @@
 package com.littlecat.commission.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.commission.business.CommissionCalcBusiness;
@@ -107,14 +105,39 @@ public class CommissionCalcController
 		return result;
 	}
 
-	@PutMapping(value = "/batchPay")
-	public RestSimpleRsp batchPay(@RequestBody List<String> ids)
+	@PutMapping(value = "/apply")
+	public RestSimpleRsp apply(@RequestBody List<String> ids)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			commissionCalcBusiness.batchPay(ids);
+			commissionCalcBusiness.apply(ids);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PutMapping(value = "/pay")
+	public RestSimpleRsp pay(@RequestBody List<String> ids)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			commissionCalcBusiness.pay(ids);
 		}
 		catch (LittleCatException e)
 		{
@@ -157,42 +180,14 @@ public class CommissionCalcController
 		return result;
 	}
 
-	@GetMapping(value = "/getListByTuanZhangId")
-	public RestRsp<CommissionCalcMO> getListByTuanZhangId(@RequestParam @Nullable String tuanZhangId, @RequestParam @Nullable Boolean hasPayed)
+	@GetMapping(value = "/getList")
+	public RestRsp<CommissionCalcMO> getList(@RequestParam @Nullable String tuanZhangId, @RequestParam @Nullable String state)
 	{
 		RestRsp<CommissionCalcMO> result = new RestRsp<CommissionCalcMO>();
 
 		try
 		{
-			result.getData().addAll(commissionCalcBusiness.getList(tuanZhangId, hasPayed));
-		}
-		catch (LittleCatException e)
-		{
-			result.setCode(e.getErrorCode());
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-		catch (Exception e)
-		{
-			result.setCode(Consts.ERROR_CODE_UNKNOW);
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-
-		return result;
-	}
-
-	@PostMapping(value = "/getList")
-	public RestRsp<CommissionCalcMO> getList(@RequestBody QueryParam queryParam)
-	{
-		RestRsp<CommissionCalcMO> result = new RestRsp<CommissionCalcMO>();
-
-		try
-		{
-			List<CommissionCalcMO> mos = new ArrayList<CommissionCalcMO>();
-			int totalNum = commissionCalcBusiness.getList(queryParam, mos);
-			result.setTotalNum(totalNum);
-			result.getData().addAll(mos);
+			result.getData().addAll(commissionCalcBusiness.getList(tuanZhangId, state));
 		}
 		catch (LittleCatException e)
 		{

@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.cbb.utils.StringUtil;
+import com.littlecat.common.consts.CommissionState;
 
 /**
  * 佣金结算信息MO
@@ -25,11 +26,14 @@ public class CommissionCalcMO extends BaseMO
 	private String commissionTypeId;
 	private long calcFee; // 结算的佣金总额
 	private String payOperatorId;// 佣金支付人员ID
+	private CommissionState state;
+	private String applyTime;
 	private String payTime;
-	private String remark;
+	private String disableTime;
 
 	// just for view
-
+	private String terminalUserName;
+	private String terminalUserImg;
 	private String tuanZhangName;
 	private String goodsName;
 	private String commissionTypeName;
@@ -126,16 +130,6 @@ public class CommissionCalcMO extends BaseMO
 		this.payTime = payTime;
 	}
 
-	public String getRemark()
-	{
-		return remark;
-	}
-
-	public void setRemark(String remark)
-	{
-		this.remark = remark;
-	}
-
 	public String getGoodsId()
 	{
 		return goodsId;
@@ -176,6 +170,56 @@ public class CommissionCalcMO extends BaseMO
 		this.payOperatorId = payOperatorId;
 	}
 
+	public String getDisableTime()
+	{
+		return disableTime;
+	}
+
+	public void setDisableTime(String disableTime)
+	{
+		this.disableTime = disableTime;
+	}
+
+	public CommissionState getState()
+	{
+		return state;
+	}
+
+	public void setState(CommissionState state)
+	{
+		this.state = state;
+	}
+
+	public String getApplyTime()
+	{
+		return applyTime;
+	}
+
+	public void setApplyTime(String applyTime)
+	{
+		this.applyTime = applyTime;
+	}
+
+	public String getTerminalUserName()
+	{
+		return terminalUserName;
+	}
+
+	public void setTerminalUserName(String terminalUserName)
+	{
+		this.terminalUserName = terminalUserName;
+	}
+
+	public String getTerminalUserImg()
+	{
+		return terminalUserImg;
+	}
+
+	public void setTerminalUserImg(String terminalUserImg)
+	{
+		this.terminalUserImg = terminalUserImg;
+	}
+
 	public static class MOMapper implements RowMapper<CommissionCalcMO>
 	{
 		@Override
@@ -193,8 +237,12 @@ public class CommissionCalcMO extends BaseMO
 			mo.setCalcFee(rs.getLong("calcFee"));
 			mo.setPayOperatorId(rs.getString("payOperatorId"));
 			mo.setPayTime(StringUtil.replace(rs.getString("payTime"), ".0", ""));
-			mo.setRemark(rs.getString("remark"));
+			mo.setDisableTime(StringUtil.replace(rs.getString("disableTime"), ".0", ""));
+			mo.setState(CommissionState.valueOf(rs.getString("state")));
 
+			//relation info
+			mo.setTerminalUserName(rs.getString("terminalUserName"));
+			mo.setTerminalUserImg(rs.getString("terminalUserImg"));
 			mo.setTuanZhangName(rs.getString("tuanZhangName"));
 			mo.setGoodsName(rs.getString("goodsName"));
 			mo.setCommissionTypeName(rs.getString("commissionTypeName"));

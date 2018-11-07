@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.StringUtil;
@@ -18,7 +18,9 @@ import com.littlecat.commission.dao.CommissionCalcDao;
 import com.littlecat.commission.model.CommissionCalcMO;
 import com.littlecat.commission.model.CommissionGoodsMO;
 import com.littlecat.commission.model.CommissionTypeMO;
+import com.littlecat.common.consts.CommissionState;
 import com.littlecat.common.consts.CommissionType;
+import com.littlecat.common.utils.SysParamUtil;
 import com.littlecat.order.business.OrderBusiness;
 import com.littlecat.order.model.OrderDetailMO;
 import com.littlecat.order.model.OrderMO;
@@ -30,6 +32,8 @@ import com.littlecat.quanzi.model.TuanMemberMO;
 public class CommissionCalcBusiness
 {
 	private static final Logger logger = LoggerFactory.getLogger(CommissionCalcBusiness.class);
+
+	private static final int ENABLE_COMMISSION_DELAY_DAY_DEFAULT = 7;
 
 	@Autowired
 	private CommissionCalcDao commissionCalcDao;
@@ -67,15 +71,17 @@ public class CommissionCalcBusiness
 	}
 
 	/**
-	 * 佣金计算 订单支付后开始计算，计算后佣金状态为冻结，待用户签收X天后置为可发放状态；
+	 * 批量计算，有效性处理() <br/>
+	 * 由定时任务服务通过Rest接口调用
 	 * 
 	 * @throws LittleCatException
 	 */
 	public void doCalc() throws LittleCatException
 	{
 		doCalc(orderBusiness.getNeedCommissionCalcOrderList());
+		enable(commissionCalcDao.getNeedEnableList());
 	}
-	
+
 	public void doCalc(OrderMO order) throws LittleCatException
 	{
 		List<OrderMO> orderList = new ArrayList<OrderMO>();
@@ -89,7 +95,7 @@ public class CommissionCalcBusiness
 		{
 			return;
 		}
-		
+
 		CommissionTypeMO commissionTypeShare = commissionTypeBusiness.getById(CommissionType.share.name());
 		if (commissionTypeShare == null || commissionTypeShare.getCommissionRate() == null)
 		{
@@ -103,7 +109,7 @@ public class CommissionCalcBusiness
 			logger.error("CommissionCalcBusiness:doCalc:get commissionTypeDelivery error.");
 			return;
 		}
-		
+
 		for (OrderMO order : orderList)
 		{
 			List<OrderDetailMO> orderDetailList = order.getDetails();
@@ -197,7 +203,54 @@ public class CommissionCalcBusiness
 		}
 	}
 
-	public void batchPay(List<String> ids) throws LittleCatException
+	public void enable(List<String> ids) throws LittleCatException
+	{
+		// 收货后X天，佣金解除冻结（可申请发放）
+		int enableCommissionDelayDay = ENABLE_COMMISSION_DELAY_DAY_DEFAULT;
+
+		try
+		{
+			enableCommissionDelayDay = Integer.parseInt(SysParamUtil.getValueByName(Consts.PARAM_NAME_ENABLE_COMMISSION_DELAY_DAY));
+		}
+		catch (Exception e)
+		{
+			logger.error("CommissionCalcBusiness:enable:" + e.getMessage());
+		}
+
+		List<CommissionCalcMO> mos = new ArrayList<CommissionCalcMO>();
+		for (String id : ids)
+		{
+			CommissionCalcMO mo = commissionCalcDao.getById(id);
+			OrderMO order = orderBusiness.getOrderById(mo.getOrderId());
+			if (StringUtil.isNotEmpty(order.getReceiveTime()) && StringUtil.isEmpty(order.getReturnApplyTime()))
+			{
+				if (DateTimeUtil.getDurationDays(order.getReceiveTime()) > enableCommissionDelayDay)
+				{
+					mo.setState(CommissionState.canapply);
+					mos.add(mo);
+				}
+			}
+		}
+
+		commissionCalcDao.modify(mos);
+	}
+
+	public void apply(List<String> ids) throws LittleCatException
+	{
+		List<CommissionCalcMO> mos = new ArrayList<CommissionCalcMO>();
+		for (String id : ids)
+		{
+			CommissionCalcMO mo = commissionCalcDao.getById(id);
+			mo.setApplyTime(DateTimeUtil.getCurrentTimeForDisplay());
+			mo.setState(CommissionState.applyed);
+
+			mos.add(mo);
+		}
+
+		commissionCalcDao.modify(mos);
+	}
+
+	public void pay(List<String> ids) throws LittleCatException
 	{
 		List<CommissionCalcMO> mos = new ArrayList<CommissionCalcMO>();
 		for (String id : ids)
@@ -211,13 +264,23 @@ public class CommissionCalcBusiness
 		commissionCalcDao.modify(mos);
 	}
 
-	public List<CommissionCalcMO> getList(String tuanZhangId, Boolean hasPayed) throws LittleCatException
+	public void disable(List<String> ids) throws LittleCatException
 	{
-		return commissionCalcDao.getList(tuanZhangId, hasPayed);
+		List<CommissionCalcMO> mos = new ArrayList<CommissionCalcMO>();
+		for (String id : ids)
+		{
+			CommissionCalcMO mo = commissionCalcDao.getById(id);
+			mo.setDisableTime(DateTimeUtil.getCurrentTimeForDisplay());
+			mo.setState(CommissionState.disabled);
+
+			mos.add(mo);
+		}
+
+		commissionCalcDao.modify(mos);
 	}
 
-	public int getList(QueryParam queryParam, List<CommissionCalcMO> mos) throws LittleCatException
+	public List<CommissionCalcMO> getList(String tuanZhangId, String state) throws LittleCatException
 	{
-		return commissionCalcDao.getList(queryParam, mos);
+		return commissionCalcDao.getList(tuanZhangId, state);
 	}
 }

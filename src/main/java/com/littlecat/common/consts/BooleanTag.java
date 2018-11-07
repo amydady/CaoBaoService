@@ -8,5 +8,5 @@ package com.littlecat.common.consts;
  */
 public enum BooleanTag
 {
-	Y,N
+	Y,N,I
 }

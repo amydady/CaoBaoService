@@ -137,28 +137,15 @@ CREATE TABLE `t_commission_calc` (
 	`goodsFee` INT NOT NULL,
 	`commissionTypeId` VARCHAR(255) NOT NULL,
 	`calcFee` INT NOT NULL,
+	`state` VARCHAR(255) NOT NULL,
 	`payOperatorId` VARCHAR(255) NULL,
+	`applyTime` DATETIME NULL,
 	`payTime` DATETIME NULL,
-	`remark` VARCHAR(255) NULL,
+	`disableTime` DATETIME NULL,
 	
 	PRIMARY KEY (`id`)
 );
 
-
-# 消费者
-
-CREATE TABLE `t_terminaluser` (
-	`id` VARCHAR(255) NOT NULL,
-	`wxCode` VARCHAR(255) NOT NULL,
-	`mobile` VARCHAR(15) NULL,
-	`isTuanZhang` VARCHAR(1) NOT NULL DEFAULT 'N',
-	`isMaiShou` VARCHAR(1) NOT NULL DEFAULT 'N',
-	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`enable` VARCHAR(1) NOT NULL DEFAULT 'Y',
-	
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `wxCode` (`wxCode`)
-);
 
 CREATE TABLE `t_terminaluser_deliveryaddress` (
 	`id` VARCHAR(255) NOT NULL,

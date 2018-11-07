@@ -9,14 +9,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.commission.model.CommissionCalcMO;
+import com.littlecat.common.consts.CommissionState;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.TableName;
-import com.littlecat.common.utils.DaoUtil;
 
 @Component
 public class CommissionCalcDao
@@ -28,6 +27,8 @@ public class CommissionCalcDao
 	private final String TABLE_NAME_TUAN = TableName.Tuan.getName();
 	private final String TABLE_NAME_GOODS = TableName.Goods.getName();
 	private final String TABLE_NAME_COMMISSIONTYPE = TableName.CommissionType.getName();
+	private final String TABLE_NAME_ORDER = TableName.Order.getName();
+	private final String TABLE_NAME_TERMINALUSER = TableName.TerminalUser.getName();
 	private final String MODEL_NAME = CommissionCalcMO.class.getSimpleName();
 
 	public CommissionCalcMO getById(String id) throws LittleCatException
@@ -38,11 +39,11 @@ public class CommissionCalcDao
 				.append(" inner join ").append(TABLE_NAME_TUAN).append(" b  on a.tuanZhangId=b.id ")
 				.append(" inner join ").append(TABLE_NAME_GOODS).append(" c on a.goodsId=c.id ")
 				.append(" left join ").append(TABLE_NAME_COMMISSIONTYPE).append(" d on a.commissionTypeId=d.id")
-				.append(" where a.id=? ");	
-		
+				.append(" where a.id=? ");
+
 		try
 		{
-			return jdbcTemplate.queryForObject(sql.toString(), new Object[] { id },new CommissionCalcMO.MOMapper());
+			return jdbcTemplate.queryForObject(sql.toString(), new Object[] { id }, new CommissionCalcMO.MOMapper());
 		}
 		catch (DataAccessException e)
 		{
@@ -57,7 +58,7 @@ public class CommissionCalcDao
 			throw new LittleCatException("CommissionCalcDao:add:CommissionCalcMO list is empty.");
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,orderId,tuanZhangId,goodsId,goodsFee,commissionTypeId,calcFee) values(?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,orderId,tuanZhangId,goodsId,goodsFee,commissionTypeId,calcFee,state) values(?,?,?,?,?,?,?,?)";
 
 		List<Object[]> batchParams = new ArrayList<Object[]>();
 
@@ -68,7 +69,7 @@ public class CommissionCalcDao
 				mo.setId(UUIDUtil.createUUID());
 			}
 
-			batchParams.add(new Object[] { mo.getId(), mo.getOrderId(), mo.getTuanZhangId(), mo.getGoodsId(), mo.getGoodsFee(), mo.getCommissionTypeId(), mo.getCalcFee() });
+			batchParams.add(new Object[] { mo.getId(), mo.getOrderId(), mo.getTuanZhangId(), mo.getGoodsId(), mo.getGoodsFee(), mo.getCommissionTypeId(), mo.getCalcFee(), CommissionState.calced.name() });
 		}
 		try
 		{
@@ -82,14 +83,14 @@ public class CommissionCalcDao
 
 	public void modify(List<CommissionCalcMO> mos) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set payTime = ? where id = ?";
+		String sql = "update " + TABLE_NAME + " set applyTime=?,payTime = ?,state=?,disableTime=? where id = ?";
 		List<Object[]> batchParams = new ArrayList<Object[]>();
-		
+
 		for (CommissionCalcMO mo : mos)
 		{
-			batchParams.add(new Object[] { mo.getPayTime(), mo.getId() });
+			batchParams.add(new Object[] { mo.getApplyTime(), mo.getPayTime(), mo.getState().name(), mo.getDisableTime(), mo.getId() });
 		}
-		
+
 		try
 		{
 			jdbcTemplate.batchUpdate(sql, batchParams);
@@ -102,11 +103,11 @@ public class CommissionCalcDao
 
 	public void modify(CommissionCalcMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set payTime = ? where id = ?";
+		String sql = "update " + TABLE_NAME + " set applyTime=?,payTime = ?,state=?,disableTime=? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getPayTime(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getApplyTime(), mo.getPayTime(), mo.getState().name(), mo.getDisableTime(), mo.getId() });
 
 			if (ret != 1)
 			{
@@ -119,14 +120,16 @@ public class CommissionCalcDao
 		}
 	}
 
-	public List<CommissionCalcMO> getList(String tuanZhangId, Boolean hasPayed) throws LittleCatException
+	public List<CommissionCalcMO> getList(String tuanZhangId, String state) throws LittleCatException
 	{
 		StringBuilder sql = new StringBuilder()
-				.append(" select a.*,b.name tuanZhangName,c.name goodsName,d.name commissionTypeName ")
+				.append(" select a.*,b.name tuanZhangName,c.name goodsName,d.name commissionTypeName,f.name terminalUserName,f.image terminalUserImg ")
 				.append(" from ").append(TABLE_NAME).append(" a ")
 				.append(" inner join ").append(TABLE_NAME_TUAN).append(" b  on a.tuanZhangId=b.id ")
 				.append(" inner join ").append(TABLE_NAME_GOODS).append(" c on a.goodsId=c.id ")
 				.append(" left join ").append(TABLE_NAME_COMMISSIONTYPE).append(" d on a.commissionTypeId=d.id")
+				.append(" inner join ").append(TABLE_NAME_ORDER).append(" e on a.orderId=e.id")
+				.append(" inner join ").append(TABLE_NAME_TERMINALUSER).append(" f on e.terminalUserId=f.id")
 				.append(" where 1=1 ");
 
 		if (StringUtil.isNotEmpty(tuanZhangId))
@@ -134,26 +137,22 @@ public class CommissionCalcDao
 			sql.append(" and a.tuanZhangId='").append(tuanZhangId).append("' ");
 		}
 
-		if (hasPayed != null)
+		if (StringUtil.isNotEmpty(state))
 		{
-
-			if (hasPayed)
-			{
-				sql.append(" and a.payTime is not null ");
-			}
-			else
-			{
-				sql.append(" and a.payTime is null ");
-			}
+			sql.append(" and a.state = '").append(state).append("' ");
 		}
 
-		sql.append(" order by tuanZhangName,commissionTypeName,goodsName ");
+		sql.append(" order by tuanZhangName,state,commissionTypeName,goodsName ");
 
 		return jdbcTemplate.query(sql.toString(), new CommissionCalcMO.MOMapper());
 	}
-
-	public int getList(QueryParam queryParam, List<CommissionCalcMO> mos) throws LittleCatException
+	
+	public List<String> getNeedEnableList() throws LittleCatException
 	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new CommissionCalcMO.MOMapper());
+		StringBuilder sql = new StringBuilder()
+				.append("select id from  ").append(TABLE_NAME)
+				.append(" where state=").append(CommissionState.calced);
+		
+		return jdbcTemplate.queryForList(sql.toString(), String.class);
 	}
 }
