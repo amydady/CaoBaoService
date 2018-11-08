@@ -178,7 +178,7 @@ public class CommissionCalcDao
 		}
 		catch (Exception e)
 		{
-			logger.error("getTotalPayedFee error", e.getMessage());
+			logger.error("getTotalPayedFee error:" + e.getMessage());
 			return 0;
 		}
 	}
@@ -195,7 +195,7 @@ public class CommissionCalcDao
 		}
 		catch (Exception e)
 		{
-			logger.error("getTotalCanApplyFee error", e.getMessage());
+			logger.error("getTotalCanApplyFee error:" + e.getMessage());
 			return 0;
 		}
 	}
@@ -212,7 +212,7 @@ public class CommissionCalcDao
 		}
 		catch (Exception e)
 		{
-			logger.error("getTotalCanApplyFee error", e.getMessage());
+			logger.error("getTotalCanApplyFee error:" + e.getMessage());
 			return null;
 		}
 	}

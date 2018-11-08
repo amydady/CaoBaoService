@@ -252,13 +252,20 @@ public class CommissionCalcMO extends BaseMO
 			mo.setDisableTime(StringUtil.replace(rs.getString("disableTime"), ".0", ""));
 			mo.setState(CommissionState.valueOf(rs.getString("state")));
 
-			//relation info
-			mo.setTerminalUserName(rs.getString("terminalUserName"));
-			mo.setTerminalUserImg(rs.getString("terminalUserImg"));
-			mo.setTuanZhangName(rs.getString("tuanZhangName"));
-			mo.setGoodsName(rs.getString("goodsName"));
-			mo.setCommissionTypeName(rs.getString("commissionTypeName"));
-			mo.setGoodsMainImgData(rs.getString("goodsMainImgData"));
+			// relation info
+			try
+			{
+				mo.setTerminalUserName(rs.getString("terminalUserName"));
+				mo.setTerminalUserImg(rs.getString("terminalUserImg"));
+				mo.setTuanZhangName(rs.getString("tuanZhangName"));
+				mo.setGoodsName(rs.getString("goodsName"));
+				mo.setCommissionTypeName(rs.getString("commissionTypeName"));
+				mo.setGoodsMainImgData(rs.getString("goodsMainImgData"));
+			}
+			catch (Exception e)
+			{
+
+			}
 
 			return mo;
 		}

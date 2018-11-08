@@ -18,7 +18,7 @@ insert into t_sys_menu(id,name,pid,sortNum,isDefault) values('1','运营管理',
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('101','商品管理','../Goods/GoodsList.html','1','1','Y');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('102','供应商管理','../Supplier/SupplierList.html','1','2','N');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('103','合作伙伴管理','../quanzi/QuanziList.html','1','3','N');
-insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('104','佣金支付登记','../commission/CommissionPayMgr.html','1','4','N');
+insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('104','佣金发放','../commission/CommissionPayMgr.html','1','4','N');
 
 insert into t_sys_menu(id,name,pid,sortNum) values('3','基础配置','-1','3');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('301','配送区域管理','../delivery/DeliveryAreaMgr.html','3','1','Y');

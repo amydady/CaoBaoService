@@ -258,6 +258,7 @@ public class CommissionCalcBusiness
 		{
 			CommissionCalcMO mo = commissionCalcDao.getById(id);
 			mo.setPayTime(DateTimeUtil.getCurrentTimeForDisplay());
+			mo.setState(CommissionState.payed);
 
 			mos.add(mo);
 		}
@@ -284,14 +285,14 @@ public class CommissionCalcBusiness
 	{
 		return commissionCalcDao.getList(tuanZhangId, state);
 	}
-	
+
 	public CommissionReport getCommissionReport(String tuanZhangId)
 	{
 		CommissionReport commissionReport = new CommissionReport();
 		commissionReport.setTotalPayedFee(commissionCalcDao.getTotalPayedFee(tuanZhangId));
 		commissionReport.setTotalCanApplyFee(commissionCalcDao.getTotalCanApplyFee(tuanZhangId));
 		commissionReport.setApplyHistory(commissionCalcDao.getApplyHis(tuanZhangId));
-		
+
 		return commissionReport;
 	}
 }
