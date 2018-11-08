@@ -17,6 +17,11 @@ public class HomeImgsBusiness
 {
 	@Autowired
 	private HomeImgsDao homeImgsDao;
+	
+	public HomeImgsMO getById(String id) throws LittleCatException
+	{
+		return homeImgsDao.getById(id);
+	}
 
 	public void delete(String id) throws LittleCatException
 	{
@@ -31,6 +36,11 @@ public class HomeImgsBusiness
 	public String add(HomeImgsMO mo) throws LittleCatException
 	{
 		return homeImgsDao.add(mo);
+	}
+	
+	public void modify(HomeImgsMO mo) throws LittleCatException
+	{
+		homeImgsDao.modify(mo);
 	}
 
 	public int getList(QueryParam queryParam, List<HomeImgsMO> mos) throws LittleCatException

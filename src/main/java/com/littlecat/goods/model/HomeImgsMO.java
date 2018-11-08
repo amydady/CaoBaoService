@@ -15,6 +15,7 @@ import com.littlecat.cbb.common.BaseMO;
  */
 public class HomeImgsMO extends BaseMO
 {
+	private int sortNum;
 	private String imgData;
 
 	public String getImgData()
@@ -27,6 +28,16 @@ public class HomeImgsMO extends BaseMO
 		this.imgData = imgData;
 	}
 	
+	public int getSortNum()
+	{
+		return sortNum;
+	}
+
+	public void setSortNum(int sortNum)
+	{
+		this.sortNum = sortNum;
+	}
+
 	public static class MOMapper implements RowMapper<HomeImgsMO>
 	{
 		@Override
@@ -35,6 +46,7 @@ public class HomeImgsMO extends BaseMO
 			HomeImgsMO mo = new HomeImgsMO();
 
 			mo.setId(rs.getString("id"));
+			mo.setSortNum(rs.getInt("sortNum"));
 			mo.setImgData(rs.getString("imgData"));
 
 			return mo;

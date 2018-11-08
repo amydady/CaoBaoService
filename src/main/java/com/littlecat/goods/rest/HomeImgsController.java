@@ -9,9 +9,13 @@ import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -20,7 +24,9 @@ import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
+import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.cbb.utils.CollectionUtil;
+import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.goods.business.HomeImgsBusiness;
 import com.littlecat.goods.model.HomeImgsMO;
 
@@ -39,23 +45,92 @@ public class HomeImgsController
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeImgsController.class);
 
-	@PostMapping(value = "/upload")
-	public RestRsp<String> upload(HttpServletRequest request)
+	@GetMapping(value = "/getbyid")
+	public RestRsp<HomeImgsMO> getById(@RequestParam String id)
 	{
-		RestRsp<String> result = new RestRsp<String>();
-		HomeImgsMO mo = new HomeImgsMO();
-
-		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("goodsDetailImg");
-
-		if (CollectionUtil.isEmpty(files))
-		{
-			logger.error("HomeImgsController:upload:files is null.");
-		}
+		RestRsp<HomeImgsMO> result = new RestRsp<HomeImgsMO>();
 
 		try
 		{
-			mo.setImgData(Base64.encodeBase64String(files.get(0).getBytes()));
-			result.getData().add(homeImgsBusiness.add(mo));
+			HomeImgsMO mo = homeImgsBusiness.getById(id);
+			result.getData().add(mo);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PutMapping(value = "/batchdelete")
+	public RestSimpleRsp batchDelete(@RequestBody List<String> ids)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			homeImgsBusiness.delete(ids);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@PostMapping(value = "/upload")
+	public RestRsp<String> upload(HttpServletRequest request, @RequestParam @Nullable int sortNum, @RequestParam @Nullable String id)
+	{
+		RestRsp<String> result = new RestRsp<String>();
+		HomeImgsMO mo = null;
+
+		try
+		{
+			List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("homeImg");
+
+			if (StringUtil.isNotEmpty(id))
+			{
+				mo = homeImgsBusiness.getById(id);
+				mo.setSortNum(sortNum);
+
+				if (CollectionUtil.isNotEmpty(files))
+				{
+					mo.setImgData(Base64.encodeBase64String(files.get(0).getBytes()));
+				}
+
+				homeImgsBusiness.modify(mo);
+			}
+			else
+			{
+				if (CollectionUtil.isEmpty(files))
+				{
+					throw new LittleCatException("upload home img:img is null.");
+				}
+
+				mo = new HomeImgsMO();
+				mo.setSortNum(sortNum);
+				mo.setImgData(Base64.encodeBase64String(files.get(0).getBytes()));
+
+				result.getData().add(homeImgsBusiness.add(mo));
+			}
 		}
 		catch (LittleCatException e)
 		{

@@ -217,7 +217,9 @@ CREATE TABLE `t_goods` (
 
 CREATE TABLE `t_goods_homeimgs` (
 	`id` VARCHAR(255) NOT NULL,
+	`sortNum` INT NULL DEFAULT 0,
 	`imgData` MediumBlob NULL,
+	
 	PRIMARY KEY (`id`)
 );
 

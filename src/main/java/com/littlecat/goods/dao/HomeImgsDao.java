@@ -30,6 +30,11 @@ public class HomeImgsDao
 	private final String TABLE_NAME = TableName.HomeImgs.getName();
 	private final String MODEL_NAME = HomeImgsMO.class.getSimpleName();
 
+	public HomeImgsMO getById(String id) throws LittleCatException
+	{
+		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new HomeImgsMO.MOMapper());
+	}
+
 	public void delete(String id) throws LittleCatException
 	{
 		DaoUtil.delete(TABLE_NAME, id, jdbcTemplate);
@@ -52,11 +57,11 @@ public class HomeImgsDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,imgData) values(?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,imgData,sortNum) values(?,?,?)";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), new SerialBlob(mo.getImgData().getBytes(Consts.CHARSET_NAME)) });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), new SerialBlob(mo.getImgData().getBytes(Consts.CHARSET_NAME)), mo.getSortNum() });
 
 			if (ret != 1)
 			{
@@ -69,6 +74,20 @@ public class HomeImgsDao
 		}
 
 		return mo.getId();
+	}
+
+	public void modify(HomeImgsMO mo) throws LittleCatException
+	{
+		String sql = "update " + TABLE_NAME + " set sortNum = ?,imgData=? where id=?";
+
+		try
+		{
+			jdbcTemplate.update(sql, new Object[] { mo.getSortNum(), new SerialBlob(mo.getImgData().getBytes(Consts.CHARSET_NAME)), mo.getId() });
+		}
+		catch (DataAccessException | UnsupportedEncodingException | SQLException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
 	}
 
 	public int getList(QueryParam queryParam, List<HomeImgsMO> mos) throws LittleCatException
