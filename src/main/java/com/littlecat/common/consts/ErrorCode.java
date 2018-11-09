@@ -27,6 +27,7 @@ public enum ErrorCode
 
 
 	DuplicateAddError("DuplicateAdd","DuplicateAdd Error.infoname:{INFO_NAME}"),
+	DuplicateError("DuplicateError","DuplicateError"),
 	
 
 	LockResError("LockResError","lock resource error. "),

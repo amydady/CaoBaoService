@@ -134,6 +134,11 @@ public class SysOperatorDao
 		}
 		catch (DataAccessException e)
 		{
+			if(e.getMessage().contains("Duplicate"))
+			{
+				throw new LittleCatException(ErrorCode.DuplicateError.getCode(), ErrorCode.DuplicateError.getMsg(), e);
+			}
+			
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 
