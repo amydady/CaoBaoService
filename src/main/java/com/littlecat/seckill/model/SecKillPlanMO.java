@@ -1,5 +1,6 @@
 package com.littlecat.seckill.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -27,9 +28,9 @@ public class SecKillPlanMO extends BaseMO
 	private String goodsId;
 	private String startTime;
 	private String endTime;
-	private long price;
-	private long planInventory; // 规划库存
-	private long currentInventory; // 实际剩余库存
+	private BigDecimal price;
+	private BigDecimal planInventory; // 规划库存
+	private BigDecimal currentInventory; // 实际剩余库存
 	private int limitBuyNum;
 	private String createTime;
 	private String createOperatorId;
@@ -42,8 +43,8 @@ public class SecKillPlanMO extends BaseMO
 	// just for view
 	private String goodsName;
 	private String goodsSummaryDescription;
-	private long goodsPrice;
-	private long goodsCurrentInventory;
+	private BigDecimal goodsPrice;
+	private BigDecimal goodsCurrentInventory;
 	private String goodsMainImgData;
 	private List<GoodsDetailImgsMO> goodsDetailImgs;
 
@@ -79,12 +80,12 @@ public class SecKillPlanMO extends BaseMO
 		this.endTime = endTime;
 	}
 
-	public long getPrice()
+	public BigDecimal getPrice()
 	{
 		return price;
 	}
 
-	public void setPrice(long price)
+	public void setPrice(BigDecimal price)
 	{
 		this.price = price;
 	}
@@ -139,12 +140,12 @@ public class SecKillPlanMO extends BaseMO
 		this.deliveryFeeRuleId = deliveryFeeRuleId;
 	}
 
-	public long getCurrentInventory()
+	public BigDecimal getCurrentInventory()
 	{
 		return currentInventory;
 	}
 
-	public void setCurrentInventory(long currentInventory)
+	public void setCurrentInventory(BigDecimal currentInventory)
 	{
 		this.currentInventory = currentInventory;
 	}
@@ -159,12 +160,12 @@ public class SecKillPlanMO extends BaseMO
 		this.goodsName = goodsName;
 	}
 
-	public long getGoodsPrice()
+	public BigDecimal getGoodsPrice()
 	{
 		return goodsPrice;
 	}
 
-	public void setGoodsPrice(long goodsPrice)
+	public void setGoodsPrice(BigDecimal goodsPrice)
 	{
 		this.goodsPrice = goodsPrice;
 	}
@@ -209,22 +210,22 @@ public class SecKillPlanMO extends BaseMO
 		this.goodsSummaryDescription = goodsSummaryDescription;
 	}
 
-	public long getGoodsCurrentInventory()
+	public BigDecimal getGoodsCurrentInventory()
 	{
 		return goodsCurrentInventory;
 	}
 
-	public void setGoodsCurrentInventory(long goodsCurrentInventory)
+	public void setGoodsCurrentInventory(BigDecimal goodsCurrentInventory)
 	{
 		this.goodsCurrentInventory = goodsCurrentInventory;
 	}
 
-	public long getPlanInventory()
+	public BigDecimal getPlanInventory()
 	{
 		return planInventory;
 	}
 
-	public void setPlanInventory(long planInventory)
+	public void setPlanInventory(BigDecimal planInventory)
 	{
 		this.planInventory = planInventory;
 	}
@@ -251,14 +252,14 @@ public class SecKillPlanMO extends BaseMO
 			mo.setStartTime(rs.getString("startTime"));
 			mo.setEndTime(rs.getString("endTime"));
 			mo.setCreateTime(rs.getString("createTime"));
-			mo.setPrice(rs.getLong("price"));
-			mo.setPlanInventory(rs.getLong("planInventory"));
-			mo.setCurrentInventory(rs.getLong("currentInventory"));
+			mo.setPrice(rs.getBigDecimal("price"));
+			mo.setPlanInventory(rs.getBigDecimal("planInventory"));
+			mo.setCurrentInventory(rs.getBigDecimal("currentInventory"));
 			mo.setLimitBuyNum(rs.getInt("limitBuyNum"));
 			mo.setEnable(rs.getString("enable"));
 			
 			mo.setGoodsName(rs.getString("goodsName"));
-			mo.setGoodsPrice(rs.getLong("goodsPrice"));
+			mo.setGoodsPrice(rs.getBigDecimal("goodsPrice"));
 			mo.setGoodsMainImgData(rs.getString("goodsMainImgData"));
 
 			return mo;
@@ -280,9 +281,9 @@ public class SecKillPlanMO extends BaseMO
 			mo.setGoodsId(rs.getString("goodsId"));
 			mo.setStartTime(StringUtil.replace(rs.getString("startTime"), ".0", ""));
 			mo.setEndTime(StringUtil.replace(rs.getString("endTime"), ".0", ""));
-			mo.setPrice(rs.getLong("price"));
-			mo.setPlanInventory(rs.getLong("planInventory"));
-			mo.setCurrentInventory(rs.getLong("currentInventory"));
+			mo.setPrice(rs.getBigDecimal("price"));
+			mo.setPlanInventory(rs.getBigDecimal("planInventory"));
+			mo.setCurrentInventory(rs.getBigDecimal("currentInventory"));
 			mo.setLimitBuyNum(rs.getInt("limitBuyNum"));
 			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
 			mo.setCreateOperatorId(rs.getString("createOperatorId"));

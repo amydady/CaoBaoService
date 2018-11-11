@@ -1,5 +1,6 @@
 package com.littlecat.inventory.dao;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -73,13 +74,13 @@ public class SecKillInventoryDao
 	 * @return
 	 * @throws LittleCatException
 	 */
-	public long getCurrentValueByPlanId(String planId) throws LittleCatException
+	public BigDecimal getCurrentValueByPlanId(String planId) throws LittleCatException
 	{
 		String sql = "select sum(changeValue) from " + TABLE_NAME + " where planId=?";
 
 		try
 		{
-			return jdbcTemplate.queryForObject(sql, new Object[] { planId }, Long.class);
+			return jdbcTemplate.queryForObject(sql, new Object[] { planId }, BigDecimal.class);
 		}
 		catch (DataAccessException e)
 		{
@@ -94,13 +95,13 @@ public class SecKillInventoryDao
 	 * @return
 	 * @throws LittleCatException
 	 */
-	public long getPlanValueByPlanId(String planId) throws LittleCatException
+	public BigDecimal getPlanValueByPlanId(String planId) throws LittleCatException
 	{
 		String sql = "select sum(changeValue) from " + TABLE_NAME + " where planId=? and changeType in ('rengongzengjia','rengongjianshao') ";
 
 		try
 		{
-			return jdbcTemplate.queryForObject(sql, new Object[] { planId }, Long.class);
+			return jdbcTemplate.queryForObject(sql, new Object[] { planId }, BigDecimal.class);
 		}
 		catch (DataAccessException e)
 		{
@@ -131,7 +132,7 @@ public class SecKillInventoryDao
 
 					mo.setId(rs.getString("id"));
 					mo.setPlanId(rs.getString("planId"));
-					mo.setChangeValue(rs.getLong("changeValue"));
+					mo.setChangeValue(rs.getBigDecimal("changeValue"));
 					mo.setChangeType(InventoryChangeType.valueOf(rs.getString("changeType")));
 					mo.setOperatorId(rs.getString("operatorId"));
 					mo.setDescription(rs.getString("description"));

@@ -1,5 +1,6 @@
 package com.littlecat.inventory.dao;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -66,13 +67,13 @@ public class GoodsInventoryDao
 		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new GoodsInventoryMO.MOMapper());
 	}
 
-	public long getCurrentValueByGoodsId(String goodsId) throws LittleCatException
+	public BigDecimal getCurrentValueByGoodsId(String goodsId) throws LittleCatException
 	{
 		String sql = "select sum(changeValue) from " + TABLE_NAME + " where goodsId=?";
 
 		try
 		{
-			return jdbcTemplate.queryForObject(sql, new Object[] { goodsId }, Long.class);
+			return jdbcTemplate.queryForObject(sql, new Object[] { goodsId }, BigDecimal.class);
 		}
 		catch (DataAccessException e)
 		{
@@ -103,7 +104,7 @@ public class GoodsInventoryDao
 
 					mo.setId(rs.getString("id"));
 					mo.setGoodsId(rs.getString("goodsId"));
-					mo.setChangeValue(rs.getLong("changeValue"));
+					mo.setChangeValue(rs.getBigDecimal("changeValue"));
 					mo.setChangeType(InventoryChangeType.valueOf(rs.getString("changeType")));
 					mo.setOperatorId(rs.getString("operatorId"));
 					mo.setDescription(rs.getString("description"));

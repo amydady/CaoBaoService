@@ -1,5 +1,6 @@
 package com.littlecat.inventory.business;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class SecKillInventoryBusiness
 				goodsInventoryMO.setChangeType(InventoryChangeType.miaoshaguihuachexiao);
 			}
 			
-			goodsInventoryMO.setChangeValue(0-mo.getChangeValue());
+			goodsInventoryMO.setChangeValue(mo.getChangeValue().multiply(new BigDecimal("-1")));
 			goodsInventoryMO.setDescription("SecKillPlanID:"+id);
 			goodsInventoryMO.setGoodsId(secKillPlanBusiness.getById(mo.getPlanId()).getGoodsId());
 			goodsInventoryMO.setOperatorId(mo.getOperatorId());
@@ -68,12 +69,12 @@ public class SecKillInventoryBusiness
 		return id;
 	}
 
-	public long getCurrentValueByPlanId(String planId) throws LittleCatException
+	public BigDecimal getCurrentValueByPlanId(String planId) throws LittleCatException
 	{
 		return secKillInventoryDao.getCurrentValueByPlanId(planId);
 	}
 
-	public long getPlanValueByPlanId(String planId) throws LittleCatException
+	public BigDecimal getPlanValueByPlanId(String planId) throws LittleCatException
 	{
 		return secKillInventoryDao.getPlanValueByPlanId(planId);
 	}

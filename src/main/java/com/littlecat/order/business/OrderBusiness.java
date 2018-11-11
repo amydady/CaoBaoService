@@ -1,5 +1,6 @@
 package com.littlecat.order.business;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -450,17 +451,14 @@ public class OrderBusiness
 				GoodsInventoryMO inventoryMO = new GoodsInventoryMO();
 
 				inventoryMO.setChangeType(InventoryChangeType.dingdankoujian);
-				inventoryMO.setChangeValue(0 - orderDetailMO.getGoodsNum());
+				inventoryMO.setChangeValue(orderDetailMO.getGoodsNum().multiply(new BigDecimal("-1")));
 				inventoryMO.setGoodsId(goodsId);
 
 				goodsInventoryBusiness.add(inventoryMO);
 
-				// 重新获取商品最新的库存
-				long currentGoodsInventory = goodsInventoryBusiness.getCurrentValueByGoodsId(goodsId);
-
 				// 修改商品信息中的库存字段
 				GoodsMO goodsMO = goodsBusiness.getById(goodsId);
-				goodsMO.setCurrentInventory(currentGoodsInventory);
+				goodsMO.setCurrentInventory(goodsInventoryBusiness.getCurrentValueByGoodsId(goodsId));
 				goodsBusiness.modify(goodsMO);
 			}
 
@@ -472,16 +470,13 @@ public class OrderBusiness
 
 				inventoryMO.setPlanId(planId);
 				inventoryMO.setChangeType(InventoryChangeType.dingdankoujian);
-				inventoryMO.setChangeValue(0 - orderDetailMO.getGoodsNum());
+				inventoryMO.setChangeValue(orderDetailMO.getGoodsNum().multiply(new BigDecimal("-1")));
 
 				secKillInventoryBusiness.add(inventoryMO);
 
-				// 重新获取商品秒杀计划最新的库存
-				long currentGoodsInventory = secKillInventoryBusiness.getCurrentValueByPlanId(planId);
-
 				// 修改商品秒杀计划信息中的库存字段
 				SecKillPlanMO secKillPlanMO = secKillPlanBusiness.getById(planId);
-				secKillPlanMO.setCurrentInventory(currentGoodsInventory);
+				secKillPlanMO.setCurrentInventory(secKillInventoryBusiness.getCurrentValueByPlanId(planId));
 				secKillPlanBusiness.modify(secKillPlanMO);
 			}
 		}

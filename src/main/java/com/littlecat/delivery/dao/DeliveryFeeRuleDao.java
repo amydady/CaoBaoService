@@ -145,7 +145,7 @@ public class DeliveryFeeRuleDao
 					mo.setCalcType(rs.getString("calcType"));
 					mo.setBeginValue(rs.getBigDecimal("beginValue"));
 					mo.setEndValue(rs.getBigDecimal("endValue"));
-					mo.setFee(rs.getLong("fee"));
+					mo.setFee(rs.getBigDecimal("fee"));
 					mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
 					mo.setEnable(rs.getString("enable"));
 

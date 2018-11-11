@@ -1,5 +1,6 @@
 package com.littlecat.order.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -20,8 +21,8 @@ public class OrderDetailMO extends BaseMO
 	private BuyType buyType;
 	private String resId; // 根据butType类型区分，代表商品ID、秒杀计划ID、团购任务实例ID
 	private String goodsId;
-	private long price;
-	private long goodsNum;
+	private BigDecimal price;
+	private BigDecimal goodsNum;
 
 	private String goodsName;
 	private String goodsMainImgData = "";
@@ -56,22 +57,22 @@ public class OrderDetailMO extends BaseMO
 		this.resId = resId;
 	}
 
-	public long getGoodsNum()
+	public BigDecimal getGoodsNum()
 	{
 		return goodsNum;
 	}
 
-	public void setGoodsNum(long goodsNum)
+	public void setGoodsNum(BigDecimal goodsNum)
 	{
 		this.goodsNum = goodsNum;
 	}
 
-	public long getPrice()
+	public BigDecimal getPrice()
 	{
 		return price;
 	}
 
-	public void setPrice(long price)
+	public void setPrice(BigDecimal price)
 	{
 		this.price = price;
 	}
@@ -118,8 +119,8 @@ public class OrderDetailMO extends BaseMO
 			mo.setBuyType(BuyType.valueOf(rs.getString("buyType")));
 			mo.setResId(rs.getString("resId"));
 			mo.setGoodsId(rs.getString("goodsId"));
-			mo.setPrice(rs.getLong("price"));
-			mo.setGoodsNum(rs.getLong("goodsNum"));
+			mo.setPrice(rs.getBigDecimal("price"));
+			mo.setGoodsNum(rs.getBigDecimal("goodsNum"));
 
 			return mo;
 		}
@@ -137,8 +138,8 @@ public class OrderDetailMO extends BaseMO
 			mo.setBuyType(BuyType.valueOf(rs.getString("buyType")));
 			mo.setResId(rs.getString("resId"));
 			mo.setGoodsId(rs.getString("goodsId"));
-			mo.setPrice(rs.getLong("price"));
-			mo.setGoodsNum(rs.getLong("goodsNum"));
+			mo.setPrice(rs.getBigDecimal("price"));
+			mo.setGoodsNum(rs.getBigDecimal("goodsNum"));
 			
 			
 			mo.setGoodsName(rs.getString("goodsName"));

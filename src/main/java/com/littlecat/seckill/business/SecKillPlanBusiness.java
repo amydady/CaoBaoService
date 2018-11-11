@@ -1,5 +1,6 @@
 package com.littlecat.seckill.business;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.List;
 
@@ -68,14 +69,14 @@ public class SecKillPlanBusiness
 	{
 		secKillPlanDao.disable(id);
 
-		long currentInventoryValue = secKillInventoryBusiness.getCurrentValueByPlanId(id);
+		BigDecimal currentInventoryValue = secKillInventoryBusiness.getCurrentValueByPlanId(id);
 
-		if (currentInventoryValue > 0)
+		if (currentInventoryValue.compareTo(new BigDecimal("0")) > 0)
 		{
 			SecKillInventoryMO secKillInventoryMO = new SecKillInventoryMO();
 
 			secKillInventoryMO.setChangeType(InventoryChangeType.miaoshaguihuachexiao);
-			secKillInventoryMO.setChangeValue(0 - currentInventoryValue);
+			secKillInventoryMO.setChangeValue(currentInventoryValue.multiply(new BigDecimal("-1")));
 			secKillInventoryMO.setPlanId(id);
 
 			secKillInventoryBusiness.add(secKillInventoryMO);
@@ -149,12 +150,6 @@ public class SecKillPlanBusiness
 		{
 			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME_GOODS).replace("{DETAILINFO}", "goodsid:" + reqData.getGoodsId()));
 		}
-
-		if (reqData.getPrice() > goodsMO.getPrice())
-		{
-			throw new LittleCatException(ErrorCode.RequestObjectInvalidate.getCode(), ErrorCode.RequestObjectInvalidate.getMsg().replace("{INFO_NAME}", MODEL_NAME).replace("{DETAILINFO}", "the price of the seckillplan can not be grater than the goods's."));
-		}
-
 		// TODO:库存校验
 
 		// TODO:limitBuyNum校验

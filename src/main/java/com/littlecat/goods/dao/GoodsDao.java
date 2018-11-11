@@ -59,7 +59,7 @@ public class GoodsDao
 				{
 					GoodsMO mo = new GoodsMO();
 					mo.setName(rs.getString("name"));
-					mo.setPrice(rs.getLong("price"));
+					mo.setPrice(rs.getBigDecimal("price"));
 
 					return mo;
 				}
@@ -198,8 +198,8 @@ public class GoodsDao
 					mo.setId(rs.getString("id"));
 					mo.setName(rs.getString("name"));
 					mo.setSummaryDescription(rs.getString("summaryDescription"));
-					mo.setCurrentInventory(rs.getLong("currentInventory"));
-					mo.setPrice(rs.getLong("price"));
+					mo.setCurrentInventory(rs.getBigDecimal("currentInventory"));
+					mo.setPrice(rs.getBigDecimal("price"));
 					mo.setMainImgData(rs.getString("mainImgData"));
 
 					return mo;
@@ -255,10 +255,10 @@ public class GoodsDao
 					mo.setId(rs.getString("id"));
 					mo.setName(rs.getString("name"));
 					mo.setSummaryDescription(rs.getString("summaryDescription"));
-					mo.setPrice(rs.getLong("price"));
+					mo.setPrice(rs.getBigDecimal("price"));
 					mo.setEnable(rs.getString("enable"));
 					mo.setCreateTime(rs.getString("createTime"));
-					mo.setCurrentInventory(rs.getLong("currentInventory"));
+					mo.setCurrentInventory(rs.getBigDecimal("currentInventory"));
 
 					return mo;
 				}

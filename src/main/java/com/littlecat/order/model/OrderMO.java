@@ -1,5 +1,6 @@
 package com.littlecat.order.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,8 +23,8 @@ import com.littlecat.order.business.OrderDetailBusiness;
 public class OrderMO extends BaseMO
 {
 	private String terminalUserId;
-	private long fee;// 订单总费用（商品费用+物流费用）
-	private long deliveryFee; // 物流费用（非自提点收货时填写）
+	private BigDecimal fee;// 订单总费用（商品费用+物流费用）
+	private BigDecimal deliveryFee; // 物流费用（非自提点收货时填写）
 	private OrderState state;
 	private String shareTuanZhangId;// 分享产品的团长ID
 	private String deliveryTuanZhangId; // 发货接收的自提点（填团长ID）
@@ -70,12 +71,12 @@ public class OrderMO extends BaseMO
 		this.createTime = createTime;
 	}
 
-	public long getFee()
+	public BigDecimal getFee()
 	{
 		return fee;
 	}
 
-	public void setFee(long fee)
+	public void setFee(BigDecimal fee)
 	{
 		this.fee = fee;
 	}
@@ -210,12 +211,12 @@ public class OrderMO extends BaseMO
 		this.details = details;
 	}
 
-	public long getDeliveryFee()
+	public BigDecimal getDeliveryFee()
 	{
 		return deliveryFee;
 	}
 
-	public void setDeliveryFee(long deliveryFee)
+	public void setDeliveryFee(BigDecimal deliveryFee)
 	{
 		this.deliveryFee = deliveryFee;
 	}
@@ -288,8 +289,8 @@ public class OrderMO extends BaseMO
 			mo.setId(rs.getString("id"));
 			mo.setTerminalUserId(rs.getString("terminalUserId"));
 			mo.setCreateTime(rs.getString("createTime"));
-			mo.setFee(rs.getLong("fee"));
-			mo.setDeliveryFee(rs.getLong("deliveryFee"));
+			mo.setFee(rs.getBigDecimal("fee"));
+			mo.setDeliveryFee(rs.getBigDecimal("deliveryFee"));
 			mo.setState(OrderState.valueOf(rs.getString("state")));
 
 			mo.setShareTuanZhangId(rs.getString("shareTuanZhangId"));
@@ -333,8 +334,8 @@ public class OrderMO extends BaseMO
 			mo.setId(rs.getString("id"));
 			mo.setTerminalUserId(rs.getString("terminalUserId"));
 			mo.setCreateTime(rs.getString("createTime"));
-			mo.setFee(rs.getLong("fee"));
-			mo.setDeliveryFee(rs.getLong("deliveryFee"));
+			mo.setFee(rs.getBigDecimal("fee"));
+			mo.setDeliveryFee(rs.getBigDecimal("deliveryFee"));
 			mo.setState(OrderState.valueOf(rs.getString("state")));
 
 			mo.setShareTuanZhangId(rs.getString("shareTuanZhangId"));

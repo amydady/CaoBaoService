@@ -22,7 +22,7 @@ public class DeliveryFeeRuleMO extends BaseMO
 	private String calcType;
 	private BigDecimal beginValue;
 	private BigDecimal endValue;
-	private long fee;
+	private BigDecimal fee;
 	private String createOperatorId;
 	private String createTime;
 	private String enable;
@@ -83,12 +83,12 @@ public class DeliveryFeeRuleMO extends BaseMO
 		this.endValue = endValue;
 	}
 
-	public long getFee()
+	public BigDecimal getFee()
 	{
 		return fee;
 	}
 
-	public void setFee(long fee)
+	public void setFee(BigDecimal fee)
 	{
 		this.fee = fee;
 	}
@@ -166,7 +166,7 @@ public class DeliveryFeeRuleMO extends BaseMO
 			mo.setCalcType(rs.getString("calcType"));
 			mo.setBeginValue(rs.getBigDecimal("beginValue"));
 			mo.setEndValue(rs.getBigDecimal("endValue"));
-			mo.setFee(rs.getLong("fee"));
+			mo.setFee(rs.getBigDecimal("fee"));
 			mo.setCreateOperatorId(rs.getString("createOperatorId"));
 			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
 			mo.setEnable(rs.getString("enable"));

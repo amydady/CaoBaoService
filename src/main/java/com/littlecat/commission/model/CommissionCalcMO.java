@@ -1,5 +1,6 @@
 package com.littlecat.commission.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -22,9 +23,9 @@ public class CommissionCalcMO extends BaseMO
 	private String createTime;
 
 	private String goodsId;
-	private long goodsFee;
+	private BigDecimal goodsFee;
 	private String commissionTypeId;
-	private long calcFee; // 结算的佣金总额
+	private BigDecimal calcFee; // 结算的佣金总额
 	private String payOperatorId;// 佣金支付人员ID
 	private CommissionState state;
 	private String applyTime;
@@ -101,12 +102,12 @@ public class CommissionCalcMO extends BaseMO
 		this.tuanZhangId = tuanZhangId;
 	}
 
-	public long getCalcFee()
+	public BigDecimal getCalcFee()
 	{
 		return calcFee;
 	}
 
-	public void setCalcFee(long calcFee)
+	public void setCalcFee(BigDecimal calcFee)
 	{
 		this.calcFee = calcFee;
 	}
@@ -141,12 +142,12 @@ public class CommissionCalcMO extends BaseMO
 		this.goodsId = goodsId;
 	}
 
-	public long getGoodsFee()
+	public BigDecimal getGoodsFee()
 	{
 		return goodsFee;
 	}
 
-	public void setGoodsFee(long goodsFee)
+	public void setGoodsFee(BigDecimal goodsFee)
 	{
 		this.goodsFee = goodsFee;
 	}
@@ -243,9 +244,9 @@ public class CommissionCalcMO extends BaseMO
 			mo.setTuanZhangId(rs.getString("tuanZhangId"));
 			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
 			mo.setGoodsId(rs.getString("goodsId"));
-			mo.setGoodsFee(rs.getLong("goodsFee"));
+			mo.setGoodsFee(rs.getBigDecimal("goodsFee"));
 			mo.setCommissionTypeId(rs.getString("commissionTypeId"));
-			mo.setCalcFee(rs.getLong("calcFee"));
+			mo.setCalcFee(rs.getBigDecimal("calcFee"));
 			mo.setPayOperatorId(rs.getString("payOperatorId"));
 			mo.setApplyTime(StringUtil.replace(rs.getString("applyTime"), ".0", ""));
 			mo.setPayTime(StringUtil.replace(rs.getString("payTime"), ".0", ""));

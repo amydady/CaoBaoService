@@ -1,5 +1,6 @@
 package com.littlecat.inventory.business;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class GoodsInventoryBusiness
 		return id;
 	}
 
-	public long getCurrentValueByGoodsId(String goodsId) throws LittleCatException
+	public BigDecimal getCurrentValueByGoodsId(String goodsId) throws LittleCatException
 	{
 		return goodsInventoryDao.getCurrentValueByGoodsId(goodsId);
 	}

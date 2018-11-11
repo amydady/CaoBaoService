@@ -1,5 +1,6 @@
 package com.littlecat.shoppingcart.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -26,7 +27,7 @@ public class ShoppingCartMO extends BaseMO
 	private String terminalUserId;
 	private BuyType buyType;
 	private String resId;
-	private long goodsNum;
+	private BigDecimal goodsNum;
 	private String shareTuanZhangId;
 	private String createTime;
 
@@ -34,7 +35,7 @@ public class ShoppingCartMO extends BaseMO
 	private String goodsId;
 	private String goodsName;
 	private String goodsMainImgData;
-	private long goodsPrice;
+	private BigDecimal goodsPrice;
 
 	public String getTerminalUserId()
 	{
@@ -66,12 +67,12 @@ public class ShoppingCartMO extends BaseMO
 		this.resId = resId;
 	}
 
-	public long getGoodsNum()
+	public BigDecimal getGoodsNum()
 	{
 		return goodsNum;
 	}
 
-	public void setGoodsNum(long goodsNum)
+	public void setGoodsNum(BigDecimal goodsNum)
 	{
 		this.goodsNum = goodsNum;
 	}
@@ -116,12 +117,12 @@ public class ShoppingCartMO extends BaseMO
 		this.goodsMainImgData = goodsMainImgData;
 	}
 
-	public long getGoodsPrice()
+	public BigDecimal getGoodsPrice()
 	{
 		return goodsPrice;
 	}
 
-	public void setGoodsPrice(long goodsPrice)
+	public void setGoodsPrice(BigDecimal goodsPrice)
 	{
 		this.goodsPrice = goodsPrice;
 	}
@@ -151,7 +152,7 @@ public class ShoppingCartMO extends BaseMO
 			mo.setBuyType(BuyType.valueOf(rs.getString("buyType")));
 			mo.setResId(rs.getString("resId"));
 			mo.setShareTuanZhangId(rs.getString("shareTuanZhangId"));
-			mo.setGoodsNum(rs.getLong("goodsNum"));
+			mo.setGoodsNum(rs.getBigDecimal("goodsNum"));
 			mo.setCreateTime(rs.getString("createTime"));
 
 			String goodsId = mo.getResId();

@@ -1,5 +1,6 @@
 package com.littlecat.inventory.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -17,7 +18,7 @@ import com.littlecat.common.consts.InventoryChangeType;
 public class GoodsInventoryMO extends BaseMO
 {
 	private String goodsId;
-	private long changeValue;
+	private BigDecimal changeValue;
 	private InventoryChangeType changeType;
 	private String operatorId;
 	private String description;
@@ -33,12 +34,12 @@ public class GoodsInventoryMO extends BaseMO
 		this.goodsId = goodsId;
 	}
 
-	public long getChangeValue()
+	public BigDecimal getChangeValue()
 	{
 		return changeValue;
 	}
 
-	public void setChangeValue(long changeValue)
+	public void setChangeValue(BigDecimal changeValue)
 	{
 		this.changeValue = changeValue;
 	}
@@ -92,7 +93,7 @@ public class GoodsInventoryMO extends BaseMO
 
 			mo.setId(rs.getString("id"));
 			mo.setGoodsId(rs.getString("goodsId"));
-			mo.setChangeValue(rs.getLong("changeValue"));
+			mo.setChangeValue(rs.getBigDecimal("changeValue"));
 			mo.setChangeType(InventoryChangeType.valueOf(rs.getString("changeType")));
 			mo.setOperatorId(rs.getString("operatorId"));
 			mo.setDescription(rs.getString("description"));

@@ -121,10 +121,10 @@ public class SecKillPlanDao
 
 					mo.setId(rs.getString("id"));
 					mo.setGoodsId(rs.getString("goodsId"));
-					mo.setPrice(rs.getLong("price"));
-					mo.setCurrentInventory(rs.getLong("currentInventory"));
+					mo.setPrice(rs.getBigDecimal("price"));
+					mo.setCurrentInventory(rs.getBigDecimal("currentInventory"));
 					mo.setGoodsName(rs.getString("goodsName"));
-					mo.setGoodsPrice(rs.getLong("goodsPrice"));
+					mo.setGoodsPrice(rs.getBigDecimal("goodsPrice"));
 					mo.setGoodsMainImgData(rs.getString("goodsMainImgData"));
 
 					return mo;

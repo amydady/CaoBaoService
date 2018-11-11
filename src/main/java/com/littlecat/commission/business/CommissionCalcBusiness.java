@@ -1,5 +1,6 @@
 package com.littlecat.commission.business;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,8 +148,8 @@ public class CommissionCalcBusiness
 			{
 				List<CommissionGoodsMO> commissionGoodsMOList = commissionGoodsBusiness.getListByGoodsId(orderDetail.getGoodsId());
 
-				double commissionRateShare = commissionTypeShare.getCommissionRate().doubleValue();
-				double commissionRateDelivery = commissionTypeDelivery.getCommissionRate().doubleValue();
+				BigDecimal commissionRateShare = commissionTypeShare.getCommissionRate();
+				BigDecimal commissionRateDelivery = commissionTypeDelivery.getCommissionRate();
 
 				if (CollectionUtil.isNotEmpty(commissionGoodsMOList))
 				{
@@ -156,12 +157,12 @@ public class CommissionCalcBusiness
 					{
 						if (commissionGoodsMO.getCommissionTypeId() == CommissionType.share.name())
 						{
-							commissionRateShare = commissionGoodsMO.getCommissionRate().doubleValue();
+							commissionRateShare = commissionGoodsMO.getCommissionRate();
 						}
 
 						if (commissionGoodsMO.getCommissionTypeId() == CommissionType.deliverysite.name())
 						{
-							commissionRateDelivery = commissionGoodsMO.getCommissionRate().doubleValue();
+							commissionRateDelivery = commissionGoodsMO.getCommissionRate();
 						}
 					}
 				}
@@ -174,9 +175,9 @@ public class CommissionCalcBusiness
 					shareCommissionCalcMO.setOrderId(order.getId());
 					shareCommissionCalcMO.setTuanZhangId(shareTuanZhangId);
 					shareCommissionCalcMO.setGoodsId(orderDetail.getGoodsId());
-					shareCommissionCalcMO.setGoodsFee(orderDetail.getGoodsNum() * orderDetail.getPrice());
+					shareCommissionCalcMO.setGoodsFee((orderDetail.getGoodsNum().multiply(orderDetail.getPrice())).setScale(2, java.math.BigDecimal.ROUND_DOWN));
 					shareCommissionCalcMO.setCommissionTypeId(CommissionType.share.name());
-					shareCommissionCalcMO.setCalcFee((long) (shareCommissionCalcMO.getGoodsFee() * commissionRateShare / 100));
+					shareCommissionCalcMO.setCalcFee((orderDetail.getGoodsNum().multiply(orderDetail.getPrice()).multiply(commissionRateShare).multiply(new BigDecimal("0.01"))).setScale(2, java.math.BigDecimal.ROUND_DOWN));
 
 					commissionCalcMOList.add(shareCommissionCalcMO);
 				}
@@ -188,9 +189,9 @@ public class CommissionCalcBusiness
 					deliveryCommissionCalcMO.setOrderId(order.getId());
 					deliveryCommissionCalcMO.setTuanZhangId(deliverySiteTuanZhangId);
 					deliveryCommissionCalcMO.setGoodsId(orderDetail.getGoodsId());
-					deliveryCommissionCalcMO.setGoodsFee(orderDetail.getGoodsNum() * orderDetail.getPrice());
+					deliveryCommissionCalcMO.setGoodsFee((orderDetail.getGoodsNum().multiply(orderDetail.getPrice())).setScale(2, java.math.BigDecimal.ROUND_DOWN));
 					deliveryCommissionCalcMO.setCommissionTypeId(CommissionType.deliverysite.name());
-					deliveryCommissionCalcMO.setCalcFee((long) (deliveryCommissionCalcMO.getGoodsFee() * commissionRateDelivery / 100));
+					deliveryCommissionCalcMO.setCalcFee((orderDetail.getGoodsNum().multiply(orderDetail.getPrice()).multiply(commissionRateDelivery).multiply(new BigDecimal("0.01"))).setScale(2, java.math.BigDecimal.ROUND_DOWN));
 
 					commissionCalcMOList.add(deliveryCommissionCalcMO);
 				}

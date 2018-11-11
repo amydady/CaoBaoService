@@ -1,5 +1,6 @@
 package com.littlecat.groupbuy.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -23,10 +24,10 @@ public class GroupBuyPlanMO extends BaseMO
 	private String goodsId;
 	private String startTime;
 	private String endTime;
-	private long price;
+	private BigDecimal price;
 	private String enable;
-	private long planInventory; // 规划用于团购的库存
-	private long currentInventory;
+	private BigDecimal planInventory; // 规划用于团购的库存
+	private BigDecimal currentInventory;
 	private int memberNum;// 成团人员数量
 	private int limitBuyNum; // 每个人的限购数量
 	private String createTime;
@@ -38,7 +39,7 @@ public class GroupBuyPlanMO extends BaseMO
 	// for view
 	private String goodsName;
 	private String goodsMainImgData;
-	private long goodsPrice;
+	private BigDecimal goodsPrice;
 
 	public String getGoodsId()
 	{
@@ -70,12 +71,12 @@ public class GroupBuyPlanMO extends BaseMO
 		this.endTime = endTime;
 	}
 
-	public long getPrice()
+	public BigDecimal getPrice()
 	{
 		return price;
 	}
 
-	public void setPrice(long price)
+	public void setPrice(BigDecimal price)
 	{
 		this.price = price;
 	}
@@ -140,12 +141,12 @@ public class GroupBuyPlanMO extends BaseMO
 		this.deliveryFeeRuleId = deliveryFeeRuleId;
 	}
 
-	public long getCurrentInventory()
+	public BigDecimal getCurrentInventory()
 	{
 		return currentInventory;
 	}
 
-	public void setCurrentInventory(long currentInventory)
+	public void setCurrentInventory(BigDecimal currentInventory)
 	{
 		this.currentInventory = currentInventory;
 	}
@@ -160,12 +161,12 @@ public class GroupBuyPlanMO extends BaseMO
 		this.enable = enable;
 	}
 
-	public long getPlanInventory()
+	public BigDecimal getPlanInventory()
 	{
 		return planInventory;
 	}
 
-	public void setPlanInventory(long planInventory)
+	public void setPlanInventory(BigDecimal planInventory)
 	{
 		this.planInventory = planInventory;
 	}
@@ -190,12 +191,12 @@ public class GroupBuyPlanMO extends BaseMO
 		this.goodsMainImgData = goodsMainImgData;
 	}
 
-	public long getGoodsPrice()
+	public BigDecimal getGoodsPrice()
 	{
 		return goodsPrice;
 	}
 
-	public void setGoodsPrice(long goodsPrice)
+	public void setGoodsPrice(BigDecimal goodsPrice)
 	{
 		this.goodsPrice = goodsPrice;
 	}
@@ -214,7 +215,7 @@ public class GroupBuyPlanMO extends BaseMO
 			mo.setGoodsId(rs.getString("goodsId"));
 			mo.setStartTime(rs.getString("startTime"));
 			mo.setEndTime(rs.getString("endTime"));
-			mo.setPrice(rs.getLong("price"));
+			mo.setPrice(rs.getBigDecimal("price"));
 
 			try
 			{
@@ -237,7 +238,7 @@ public class GroupBuyPlanMO extends BaseMO
 				mo.setEnable(BooleanTag.N.name());
 			}
 
-			mo.setCurrentInventory(rs.getLong("currentInventory"));
+			mo.setCurrentInventory(rs.getBigDecimal("currentInventory"));
 
 			// TODO:planInventory
 
@@ -249,7 +250,7 @@ public class GroupBuyPlanMO extends BaseMO
 			mo.setDeliveryFeeRuleId(rs.getString("deliveryFeeRuleId"));
 			mo.setGoodsName(rs.getString("goodsName"));
 			mo.setGoodsMainImgData(rs.getString("goodsMainImgData"));
-			mo.setGoodsPrice(rs.getLong("goodsPrice"));
+			mo.setGoodsPrice(rs.getBigDecimal("goodsPrice"));
 
 			return mo;
 		}

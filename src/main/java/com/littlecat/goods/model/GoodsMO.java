@@ -1,5 +1,6 @@
 package com.littlecat.goods.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,8 +29,8 @@ public class GoodsMO extends BaseMO
 	private String name;
 	private String summaryDescription; // 产品概要描述信息
 	private String mainImgData = "";
-	private long price; // 单位为厘
-	private long currentInventory;
+	private BigDecimal price; // 单位为厘
+	private BigDecimal currentInventory;
 	private String enable;
 	private String hasSecKillPlan; // 当前是否有秒杀计划
 	private String hasGroupBuyPlan; // 当前是否有拼购计划
@@ -81,12 +82,12 @@ public class GoodsMO extends BaseMO
 		this.summaryDescription = summaryDescription;
 	}
 
-	public long getPrice()
+	public BigDecimal getPrice()
 	{
 		return price;
 	}
 
-	public void setPrice(long price)
+	public void setPrice(BigDecimal price)
 	{
 		this.price = price;
 	}
@@ -161,12 +162,12 @@ public class GoodsMO extends BaseMO
 		this.hasGroupBuyPlan = hasGroupBuyPlan;
 	}
 
-	public long getCurrentInventory()
+	public BigDecimal getCurrentInventory()
 	{
 		return currentInventory;
 	}
 
-	public void setCurrentInventory(long currentInventory)
+	public void setCurrentInventory(BigDecimal currentInventory)
 	{
 		this.currentInventory = currentInventory;
 	}
@@ -206,8 +207,8 @@ public class GoodsMO extends BaseMO
 			mo.setName(rs.getString("name"));
 			mo.setSummaryDescription(rs.getString("summaryDescription"));
 			mo.setMainImgData(rs.getString("mainImgData"));
-			mo.setPrice(rs.getLong("price"));
-			mo.setCurrentInventory(rs.getLong("currentInventory"));
+			mo.setPrice(rs.getBigDecimal("price"));
+			mo.setCurrentInventory(rs.getBigDecimal("currentInventory"));
 			mo.setEnable(rs.getString("enable"));
 			mo.setHasSecKillPlan(rs.getString("hasSecKillPlan"));
 			mo.setHasGroupBuyPlan(rs.getString("hasGroupBuyPlan"));
