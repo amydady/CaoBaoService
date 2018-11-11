@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
@@ -85,6 +87,24 @@ public class OrderDao
 		try
 		{
 			jdbcTemplate.batchUpdate(sql, batchParam);
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+	
+	public void updateOutInventoryGenTime(List<String> ids) throws LittleCatException
+	{
+		String sql = "update " + TABLE_NAME + " set outInventoryGenTime = CURRENT_TIMESTAMP where id in (:ids)";
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		parameters.addValue("ids", ids);
+
+		try
+		{
+			namedParameterJdbcTemplate.update(sql, parameters);
 		}
 		catch (DataAccessException e)
 		{
