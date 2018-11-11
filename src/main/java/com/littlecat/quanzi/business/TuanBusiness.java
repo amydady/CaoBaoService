@@ -83,4 +83,8 @@ public class TuanBusiness
 		mo.setEnable(tuanShenheReqInfo.getEnable());
 		tuanDao.modify(mo);
 	}
+	public List<TuanMO> getDeliverySiteList(String province,String city,String area) throws LittleCatException
+	{
+		return tuanDao.getDeliverySiteList(province, city, area);
+	}
 }

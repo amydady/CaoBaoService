@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.common.model.AddressMO;
 
@@ -14,9 +15,8 @@ import com.littlecat.common.model.AddressMO;
  * @author amydady
  *
  */
-public class TuanMO
+public class TuanMO extends BaseMO
 {
-	private String id; // 团长OPENID
 	private String tuanZhangName; // 团长姓名
 	private String name;
 	private String idCardImgDataFront;
@@ -127,16 +127,6 @@ public class TuanMO
 	public void setTuanZhangName(String tuanZhangName)
 	{
 		this.tuanZhangName = tuanZhangName;
-	}
-
-	public String getId()
-	{
-		return id;
-	}
-
-	public void setId(String id)
-	{
-		this.id = id;
 	}
 
 	public String getIsDeliverySite()

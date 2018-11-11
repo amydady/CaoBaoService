@@ -23,6 +23,9 @@ public enum TableName
 	DeliveryArea("t_delivery_area"),
 	DeliveryFeeRule("t_delivery_feerule"),
 	DeliveryFeeCalcType("t_delivery_feecalctype"),
+	DeliveryOutWarehouse("t_delivery_outwarehouse"),
+	DeliveryTuanZhangReceive("t_delivery_tuanzhangreceive"),
+	DeliveryTuanZhangFilter("t_delivery_tuanzhangfilter"),
 	
 	CommissionType("t_commission_type"),
 	GoodsCommission("t_commission_goods"),

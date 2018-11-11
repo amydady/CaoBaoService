@@ -98,6 +98,50 @@ CREATE TABLE `t_delivery_feerule` (
 	UNIQUE KEY `name` (`name`)
 );
 
+CREATE TABLE `t_delivery_outwarehouse` (
+	`id` VARCHAR(255) NOT NULL,
+	`orderDate` DATE NOT NULL,
+	`goodsId` VARCHAR(255) NOT NULL,
+	`goodsNum` decimal(10,2) NOT NULL,
+	`outOperatorId` VARCHAR(255) NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`outTime` DATETIME NULL,
+	`state` VARCHAR(1) NOT NULL DEFAULT 'N',
+	
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `t_delivery_tuanzhangreceive` (
+	`id` VARCHAR(255) NOT NULL,
+	`tuanZhangId` VARCHAR(255) NOT NULL,
+	`orderDate` DATE NOT NULL,
+	`goodsId` VARCHAR(255) NOT NULL,
+	`goodsNum` decimal(10,2) NOT NULL,
+	`receiveOperatorId` VARCHAR(255) NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`receiveTime` DATETIME NULL,
+	`state` VARCHAR(1) NOT NULL DEFAULT 'N',
+	
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `t_delivery_tuanzhangfilter` (
+	`id` VARCHAR(255) NOT NULL,
+	`tuanZhangId` VARCHAR(255) NOT NULL,
+	`orderId` VARCHAR(255) NOT NULL,
+	`orderDate` DATE NOT NULL,
+	`terminalUserId` VARCHAR(255) NOT NULL,
+	`terminalUserMobile` VARCHAR(255) NOT NULL,
+	`goodsId` VARCHAR(255) NOT NULL,
+	`goodsNum` decimal(10,2) NOT NULL,
+	`receiveOperatorId` VARCHAR(255) NULL,
+	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`receiveTime` DATETIME NULL,
+	`state` VARCHAR(1) NOT NULL DEFAULT 'N',
+	
+	PRIMARY KEY (`id`)
+);
+
 ###############物流费用计算类型
 CREATE TABLE `t_delivery_feecalctype` (
 	`id` VARCHAR(255) NOT NULL,
@@ -329,6 +373,10 @@ CREATE TABLE `t_order` (
 	`city` VARCHAR(255) NOT NULL,
 	`area` VARCHAR(255) NOT NULL,
 	`detailInfo` VARCHAR(255) NOT NULL,
+	`siteprovince` VARCHAR(255) NOT NULL,
+	`sitecity` VARCHAR(255) NOT NULL,
+	`sitearea` VARCHAR(255) NOT NULL,
+	`sitedetailInfo` VARCHAR(255) NOT NULL,
 	
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`payTime` DATETIME NULL,

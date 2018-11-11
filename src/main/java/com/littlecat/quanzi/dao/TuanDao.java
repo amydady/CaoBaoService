@@ -2,6 +2,7 @@ package com.littlecat.quanzi.dao;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.common.Consts;
@@ -20,6 +22,7 @@ import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.TableName;
+import com.littlecat.common.model.AddressMO;
 import com.littlecat.common.utils.DaoUtil;
 import com.littlecat.quanzi.model.TuanMO;
 
@@ -126,14 +129,14 @@ public class TuanDao
 			{
 				imgDataFront = new SerialBlob(mo.getIdCardImgDataFront().getBytes(Consts.CHARSET_NAME));
 			}
-			
+
 			Blob imgDataBack = null;
-			
+
 			if (StringUtil.isNotEmpty(mo.getIdCardImgDataBack()))
 			{
 				imgDataBack = new SerialBlob(mo.getIdCardImgDataBack().getBytes(Consts.CHARSET_NAME));
 			}
-			
+
 			int ret = jdbcTemplate.update(sql, new Object[] {
 					mo.getName(),
 					mo.getTuanZhangName(),
@@ -159,29 +162,28 @@ public class TuanDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
-	
+
 	public List<TuanMO> getList(String enable, String name)
 	{
 		List<TuanMO> mos = new ArrayList<TuanMO>();
-		
+
 		StringBuilder sql = new StringBuilder()
 				.append("select a.* ")
 				.append(" from ").append(TABLE_NAME).append(" a ")
 				.append(" where 1=1 ");
 
-		
 		if (StringUtil.isNotEmpty(enable))
 		{
 			sql.append(" and a.enable = '").append(enable).append("'");
 		}
-		
+
 		if (StringUtil.isNotEmpty(name))
 		{
 			sql.append(" and (a.name like '%").append(name).append("%' or a.tuanZhangName like '").append(name).append("%')");
 		}
 
 		sql.append(" order by a.name,a.tuanZhangName");
-		
+
 		try
 		{
 			mos.addAll(jdbcTemplate.query(sql.toString(), new TuanMO.MOMapper()));
@@ -190,35 +192,55 @@ public class TuanDao
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
-		
+
 		return mos;
 	}
-	
-	public List<TuanMO> getDeliveryList(String name)
+
+	/**
+	 * 通过地市信息获取自提点
+	 * 
+	 * @param addressInfo
+	 * @return
+	 */
+	public List<TuanMO> getDeliverySiteList(String province,String city,String area) throws LittleCatException
 	{
 		List<TuanMO> mos = new ArrayList<TuanMO>();
-		
-		StringBuilder sql = new StringBuilder()
-				.append("select a.* ")
-				.append(" from ").append(TABLE_NAME).append(" a ")
-				.append(" where a.enable='Y' and a.isDeliverySite='Y' ");
-		
-		if (StringUtil.isNotEmpty(name))
-		{
-			sql.append(" and (a.name like '%").append(name).append("%' or a.tuanZhangName like '").append(name).append("%')");
-		}
 
-		sql.append(" order by a.name,a.tuanZhangName");
-		
+		StringBuilder sql = new StringBuilder()
+				.append("select id,tuanZhangName,name,province,city,area,detailInfo,mobile ")
+				.append(" from ").append(TABLE_NAME)
+				.append(" where enable='Y' and isDeliverySite='Y' ")
+				.append(" and province=? ")
+				.append(" and city=? ")
+				.append(" and area=? ");
+
+		sql.append(" order by detailInfo");
+
 		try
 		{
-			mos.addAll(jdbcTemplate.query(sql.toString(), new TuanMO.MOMapper()));
+			mos.addAll(jdbcTemplate.query(sql.toString(), new Object[] { province, city, area }, new RowMapper<TuanMO>()
+			{
+
+				@Override
+				public TuanMO mapRow(ResultSet rs, int rowNum) throws SQLException
+				{
+					TuanMO mo = new TuanMO();
+
+					mo.setId(rs.getString("id"));
+					mo.setTuanZhangName(rs.getString("tuanZhangName"));
+					mo.setName(rs.getString("name"));
+					mo.setAddressInfo(new AddressMO(province, city, area, rs.getString("detailInfo")));
+					mo.setMobile(rs.getString("mobile"));
+
+					return mo;
+				}
+			}));
 		}
 		catch (DataAccessException e)
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
-		
+
 		return mos;
 	}
 }

@@ -13,6 +13,7 @@ import com.littlecat.cbb.utils.SpringUtil;
 import com.littlecat.common.consts.OrderState;
 import com.littlecat.common.model.AddressMO;
 import com.littlecat.order.business.OrderDetailBusiness;
+import com.littlecat.quanzi.business.TuanBusiness;
 
 /**
  * 订单MO
@@ -29,6 +30,7 @@ public class OrderMO extends BaseMO
 	private String shareTuanZhangId;// 分享产品的团长ID
 	private String deliveryTuanZhangId; // 发货接收的自提点（填团长ID）
 	private AddressMO deliveryAddress; // 发货地址信息
+	private AddressMO deliverySiteAddress; // 自提点地址信息
 	private String contactName;
 	private String contactMobile;
 
@@ -51,6 +53,7 @@ public class OrderMO extends BaseMO
 
 	// just for view
 	private List<OrderDetailMO> details = new ArrayList<OrderDetailMO>();
+	private String deliveryTuanZhangMobile; // 发货接收的自提点号码
 
 	public String getTerminalUserId()
 	{
@@ -282,6 +285,26 @@ public class OrderMO extends BaseMO
 		this.outInventoryGenTime = outInventoryGenTime;
 	}
 
+	public AddressMO getDeliverySiteAddress()
+	{
+		return deliverySiteAddress;
+	}
+
+	public void setDeliverySiteAddress(AddressMO deliverySiteAddress)
+	{
+		this.deliverySiteAddress = deliverySiteAddress;
+	}
+
+	public String getDeliveryTuanZhangMobile()
+	{
+		return deliveryTuanZhangMobile;
+	}
+
+	public void setDeliveryTuanZhangMobile(String deliveryTuanZhangMobile)
+	{
+		this.deliveryTuanZhangMobile = deliveryTuanZhangMobile;
+	}
+
 	/**
 	 * 模型映射，不包含商品明细信息
 	 * 
@@ -291,6 +314,7 @@ public class OrderMO extends BaseMO
 	public static class MOMapper implements RowMapper<OrderMO>
 	{
 		private static final OrderDetailBusiness orderDetailBusiness = SpringUtil.getBean(OrderDetailBusiness.class);
+		private static final TuanBusiness tuanBusiness = SpringUtil.getBean(TuanBusiness.class);
 
 		@Override
 		public OrderMO mapRow(ResultSet rs, int rowNum) throws SQLException
@@ -308,8 +332,10 @@ public class OrderMO extends BaseMO
 			mo.setDeliveryTuanZhangId(rs.getString("deliveryTuanZhangId"));
 
 			AddressMO deliveryaddress = new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo"));
-
+			AddressMO deliverySiteAddress = new AddressMO(rs.getString("siteprovince"), rs.getString("sitecity"), rs.getString("sitearea"), rs.getString("sitedetailInfo"));
+			
 			mo.setDeliveryAddress(deliveryaddress);
+			mo.setDeliveryAddress(deliverySiteAddress);
 			mo.setContactName(rs.getString("contactName"));
 			mo.setContactMobile(rs.getString("contactMobile"));
 
@@ -329,6 +355,7 @@ public class OrderMO extends BaseMO
 
 			// get view info
 			mo.setDetails(orderDetailBusiness.getByOrderId(mo.getId()));
+			mo.setDeliveryTuanZhangMobile(tuanBusiness.getById(mo.getDeliveryTuanZhangId()).getMobile());
 
 			return mo;
 		}
@@ -337,6 +364,7 @@ public class OrderMO extends BaseMO
 	public static class MOMapperWithGoodsDetail implements RowMapper<OrderMO>
 	{
 		private static final OrderDetailBusiness orderDetailBusiness = SpringUtil.getBean(OrderDetailBusiness.class);
+		private static final TuanBusiness tuanBusiness = SpringUtil.getBean(TuanBusiness.class);
 
 		@Override
 		public OrderMO mapRow(ResultSet rs, int rowNum) throws SQLException
@@ -354,8 +382,10 @@ public class OrderMO extends BaseMO
 			mo.setDeliveryTuanZhangId(rs.getString("deliveryTuanZhangId"));
 
 			AddressMO deliveryaddress = new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo"));
+			AddressMO deliverySiteAddress = new AddressMO(rs.getString("siteprovince"), rs.getString("sitecity"), rs.getString("sitearea"), rs.getString("sitedetailInfo"));
 
 			mo.setDeliveryAddress(deliveryaddress);
+			mo.setDeliveryAddress(deliverySiteAddress);
 			mo.setContactName(rs.getString("contactName"));
 			mo.setContactMobile(rs.getString("contactMobile"));
 
@@ -374,6 +404,7 @@ public class OrderMO extends BaseMO
 
 			// get view info
 			mo.setDetails(orderDetailBusiness.getByOrderIdWithGoodsDetail(mo.getId()));
+			mo.setDeliveryTuanZhangMobile(tuanBusiness.getById(mo.getDeliveryTuanZhangId()).getMobile());
 
 			return mo;
 		}

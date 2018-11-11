@@ -426,5 +426,30 @@ public class TuanController
 
 		return result;
 	}
+	
+	@GetMapping(value = "/getDeliverySiteList")
+	public RestRsp<TuanMO> getDeliverySiteList(@RequestParam String province, @RequestParam String city,@RequestParam String area)
+	{
+		RestRsp<TuanMO> result = new RestRsp<TuanMO>();
+
+		try
+		{
+			result.getData().addAll(tuanBusiness.getDeliverySiteList(province, city, area));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
 
 }
