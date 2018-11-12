@@ -30,6 +30,8 @@ public class OutWarehouseDao
 	private final String TABLE_NAME = TableName.DeliveryOutWarehouse.getName();
 	private final String TABLE_NAME_GOODS = TableName.Goods.getName();
 	private final String TABLE_NAME_SYSOPERATOR = TableName.SysOperator.getName();
+	private final String TABLE_NAME_ORDERDETAIL = TableName.OrderDetail.getName();
+	private final String TABLE_NAME_ORDER = TableName.Order.getName();
 
 	public void add(List<OutWarehouseMO> mos) throws LittleCatException
 	{
@@ -100,7 +102,57 @@ public class OutWarehouseDao
 		}
 	}
 
-	public List<OutWarehouseMO> getList(String orderDate) throws LittleCatException
+	/**
+	 * 检测某个订单日是否已经存在出仓单信息
+	 * 
+	 * @param orderDate
+	 * @param state
+	 * @return
+	 * @throws LittleCatException
+	 */
+	public boolean exist(String orderDate) throws LittleCatException
+	{
+		String sql = "select count(1) from " + TABLE_NAME + " where orderDate = ?";
+		return jdbcTemplate.queryForObject(sql, Integer.class) > 0;
+	}
+
+	public List<OutWarehouseMO> genData(String orderDate) throws LittleCatException
+	{
+		StringBuilder sql = new StringBuilder()
+				.append("select a.goodsId,sum(a.goodsNum) goodsNum from ").append(TABLE_NAME_ORDERDETAIL).append(" a ")
+				.append(" group by a.goodsId")
+				.append(" where a.orderId in (")
+				.append("select id from ").append(TABLE_NAME_ORDER)
+				.append(" where DATE(payTime)=").append("DATE('").append(orderDate).append("'")
+				.append(" and state='").append("daifahuo'")
+				.append(")");
+
+		try
+		{
+			return jdbcTemplate.query(sql.toString(), new RowMapper<OutWarehouseMO>()
+			{
+
+				@Override
+				public OutWarehouseMO mapRow(ResultSet rs, int rowNum) throws SQLException
+				{
+					OutWarehouseMO mo = new OutWarehouseMO();
+
+					mo.setOrderDate(orderDate);
+					mo.setGoodsId(rs.getString("goodsId"));
+					mo.setGoodsNum(rs.getBigDecimal("goodsNum"));
+
+					return mo;
+				}
+			});
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+
+	}
+
+	public List<OutWarehouseMO> getList(String orderDate, String state) throws LittleCatException
 	{
 
 		StringBuilder sql = new StringBuilder()
@@ -108,6 +160,11 @@ public class OutWarehouseDao
 				.append(" left join ").append(TABLE_NAME_SYSOPERATOR).append(" b ").append(" on a.outOperatorId = b.id")
 				.append(" inner join ").append(TABLE_NAME_GOODS).append(" c ").append(" on a.goodsId=c.id")
 				.append(" where a.orderDate='" + orderDate + "'");
+
+		if (StringUtil.isNotEmpty(state))
+		{
+			sql.append(" and a.state = '" + state + "' ");
+		}
 
 		try
 		{
@@ -126,8 +183,7 @@ public class OutWarehouseDao
 					mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
 					mo.setOutTime(StringUtil.replace(rs.getString("outTime"), ".0", ""));
 					mo.setState(rs.getString("state"));
-					
-					
+
 					mo.setOutOperatorName(rs.getString("outOperatorName"));
 					mo.setGoodsName(rs.getString("goodsName"));
 

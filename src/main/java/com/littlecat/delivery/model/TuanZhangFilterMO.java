@@ -26,6 +26,7 @@ public class TuanZhangFilterMO extends BaseMO
 	private String state;// 是否已签收，Y、N
 
 	// just for view
+	private String tuanZhangName;
 	private String terminalUserName;
 	private String receiveOperatorName;
 	private String goodsName;
@@ -168,6 +169,16 @@ public class TuanZhangFilterMO extends BaseMO
 	public void setGoodsName(String goodsName)
 	{
 		this.goodsName = goodsName;
+	}
+
+	public String getTuanZhangName()
+	{
+		return tuanZhangName;
+	}
+
+	public void setTuanZhangName(String tuanZhangName)
+	{
+		this.tuanZhangName = tuanZhangName;
 	}
 
 }
