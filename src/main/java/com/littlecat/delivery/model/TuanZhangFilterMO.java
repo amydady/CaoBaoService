@@ -27,6 +27,7 @@ public class TuanZhangFilterMO extends BaseMO
 
 	// just for view
 	private String tuanZhangName;
+	private String tuanZhangMobile;
 	private String terminalUserName;
 	private String receiveOperatorName;
 	private String goodsName;
@@ -179,6 +180,16 @@ public class TuanZhangFilterMO extends BaseMO
 	public void setTuanZhangName(String tuanZhangName)
 	{
 		this.tuanZhangName = tuanZhangName;
+	}
+
+	public String getTuanZhangMobile()
+	{
+		return tuanZhangMobile;
+	}
+
+	public void setTuanZhangMobile(String tuanZhangMobile)
+	{
+		this.tuanZhangMobile = tuanZhangMobile;
 	}
 
 }

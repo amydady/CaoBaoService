@@ -37,18 +37,19 @@ public class TuanZhangReceiveDao
 	public boolean exist(String orderDate) throws LittleCatException
 	{
 		String sql = "select count(1) from " + TABLE_NAME + " where orderDate = ?";
-		return jdbcTemplate.queryForObject(sql, Integer.class) > 0;
+		return jdbcTemplate.queryForObject(sql, new Object[] { orderDate }, Integer.class) > 0;
 	}
+
 
 	public List<TuanZhangReceiveMO> genData(String orderDate) throws LittleCatException
 	{
 		StringBuilder sql = new StringBuilder()
 				.append("select b.deliveryTuanZhangId,a.goodsId,sum(a.goodsNum) goodsNum from ").append(TABLE_NAME_ORDERDETAIL).append(" a ")
 				.append(" inner join ").append(TABLE_NAME_ORDER).append(" b on a.orderId=b.id")
-				.append(" group by b.deliveryTuanZhangId,a.goodsId")
-				.append(" where DATE(b.payTime)=").append("DATE('").append(orderDate).append("'")
+				.append(" where DATE(b.payTime)=").append("DATE('").append(orderDate).append("')")
 				.append(" and b.state='").append("daifahuo'")
-				.append(" and b.deliveryTuanZhangId is not null");
+				.append(" and b.deliveryTuanZhangId is not null")
+				.append(" group by b.deliveryTuanZhangId,a.goodsId");
 
 		try
 		{
@@ -83,7 +84,7 @@ public class TuanZhangReceiveDao
 			return;
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,orderDate,tuanZhangId,tuanZhangMobile,goodsId,goodsNum,receiveOperatorId) values(?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,orderDate,tuanZhangId,goodsId,goodsNum,receiveOperatorId) values(?,?,?,?,?,?)";
 
 		List<Object[]> batchParams = new ArrayList<Object[]>();
 
@@ -94,7 +95,7 @@ public class TuanZhangReceiveDao
 				mo.setId(UUIDUtil.createUUID());
 			}
 
-			batchParams.add(new Object[] { mo.getId(), mo.getOrderDate(), mo.getTuanZhangId(), mo.getTuanZhangMobile(), mo.getGoodsId(), mo.getGoodsNum(), mo.getReceiveOperatorId() });
+			batchParams.add(new Object[] { mo.getId(), mo.getOrderDate(), mo.getTuanZhangId(), mo.getGoodsId(), mo.getGoodsNum(), mo.getReceiveOperatorId() });
 		}
 
 		try
@@ -151,7 +152,7 @@ public class TuanZhangReceiveDao
 
 		StringBuilder sql = new StringBuilder()
 				.append("select a.*,b.name receiveOperatorName,c.name goodsName,d.name tuanZhangName,d.mobile  tuanZhangMobile  from  ").append(TABLE_NAME).append(" a ")
-				.append(" left join ").append(TABLE_NAME_SYSOPERATOR).append(" b ").append(" on a.outOperatorId = b.id")
+				.append(" left join ").append(TABLE_NAME_SYSOPERATOR).append(" b ").append(" on a.receiveOperatorId = b.id")
 				.append(" inner join ").append(TABLE_NAME_GOODS).append(" c ").append(" on a.goodsId=c.id")
 				.append(" inner join ").append(TABLE_NAME_TUAN).append(" d on a.tuanZhangId=d.id")
 				.append(" where a.orderDate='" + orderDate + "'");

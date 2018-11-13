@@ -36,17 +36,17 @@ public class TuanZhangFilterBusiness
 	 * @return
 	 * @throws LittleCatException
 	 */
-	public List<TuanZhangFilterMO> getList(String orderDate, String tuanZhangMobile,String terminalUserMobile, String state) throws LittleCatException
+	public List<TuanZhangFilterMO> getList(String orderDate, String tuanZhangName,String tuanZhangMobile,String terminalUserName,String terminalUserMobile, String state) throws LittleCatException
 	{
 
 		if (tuanZhangFilterDao.exist(orderDate))
 		{
-			return tuanZhangFilterDao.getList(orderDate, tuanZhangMobile, terminalUserMobile, state);
+			return tuanZhangFilterDao.getList(orderDate, tuanZhangName,tuanZhangMobile, terminalUserName,terminalUserMobile, state);
 		}
 
 		tuanZhangFilterDao.add(tuanZhangFilterDao.genData(orderDate));
 
-		return tuanZhangFilterDao.getList(orderDate, tuanZhangMobile, terminalUserMobile, state);
+		return tuanZhangFilterDao.getList(orderDate, tuanZhangName,tuanZhangMobile, terminalUserName,terminalUserMobile, state);
 	}
 
 	public void delete(String tuanZhangId, String orderDate) throws LittleCatException

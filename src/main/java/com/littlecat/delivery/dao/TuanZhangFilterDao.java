@@ -39,7 +39,7 @@ public class TuanZhangFilterDao
 	public boolean exist(String orderDate) throws LittleCatException
 	{
 		String sql = "select count(1) from " + TABLE_NAME + " where orderDate = ?";
-		return jdbcTemplate.queryForObject(sql, Integer.class) > 0;
+		return jdbcTemplate.queryForObject(sql, new Object[] { orderDate }, Integer.class) > 0;
 	}
 
 	public List<TuanZhangFilterMO> genData(String orderDate) throws LittleCatException
@@ -47,7 +47,7 @@ public class TuanZhangFilterDao
 		StringBuilder sql = new StringBuilder()
 				.append("select b.deliveryTuanZhangId,b.terminalUserId,b.contactMobile terminalUserMobile,a.orderId,a.goodsId,a.goodsNum from ").append(TABLE_NAME_ORDERDETAIL).append(" a ")
 				.append(" inner join ").append(TABLE_NAME_ORDER).append(" b on a.orderId=b.id")
-				.append(" where DATE(b.payTime)=").append("DATE('").append(orderDate).append("'")
+				.append(" where DATE(b.payTime)=").append("DATE('").append(orderDate).append("')")
 				.append(" and b.state='").append(OrderState.daifahuo.name()).append("'")
 				.append(" and b.deliveryTuanZhangId is not null")
 				.append(" order by b.deliveryTuanZhangId,b.terminalUserId");
@@ -151,20 +151,30 @@ public class TuanZhangFilterDao
 		}
 	}
 
-	public List<TuanZhangFilterMO> getList(String orderDate, String tuanZhangMobile,String terminalUserMobile, String state) throws LittleCatException
+	public List<TuanZhangFilterMO> getList(String orderDate, String tuanZhangName,String tuanZhangMobile,String terminalUserName,String terminalUserMobile, String state) throws LittleCatException
 	{
 
 		StringBuilder sql = new StringBuilder()
-				.append("select a.*,b.name receiveOperatorName,c.name goodsName,d.name terminalUserName  from  ").append(TABLE_NAME).append(" a ")
+				.append("select a.*,b.name receiveOperatorName,c.name goodsName,d.name terminalUserName,e.name tuanZhangName,e.mobile tuanZhangMobile  from  ").append(TABLE_NAME).append(" a ")
 				.append(" left join ").append(TABLE_NAME_SYSOPERATOR).append(" b  on a.receiveOperatorId = b.id")
 				.append(" inner join ").append(TABLE_NAME_GOODS).append(" c  on a.goodsId=c.id")
 				.append(" left join ").append(TABLE_NAME_TERMINALUSER).append(" d on a.terminalUserId=d.id")
 				.append(" inner join ").append(TABLE_NAME_TUAN).append(" e on a.tuanZhangId=e.id")
 				.append(" where a.orderDate='" + orderDate + "'");
 
+		if (StringUtil.isNotEmpty(tuanZhangName))
+		{
+			sql.append(" and e.name like '%" + tuanZhangName + "%' ");
+		}
+		
 		if (StringUtil.isNotEmpty(tuanZhangMobile))
 		{
 			sql.append(" and e.mobile like '%" + tuanZhangMobile + "%' ");
+		}
+		
+		if (StringUtil.isNotEmpty(terminalUserName))
+		{
+			sql.append(" and d.name like '%" + terminalUserName + "%' ");
 		}
 
 		if (StringUtil.isNotEmpty(terminalUserMobile))
@@ -176,6 +186,8 @@ public class TuanZhangFilterDao
 		{
 			sql.append(" and a.state = '" + state + "' ");
 		}
+		
+		System.out.println("SQL:"+sql);
 
 		try
 		{
@@ -192,6 +204,7 @@ public class TuanZhangFilterDao
 					mo.setTuanZhangId(rs.getString("tuanZhangId"));
 					mo.setTerminalUserId(rs.getString("terminalUserId"));
 					mo.setTerminalUserMobile(rs.getString("terminalUserMobile"));
+					mo.setOrderId(rs.getString("orderId"));
 					mo.setGoodsId(rs.getString("goodsId"));
 					mo.setGoodsNum(rs.getBigDecimal("goodsNum"));
 					mo.setReceiveOperatorId(rs.getString("receiveOperatorId"));
@@ -200,6 +213,7 @@ public class TuanZhangFilterDao
 					mo.setState(rs.getString("state"));
 
 					mo.setTuanZhangName(rs.getString("tuanZhangName"));
+					mo.setTuanZhangMobile(rs.getString("tuanZhangMobile"));
 					mo.setTerminalUserName(rs.getString("terminalUserName"));
 					mo.setReceiveOperatorName(rs.getString("receiveOperatorName"));
 					mo.setGoodsName(rs.getString("goodsName"));

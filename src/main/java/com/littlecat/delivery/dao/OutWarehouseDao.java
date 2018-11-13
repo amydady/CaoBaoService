@@ -113,19 +113,19 @@ public class OutWarehouseDao
 	public boolean exist(String orderDate) throws LittleCatException
 	{
 		String sql = "select count(1) from " + TABLE_NAME + " where orderDate = ?";
-		return jdbcTemplate.queryForObject(sql, Integer.class) > 0;
+		return jdbcTemplate.queryForObject(sql, new Object[] { orderDate }, Integer.class) > 0;
 	}
 
 	public List<OutWarehouseMO> genData(String orderDate) throws LittleCatException
 	{
 		StringBuilder sql = new StringBuilder()
 				.append("select a.goodsId,sum(a.goodsNum) goodsNum from ").append(TABLE_NAME_ORDERDETAIL).append(" a ")
-				.append(" group by a.goodsId")
 				.append(" where a.orderId in (")
 				.append("select id from ").append(TABLE_NAME_ORDER)
-				.append(" where DATE(payTime)=").append("DATE('").append(orderDate).append("'")
+				.append(" where DATE(payTime)=").append("DATE('").append(orderDate).append("')")
 				.append(" and state='").append("daifahuo'")
-				.append(")");
+				.append(")")
+				.append(" group by a.goodsId");
 
 		try
 		{
