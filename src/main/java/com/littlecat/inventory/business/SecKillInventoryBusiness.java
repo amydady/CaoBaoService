@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.common.consts.InventoryChangeType;
 import com.littlecat.inventory.dao.SecKillInventoryDao;
 import com.littlecat.inventory.model.GoodsInventoryMO;
@@ -41,19 +40,19 @@ public class SecKillInventoryBusiness
 			{
 				goodsInventoryMO.setChangeType(InventoryChangeType.miaoshaguihuakouchu);
 			}
-			
-			if(mo.getChangeType() == InventoryChangeType.rengongjianshao)
+
+			if (mo.getChangeType() == InventoryChangeType.rengongjianshao)
 			{
 				goodsInventoryMO.setChangeType(InventoryChangeType.miaoshaguihuatuihuan);
 			}
-			
-			if(mo.getChangeType() == InventoryChangeType.miaoshaguihuachexiao)
+
+			if (mo.getChangeType() == InventoryChangeType.miaoshaguihuachexiao)
 			{
 				goodsInventoryMO.setChangeType(InventoryChangeType.miaoshaguihuachexiao);
 			}
-			
+
 			goodsInventoryMO.setChangeValue(mo.getChangeValue().multiply(new BigDecimal("-1")));
-			goodsInventoryMO.setDescription("SecKillPlanID:"+id);
+			goodsInventoryMO.setDescription("SecKillPlanID:" + id);
 			goodsInventoryMO.setGoodsId(secKillPlanBusiness.getById(mo.getPlanId()).getGoodsId());
 			goodsInventoryMO.setOperatorId(mo.getOperatorId());
 
@@ -77,11 +76,6 @@ public class SecKillInventoryBusiness
 	public BigDecimal getPlanValueByPlanId(String planId) throws LittleCatException
 	{
 		return secKillInventoryDao.getPlanValueByPlanId(planId);
-	}
-
-	public int getList(QueryParam queryParam, List<SecKillInventoryMO> mos) throws LittleCatException
-	{
-		return secKillInventoryDao.getList(queryParam, mos);
 	}
 
 	public List<SecKillInventoryMO> getListByPlanId(String planId) throws LittleCatException

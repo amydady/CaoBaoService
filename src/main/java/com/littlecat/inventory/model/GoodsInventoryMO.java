@@ -1,10 +1,6 @@
 package com.littlecat.inventory.model;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.common.consts.InventoryChangeType;
@@ -23,6 +19,9 @@ public class GoodsInventoryMO extends BaseMO
 	private String operatorId;
 	private String description;
 	private String createTime;
+
+	// just for view
+	private String operatorName;
 
 	public String getGoodsId()
 	{
@@ -84,23 +83,13 @@ public class GoodsInventoryMO extends BaseMO
 		this.createTime = createTime;
 	}
 
-	public static class MOMapper implements RowMapper<GoodsInventoryMO>
+	public String getOperatorName()
 	{
-		@Override
-		public GoodsInventoryMO mapRow(ResultSet rs, int rowNum) throws SQLException
-		{
-			GoodsInventoryMO mo = new GoodsInventoryMO();
-
-			mo.setId(rs.getString("id"));
-			mo.setGoodsId(rs.getString("goodsId"));
-			mo.setChangeValue(rs.getBigDecimal("changeValue"));
-			mo.setChangeType(InventoryChangeType.valueOf(rs.getString("changeType")));
-			mo.setOperatorId(rs.getString("operatorId"));
-			mo.setDescription(rs.getString("description"));
-			mo.setCreateTime(rs.getString("createTime"));
-
-			return mo;
-		}
+		return operatorName;
 	}
 
+	public void setOperatorName(String operatorName)
+	{
+		this.operatorName = operatorName;
+	}
 }

@@ -13,13 +13,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.InventoryChangeType;
 import com.littlecat.common.consts.TableName;
-import com.littlecat.common.utils.DaoUtil;
 import com.littlecat.inventory.model.SecKillInventoryMO;
 
 @Component
@@ -30,6 +28,7 @@ public class SecKillInventoryDao
 
 	private final String TABLE_NAME = TableName.SecKillInventory.getName();
 	private static final String MODEL_NAME = SecKillInventoryMO.class.getSimpleName();
+	private final String TABLE_NAME_SYSOPERATOR = TableName.SysOperator.getName();
 
 	public String add(SecKillInventoryMO mo) throws LittleCatException
 	{
@@ -60,11 +59,6 @@ public class SecKillInventoryDao
 		}
 
 		return mo.getId();
-	}
-
-	public int getList(QueryParam queryParam, List<SecKillInventoryMO> mos) throws LittleCatException
-	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new SecKillInventoryMO.MOMapper());
 	}
 
 	/**
@@ -114,10 +108,11 @@ public class SecKillInventoryDao
 		List<SecKillInventoryMO> mos = new ArrayList<SecKillInventoryMO>();
 
 		String sql = new StringBuilder()
-				.append("select a.id,a.planId,a.changeValue,a.changeType,a.operatorId,a.description,a.createTime")
+				.append("select a.*,b.name operatorName ")
 				.append(" from ").append(TABLE_NAME).append(" a ")
-				.append("where a.planId=?")
-				.append(" order by createtime")
+				.append(" left join ").append(TABLE_NAME_SYSOPERATOR).append(" b on a.operatorId=b.id ")
+				.append(" where a.planId=? ")
+				.append(" order by createtime desc ")
 				.toString();
 
 		try
@@ -136,7 +131,9 @@ public class SecKillInventoryDao
 					mo.setChangeType(InventoryChangeType.valueOf(rs.getString("changeType")));
 					mo.setOperatorId(rs.getString("operatorId"));
 					mo.setDescription(rs.getString("description"));
-					mo.setCreateTime(rs.getString("createTime"));
+					mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
+					
+					mo.setOperatorName(rs.getString("operatorName"));
 
 					return mo;
 				}

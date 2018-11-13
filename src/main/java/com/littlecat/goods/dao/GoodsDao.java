@@ -48,7 +48,7 @@ public class GoodsDao
 	 */
 	public GoodsMO getSummayInfoById(String id) throws LittleCatException
 	{
-		String sql = "select name,price from " + TABLE_NAME + " where id = ?";
+		String sql = "select name,price,currentInventory from " + TABLE_NAME + " where id = ?";
 
 		try
 		{
@@ -60,6 +60,7 @@ public class GoodsDao
 					GoodsMO mo = new GoodsMO();
 					mo.setName(rs.getString("name"));
 					mo.setPrice(rs.getBigDecimal("price"));
+					mo.setCurrentInventory(rs.getBigDecimal("currentInventory"));
 
 					return mo;
 				}
