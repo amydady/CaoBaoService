@@ -14,7 +14,9 @@ import com.littlecat.cbb.query.ConditionOperatorType;
 import com.littlecat.cbb.query.QueryCondition;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.SpringUtil;
+import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.goods.business.GoodsDetailImgsBusiness;
+import com.littlecat.system.business.SysOperatorBusiness;
 
 /**
  * 商品MO
@@ -41,6 +43,7 @@ public class GoodsMO extends BaseMO
 
 	// for view
 	private List<GoodsDetailImgsMO> detailImgs;
+	private String createOperatorName;
 
 	public String getClassifyId()
 	{
@@ -192,9 +195,20 @@ public class GoodsMO extends BaseMO
 		this.detailImgs = detailImgs;
 	}
 
+	public String getCreateOperatorName()
+	{
+		return createOperatorName;
+	}
+
+	public void setCreateOperatorName(String createOperatorName)
+	{
+		this.createOperatorName = createOperatorName;
+	}
+
 	public static class MOMapper implements RowMapper<GoodsMO>
 	{
 		private static final GoodsDetailImgsBusiness goodsDetailImgsBusiness = SpringUtil.getBean(GoodsDetailImgsBusiness.class);
+		private static final SysOperatorBusiness sysOperatorBusiness = SpringUtil.getBean(SysOperatorBusiness.class);
 
 		@Override
 		public GoodsMO mapRow(ResultSet rs, int rowNum) throws SQLException
@@ -215,18 +229,20 @@ public class GoodsMO extends BaseMO
 			mo.setCreateOperatorId(rs.getString("createOperatorId"));
 			mo.setDeliveryAreaId(rs.getString("deliveryAreaId"));
 			mo.setDeliveryFeeRuleId(rs.getString("deliveryFeeRuleId"));
-			mo.setCreateTime(rs.getString("createTime"));
+			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"), ".0", ""));
 
 			// 查询明细图片信息
 			QueryParam queryParam = new QueryParam();
 			QueryCondition condition = new QueryCondition();
 			condition.getCondItems().add(new ConditionItem("goodsId", mo.getId(), ConditionOperatorType.equal));
 			queryParam.setCondition(condition);
-			
+
 			queryParam.setSortFields("sortNum");
 			List<GoodsDetailImgsMO> mos = new ArrayList<GoodsDetailImgsMO>();
 			goodsDetailImgsBusiness.getList(queryParam, mos);
 			mo.setDetailImgs(mos);
+
+			mo.setCreateOperatorName(sysOperatorBusiness.getById(mo.getCreateOperatorId()).getName());
 
 			return mo;
 		}
