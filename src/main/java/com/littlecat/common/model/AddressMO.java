@@ -6,6 +6,11 @@ public class AddressMO
 	private String city;
 	private String area;
 	private String detailInfo;
+	
+	public AddressMO()
+	{
+		
+	}
 
 	public AddressMO(String province, String city, String area, String detailInfo)
 	{
