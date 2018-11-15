@@ -1,5 +1,6 @@
 package com.littlecat.goods.rest;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,8 @@ import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.StringUtil;
+import com.littlecat.cbb.utils.UUIDUtil;
+import com.littlecat.common.consts.ServiceConsts;
 import com.littlecat.goods.business.HomeImgsBusiness;
 import com.littlecat.goods.model.HomeImgsMO;
 
@@ -97,52 +100,40 @@ public class HomeImgsController
 	}
 
 	@PostMapping(value = "/upload")
-	public RestRsp<String> upload(HttpServletRequest request, @RequestParam @Nullable int sortNum, @RequestParam @Nullable String id)
+	public RestRsp<String> upload(HttpServletRequest request, @RequestParam @Nullable int sortNum, @RequestParam @Nullable String id) throws Exception
 	{
 		RestRsp<String> result = new RestRsp<String>();
 		HomeImgsMO mo = null;
 
-		try
+		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("homeImg");
+
+		if (StringUtil.isNotEmpty(id))
 		{
-			List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("homeImg");
+			mo = homeImgsBusiness.getById(id);
+			mo.setSortNum(sortNum);
 
-			if (StringUtil.isNotEmpty(id))
+			if (CollectionUtil.isNotEmpty(files))
 			{
-				mo = homeImgsBusiness.getById(id);
-				mo.setSortNum(sortNum);
-
-				if (CollectionUtil.isNotEmpty(files))
-				{
-					mo.setImgData(Base64.encodeBase64String(files.get(0).getBytes()));
-				}
-
+				files.get(0).transferTo(new File(ServiceConsts.IMG_path + id));
+				mo.setImgData(ServiceConsts.IMG_URL_BASE + mo.getId());
 				homeImgsBusiness.modify(mo);
 			}
-			else
+		}
+		else
+		{
+			if (CollectionUtil.isEmpty(files))
 			{
-				if (CollectionUtil.isEmpty(files))
-				{
-					throw new LittleCatException("upload home img:img is null.");
-				}
-
-				mo = new HomeImgsMO();
-				mo.setSortNum(sortNum);
-				mo.setImgData(Base64.encodeBase64String(files.get(0).getBytes()));
-
-				result.getData().add(homeImgsBusiness.add(mo));
+				throw new LittleCatException("upload home img:img is null.");
 			}
-		}
-		catch (LittleCatException e)
-		{
-			result.setCode(e.getErrorCode());
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-		catch (Exception e)
-		{
-			result.setCode(Consts.ERROR_CODE_UNKNOW);
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
+
+			mo = new HomeImgsMO();
+			mo.setId(UUIDUtil.createUUID());
+			mo.setSortNum(sortNum);
+			
+			files.get(0).transferTo(new File(ServiceConsts.IMG_path + mo.getId()));
+			mo.setImgData(ServiceConsts.IMG_URL_BASE + mo.getId());
+
+			result.getData().add(homeImgsBusiness.add(mo));
 		}
 
 		return result;

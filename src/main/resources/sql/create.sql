@@ -244,7 +244,7 @@ CREATE TABLE `t_goods` (
 	`supplierId` VARCHAR(255) NULL DEFAULT '-1',
 	`name` VARCHAR(255) NOT NULL,
 	`summaryDescription` VARCHAR(500) NULL,
-	`mainImgData` MediumBlob NULL,
+	`mainImgData` VARCHAR(1024) NULL,
 	`price` decimal(10,2) NOT NULL,
 	`currentInventory` decimal(18,2) NOT NULL DEFAULT 0,
 	`enable` VARCHAR(1) NOT NULL DEFAULT 'I',
@@ -262,7 +262,7 @@ CREATE TABLE `t_goods` (
 CREATE TABLE `t_goods_homeimgs` (
 	`id` VARCHAR(255) NOT NULL,
 	`sortNum` INT NULL DEFAULT 0,
-	`imgData` MediumBlob NULL,
+	`imgData` VARCHAR(1024) NULL,
 	
 	PRIMARY KEY (`id`)
 );
@@ -272,7 +272,7 @@ CREATE TABLE `t_goods_detailimgs` (
 	`goodsId` VARCHAR(255) NOT NULL,
 	`title` VARCHAR(255) NOT NULL,
 	`sortNum` VARCHAR(255) NOT NULL,
-	`imgData` MediumBlob NULL,
+	`imgData` VARCHAR(1024) NULL,
 	
 	PRIMARY KEY (`id`)
 );

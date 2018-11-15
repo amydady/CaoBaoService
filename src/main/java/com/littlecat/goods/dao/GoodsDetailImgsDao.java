@@ -1,17 +1,12 @@
 package com.littlecat.goods.dao;
 
-import java.io.UnsupportedEncodingException;
-import java.sql.SQLException;
 import java.util.List;
-
-import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.StringUtil;
@@ -47,11 +42,6 @@ public class GoodsDetailImgsDao
 
 	public String add(GoodsDetailImgsMO mo) throws LittleCatException
 	{
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		if (StringUtil.isEmpty(mo.getId()))
 		{
 			mo.setId(UUIDUtil.createUUID());
@@ -61,14 +51,9 @@ public class GoodsDetailImgsDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getGoodsId(), mo.getTitle(), mo.getSortNum(), new SerialBlob(mo.getImgData().getBytes(Consts.CHARSET_NAME)) });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(), ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
+			jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getGoodsId(), mo.getTitle(), mo.getSortNum(), mo.getImgData() });
 		}
-		catch (DataAccessException | UnsupportedEncodingException | SQLException e)
+		catch (DataAccessException e)
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
@@ -87,12 +72,7 @@ public class GoodsDetailImgsDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getTitle(), mo.getSortNum(), mo.getId() });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
+			jdbcTemplate.update(sql, new Object[] { mo.getTitle(), mo.getSortNum(), mo.getId() });
 		}
 		catch (DataAccessException e)
 		{

@@ -1,13 +1,9 @@
 package com.littlecat.goods.dao;
 
-import java.io.UnsupportedEncodingException;
-import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -15,7 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.StringUtil;
@@ -32,7 +27,6 @@ public class GoodsDao
 	protected JdbcTemplate jdbcTemplate;
 
 	private final String TABLE_NAME = TableName.Goods.getName();
-	private final String MODEL_NAME = GoodsMO.class.getSimpleName();
 
 	public GoodsMO getById(String id) throws LittleCatException
 	{
@@ -104,11 +98,6 @@ public class GoodsDao
 
 	public String add(GoodsMO mo) throws LittleCatException
 	{
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		if (StringUtil.isEmpty(mo.getId()))
 		{
 			mo.setId(UUIDUtil.createUUID());
@@ -118,12 +107,7 @@ public class GoodsDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mo.getPrice(), mo.getCreateOperatorId(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId() });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(), ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
+			jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mo.getPrice(), mo.getCreateOperatorId(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId() });
 		}
 		catch (DataAccessException e)
 		{
@@ -135,30 +119,13 @@ public class GoodsDao
 
 	public void modify(GoodsMO mo) throws LittleCatException
 	{
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		String sql = "update " + TABLE_NAME + " set classifyId=?,supplierId=?,name=?,summaryDescription=?,mainImgData=?,price=?,currentInventory = ?,deliveryAreaId=?,deliveryFeeRuleId=?,hasSecKillPlan=?,hasGroupBuyPlan=? where id = ?";
 
 		try
 		{
-			Blob mainImgData = null;
-
-			if (StringUtil.isNotEmpty(mo.getMainImgData()))
-			{
-				mainImgData = new SerialBlob(mo.getMainImgData().getBytes(Consts.CHARSET_NAME));
-			}
-
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mainImgData, mo.getPrice(), mo.getCurrentInventory(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getHasSecKillPlan(), mo.getHasGroupBuyPlan(), mo.getId() });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
+			jdbcTemplate.update(sql, new Object[] { mo.getClassifyId(), mo.getSupplierId(), mo.getName(), mo.getSummaryDescription(), mo.getMainImgData(), mo.getPrice(), mo.getCurrentInventory(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getHasSecKillPlan(), mo.getHasGroupBuyPlan(), mo.getId() });
 		}
-		catch (DataAccessException | UnsupportedEncodingException | SQLException e)
+		catch (DataAccessException e)
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
@@ -221,7 +188,7 @@ public class GoodsDao
 	 * 
 	 * @return
 	 */
-	public List<GoodsMO> getList4WebApp(String name,String enable)
+	public List<GoodsMO> getList4WebApp(String name, String enable)
 	{
 		List<GoodsMO> mos = new ArrayList<GoodsMO>();
 
@@ -234,12 +201,11 @@ public class GoodsDao
 		{
 			sql.append(" and a.name like '%").append(name).append("%'");
 		}
-		
+
 		if (StringUtil.isNotEmpty(enable))
 		{
 			sql.append(" and a.enable = '").append(enable).append("'");
 		}
-
 
 		sql.append(" order by a.enable desc,a.createTime asc");
 

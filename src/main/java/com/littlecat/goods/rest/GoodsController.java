@@ -1,11 +1,11 @@
 package com.littlecat.goods.rest;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +27,8 @@ import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.cbb.utils.CollectionUtil;
+import com.littlecat.cbb.utils.UUIDUtil;
+import com.littlecat.common.consts.ServiceConsts;
 import com.littlecat.goods.business.GoodsBusiness;
 import com.littlecat.goods.business.GoodsDetailImgsBusiness;
 import com.littlecat.goods.model.GoodsDetailImgsMO;
@@ -257,7 +259,7 @@ public class GoodsController
 
 		return result;
 	}
-	
+
 	@PutMapping(value = "/batchdelete")
 	public RestSimpleRsp batchDelete(@RequestBody List<String> ids)
 	{
@@ -341,15 +343,10 @@ public class GoodsController
 	 * @return
 	 */
 	@PostMapping(value = "/uploadmainimg/{id}")
-	public RestSimpleRsp uploadMainImg(@PathVariable String id, HttpServletRequest request)
+	public RestSimpleRsp uploadMainImg(@PathVariable String id, HttpServletRequest request) throws Exception
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 		GoodsMO mo = goodsBusiness.getById(id);
-
-		if (mo == null)
-		{
-			throw new LittleCatException("GoodsController:uploadmainimg:get goodsmo by id return null.");
-		}
 
 		// 上传的产品图片（主图）
 		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("goodsMainImg");
@@ -359,33 +356,21 @@ public class GoodsController
 			throw new LittleCatException("GoodsController:uploadmainimg:files is null.");
 		}
 
-		try
-		{
-			mo.setMainImgData(Base64.encodeBase64String(files.get(0).getBytes()));
-			goodsBusiness.modify(mo);
-		}
-		catch (LittleCatException e)
-		{
-			result.setCode(e.getErrorCode());
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-		catch (Exception e)
-		{
-			result.setCode(Consts.ERROR_CODE_UNKNOW);
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
+		files.get(0).transferTo(new File(ServiceConsts.IMG_path + id));
+		mo.setMainImgData(ServiceConsts.IMG_URL_BASE + id);
+		goodsBusiness.modify(mo);
 
 		return result;
 	}
 
 	@PostMapping(value = "/detailimgs/add/{goodsId}/{title}/{sortNum}")
 	public RestSimpleRsp uploadDetailImgs(@PathVariable String goodsId, @PathVariable String title, @PathVariable String sortNum, HttpServletRequest request)
+			throws Exception
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 		GoodsDetailImgsMO mo = new GoodsDetailImgsMO();
 
+		mo.setId(UUIDUtil.createUUID());
 		mo.setGoodsId(goodsId);
 		mo.setTitle(title);
 		mo.setSortNum(sortNum);
@@ -398,23 +383,10 @@ public class GoodsController
 			throw new LittleCatException("GoodsController:uploadmainimg:files is null.");
 		}
 
-		try
-		{
-			mo.setImgData(Base64.encodeBase64String(files.get(0).getBytes()));
-			goodsDetailImgsBusiness.add(mo);
-		}
-		catch (LittleCatException e)
-		{
-			result.setCode(e.getErrorCode());
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-		catch (Exception e)
-		{
-			result.setCode(Consts.ERROR_CODE_UNKNOW);
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
+		files.get(0).transferTo(new File(ServiceConsts.IMG_path + mo.getId()));
+		mo.setImgData(ServiceConsts.IMG_URL_BASE + mo.getId());
+
+		goodsDetailImgsBusiness.add(mo);
 
 		return result;
 	}
@@ -507,15 +479,15 @@ public class GoodsController
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/getList4WebApp")
-	public RestRsp<GoodsMO> getList4WebApp(@RequestParam @Nullable String name,@RequestParam @Nullable String enable)
+	public RestRsp<GoodsMO> getList4WebApp(@RequestParam @Nullable String name, @RequestParam @Nullable String enable)
 	{
 		RestRsp<GoodsMO> result = new RestRsp<GoodsMO>();
 
 		try
 		{
-			result.getData().addAll(goodsBusiness.getList4WebApp(name,enable));
+			result.getData().addAll(goodsBusiness.getList4WebApp(name, enable));
 		}
 		catch (LittleCatException e)
 		{
