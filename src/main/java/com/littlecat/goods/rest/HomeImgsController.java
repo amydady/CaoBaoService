@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,7 +128,7 @@ public class HomeImgsController
 			mo = new HomeImgsMO();
 			mo.setId(UUIDUtil.createUUID());
 			mo.setSortNum(sortNum);
-			
+
 			files.get(0).transferTo(new File(ServiceConsts.IMG_path + mo.getId()));
 			mo.setImgData(ServiceConsts.IMG_URL_BASE + mo.getId());
 

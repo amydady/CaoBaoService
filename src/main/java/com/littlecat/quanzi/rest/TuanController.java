@@ -1,11 +1,11 @@
 package com.littlecat.quanzi.rest;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +27,7 @@ import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.cbb.utils.CollectionUtil;
+import com.littlecat.common.consts.ServiceConsts;
 import com.littlecat.quanzi.business.TuanBusiness;
 import com.littlecat.quanzi.model.TuanMO;
 import com.littlecat.quanzi.model.TuanShenheReqInfo;
@@ -268,7 +269,7 @@ public class TuanController
 
 		return result;
 	}
-	
+
 	@PutMapping(value = "/shenhe")
 	public RestSimpleRsp shenHe(@RequestBody TuanShenheReqInfo tuanShenheReqInfo)
 	{
@@ -367,7 +368,9 @@ public class TuanController
 
 		try
 		{
-			mo.setIdCardImgDataFront(Base64.encodeBase64String(files.get(0).getBytes()));
+			files.get(0).transferTo(new File(ServiceConsts.IMG_path + mo.getId() + "front"));
+			mo.setIdCardImgDataFront(ServiceConsts.IMG_URL_BASE + mo.getId() + "front");
+
 			tuanBusiness.modify(mo);
 			result.getData().add(mo.getIdCardImgDataFront());
 		}
@@ -407,8 +410,10 @@ public class TuanController
 
 		try
 		{
-			mo.setIdCardImgDataBack(Base64.encodeBase64String(files.get(0).getBytes()));
+			files.get(0).transferTo(new File(ServiceConsts.IMG_path + mo.getId() + "back"));
+			mo.setIdCardImgDataBack(ServiceConsts.IMG_URL_BASE + mo.getId() + "back");
 			tuanBusiness.modify(mo);
+
 			result.getData().add(mo.getIdCardImgDataBack());
 		}
 		catch (LittleCatException e)
@@ -426,9 +431,9 @@ public class TuanController
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/getDeliverySiteList")
-	public RestRsp<TuanMO> getDeliverySiteList(@RequestParam String province, @RequestParam String city,@RequestParam String area)
+	public RestRsp<TuanMO> getDeliverySiteList(@RequestParam String province, @RequestParam String city, @RequestParam String area)
 	{
 		RestRsp<TuanMO> result = new RestRsp<TuanMO>();
 

@@ -1,13 +1,9 @@
 package com.littlecat.quanzi.dao;
 
-import java.io.UnsupportedEncodingException;
-import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -15,7 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.StringUtil;
@@ -124,23 +119,10 @@ public class TuanDao
 
 		try
 		{
-			Blob imgDataFront = null;
-			if (StringUtil.isNotEmpty(mo.getIdCardImgDataFront()))
-			{
-				imgDataFront = new SerialBlob(mo.getIdCardImgDataFront().getBytes(Consts.CHARSET_NAME));
-			}
-
-			Blob imgDataBack = null;
-
-			if (StringUtil.isNotEmpty(mo.getIdCardImgDataBack()))
-			{
-				imgDataBack = new SerialBlob(mo.getIdCardImgDataBack().getBytes(Consts.CHARSET_NAME));
-			}
-
-			int ret = jdbcTemplate.update(sql, new Object[] {
+			jdbcTemplate.update(sql, new Object[] {
 					mo.getName(),
 					mo.getTuanZhangName(),
-					imgDataFront, imgDataBack,
+					mo.getIdCardImgDataFront(), mo.getIdCardImgDataBack(),
 					mo.getAddressInfo().getProvince(),
 					mo.getAddressInfo().getCity(),
 					mo.getAddressInfo().getArea(),
@@ -151,13 +133,8 @@ public class TuanDao
 					mo.getIsDeliverySite(),
 					mo.getId()
 			});
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
 		}
-		catch (DataAccessException | UnsupportedEncodingException | SQLException e)
+		catch (DataAccessException e)
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
@@ -202,7 +179,7 @@ public class TuanDao
 	 * @param addressInfo
 	 * @return
 	 */
-	public List<TuanMO> getDeliverySiteList(String province,String city,String area) throws LittleCatException
+	public List<TuanMO> getDeliverySiteList(String province, String city, String area) throws LittleCatException
 	{
 		List<TuanMO> mos = new ArrayList<TuanMO>();
 
