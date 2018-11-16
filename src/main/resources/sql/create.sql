@@ -391,6 +391,7 @@ CREATE TABLE `t_order` (
 	`groupBuyTaskId` VARCHAR(255) NULL,
 	`groupCompleteTime` DATETIME NULL,
 	`groupCancelTime` DATETIME NULL,
+	`outInventoryGenTime` DATETIME NULL,
 	
 	PRIMARY KEY (`id`)
 );

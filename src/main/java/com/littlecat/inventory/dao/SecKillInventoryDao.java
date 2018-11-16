@@ -112,6 +112,7 @@ public class SecKillInventoryDao
 				.append(" from ").append(TABLE_NAME).append(" a ")
 				.append(" left join ").append(TABLE_NAME_SYSOPERATOR).append(" b on a.operatorId=b.id ")
 				.append(" where a.planId=? ")
+				.append(" and a.changeType in ('rengongzengjia','rengongjianshao','miaoshaguihuachexiao') ")
 				.append(" order by createtime desc ")
 				.toString();
 
