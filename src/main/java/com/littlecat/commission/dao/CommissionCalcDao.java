@@ -1,5 +1,6 @@
 package com.littlecat.commission.dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +69,11 @@ public class CommissionCalcDao
 
 		for (CommissionCalcMO mo : mos)
 		{
+			if (mo.getCalcFee() == null || mo.getCalcFee().compareTo(new BigDecimal("0")) <= 0)
+			{
+				continue;
+			}
+			
 			if (StringUtil.isEmpty(mo.getId()))
 			{
 				mo.setId(UUIDUtil.createUUID());
