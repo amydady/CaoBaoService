@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.ConditionItem;
 import com.littlecat.cbb.query.ConditionOperatorType;
@@ -18,11 +19,14 @@ import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.StringUtil;
+import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.commission.business.CommissionCalcBusiness;
 import com.littlecat.common.consts.BuyType;
 import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.InventoryChangeType;
 import com.littlecat.common.consts.OrderState;
+import com.littlecat.common.consts.ServiceConsts;
+import com.littlecat.common.utils.WxPayUtil;
 import com.littlecat.goods.business.GoodsBusiness;
 import com.littlecat.goods.model.GoodsMO;
 import com.littlecat.groupbuy.business.GroupBuyPlanBusiness;
@@ -97,12 +101,14 @@ public class OrderBusiness
 	// order中团购任务字段名称
 	private static final String FIELD_NAME_GROUPBUYTASKID = "groupBuyTaskId";
 
-	public String addOrder(OrderMO orderMO, List<OrderDetailMO> orderDetailMOs) throws LittleCatException
+	public Map<String, String> addOrder(OrderMO orderMO, List<OrderDetailMO> orderDetailMOs) throws LittleCatException
 	{
 		if (CollectionUtil.isEmpty(orderDetailMOs))
 		{
 			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME_ORDERDETAIL));
 		}
+
+		Map<String, String> ret = new HashMap<String, String>();
 
 		orderMO.setState(OrderState.daifukuan);
 
@@ -117,7 +123,53 @@ public class OrderBusiness
 		// 创建订单明细
 		orderDetailBusiness.add(orderDetailMOs);
 
-		return orderId;
+		orderMO.setId(orderId);
+
+		try
+		{
+			// 调用微信统一下单接口
+			String prePayId = unifiedOrderToWx(orderMO);
+
+			if (StringUtil.isEmpty(prePayId))
+			{
+				throw new LittleCatException("UNI_ORDER_ERR", "调用微信统一下单接口失败");
+			}
+
+			ret.put("orderId", orderId);
+			ret.put("prePayId", prePayId);
+		}
+		catch (Exception e)
+		{
+			throw new LittleCatException("UNI_ORDER_ERR", "调用微信统一下单接口失败");
+		}
+
+		return ret;
+	}
+
+	/**
+	 * 调用微信统一下单接口
+	 * 
+	 * @param id
+	 * @return
+	 * @throws LittleCatException
+	 */
+	public String unifiedOrder(String id) throws LittleCatException
+	{
+		try
+		{
+			String prePayId = unifiedOrderToWx(orderDao.getById(id));
+
+			if (StringUtil.isEmpty(prePayId))
+			{
+				throw new LittleCatException("UNI_ORDER_ERR", "调用微信统一下单接口失败");
+			}
+
+			return prePayId;
+		}
+		catch (Exception e)
+		{
+			throw new LittleCatException("UNI_ORDER_ERR", "调用微信统一下单接口失败");
+		}
 	}
 
 	/**
@@ -187,17 +239,17 @@ public class OrderBusiness
 			orderMO.setState(OrderState.daifahuo);
 			setInventoryInfoByOrderDetail(detailMOs);
 		}
-		
-		//修改订单支付时间
+
+		// 修改订单支付时间
 		orderMO.setPayTime(currentTime);
 		orderDao.modify(orderMO);
 
 		// 设置粉丝信息
 		setTuanMemberInfo(orderMO.getTerminalUserId(), orderMO.getShareTuanZhangId());
 
-		//计算佣金
+		// 计算佣金
 		commissionCalcBusiness.doCalc(orderMO);
-		
+
 		unLock(lockInfo);
 	}
 
@@ -480,5 +532,50 @@ public class OrderBusiness
 				secKillPlanBusiness.modify(secKillPlanMO);
 			}
 		}
+	}
+
+	private String unifiedOrderToWx(OrderMO order) throws Exception
+	{
+		String body = "wpysq";
+		String appid = ServiceConsts.WX_APPID;
+		String mch_id = ServiceConsts.WX_MCH_ID;
+		String nonce_str = UUIDUtil.createUUID();// 随机字符串
+		String out_trade_no = order.getId();// 商户订单号
+		String spbill_create_ip = "47.100.218.102";// 终端IP
+		String notify_url = "NONE";// 通知地址
+		String trade_type = "JSAPI";// 交易类型
+		String openid = order.getTerminalUserId();// 用户标识
+		String fee = String.valueOf(order.getFee().multiply(new BigDecimal("100")).intValue());// 订单费用
+
+		String unifiedPayment = "appid=" + appid + "&body=" + body + "&mch_id=" + mch_id + "&nonce_str=" + nonce_str + "&notify_url=" + notify_url + "&openid=" + openid + "&out_trade_no=" + out_trade_no + "&spbill_create_ip=" + spbill_create_ip + "&total_fee=" + fee + "&trade_type=" + trade_type + "&key=" + ServiceConsts.WX_KEY;
+		// MD5运算生成签名
+		String mysign = WxPayUtil.sign(unifiedPayment, Consts.CHARSET_NAME).toUpperCase();
+
+		StringBuilder respXml = new StringBuilder()
+				.append("<xml>")
+				.append("<appid>" + appid + "</appid>")
+				.append("<body>" + body + "</body>")
+				.append("<mch_id>" + mch_id + "</mch_id>")
+				.append("<nonce_str>" + nonce_str + "</nonce_str>")
+				.append("<notify_url>" + notify_url + "</notify_url>")
+				.append("<openid>" + openid + "</openid>")
+				.append("<out_trade_no>" + out_trade_no + "</out_trade_no>")
+				.append("<spbill_create_ip>" + spbill_create_ip + "</spbill_create_ip>")
+				.append("<total_fee>" + fee + "</total_fee>")
+				.append("<trade_type>" + trade_type + "</trade_type>")
+				.append("<sign>" + mysign + "</sign>")
+				.append("</xml>");
+
+		String url = "https://api.mch.weixin.qq.com/pay/unifiedorder";// 统一下单API接口链接
+		String result = WxPayUtil.httpRequest(url, "POST", respXml.toString());
+
+		String result_code = result.split("<result_code>")[1].split("</result_code>")[0].split("\\[")[2].split("\\]")[0];
+
+		if (result_code.equals("FAIL"))
+		{
+			return null;
+		}
+
+		return result.split("<prepay_id>")[1].split("</prepay_id>")[0].split("\\[")[2].split("\\]")[0];
 	}
 }

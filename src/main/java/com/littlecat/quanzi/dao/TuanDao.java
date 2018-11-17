@@ -20,6 +20,7 @@ import com.littlecat.common.consts.TableName;
 import com.littlecat.common.model.AddressMO;
 import com.littlecat.common.utils.DaoUtil;
 import com.littlecat.quanzi.model.TuanMO;
+import com.littlecat.quanzi.model.TuanShenheReqInfo;
 
 @Component
 public class TuanDao
@@ -79,7 +80,7 @@ public class TuanDao
 			mo.setId(UUIDUtil.createUUID());
 		}
 
-		String sql = "insert into " + TABLE_NAME + "(id,tuanZhangName,name,province,city,area,detailInfo,mobile) values(?,?,?,?,?,?,?,?)";
+		String sql = "insert into " + TABLE_NAME + "(id,tuanZhangName,name,province,city,area,detailInfo,mobile,isDeliverySite) values(?,?,?,?,?,?,?,?,?)";
 
 		try
 		{
@@ -92,7 +93,8 @@ public class TuanDao
 							mo.getAddressInfo().getCity(),
 							mo.getAddressInfo().getArea(),
 							mo.getAddressInfo().getDetailInfo(),
-							mo.getMobile()
+							mo.getMobile(),
+							mo.getIsDeliverySite()
 					});
 
 			if (ret != 1)
@@ -115,7 +117,7 @@ public class TuanDao
 
 	public void modify(TuanMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set name=?,tuanZhangName=?,idCardImgDataFront=?,idCardImgDataBack=?,province=?,city=?,area=?,detailInfo=?,mobile=?,approveTime=?,approveRemark=?,isDeliverySite=?,enable=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set name=?,tuanZhangName=?,idCardImgDataFront=?,idCardImgDataBack=?,province=?,city=?,area=?,detailInfo=?,mobile=?,isDeliverySite=? where id = ?";
 
 		try
 		{
@@ -128,11 +130,26 @@ public class TuanDao
 					mo.getAddressInfo().getArea(),
 					mo.getAddressInfo().getDetailInfo(),
 					mo.getMobile(),
-					mo.getApproveTime(),
-					mo.getApproveRemark(),
 					mo.getIsDeliverySite(),
-					mo.getEnable(),
 					mo.getId()
+			});
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
+	public void shenHe(TuanShenheReqInfo tuanShenheReqInfo) throws LittleCatException
+	{
+		String sql = "update " + TABLE_NAME + " set  approveTime=CURRENT_TIMESTAMP,approveRemark=?,enable=? where id = ?";
+
+		try
+		{
+			jdbcTemplate.update(sql, new Object[] {
+					tuanShenheReqInfo.getApproveRemark(),
+					tuanShenheReqInfo.getEnable(),
+					tuanShenheReqInfo.getId()
 			});
 		}
 		catch (DataAccessException e)

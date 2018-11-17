@@ -16,7 +16,6 @@ public enum TableName
 	ResLock("t_sys_reslock"),
 	
 	TerminalUser("t_terminaluser"),
-	DeliveryAddress("t_terminaluser_deliveryaddress"),
 	
 	Supplier("t_supplier"),
 	

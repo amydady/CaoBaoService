@@ -2,6 +2,7 @@ package com.littlecat.order.rest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +35,9 @@ public class OrderController
 	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
 	@PostMapping(value = "/create")
-	public RestRsp<String> create(@RequestBody OrderCreateReqInfo orderCreateReqInfo)
+	public RestRsp<Map<String,String>> create(@RequestBody OrderCreateReqInfo orderCreateReqInfo)
 	{
-		RestRsp<String> result = new RestRsp<String>();
+		RestRsp<Map<String,String>> result = new RestRsp<Map<String,String>>();
 
 		try
 		{
@@ -67,6 +68,31 @@ public class OrderController
 		{
 			OrderMO mo = orderBusiness.getOrderById(id);
 			result.getData().add(mo);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+	
+	@GetMapping(value = "/unifiedOrder")
+	public RestRsp<String> unifiedOrder(@RequestParam String id)
+	{
+		RestRsp<String> result = new RestRsp<String>();
+
+		try
+		{
+			result.getData().add(orderBusiness.unifiedOrder(id));
 		}
 		catch (LittleCatException e)
 		{

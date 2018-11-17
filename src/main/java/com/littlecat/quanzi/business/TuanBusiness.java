@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.query.QueryParam;
-import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.quanzi.dao.TuanDao;
 import com.littlecat.quanzi.model.TuanMO;
 import com.littlecat.quanzi.model.TuanShenheReqInfo;
@@ -77,13 +76,10 @@ public class TuanBusiness
 
 	public void shenHe(TuanShenheReqInfo tuanShenheReqInfo) throws LittleCatException
 	{
-		TuanMO mo = tuanDao.getById(tuanShenheReqInfo.getId());
-		mo.setApproveTime(DateTimeUtil.getCurrentTimeForDisplay());
-		mo.setApproveRemark(tuanShenheReqInfo.getApproveRemark());
-		mo.setEnable(tuanShenheReqInfo.getEnable());
-		tuanDao.modify(mo);
+		tuanDao.shenHe(tuanShenheReqInfo);
 	}
-	public List<TuanMO> getDeliverySiteList(String province,String city,String area) throws LittleCatException
+
+	public List<TuanMO> getDeliverySiteList(String province, String city, String area) throws LittleCatException
 	{
 		return tuanDao.getDeliverySiteList(province, city, area);
 	}

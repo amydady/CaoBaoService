@@ -191,20 +191,6 @@ CREATE TABLE `t_commission_calc` (
 );
 
 
-CREATE TABLE `t_terminaluser_deliveryaddress` (
-	`id` VARCHAR(255) NOT NULL,
-	`terminalUserId` VARCHAR(255) NOT NULL,
-	`name` VARCHAR(255) NOT NULL,
-	`provinceId` VARCHAR(255) NOT NULL,
-	`cityId` VARCHAR(255) NOT NULL,
-	`areaId` VARCHAR(255) NOT NULL,
-	`detailInfo` VARCHAR(255) NOT NULL,
-	`isDefault` VARCHAR(1) NOT NULL DEFAULT 'N',
-	
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `name` (`terminalUserId`,`name`)
-);
-
 # 基础信息
 
 CREATE TABLE `t_basicinfo_province` (
@@ -415,8 +401,8 @@ CREATE TABLE `t_quanzi_tuan` (
 	`id` VARCHAR(255) NOT NULL,
 	`tuanZhangName` VARCHAR(255) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
-	`idCardImgDataFront` MediumBlob NULL,
-	`idCardImgDataBack` MediumBlob NULL,
+	`idCardImgDataFront` VARCHAR(1024) NULL,
+	`idCardImgDataBack` VARCHAR(1024) NULL,
 	`province` VARCHAR(255) NOT NULL,
 	`city` VARCHAR(255) NOT NULL,
 	`area` VARCHAR(255) NOT NULL,

@@ -21,7 +21,6 @@ public class TerminalUserDao
 	protected JdbcTemplate jdbcTemplate;
 
 	private final String TABLE_NAME = TableName.TerminalUser.getName();
-	private final String MODEL_NAME = TerminalUserMO.class.getSimpleName();
 
 	public TerminalUserMO getById(String id) throws LittleCatException
 	{
@@ -67,22 +66,13 @@ public class TerminalUserDao
 			if (jdbcTemplate.queryForObject(sql, new Object[] { mo.getId() }, Integer.class) > 0)
 			{// 已存在
 				sql = "update " + TABLE_NAME + " set name=?,image=? where id = ?";
-				int ret = jdbcTemplate.update(sql, new Object[] { mo.getName(), mo.getImage(), mo.getId() });
-				if (ret != 1)
-				{
-					throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(), ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-				}
+				jdbcTemplate.update(sql, new Object[] { mo.getName(), mo.getImage(), mo.getId() });
 			}
 			else
 			{
 				sql = "insert into " + TABLE_NAME + "(id,name,image) values(?,?,?)";
 
-				int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getName(), mo.getImage() });
-
-				if (ret != 1)
-				{
-					throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(), ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-				}
+				jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getName(), mo.getImage() });
 			}
 		}
 		catch (DataAccessException e)
