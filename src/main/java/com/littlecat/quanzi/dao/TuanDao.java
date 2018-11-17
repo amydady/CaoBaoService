@@ -115,7 +115,7 @@ public class TuanDao
 
 	public void modify(TuanMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set name=?,tuanZhangName=?,idCardImgDataFront=?,idCardImgDataBack=?,province=?,city=?,area=?,detailInfo=?,mobile=?,approveTime=?,approveRemark=?,isDeliverySite=? where id = ?";
+		String sql = "update " + TABLE_NAME + " set name=?,tuanZhangName=?,idCardImgDataFront=?,idCardImgDataBack=?,province=?,city=?,area=?,detailInfo=?,mobile=?,approveTime=?,approveRemark=?,isDeliverySite=?,enable=? where id = ?";
 
 		try
 		{
@@ -131,6 +131,7 @@ public class TuanDao
 					mo.getApproveTime(),
 					mo.getApproveRemark(),
 					mo.getIsDeliverySite(),
+					mo.getEnable(),
 					mo.getId()
 			});
 		}
