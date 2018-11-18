@@ -48,7 +48,7 @@ public class SysOperatorDao
 
 	public SysOperatorMO login(String identity, String pwd) throws LittleCatException
 	{
-		String sql = "select * from " + TABLE_NAME + " where (wxCode =? or username=? or email=? or mobile=?) and password=password(?)";
+		String sql = "select * from " + TABLE_NAME + " where (wxCode =? or username=? or email=? or mobile=?) and enable = 'Y' and password=password(?)";
 
 		try
 		{

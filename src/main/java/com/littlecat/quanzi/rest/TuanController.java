@@ -1,7 +1,6 @@
 package com.littlecat.quanzi.rest;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.cbb.utils.CollectionUtil;
@@ -295,17 +293,14 @@ public class TuanController
 		return result;
 	}
 
-	@PostMapping(value = "/getList")
-	public RestRsp<TuanMO> getList(@RequestBody QueryParam queryParam)
+	@GetMapping(value = "/getList")
+	public RestRsp<TuanMO> getList(@RequestParam @Nullable String enable, @RequestParam @Nullable String name)
 	{
 		RestRsp<TuanMO> result = new RestRsp<TuanMO>();
 
 		try
 		{
-			List<TuanMO> mos = new ArrayList<TuanMO>();
-			int totalNum = tuanBusiness.getList(queryParam, mos);
-			result.setTotalNum(totalNum);
-			result.getData().addAll(mos);
+			result.getData().addAll(tuanBusiness.getList(enable, name));
 		}
 		catch (LittleCatException e)
 		{
@@ -322,15 +317,15 @@ public class TuanController
 
 		return result;
 	}
-
-	@GetMapping(value = "/getList")
-	public RestRsp<TuanMO> getList(@RequestParam @Nullable String enable, @RequestParam @Nullable String name)
+	
+	@GetMapping(value = "/isTuanZhang")
+	public RestRsp<Boolean> isTuanZhang(@RequestParam String id)
 	{
-		RestRsp<TuanMO> result = new RestRsp<TuanMO>();
+		RestRsp<Boolean> result = new RestRsp<Boolean>();
 
 		try
 		{
-			result.getData().addAll(tuanBusiness.getList(enable, name));
+			result.getData().add(tuanBusiness.isTuanZhang(id));
 		}
 		catch (LittleCatException e)
 		{

@@ -1,6 +1,5 @@
 package com.littlecat.seckill.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.seckill.business.SecKillPlanBusiness;
@@ -158,34 +156,6 @@ public class SecKillPlanController
 		return result;
 	}
 
-	@PostMapping(value = "/getList")
-	public RestRsp<SecKillPlanMO> getList(@RequestBody QueryParam queryParam)
-	{
-		RestRsp<SecKillPlanMO> result = new RestRsp<SecKillPlanMO>();
-
-		try
-		{
-			List<SecKillPlanMO> mos = new ArrayList<SecKillPlanMO>();
-			int totalNum = secKillPlanBusiness.getList(queryParam, mos);
-			result.setTotalNum(totalNum);
-			result.getData().addAll(mos);
-		}
-		catch (LittleCatException e)
-		{
-			result.setCode(e.getErrorCode());
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-		catch (Exception e)
-		{
-			result.setCode(Consts.ERROR_CODE_UNKNOW);
-			result.setMessage(e.getMessage());
-			logger.error(e.getMessage(), e);
-		}
-
-		return result;
-	}
-
 	/**
 	 * 查询某个消费者在某个秒杀计划下已经购买的商品数量
 	 * 
@@ -217,7 +187,7 @@ public class SecKillPlanController
 
 		return result;
 	}
-	
+
 	/**
 	 * 秒杀计划列表，用于微信小程序（展示秒杀商品列表）
 	 * 
@@ -247,7 +217,7 @@ public class SecKillPlanController
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/getList4WebApp")
 	public RestRsp<SecKillPlanMO> getList4WebApp(@RequestParam String goodsId)
 	{

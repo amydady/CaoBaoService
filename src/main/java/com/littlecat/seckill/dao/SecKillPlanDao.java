@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
@@ -63,7 +62,7 @@ public class SecKillPlanDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getStartTime(), mo.getEndTime(), mo.getPrice(), mo.getPlanInventory(),mo.getCurrentInventory(), mo.getLimitBuyNum(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getStartTime(), mo.getEndTime(), mo.getPrice(), mo.getPlanInventory(), mo.getCurrentInventory(), mo.getLimitBuyNum(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId(), mo.getId() });
 
 			if (ret != 1)
 			{
@@ -75,7 +74,7 @@ public class SecKillPlanDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
-	
+
 	public void disable(String id) throws LittleCatException
 	{
 		DaoUtil.disable(TABLE_NAME, id, jdbcTemplate);
@@ -84,11 +83,6 @@ public class SecKillPlanDao
 	public SecKillPlanMO getById(String id) throws LittleCatException
 	{
 		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new SecKillPlanMO.MOMapper());
-	}
-
-	public int getList(QueryParam queryParam, List<SecKillPlanMO> mos) throws LittleCatException
-	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new SecKillPlanMO.MOMapper());
 	}
 
 	/**

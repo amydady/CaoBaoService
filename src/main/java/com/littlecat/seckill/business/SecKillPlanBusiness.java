@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.common.consts.BooleanTag;
 import com.littlecat.common.consts.ErrorCode;
@@ -102,11 +101,6 @@ public class SecKillPlanBusiness
 	public SecKillPlanMO getById(String id) throws LittleCatException
 	{
 		return secKillPlanDao.getById(id);
-	}
-
-	public int getList(QueryParam queryParam, List<SecKillPlanMO> mos) throws LittleCatException
-	{
-		return secKillPlanDao.getList(queryParam, mos);
 	}
 
 	/**

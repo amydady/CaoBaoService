@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.ErrorCode;
@@ -110,11 +109,6 @@ public class TuanDao
 		return mo.getId();
 	}
 
-	public int getList(QueryParam queryParam, List<TuanMO> mos) throws LittleCatException
-	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new TuanMO.MOMapper());
-	}
-
 	public void modify(TuanMO mo) throws LittleCatException
 	{
 		String sql = "update " + TABLE_NAME + " set name=?,tuanZhangName=?,idCardImgDataFront=?,idCardImgDataBack=?,province=?,city=?,area=?,detailInfo=?,mobile=?,isDeliverySite=? where id = ?";
@@ -189,6 +183,21 @@ public class TuanDao
 		}
 
 		return mos;
+	}
+
+	/**
+	 * 是否为团长
+	 * @param id
+	 * @return
+	 */
+	public boolean isTuanZhang(String id)
+	{
+		StringBuilder sql = new StringBuilder()
+				.append("select count(1) ")
+				.append(" from ").append(TABLE_NAME).append(" a ")
+				.append(" where a.id = ? and a.enable = 'Y'");
+
+		return jdbcTemplate.queryForObject(sql.toString(), new Object[] { id }, Integer.class) > 0;
 	}
 
 	/**
