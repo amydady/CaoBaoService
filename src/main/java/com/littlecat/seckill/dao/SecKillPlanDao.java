@@ -95,12 +95,37 @@ public class SecKillPlanDao
 		List<SecKillPlanMO> mos = new ArrayList<SecKillPlanMO>();
 
 		String sql = new StringBuilder()
-				.append("select a.id,a.goodsId,a.currentInventory,a.price,b.name goodsName,b.price goodsPrice,b.mainImgData goodsMainImgData")
+				// 正在进行的秒杀
+				.append("(select a.id,a.goodsId,a.currentInventory,a.price,a.endTime,b.name goodsName,b.price goodsPrice,b.mainImgData goodsMainImgData,b.summaryDescription goodsSummaryDescription")
 				.append(" from ").append(TABLE_NAME).append(" a ")
 				.append(" inner join ").append(TABLE_NAME_GOODS).append(" b on a.goodsId=b.id")
-				.append(" where CURRENT_TIMESTAMP between a.startTime and a.endTime")
-				.append(" and a.enable='Y'")
-				.append(" and b.enable='Y'")
+				.append(" where now() between a.startTime and a.endTime ")
+				.append(" and a.enable='Y' ")
+				.append(" and b.enable='Y' ")
+				.append(" order by a.endTime limit 1000) ")
+
+				.append(" UNION ")
+
+				// 即将开始的秒杀
+				.append("(select a.id,a.goodsId,a.currentInventory,a.price,a.endTime,b.name goodsName,b.price goodsPrice,b.mainImgData goodsMainImgData,b.summaryDescription goodsSummaryDescription")
+				.append(" from ").append(TABLE_NAME).append(" a ")
+				.append(" inner join ").append(TABLE_NAME_GOODS).append(" b on a.goodsId=b.id")
+				.append(" where now() < a.startTime and now() + INTERVAL 15*60 SECOND > a.startTime ")
+				.append(" and a.enable='Y' ")
+				.append(" and b.enable='Y' ")
+				.append(" order by a.startTime limit 1000) ")
+
+				.append(" UNION ")
+
+				// 刚刚结束的秒杀
+				.append("(select a.id,a.goodsId,a.currentInventory,a.price,a.endTime,b.name goodsName,b.price goodsPrice,b.mainImgData goodsMainImgData,b.summaryDescription goodsSummaryDescription")
+				.append(" from ").append(TABLE_NAME).append(" a ")
+				.append(" inner join ").append(TABLE_NAME_GOODS).append(" b on a.goodsId=b.id")
+				.append(" where now() > a.endTime and now() - INTERVAL 30*60 SECOND < a.endTime ")
+				.append(" and a.enable='Y' ")
+				.append(" and b.enable='Y' ")
+				.append(" order by a.startTime limit 1000) ")
+
 				.toString();
 
 		try
@@ -116,10 +141,13 @@ public class SecKillPlanDao
 					mo.setId(rs.getString("id"));
 					mo.setGoodsId(rs.getString("goodsId"));
 					mo.setPrice(rs.getBigDecimal("price"));
+					mo.setEndTime(rs.getString("endTime"));
 					mo.setCurrentInventory(rs.getBigDecimal("currentInventory"));
 					mo.setGoodsName(rs.getString("goodsName"));
 					mo.setGoodsPrice(rs.getBigDecimal("goodsPrice"));
 					mo.setGoodsMainImgData(rs.getString("goodsMainImgData"));
+					mo.setGoodsSummaryDescription(rs.getString("goodsSummaryDescription"));
+					
 
 					return mo;
 				}
