@@ -172,7 +172,7 @@ public class CommissionCalcDao
 	 * @param tuanZhangId
 	 * @return
 	 */
-	public long getTotalPayedFee(String tuanZhangId)
+	public BigDecimal getTotalPayedFee(String tuanZhangId)
 	{
 		StringBuilder sql = new StringBuilder()
 				.append("select sum(calcFee) totalPayedFee from  ").append(TABLE_NAME)
@@ -180,16 +180,16 @@ public class CommissionCalcDao
 				.append(" and state='").append(CommissionState.payed).append("'");
 		try
 		{
-			return jdbcTemplate.queryForObject(sql.toString(), Long.class);
+			return jdbcTemplate.queryForObject(sql.toString(), BigDecimal.class);
 		}
 		catch (Exception e)
 		{
 			logger.error("getTotalPayedFee error:" + e.getMessage());
-			return 0;
+			return new BigDecimal("0");
 		}
 	}
 
-	public long getTotalCanApplyFee(String tuanZhangId)
+	public BigDecimal getTotalCanApplyFee(String tuanZhangId)
 	{
 		StringBuilder sql = new StringBuilder()
 				.append("select sum(calcFee) totalPayedFee from  ").append(TABLE_NAME)
@@ -197,12 +197,12 @@ public class CommissionCalcDao
 				.append(" and state='").append(CommissionState.canapply).append("'");
 		try
 		{
-			return jdbcTemplate.queryForObject(sql.toString(), Long.class);
+			return jdbcTemplate.queryForObject(sql.toString(), BigDecimal.class);
 		}
 		catch (Exception e)
 		{
 			logger.error("getTotalCanApplyFee error:" + e.getMessage());
-			return 0;
+			return new BigDecimal("0");
 		}
 	}
 

@@ -1,30 +1,31 @@
 package com.littlecat.commission.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
 public class CommissionReport
 {
-	private long totalPayedFee;
-	private long totalCanApplyFee;
+	private BigDecimal totalPayedFee;
+	private BigDecimal totalCanApplyFee;
 	private List<String> applyHistory;
 
-	public long getTotalPayedFee()
+	public BigDecimal getTotalPayedFee()
 	{
 		return totalPayedFee;
 	}
 
-	public void setTotalPayedFee(long totalPayedFee)
+	public void setTotalPayedFee(BigDecimal totalPayedFee)
 	{
 		this.totalPayedFee = totalPayedFee;
 	}
 
-	public long getTotalCanApplyFee()
+	public BigDecimal getTotalCanApplyFee()
 	{
 		return totalCanApplyFee;
 	}
 
-	public void setTotalCanApplyFee(long totalCanApplyFee)
+	public void setTotalCanApplyFee(BigDecimal totalCanApplyFee)
 	{
 		this.totalCanApplyFee = totalCanApplyFee;
 	}
