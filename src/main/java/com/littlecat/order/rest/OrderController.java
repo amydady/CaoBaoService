@@ -238,14 +238,14 @@ public class OrderController
 		return result;
 	}
 
-	@PutMapping(value = "/delete/{id}")
-	public RestSimpleRsp delete(@PathVariable String id)
+	@PutMapping(value = "/cancel/{id}")
+	public RestSimpleRsp cancel(@PathVariable String id)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			orderBusiness.deleteOrderById(id);
+			orderBusiness.cancel(id);
 		}
 		catch (LittleCatException e)
 		{

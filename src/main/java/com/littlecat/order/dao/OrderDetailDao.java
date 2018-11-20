@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
@@ -106,24 +105,5 @@ public class OrderDetailDao
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
-	}
-
-	public void deleteByOrderId(String orderId) throws LittleCatException
-	{
-		String sql = "delete from " + TABLE_NAME + " where orderId = ?";
-
-		try
-		{
-			jdbcTemplate.update(sql, new Object[] { orderId });
-		}
-		catch (DataAccessException e)
-		{
-			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
-		}
-	}
-
-	public int getList(QueryParam queryParam, List<OrderDetailMO> mos) throws LittleCatException
-	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new OrderDetailMO.MOMapperWithGoodsDetail());
 	}
 }

@@ -41,7 +41,7 @@ public class OrderDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvince(), mo.getDeliveryAddress().getCity(), mo.getDeliveryAddress().getArea(), mo.getDeliveryAddress().getDetailInfo(),mo.getDeliverySiteAddress().getProvince(), mo.getDeliverySiteAddress().getCity(), mo.getDeliverySiteAddress().getArea(), mo.getDeliverySiteAddress().getDetailInfo(), mo.getContactName(), mo.getContactMobile(), mo.getGroupBuyPlanId(), mo.getGroupBuyTaskId(), mo.getDeliveryFee(), mo.getDeliveryTuanZhangId(),mo.getShareTuanZhangId() });
+			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getFee(), mo.getState().name(), mo.getDeliveryAddress().getProvince(), mo.getDeliveryAddress().getCity(), mo.getDeliveryAddress().getArea(), mo.getDeliveryAddress().getDetailInfo(), mo.getDeliverySiteAddress().getProvince(), mo.getDeliverySiteAddress().getCity(), mo.getDeliverySiteAddress().getArea(), mo.getDeliverySiteAddress().getDetailInfo(), mo.getContactName(), mo.getContactMobile(), mo.getGroupBuyPlanId(), mo.getGroupBuyTaskId(), mo.getDeliveryFee(), mo.getDeliveryTuanZhangId(), mo.getShareTuanZhangId() });
 
 			if (ret != 1)
 			{
@@ -58,16 +58,11 @@ public class OrderDao
 
 	public void modify(OrderMO mo) throws LittleCatException
 	{
-		String sql = "update " + TABLE_NAME + " set state = ?,payTime = ?,receiveTime = ?,returnApplyTime = ?,returnCompleteTime = ?,groupCompleteTime=?,groupCancelTime=?,deliveryTime=?,deliverySiteReceiveTime=?,commissionCalcTime=?  where id = ?";
+		String sql = "update " + TABLE_NAME + " set state = ?,payTime = ?,receiveTime = ?,returnApplyTime = ?,returnCompleteTime = ?,groupCompleteTime=?,groupCancelTime=?,deliveryTime=?,deliverySiteReceiveTime=?,commissionCalcTime=?,cancelTime=?  where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getState().name(), mo.getPayTime(), mo.getReceiveTime(), mo.getReturnApplyTime(), mo.getReturnCompleteTime(), mo.getGroupCompleteTime(), mo.getGroupCancelTime(), mo.getDeliveryTime(), mo.getDeliverySiteReceiveTime(),mo.getCommissionCalcTime(), mo.getId() });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
+			jdbcTemplate.update(sql, new Object[] { mo.getState().name(), mo.getPayTime(), mo.getReceiveTime(), mo.getReturnApplyTime(), mo.getReturnCompleteTime(), mo.getGroupCompleteTime(), mo.getGroupCancelTime(), mo.getDeliveryTime(), mo.getDeliverySiteReceiveTime(), mo.getCommissionCalcTime(), mo.getCancelTime(), mo.getId() });
 		}
 		catch (DataAccessException e)
 		{
@@ -93,7 +88,7 @@ public class OrderDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
-	
+
 	public void updateOutInventoryGenTime(List<String> ids) throws LittleCatException
 	{
 		String sql = "update " + TABLE_NAME + " set outInventoryGenTime = CURRENT_TIMESTAMP where id in (:ids)";
@@ -110,11 +105,6 @@ public class OrderDao
 		{
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
-	}
-
-	public void delete(String id) throws LittleCatException
-	{
-		DaoUtil.delete(TABLE_NAME, id, jdbcTemplate);
 	}
 
 	public OrderMO getById(String id) throws LittleCatException

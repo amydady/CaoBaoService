@@ -43,6 +43,7 @@ public class OrderMO extends BaseMO
 	private String returnCompleteTime;// 退款完成时间
 	private String commissionCalcTime;// 佣金计算时间
 	private String outInventoryGenTime;// 出仓数据生成时间
+	private String cancelTime;// 出仓数据生成时间
 	
 	// 团购业务专用
 	private String groupBuyPlanId; // 团购计划ID
@@ -305,6 +306,16 @@ public class OrderMO extends BaseMO
 		this.deliveryTuanZhangMobile = deliveryTuanZhangMobile;
 	}
 
+	public String getCancelTime()
+	{
+		return cancelTime;
+	}
+
+	public void setCancelTime(String cancelTime)
+	{
+		this.cancelTime = cancelTime;
+	}
+
 	/**
 	 * 模型映射，不包含商品明细信息
 	 * 
@@ -347,6 +358,7 @@ public class OrderMO extends BaseMO
 			mo.setReturnCompleteTime(rs.getString("returnCompleteTime"));
 			mo.setCommissionCalcTime(rs.getString("commissionCalcTime"));
 			mo.setOutInventoryGenTime(rs.getString("outInventoryGenTime"));
+			mo.setCancelTime(rs.getString("cancelTime"));
 
 			mo.setGroupBuyPlanId(rs.getString("groupBuyPlanId"));
 			mo.setGroupBuyTaskId(rs.getString("groupBuyTaskId"));
@@ -396,6 +408,8 @@ public class OrderMO extends BaseMO
 			mo.setReturnApplyTime(rs.getString("returnApplyTime"));
 			mo.setReturnCompleteTime(rs.getString("returnCompleteTime"));
 			mo.setCommissionCalcTime(rs.getString("commissionCalcTime"));
+			mo.setOutInventoryGenTime(rs.getString("outInventoryGenTime"));
+			mo.setCancelTime(rs.getString("cancelTime"));
 
 			mo.setGroupBuyPlanId(rs.getString("groupBuyPlanId"));
 			mo.setGroupBuyTaskId(rs.getString("groupBuyTaskId"));

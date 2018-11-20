@@ -84,7 +84,6 @@ public class OrderBusiness
 	@Autowired
 	private CommissionCalcBusiness commissionCalcBusiness;
 
-	private static final String MODEL_NAME = OrderMO.class.getSimpleName();
 	private static final String MODEL_NAME_ORDERDETAIL = OrderDetailMO.class.getSimpleName();
 	private static final String MODEL_NAME_GROUPBUYTASK = GroupBuyTaskMO.class.getSimpleName();
 	private static final String MODEL_NAME_GROUPBUYPLAN = GroupBuyPlanMO.class.getSimpleName();
@@ -182,11 +181,6 @@ public class OrderBusiness
 	{
 		OrderMO orderMO = orderDao.getById(id);
 
-		if (orderMO == null)
-		{
-			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		List<OrderDetailMO> detailMOs = orderDetailBusiness.getByOrderId(orderMO.getId());
 
 		if (CollectionUtil.isEmpty(detailMOs))
@@ -263,11 +257,6 @@ public class OrderBusiness
 	{
 		OrderMO mo = orderDao.getById(id);
 
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		mo.setState(OrderState.yishouhuo);
 		mo.setReceiveTime(DateTimeUtil.getCurrentTimeForDisplay());
 
@@ -283,11 +272,6 @@ public class OrderBusiness
 	public void tuiKuanShenqing(String id) throws LittleCatException
 	{
 		OrderMO mo = orderDao.getById(id);
-
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
 
 		mo.setState(OrderState.tuikuanzhong);
 		mo.setReturnApplyTime(DateTimeUtil.getCurrentTimeForDisplay());
@@ -305,11 +289,6 @@ public class OrderBusiness
 	{
 		OrderMO mo = orderDao.getById(id);
 
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		mo.setState(OrderState.yituikuan);
 		mo.setReturnCompleteTime(DateTimeUtil.getCurrentTimeForDisplay());
 
@@ -325,11 +304,6 @@ public class OrderBusiness
 	public void completeCommissionCalc(String id) throws LittleCatException
 	{
 		OrderMO mo = orderDao.getById(id);
-
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.GetInfoFromDBReturnEmpty.getCode(), ErrorCode.GetInfoFromDBReturnEmpty.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
 
 		mo.setCommissionCalcTime(DateTimeUtil.getCurrentTimeForDisplay());
 
@@ -353,10 +327,14 @@ public class OrderBusiness
 		orderDao.modify(mos);
 	}
 
-	public void deleteOrderById(String id) throws LittleCatException
+	public void cancel(String id) throws LittleCatException
 	{
-		orderDetailBusiness.deleteByOrderId(id);
-		orderDao.delete(id);
+		OrderMO mo = orderDao.getById(id);
+		
+		mo.setState(OrderState.yiquxiao);
+		mo.setCancelTime(DateTimeUtil.getCurrentTimeForDisplay());
+
+		orderDao.modify(mo);
 	}
 
 	public OrderMO getOrderById(String id) throws LittleCatException

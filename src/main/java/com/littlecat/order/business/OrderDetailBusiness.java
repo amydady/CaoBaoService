@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.goods.business.GoodsBusiness;
 import com.littlecat.goods.model.GoodsMO;
 import com.littlecat.order.dao.OrderDetailDao;
@@ -44,19 +43,9 @@ public class OrderDetailBusiness
 	{
 		return orderDetailDao.getByOrderIdWithGoodsDetail(orderId);
 	}
-	
+
 	public List<OrderDetailMO> getByOrderId(String orderId) throws LittleCatException
 	{
 		return orderDetailDao.getByOrderId(orderId);
-	}
-
-	public void deleteByOrderId(String orderId) throws LittleCatException
-	{
-		orderDetailDao.deleteByOrderId(orderId);
-	}
-
-	public int getList(QueryParam queryParam, List<OrderDetailMO> mos) throws LittleCatException
-	{
-		return orderDetailDao.getList(queryParam, mos);
 	}
 }

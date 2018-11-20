@@ -378,6 +378,7 @@ CREATE TABLE `t_order` (
 	`groupCompleteTime` DATETIME NULL,
 	`groupCancelTime` DATETIME NULL,
 	`outInventoryGenTime` DATETIME NULL,
+	`cancelTime` DATETIME NULL,
 	
 	PRIMARY KEY (`id`)
 );
@@ -391,7 +392,7 @@ CREATE TABLE `t_order_detail` (
 	`price` decimal(10,2) NOT NULL,
 	`goodsNum` decimal(10,2) NOT NULL,
 	`goodsName` VARCHAR(255) NOT NULL,
-	`goodsMainImgData` MediumBlob NULL,
+	`goodsMainImgData` VARCHAR(1024) NULL,
 	
 	PRIMARY KEY (`id`)
 );
