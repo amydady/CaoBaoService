@@ -33,6 +33,7 @@ insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('304','横幅图片
 
 
 insert into t_sys_menu(id,name,pid,sortNum) values('88','统计分析','-1','88');
+insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('8801','销售报表','../Report/SalesRpt.html','88','1','Y');
 
 insert into t_sys_menu(id,name,pid,sortNum) values('99','系统管理','-1','99');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('9901','个人信息维护','../sys/PersonalInfoMgr.html','99','1','Y');
