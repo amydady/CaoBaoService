@@ -34,7 +34,7 @@ public class OrderMO extends BaseMO
 	private String contactName;
 	private String contactMobile;
 
-	private String createTime;	//订单创建时间
+	private String createTime; // 订单创建时间
 	private String payTime; // 付款时间
 	private String deliveryTime;// 发货时间（发货至外部物流或自提点的时间）
 	private String receiveTime;// 客户收货时间
@@ -44,7 +44,7 @@ public class OrderMO extends BaseMO
 	private String commissionCalcTime;// 佣金计算时间
 	private String outInventoryGenTime;// 出仓数据生成时间
 	private String cancelTime;// 订单撤销时间
-	
+
 	// 团购业务专用
 	private String groupBuyPlanId; // 团购计划ID
 	private String groupBuyTaskId; // 团购任务实例ID
@@ -57,7 +57,7 @@ public class OrderMO extends BaseMO
 	private String deliveryTuanZhangMobile; // 发货接收的自提点号码
 
 	private String shareTuanZhangName;
-	private String deliveryTuanZhangName; 
+	private String deliveryTuanZhangName;
 	private String terminalUserName;
 
 	public String getTerminalUserId()
@@ -378,7 +378,7 @@ public class OrderMO extends BaseMO
 
 			AddressMO deliveryaddress = new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo"));
 			AddressMO deliverySiteAddress = new AddressMO(rs.getString("siteprovince"), rs.getString("sitecity"), rs.getString("sitearea"), rs.getString("sitedetailInfo"));
-			
+
 			mo.setDeliveryAddress(deliveryaddress);
 			mo.setDeliveryAddress(deliverySiteAddress);
 			mo.setContactName(rs.getString("contactName"));
@@ -402,7 +402,17 @@ public class OrderMO extends BaseMO
 			// get view info
 			mo.setDetails(orderDetailBusiness.getByOrderId(mo.getId()));
 			mo.setDeliveryTuanZhangMobile(tuanBusiness.getById(mo.getDeliveryTuanZhangId()).getMobile());
+			
+			try
+			{
+				mo.setShareTuanZhangName(rs.getString("shareTuanZhangName"));
+				mo.setDeliveryTuanZhangName(rs.getString("deliveryTuanZhangName"));
+				mo.setTerminalUserName(rs.getString("terminalUserName"));
+			}
+			catch (Exception e)
+			{
 
+			}
 			return mo;
 		}
 	}

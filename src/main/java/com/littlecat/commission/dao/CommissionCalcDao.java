@@ -34,7 +34,6 @@ public class CommissionCalcDao
 	private final String TABLE_NAME_COMMISSIONTYPE = TableName.CommissionType.getName();
 	private final String TABLE_NAME_ORDER = TableName.Order.getName();
 	private final String TABLE_NAME_TERMINALUSER = TableName.TerminalUser.getName();
-	private final String MODEL_NAME = CommissionCalcMO.class.getSimpleName();
 
 	public CommissionCalcMO getById(String id) throws LittleCatException
 	{
@@ -73,7 +72,7 @@ public class CommissionCalcDao
 			{
 				continue;
 			}
-			
+
 			if (StringUtil.isEmpty(mo.getId()))
 			{
 				mo.setId(UUIDUtil.createUUID());
@@ -117,12 +116,7 @@ public class CommissionCalcDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getApplyTime(), mo.getPayTime(), mo.getState().name(), mo.getDisableTime(), mo.getId() });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
+			jdbcTemplate.update(sql, new Object[] { mo.getApplyTime(), mo.getPayTime(), mo.getState().name(), mo.getDisableTime(), mo.getId() });
 		}
 		catch (DataAccessException e)
 		{
@@ -203,6 +197,24 @@ public class CommissionCalcDao
 		{
 			logger.error("getTotalCanApplyFee error:" + e.getMessage());
 			return new BigDecimal("0");
+		}
+	}
+
+	public void apply(String tuanZhangId) throws LittleCatException
+	{
+		StringBuilder sql = new StringBuilder()
+				.append(" update ").append(TABLE_NAME)
+				.append(" set state = '" + CommissionState.applyed.name() + "'")
+				.append(" ,applyTime=now() ")
+				.append(" where tuanZhangId='").append(tuanZhangId).append("'")
+				.append(" and state='").append(CommissionState.canapply).append("'");
+		try
+		{
+			jdbcTemplate.update(sql.toString());
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
 

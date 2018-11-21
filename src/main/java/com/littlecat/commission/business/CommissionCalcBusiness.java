@@ -237,19 +237,9 @@ public class CommissionCalcBusiness
 		commissionCalcDao.modify(mos);
 	}
 
-	public void apply(List<String> ids) throws LittleCatException
+	public void apply(String tuanZhangId) throws LittleCatException
 	{
-		List<CommissionCalcMO> mos = new ArrayList<CommissionCalcMO>();
-		for (String id : ids)
-		{
-			CommissionCalcMO mo = commissionCalcDao.getById(id);
-			mo.setApplyTime(DateTimeUtil.getCurrentTimeForDisplay());
-			mo.setState(CommissionState.applyed);
-
-			mos.add(mo);
-		}
-
-		commissionCalcDao.modify(mos);
+		commissionCalcDao.apply(tuanZhangId);
 	}
 
 	public void pay(List<String> ids) throws LittleCatException

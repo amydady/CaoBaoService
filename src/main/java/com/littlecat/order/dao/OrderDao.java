@@ -164,15 +164,20 @@ public class OrderDao
 		}
 	}
 
-	public List<OrderMO> getList(String shareTuanZhangName, String deliveryTuanZhangName, String terminalUserName, String state, String beginDate, String endDate)
+	public List<OrderMO> getList(String id,String shareTuanZhangName, String deliveryTuanZhangName, String terminalUserName, String state, boolean curDay)
 	{
 		StringBuilder sql = new StringBuilder()
-				.append("select a.*,b.name shareTuanZhangName,c.name deliveryTuanZhangName d.name terminalUserName from ").append(TABLE_NAME + " a ")
+				.append("select a.*,b.name shareTuanZhangName,c.name deliveryTuanZhangName, d.name terminalUserName from ").append(TABLE_NAME + " a ")
 				.append(" left join ").append(TABLE_NAME_TUAN).append(" b on a.shareTuanZhangId =b.id ")
 				.append(" left join ").append(TABLE_NAME_TUAN).append(" c on a.deliveryTuanZhangId =c.id ")
 				.append(" left join ").append(TABLE_NAME_TERMINALUSER).append(" d on a.terminalUserId =d.id ")
 				.append(" where 1=1 ");
 
+		if (StringUtil.isNotEmpty(id))
+		{
+			sql.append(" and a.id = '" + id + "' ");
+		}
+		
 		if (StringUtil.isNotEmpty(shareTuanZhangName))
 		{
 			sql.append(" and b.name like '%" + shareTuanZhangName + "%' ");
@@ -193,9 +198,9 @@ public class OrderDao
 			sql.append(" and a.state = '" + state + "' ");
 		}
 
-		if (StringUtil.isNotEmpty(beginDate))
-		{
-			sql.append(" and a.createTime = '" + beginDate + "' ");
+		if (curDay)
+		{//只查当天
+			sql.append(" and date_format(a.createTime,'%Y%m%d') = date_format(curdate(),'%Y%m%d')");
 		}
 
 		return jdbcTemplate.query(sql.toString(), new OrderMO.MOMapper());

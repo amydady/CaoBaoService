@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -237,6 +238,32 @@ public class OrderController
 
 		return result;
 	}
+	
+	@GetMapping(value = "/getListForWebApp")
+	public RestRsp<OrderMO> getListForWebApp(@RequestParam @Nullable String id,@RequestParam @Nullable String shareTuanZhangName, @RequestParam @Nullable String deliveryTuanZhangName, @RequestParam @Nullable String terminalUserName, @RequestParam @Nullable String state, @RequestParam boolean curDay)
+	{
+		RestRsp<OrderMO> result = new RestRsp<OrderMO>();
+
+		try
+		{
+			result.getData().addAll(orderBusiness.getList(id, shareTuanZhangName, deliveryTuanZhangName, terminalUserName, state, curDay));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+	
 
 	@PutMapping(value = "/cancel/{id}")
 	public RestSimpleRsp cancel(@PathVariable String id)

@@ -370,6 +370,11 @@ public class OrderBusiness
 	{
 		return orderDao.getBuyedNumOfSecKillPlan(secKillPlanId, terminalUserId);
 	}
+	
+	public List<OrderMO> getList(String id,String shareTuanZhangName, String deliveryTuanZhangName, String terminalUserName, String state, boolean curDay)
+	{
+		return orderDao.getList(id, shareTuanZhangName, deliveryTuanZhangName, terminalUserName, state, curDay);
+	}
 
 	/**
 	 * 设置粉丝信息

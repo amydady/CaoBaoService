@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -106,14 +107,14 @@ public class CommissionCalcController
 		return result;
 	}
 
-	@PutMapping(value = "/apply")
-	public RestSimpleRsp apply(@RequestBody List<String> ids)
+	@GetMapping(value = "/apply/{tuanZhangId}")
+	public RestSimpleRsp apply(@PathVariable String tuanZhangId)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			commissionCalcBusiness.apply(ids);
+			commissionCalcBusiness.apply(tuanZhangId);
 		}
 		catch (LittleCatException e)
 		{
