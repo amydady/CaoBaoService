@@ -43,7 +43,7 @@ public class OrderMO extends BaseMO
 	private String returnCompleteTime;// 退款完成时间
 	private String commissionCalcTime;// 佣金计算时间
 	private String outInventoryGenTime;// 出仓数据生成时间
-	private String cancelTime;// 出仓数据生成时间
+	private String cancelTime;// 订单撤销时间
 	
 	// 团购业务专用
 	private String groupBuyPlanId; // 团购计划ID
@@ -55,6 +55,10 @@ public class OrderMO extends BaseMO
 	// just for view
 	private List<OrderDetailMO> details = new ArrayList<OrderDetailMO>();
 	private String deliveryTuanZhangMobile; // 发货接收的自提点号码
+
+	private String shareTuanZhangName;
+	private String deliveryTuanZhangName; 
+	private String terminalUserName;
 
 	public String getTerminalUserId()
 	{
@@ -314,6 +318,36 @@ public class OrderMO extends BaseMO
 	public void setCancelTime(String cancelTime)
 	{
 		this.cancelTime = cancelTime;
+	}
+
+	public String getShareTuanZhangName()
+	{
+		return shareTuanZhangName;
+	}
+
+	public void setShareTuanZhangName(String shareTuanZhangName)
+	{
+		this.shareTuanZhangName = shareTuanZhangName;
+	}
+
+	public String getDeliveryTuanZhangName()
+	{
+		return deliveryTuanZhangName;
+	}
+
+	public void setDeliveryTuanZhangName(String deliveryTuanZhangName)
+	{
+		this.deliveryTuanZhangName = deliveryTuanZhangName;
+	}
+
+	public String getTerminalUserName()
+	{
+		return terminalUserName;
+	}
+
+	public void setTerminalUserName(String terminalUserName)
+	{
+		this.terminalUserName = terminalUserName;
 	}
 
 	/**

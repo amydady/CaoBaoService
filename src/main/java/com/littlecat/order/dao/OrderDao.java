@@ -28,7 +28,9 @@ public class OrderDao
 
 	private final String TABLE_NAME = TableName.Order.getName();
 	private static final String MODEL_NAME = OrderMO.class.getSimpleName();
+	private static final String TABLE_NAME_TUAN = TableName.Tuan.getName();
 	private static final String TABLE_NAME_ORDERDETAIL = TableName.OrderDetail.getName();
+	private static final String TABLE_NAME_TERMINALUSER = TableName.TerminalUser.getName();
 
 	public String add(OrderMO mo) throws LittleCatException
 	{
@@ -161,4 +163,42 @@ public class OrderDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
+
+	public List<OrderMO> getList(String shareTuanZhangName, String deliveryTuanZhangName, String terminalUserName, String state, String beginDate, String endDate)
+	{
+		StringBuilder sql = new StringBuilder()
+				.append("select a.*,b.name shareTuanZhangName,c.name deliveryTuanZhangName d.name terminalUserName from ").append(TABLE_NAME + " a ")
+				.append(" left join ").append(TABLE_NAME_TUAN).append(" b on a.shareTuanZhangId =b.id ")
+				.append(" left join ").append(TABLE_NAME_TUAN).append(" c on a.deliveryTuanZhangId =c.id ")
+				.append(" left join ").append(TABLE_NAME_TERMINALUSER).append(" d on a.terminalUserId =d.id ")
+				.append(" where 1=1 ");
+
+		if (StringUtil.isNotEmpty(shareTuanZhangName))
+		{
+			sql.append(" and b.name like '%" + shareTuanZhangName + "%' ");
+		}
+
+		if (StringUtil.isNotEmpty(deliveryTuanZhangName))
+		{
+			sql.append(" and c.name like '%" + deliveryTuanZhangName + "%' ");
+		}
+
+		if (StringUtil.isNotEmpty(terminalUserName))
+		{
+			sql.append(" and d.name like '%" + terminalUserName + "%' ");
+		}
+
+		if (StringUtil.isNotEmpty(state))
+		{
+			sql.append(" and a.state = '" + state + "' ");
+		}
+
+		if (StringUtil.isNotEmpty(beginDate))
+		{
+			sql.append(" and a.createTime = '" + beginDate + "' ");
+		}
+
+		return jdbcTemplate.query(sql.toString(), new OrderMO.MOMapper());
+	}
+
 }
