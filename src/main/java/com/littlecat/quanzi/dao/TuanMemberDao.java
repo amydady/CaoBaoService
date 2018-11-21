@@ -43,12 +43,7 @@ public class TuanMemberDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTuanId(), mo.getTerminalUserId() });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(), ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
+			jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTuanId(), mo.getTerminalUserId() });
 		}
 		catch (DataAccessException e)
 		{
