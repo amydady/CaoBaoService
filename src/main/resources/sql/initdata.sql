@@ -19,6 +19,7 @@ insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('101','�
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('102','供应商管理','../Supplier/SupplierList.html','1','2','N');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('103','合作伙伴管理','../quanzi/QuanziList.html','1','3','N');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('104','佣金发放','../commission/CommissionPayMgr.html','1','4','N');
+insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('105','订单管理','../order/OrderList.html','1','5','N');
 
 insert into t_sys_menu(id,name,pid,sortNum) values('2','物流管理','-1','2');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('201','商品出仓单','../delivery/OutWarehouseMgr.html','2','1','Y');

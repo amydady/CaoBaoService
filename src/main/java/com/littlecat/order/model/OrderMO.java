@@ -60,6 +60,7 @@ public class OrderMO extends BaseMO
 	private String shareTuanZhangName;
 	private String deliveryTuanZhangName;
 	private String terminalUserName;
+	private String stateV;
 
 	public String getTerminalUserId()
 	{
@@ -351,6 +352,16 @@ public class OrderMO extends BaseMO
 		this.terminalUserName = terminalUserName;
 	}
 
+	public String getStateV()
+	{
+		return stateV;
+	}
+
+	public void setStateV(String stateV)
+	{
+		this.stateV = stateV;
+	}
+
 	public static class MOMapper implements RowMapper<OrderMO>
 	{
 		private static final OrderDetailBusiness orderDetailBusiness = SpringUtil.getBean(OrderDetailBusiness.class);
@@ -408,6 +419,9 @@ public class OrderMO extends BaseMO
 			{
 
 			}
+			
+
+			mo.setStateV(mo.getState().getDisplayName());
 
 			return mo;
 		}
