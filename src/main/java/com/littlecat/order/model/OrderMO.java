@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.littlecat.cbb.common.BaseMO;
 import com.littlecat.cbb.utils.SpringUtil;
+import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.common.consts.OrderState;
 import com.littlecat.common.model.AddressMO;
 import com.littlecat.order.business.OrderDetailBusiness;
@@ -350,12 +351,6 @@ public class OrderMO extends BaseMO
 		this.terminalUserName = terminalUserName;
 	}
 
-	/**
-	 * 模型映射，不包含商品明细信息
-	 * 
-	 * @author amydady
-	 *
-	 */
 	public static class MOMapper implements RowMapper<OrderMO>
 	{
 		private static final OrderDetailBusiness orderDetailBusiness = SpringUtil.getBean(OrderDetailBusiness.class);
@@ -368,7 +363,7 @@ public class OrderMO extends BaseMO
 
 			mo.setId(rs.getString("id"));
 			mo.setTerminalUserId(rs.getString("terminalUserId"));
-			mo.setCreateTime(rs.getString("createTime"));
+			mo.setCreateTime(StringUtil.replace(rs.getString("createTime"),".0",""));
 			mo.setFee(rs.getBigDecimal("fee"));
 			mo.setDeliveryFee(rs.getBigDecimal("deliveryFee"));
 			mo.setState(OrderState.valueOf(rs.getString("state")));
@@ -384,23 +379,23 @@ public class OrderMO extends BaseMO
 			mo.setContactName(rs.getString("contactName"));
 			mo.setContactMobile(rs.getString("contactMobile"));
 
-			mo.setPayTime(rs.getString("payTime"));
-			mo.setDeliveryTime(rs.getString("deliveryTime"));
-			mo.setReceiveTime(rs.getString("receiveTime"));
-			mo.setDeliverySiteReceiveTime(rs.getString("deliverySiteReceiveTime"));
-			mo.setReturnApplyTime(rs.getString("returnApplyTime"));
-			mo.setReturnCompleteTime(rs.getString("returnCompleteTime"));
-			mo.setCommissionCalcTime(rs.getString("commissionCalcTime"));
-			mo.setOutInventoryGenTime(rs.getString("outInventoryGenTime"));
-			mo.setCancelTime(rs.getString("cancelTime"));
+			mo.setPayTime(StringUtil.replace(rs.getString("payTime"),".0",""));
+			mo.setDeliveryTime(StringUtil.replace(rs.getString("deliveryTime"),".0",""));
+			mo.setReceiveTime(StringUtil.replace(rs.getString("receiveTime"),".0",""));
+			mo.setDeliverySiteReceiveTime(StringUtil.replace(rs.getString("deliverySiteReceiveTime"),".0",""));
+			mo.setReturnApplyTime(StringUtil.replace(rs.getString("returnApplyTime"),".0",""));
+			mo.setReturnCompleteTime(StringUtil.replace(rs.getString("returnCompleteTime"),".0",""));
+			mo.setCommissionCalcTime(StringUtil.replace(rs.getString("commissionCalcTime"),".0",""));
+			mo.setOutInventoryGenTime(StringUtil.replace(rs.getString("outInventoryGenTime"),".0",""));
+			mo.setCancelTime(StringUtil.replace(rs.getString("cancelTime"),".0",""));
 
 			mo.setGroupBuyPlanId(rs.getString("groupBuyPlanId"));
 			mo.setGroupBuyTaskId(rs.getString("groupBuyTaskId"));
-			mo.setGroupCompleteTime(rs.getString("groupCompleteTime"));
-			mo.setGroupCancelTime(rs.getString("groupCancelTime"));
+			mo.setGroupCompleteTime(StringUtil.replace(rs.getString("groupCompleteTime"),".0",""));
+			mo.setGroupCancelTime(StringUtil.replace(rs.getString("groupCancelTime"),".0",""));
 
 			// get view info
-			mo.setDetails(orderDetailBusiness.getByOrderId(mo.getId()));
+			mo.setDetails(orderDetailBusiness.getByOrderIdWithGoodsDetail(mo.getId()));
 			mo.setDeliveryTuanZhangMobile(tuanBusiness.getById(mo.getDeliveryTuanZhangId()).getMobile());
 			
 			try
@@ -413,56 +408,6 @@ public class OrderMO extends BaseMO
 			{
 
 			}
-			return mo;
-		}
-	}
-
-	public static class MOMapperWithGoodsDetail implements RowMapper<OrderMO>
-	{
-		private static final OrderDetailBusiness orderDetailBusiness = SpringUtil.getBean(OrderDetailBusiness.class);
-		private static final TuanBusiness tuanBusiness = SpringUtil.getBean(TuanBusiness.class);
-
-		@Override
-		public OrderMO mapRow(ResultSet rs, int rowNum) throws SQLException
-		{
-			OrderMO mo = new OrderMO();
-
-			mo.setId(rs.getString("id"));
-			mo.setTerminalUserId(rs.getString("terminalUserId"));
-			mo.setCreateTime(rs.getString("createTime"));
-			mo.setFee(rs.getBigDecimal("fee"));
-			mo.setDeliveryFee(rs.getBigDecimal("deliveryFee"));
-			mo.setState(OrderState.valueOf(rs.getString("state")));
-
-			mo.setShareTuanZhangId(rs.getString("shareTuanZhangId"));
-			mo.setDeliveryTuanZhangId(rs.getString("deliveryTuanZhangId"));
-
-			AddressMO deliveryaddress = new AddressMO(rs.getString("province"), rs.getString("city"), rs.getString("area"), rs.getString("detailInfo"));
-			AddressMO deliverySiteAddress = new AddressMO(rs.getString("siteprovince"), rs.getString("sitecity"), rs.getString("sitearea"), rs.getString("sitedetailInfo"));
-
-			mo.setDeliveryAddress(deliveryaddress);
-			mo.setDeliveryAddress(deliverySiteAddress);
-			mo.setContactName(rs.getString("contactName"));
-			mo.setContactMobile(rs.getString("contactMobile"));
-
-			mo.setPayTime(rs.getString("payTime"));
-			mo.setDeliveryTime(rs.getString("deliveryTime"));
-			mo.setReceiveTime(rs.getString("receiveTime"));
-			mo.setDeliverySiteReceiveTime(rs.getString("deliverySiteReceiveTime"));
-			mo.setReturnApplyTime(rs.getString("returnApplyTime"));
-			mo.setReturnCompleteTime(rs.getString("returnCompleteTime"));
-			mo.setCommissionCalcTime(rs.getString("commissionCalcTime"));
-			mo.setOutInventoryGenTime(rs.getString("outInventoryGenTime"));
-			mo.setCancelTime(rs.getString("cancelTime"));
-
-			mo.setGroupBuyPlanId(rs.getString("groupBuyPlanId"));
-			mo.setGroupBuyTaskId(rs.getString("groupBuyTaskId"));
-			mo.setGroupCompleteTime(rs.getString("groupCompleteTime"));
-			mo.setGroupCancelTime(rs.getString("groupCancelTime"));
-
-			// get view info
-			mo.setDetails(orderDetailBusiness.getByOrderIdWithGoodsDetail(mo.getId()));
-			mo.setDeliveryTuanZhangMobile(tuanBusiness.getById(mo.getDeliveryTuanZhangId()).getMobile());
 
 			return mo;
 		}

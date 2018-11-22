@@ -116,7 +116,7 @@ public class OrderDao
 
 	public int getList(QueryParam queryParam, List<OrderMO> mos) throws LittleCatException
 	{
-		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new OrderMO.MOMapperWithGoodsDetail());
+		return DaoUtil.getList(TABLE_NAME, queryParam, mos, jdbcTemplate, new OrderMO.MOMapper());
 	}
 
 	/**
