@@ -221,9 +221,10 @@ public class CommissionCalcDao
 	public List<String> getApplyHis(String tuanZhangId)
 	{
 		StringBuilder sql = new StringBuilder()
-				.append("select concat(applyTime,',',calcFee) from  ").append(TABLE_NAME)
+				.append("select concat(applyTime,',',sum(calcFee)) from  ").append(TABLE_NAME)
 				.append(" where tuanZhangId='").append(tuanZhangId).append("'")
-				.append(" and applyTime is not null");
+				.append(" and applyTime is not null")
+				.append(" group by applyTime");
 		try
 		{
 			return jdbcTemplate.queryForList(sql.toString(), String.class);
