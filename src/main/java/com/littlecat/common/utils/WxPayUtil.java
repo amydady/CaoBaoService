@@ -49,7 +49,7 @@ public class WxPayUtil
 		}
 		catch (UnsupportedEncodingException e)
 		{
-			throw new RuntimeException("MD5签名过程◇◇现错误,指定的编码集不对,您目前指定的编码集是:" + charset);
+			throw new RuntimeException("MD5签名过程中出现错误,指定的编码集有误,目前指定的编码集是:" + charset);
 		}
 	}
 

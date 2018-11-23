@@ -519,7 +519,7 @@ public class OrderBusiness
 
 	private String unifiedOrderToWx(OrderMO order) throws Exception
 	{
-		String body = "wpysq";
+		String body = "[品源社订单]"+order.getId();
 		String appid = ServiceConsts.WX_APPID;
 		String mch_id = ServiceConsts.WX_MCH_ID;
 		String nonce_str = UUIDUtil.createUUID();// 随机字符串
