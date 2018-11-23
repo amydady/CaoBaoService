@@ -1,4 +1,4 @@
-CREATE PROCEDURE `sp_rpt_order_day`(IN `orderDate` vARCHAR(50))
+CREATE DEFINER=`root`@`%` PROCEDURE `sp_rpt_order_day`(IN `orderDate` vARCHAR(50))
 	LANGUAGE SQL
 	NOT DETERMINISTIC
 	CONTAINS SQL
@@ -11,7 +11,7 @@ declare total_count decimal(15,2);
 declare payed_count decimal(15,2);
 declare payed_fee_sum decimal(15,2);
 
-IF orderDate is not null THEN
+IF orderDate is not null and orderDate<>'' THEN
 	set queryDate = orderDate;
 END IF;
 

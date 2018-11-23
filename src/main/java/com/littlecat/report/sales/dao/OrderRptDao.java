@@ -1,17 +1,17 @@
 package com.littlecat.report.sales.dao;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.CallableStatementCallback;
+import org.springframework.jdbc.core.CallableStatementCreator;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.littlecat.cbb.utils.DateTimeUtil;
-import com.littlecat.cbb.utils.StringUtil;
-import com.littlecat.common.consts.TableName;
-import com.littlecat.report.sales.model.GoodsSalesCountByDayRptMO;
 import com.littlecat.report.sales.model.OrderSummaryByDayRptMO;
 
 @Component
@@ -20,29 +20,35 @@ public class OrderRptDao
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
 
-	private final String TABLE_NAME_GOODS = TableName.Goods.getName();
-	private final String TABLE_NAME_ORDERDETAIL = TableName.OrderDetail.getName();
-	private final String TABLE_NAME_ORDER = TableName.Order.getName();
-
-	public OrderSummaryByDayRptMO getOrderSummaryByDay(String day)
+	public OrderSummaryByDayRptMO getOrderSummaryByDay(final String day)
 	{
-		if (StringUtil.isEmpty(day))
+		return jdbcTemplate.execute(new CallableStatementCreator()
 		{
-			day = DateTimeUtil.getCurrentTimeForDisplay();
-		}
-		
-//		CallableStatement cs = conn.prepareCall("{call insert_user(?,?)}");
-		jdbcTemplate.
-//		return jdbcTemplate.queryForObject(sql.toString(), new RowMapper<GoodsSalesCountByDayRptMO>()
-		{
-
 			@Override
-			public GoodsSalesCountByDayRptMO mapRow(ResultSet rs, int num) throws SQLException
+			public CallableStatement createCallableStatement(Connection con) throws SQLException
 			{
-				GoodsSalesCountByDayRptMO mo = new GoodsSalesCountByDayRptMO();
+				String storedProc = "{call sp_rpt_order_day(?)}";// 调用的sql
+				CallableStatement cs = con.prepareCall(storedProc);
+				cs.setString(1, day);// 设置输入参数的值
+				return cs;
+			}
+		}, new CallableStatementCallback<OrderSummaryByDayRptMO>()
+		{
+			@Override
+			public OrderSummaryByDayRptMO doInCallableStatement(CallableStatement cs) throws SQLException, DataAccessException
+			{
+				OrderSummaryByDayRptMO mo = new OrderSummaryByDayRptMO();
+				cs.execute();
+				ResultSet rs = cs.getResultSet();
+				rs.next();
+				mo.setTotal_count(rs.getBigDecimal("total_count"));
+				mo.setPayed_count(rs.getBigDecimal("payed_count"));
+				mo.setPayed_fee_sum(rs.getBigDecimal("payed_fee_sum"));
+
+				rs.close();
+
 				return mo;
 			}
 		});
 	}
-
 }
