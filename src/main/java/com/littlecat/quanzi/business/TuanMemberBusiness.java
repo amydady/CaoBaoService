@@ -37,4 +37,9 @@ public class TuanMemberBusiness
 	{
 		return tuanMemberDao.getCurrentEnableTuan(terminalUserId);
 	}
+	
+	public void delete(String terminalUserId) throws LittleCatException
+	{
+		tuanMemberDao.delete(terminalUserId);
+	}
 }

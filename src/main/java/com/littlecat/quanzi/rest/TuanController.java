@@ -428,13 +428,13 @@ public class TuanController
 	}
 
 	@GetMapping(value = "/getDeliverySiteList")
-	public RestRsp<TuanMO> getDeliverySiteList(@RequestParam String province, @RequestParam String city, @RequestParam String area)
+	public RestRsp<TuanMO> getDeliverySiteList(@RequestParam String terminalUserId, @RequestParam String province, @RequestParam String city, @RequestParam String area)
 	{
 		RestRsp<TuanMO> result = new RestRsp<TuanMO>();
 
 		try
 		{
-			result.getData().addAll(tuanBusiness.getDeliverySiteList(province, city, area));
+			result.getData().addAll(tuanBusiness.getDeliverySiteList(terminalUserId,province, city, area));
 		}
 		catch (LittleCatException e)
 		{

@@ -42,6 +42,7 @@ import com.littlecat.lock.model.ResLockMO;
 import com.littlecat.order.dao.OrderDao;
 import com.littlecat.order.model.OrderDetailMO;
 import com.littlecat.order.model.OrderMO;
+import com.littlecat.quanzi.business.TuanBusiness;
 import com.littlecat.quanzi.business.TuanMemberBusiness;
 import com.littlecat.quanzi.model.TuanMemberMO;
 import com.littlecat.seckill.business.SecKillPlanBusiness;
@@ -80,6 +81,9 @@ public class OrderBusiness
 
 	@Autowired
 	private TuanMemberBusiness tuanMemberBusiness;
+
+	@Autowired
+	private TuanBusiness tuanBusiness;
 
 	@Autowired
 	private CommissionCalcBusiness commissionCalcBusiness;
@@ -238,8 +242,11 @@ public class OrderBusiness
 		orderMO.setPayTime(currentTime);
 		orderDao.modify(orderMO);
 
-		// 设置粉丝信息
-		setTuanMemberInfo(orderMO.getTerminalUserId(), orderMO.getShareTuanZhangId());
+		// 设置粉丝信息（团长自购不设置）
+		if (!tuanBusiness.isTuanZhang(orderMO.getTerminalUserId()))
+		{
+			setTuanMemberInfo(orderMO.getTerminalUserId(), orderMO.getShareTuanZhangId());
+		}
 
 		// 计算佣金
 		commissionCalcBusiness.doCalc(orderMO);
@@ -330,7 +337,7 @@ public class OrderBusiness
 	public void cancel(String id) throws LittleCatException
 	{
 		OrderMO mo = orderDao.getById(id);
-		
+
 		mo.setState(OrderState.yiquxiao);
 		mo.setCancelTime(DateTimeUtil.getCurrentTimeForDisplay());
 
@@ -370,8 +377,8 @@ public class OrderBusiness
 	{
 		return orderDao.getBuyedNumOfSecKillPlan(secKillPlanId, terminalUserId);
 	}
-	
-	public List<OrderMO> getList(String id,String shareTuanZhangName, String deliveryTuanZhangName, String terminalUserName, String state, boolean curDay)
+
+	public List<OrderMO> getList(String id, String shareTuanZhangName, String deliveryTuanZhangName, String terminalUserName, String state, boolean curDay)
 	{
 		return orderDao.getList(id, shareTuanZhangName, deliveryTuanZhangName, terminalUserName, state, curDay);
 	}
@@ -519,7 +526,7 @@ public class OrderBusiness
 
 	private String unifiedOrderToWx(OrderMO order) throws Exception
 	{
-		String body = "[品源社订单]"+order.getId();
+		String body = "[品源社订单]" + order.getId();
 		String appid = ServiceConsts.WX_APPID;
 		String mch_id = ServiceConsts.WX_MCH_ID;
 		String nonce_str = UUIDUtil.createUUID();// 随机字符串

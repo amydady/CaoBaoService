@@ -146,7 +146,7 @@ public class CommissionCalcDao
 			sql.append(" and a.state = '").append(state).append("' ");
 		}
 
-		sql.append(" order by tuanZhangName,state,commissionTypeName,goodsName ");
+		sql.append(" order by tuanZhangName,state,createTime desc,commissionTypeName,goodsName ");
 
 		return jdbcTemplate.query(sql.toString(), new CommissionCalcMO.MOMapper());
 	}

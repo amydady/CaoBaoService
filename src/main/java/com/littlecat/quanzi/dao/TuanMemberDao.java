@@ -118,4 +118,19 @@ public class TuanMemberDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
+
+	public void delete(String terminalUserId) throws LittleCatException
+	{
+		String sql = "delete * from " + TABLE_NAME + " where terminalUserId = ?";
+
+		try
+		{
+			jdbcTemplate.update(sql, new Object[] { terminalUserId });
+		}
+
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
 }

@@ -26,6 +26,7 @@ import com.littlecat.common.utils.SysParamUtil;
 import com.littlecat.order.business.OrderBusiness;
 import com.littlecat.order.model.OrderDetailMO;
 import com.littlecat.order.model.OrderMO;
+import com.littlecat.quanzi.business.TuanBusiness;
 import com.littlecat.quanzi.business.TuanMemberBusiness;
 import com.littlecat.quanzi.model.TuanMemberMO;
 
@@ -51,6 +52,9 @@ public class CommissionCalcBusiness
 
 	@Autowired
 	private CommissionGoodsBusiness commissionGoodsBusiness;
+
+	@Autowired
+	private TuanBusiness tuanBusiness;
 
 	public CommissionCalcMO getById(String id) throws LittleCatException
 	{
@@ -130,7 +134,11 @@ public class CommissionCalcBusiness
 			// 本商品推荐团长
 			String shareTuanZhangId = null;
 
-			if (StringUtil.isNotEmpty(order.getShareTuanZhangId()))
+			if (tuanBusiness.isTuanZhang(order.getTerminalUserId()))
+			{// 团长自购，推广佣金结算给自己
+				shareTuanZhangId = order.getTerminalUserId();
+			}
+			else if (StringUtil.isNotEmpty(order.getShareTuanZhangId()))
 			{// 本商品有推荐团长
 				shareTuanZhangId = order.getShareTuanZhangId();
 			}
@@ -155,12 +163,12 @@ public class CommissionCalcBusiness
 				{
 					for (CommissionGoodsMO commissionGoodsMO : commissionGoodsMOList)
 					{
-						if (commissionGoodsMO.getCommissionTypeId() == CommissionType.share.name())
+						if (CommissionType.share.name().equals(commissionGoodsMO.getCommissionTypeId()))
 						{
 							commissionRateShare = commissionGoodsMO.getCommissionRate();
 						}
 
-						if (commissionGoodsMO.getCommissionTypeId() == CommissionType.deliverysite.name())
+						if (CommissionType.deliverysite.name().equals(commissionGoodsMO.getCommissionTypeId()))
 						{
 							commissionRateDelivery = commissionGoodsMO.getCommissionRate();
 						}

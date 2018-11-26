@@ -187,6 +187,7 @@ public class TuanDao
 
 	/**
 	 * 是否为团长
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -206,25 +207,32 @@ public class TuanDao
 	 * @param addressInfo
 	 * @return
 	 */
-	public List<TuanMO> getDeliverySiteList(String province, String city, String area) throws LittleCatException
+	public List<TuanMO> getDeliverySiteList(String terminalUserId, String province, String city, String area) throws LittleCatException
 	{
 		List<TuanMO> mos = new ArrayList<TuanMO>();
 
 		StringBuilder sql = new StringBuilder()
-				.append("select id,tuanZhangName,name,province,city,area,detailInfo,mobile ")
-				.append(" from ").append(TABLE_NAME)
-				.append(" where enable='Y' and isDeliverySite='Y' ")
-				.append(" and province=? ")
-				.append(" and city=? ")
-				.append(" and area=? ");
+				.append("select a.* ")
+				.append(" from ").append(TABLE_NAME + " a ")
+				.append(" where a.enable='Y' and a.isDeliverySite='Y' ");
 
-		sql.append(" order by detailInfo");
+		if (isTuanZhang(terminalUserId))
+		{// 如果是团长，只能选择自己的站点地址
+			sql.append(" and a.id='" + terminalUserId + "'");
+		}
+		else
+		{
+			sql.append(" and a.province='" + province + "' ")
+					.append(" and a.city='" + city + "' ")
+					.append(" and a.area='" + area + "' ");
+		}
+
+		sql.append(" order by a.detailInfo");
 
 		try
 		{
-			mos.addAll(jdbcTemplate.query(sql.toString(), new Object[] { province, city, area }, new RowMapper<TuanMO>()
+			mos.addAll(jdbcTemplate.query(sql.toString(), new RowMapper<TuanMO>()
 			{
-
 				@Override
 				public TuanMO mapRow(ResultSet rs, int rowNum) throws SQLException
 				{

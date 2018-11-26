@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
+import com.littlecat.common.consts.BooleanTag;
 import com.littlecat.quanzi.dao.TuanDao;
 import com.littlecat.quanzi.model.TuanMO;
 import com.littlecat.quanzi.model.TuanShenheReqInfo;
@@ -17,6 +18,9 @@ public class TuanBusiness
 {
 	@Autowired
 	private TuanDao tuanDao;
+	
+	@Autowired
+	private TuanMemberBusiness tuanMemberBusiness;
 
 	public TuanMO getById(String tuanZhangOpenId) throws LittleCatException
 	{
@@ -62,7 +66,7 @@ public class TuanBusiness
 	{
 		return tuanDao.getList(enable, name);
 	}
-	
+
 	public boolean isTuanZhang(String id)
 	{
 		return tuanDao.isTuanZhang(id);
@@ -76,10 +80,15 @@ public class TuanBusiness
 	public void shenHe(TuanShenheReqInfo tuanShenheReqInfo) throws LittleCatException
 	{
 		tuanDao.shenHe(tuanShenheReqInfo);
+		if (BooleanTag.Y.name().equals(tuanShenheReqInfo.getEnable()))
+		{// 审核通过，成为团长
+			// 自动解除与其他团长的粉丝关系
+			tuanMemberBusiness.delete(tuanShenheReqInfo.getId());
+		}
 	}
 
-	public List<TuanMO> getDeliverySiteList(String province, String city, String area) throws LittleCatException
+	public List<TuanMO> getDeliverySiteList(String terminalUserId, String province, String city, String area) throws LittleCatException
 	{
-		return tuanDao.getDeliverySiteList(province, city, area);
+		return tuanDao.getDeliverySiteList(terminalUserId,province, city, area);
 	}
 }
