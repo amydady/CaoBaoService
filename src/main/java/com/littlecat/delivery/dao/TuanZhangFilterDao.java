@@ -38,7 +38,7 @@ public class TuanZhangFilterDao
 
 	public List<String> getOrderIdList(List<String> ids) throws LittleCatException
 	{
-		String sql = "select orderId from " + TABLE_NAME + "where id in (:ids)";
+		String sql = "select orderId from " + TABLE_NAME + " where id in (:ids)";
 
 		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
