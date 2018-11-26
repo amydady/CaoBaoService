@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.delivery.dao.TuanZhangReceiveDao;
 import com.littlecat.delivery.model.TuanZhangReceiveMO;
+import com.littlecat.order.business.OrderBusiness;
 
 @Component
 @Transactional
@@ -17,14 +18,24 @@ public class TuanZhangReceiveBusiness
 	@Autowired
 	private TuanZhangReceiveDao tuanZhangReceiveDao;
 
+	@Autowired
+	private OrderBusiness orderBusiness;
+
 	public void add(List<TuanZhangReceiveMO> mos) throws LittleCatException
 	{
 		tuanZhangReceiveDao.add(mos);
 	}
 
-	public void receive(List<String> ids) throws LittleCatException
+	/**
+	 * 团长签收
+	 * 
+	 * @param ids
+	 * @throws LittleCatException
+	 */
+	public void receive(String orderDate) throws LittleCatException
 	{
-		tuanZhangReceiveDao.receive(ids);
+		tuanZhangReceiveDao.receive(orderDate);
+		orderBusiness.afterDeliverySiteReceive(orderDate);
 	}
 
 	/**

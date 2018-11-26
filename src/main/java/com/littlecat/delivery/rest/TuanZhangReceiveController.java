@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,13 +62,13 @@ public class TuanZhangReceiveController
 	}
 
 	@PutMapping(value = "/receive")
-	public RestSimpleRsp receive(@RequestBody List<String> ids)
+	public RestSimpleRsp receive(@RequestParam String orderDate)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			tuanZhangReceiveBusiness.receive(ids);
+			tuanZhangReceiveBusiness.receive(orderDate);
 		}
 		catch (LittleCatException e)
 		{

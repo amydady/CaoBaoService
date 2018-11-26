@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.littlecat.cbb.exception.LittleCatException;
@@ -39,7 +37,6 @@ public class TuanZhangReceiveDao
 		String sql = "select count(1) from " + TABLE_NAME + " where orderDate = ?";
 		return jdbcTemplate.queryForObject(sql, new Object[] { orderDate }, Integer.class) > 0;
 	}
-
 
 	public List<TuanZhangReceiveMO> genData(String orderDate) throws LittleCatException
 	{
@@ -123,23 +120,13 @@ public class TuanZhangReceiveDao
 		}
 	}
 
-	public void receive(List<String> ids) throws LittleCatException
+	public void receive(String orderDate) throws LittleCatException
 	{
-		if (CollectionUtil.isEmpty(ids))
-		{
-			return;
-		}
-
-		String sql = "update " + TABLE_NAME + " set state = 'Y',receiveTime = CURRENT_TIMESTAMP where id in (:ids)";
-
-		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
-
-		MapSqlParameterSource parameters = new MapSqlParameterSource();
-		parameters.addValue("ids", ids);
+		String sql = "update " + TABLE_NAME + " set state = 'Y',receiveTime = CURRENT_TIMESTAMP where date_format(orderDate,'%Y%m%d') = date_format(?,'%Y%m%d')";
 
 		try
 		{
-			namedParameterJdbcTemplate.update(sql, parameters);
+			jdbcTemplate.update(sql, new Object[] { orderDate });
 		}
 		catch (DataAccessException e)
 		{
@@ -147,7 +134,7 @@ public class TuanZhangReceiveDao
 		}
 	}
 
-	public List<TuanZhangReceiveMO> getList(String orderDate,String tuanZhangName, String tuanZhangMobile, String state) throws LittleCatException
+	public List<TuanZhangReceiveMO> getList(String orderDate, String tuanZhangName, String tuanZhangMobile, String state) throws LittleCatException
 	{
 
 		StringBuilder sql = new StringBuilder()
@@ -161,12 +148,12 @@ public class TuanZhangReceiveDao
 		{
 			sql.append(" and d.name like '%" + tuanZhangName + "%' ");
 		}
-		
+
 		if (StringUtil.isNotEmpty(tuanZhangMobile))
 		{
 			sql.append(" and d.mobile like '%" + tuanZhangMobile + "%' ");
 		}
-		
+
 		if (StringUtil.isNotEmpty(state))
 		{
 			sql.append(" and a.state = '" + state + "' ");

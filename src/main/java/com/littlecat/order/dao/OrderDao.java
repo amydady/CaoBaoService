@@ -16,6 +16,7 @@ import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
 import com.littlecat.common.consts.BuyType;
 import com.littlecat.common.consts.ErrorCode;
+import com.littlecat.common.consts.OrderState;
 import com.littlecat.common.consts.TableName;
 import com.littlecat.common.utils.DaoUtil;
 import com.littlecat.order.model.OrderMO;
@@ -84,6 +85,54 @@ public class OrderDao
 		try
 		{
 			jdbcTemplate.batchUpdate(sql, batchParam);
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
+	public void terminalUserReceive(String id) throws LittleCatException
+	{
+		String sql = "update " + TABLE_NAME + " set state = '" + OrderState.yishouhuo.name() + "',receiveTime = now() where id = ?";
+
+		try
+		{
+			jdbcTemplate.update(sql, new Object[] { id });
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
+	public void terminalUserReceive(List<String> ids) throws LittleCatException
+	{
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+
+		String sql = "update " + TABLE_NAME + " set state = '" + OrderState.yishouhuo.name() + "',receiveTime = now() where id in (:ids)";
+
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		parameters.addValue("ids", ids);
+
+		try
+		{
+			namedParameterJdbcTemplate.update(sql, parameters);
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+
+	}
+
+	public void afterDeliverySiteReceive(String orderDate) throws LittleCatException
+	{
+		String sql = "update " + TABLE_NAME + " set state = '" + OrderState.daiqianshou.name() + "',deliverySiteReceiveTime=now() where date_format(payTime,'%Y%m%d') = date_format(?,'%Y%m%d') and state = '" + OrderState.daifahuo.name() + "'";
+
+		try
+		{
+			jdbcTemplate.update(sql, new Object[] { orderDate });
 		}
 		catch (DataAccessException e)
 		{
@@ -164,7 +213,7 @@ public class OrderDao
 		}
 	}
 
-	public List<OrderMO> getList(String id,String shareTuanZhangName, String deliveryTuanZhangName, String terminalUserName, String state, boolean curDay)
+	public List<OrderMO> getList(String id, String shareTuanZhangName, String deliveryTuanZhangName, String terminalUserName, String state, boolean curDay)
 	{
 		StringBuilder sql = new StringBuilder()
 				.append("select a.*,b.name shareTuanZhangName,c.name deliveryTuanZhangName, d.name terminalUserName from ").append(TABLE_NAME + " a ")
@@ -177,7 +226,7 @@ public class OrderDao
 		{
 			sql.append(" and a.id = '" + id + "' ");
 		}
-		
+
 		if (StringUtil.isNotEmpty(shareTuanZhangName))
 		{
 			sql.append(" and b.name like '%" + shareTuanZhangName + "%' ");
@@ -199,7 +248,7 @@ public class OrderDao
 		}
 
 		if (curDay)
-		{//只查当天
+		{// 只查当天
 			sql.append(" and date_format(a.createTime,'%Y%m%d') = date_format(curdate(),'%Y%m%d')");
 		}
 

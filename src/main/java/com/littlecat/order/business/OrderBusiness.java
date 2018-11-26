@@ -262,12 +262,12 @@ public class OrderBusiness
 	 */
 	public void terminalUserReceive(String id) throws LittleCatException
 	{
-		OrderMO mo = orderDao.getById(id);
-
-		mo.setState(OrderState.yishouhuo);
-		mo.setReceiveTime(DateTimeUtil.getCurrentTimeForDisplay());
-
-		orderDao.modify(mo);
+		orderDao.terminalUserReceive(id);
+	}
+	
+	public void terminalUserReceive(List<String> ids) throws LittleCatException
+	{
+		orderDao.terminalUserReceive(ids);
 	}
 
 	/**
@@ -332,6 +332,11 @@ public class OrderBusiness
 	public void modify(List<OrderMO> mos) throws LittleCatException
 	{
 		orderDao.modify(mos);
+	}
+	
+	public void afterDeliverySiteReceive(String orderDate) throws LittleCatException
+	{
+		orderDao.afterDeliverySiteReceive(orderDate);
 	}
 
 	public void cancel(String id) throws LittleCatException

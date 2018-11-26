@@ -228,7 +228,7 @@ public class CommissionCalcBusiness
 		}
 		catch (Exception e)
 		{
-			logger.error("CommissionCalcBusiness:enable:" + e.getMessage());
+			logger.error("get PARAM_NAME_ENABLE_COMMISSION_DELAY_DAY from db error.",e.getMessage());
 		}
 
 		List<CommissionCalcMO> mos = new ArrayList<CommissionCalcMO>();

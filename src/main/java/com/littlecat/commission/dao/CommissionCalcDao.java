@@ -155,7 +155,7 @@ public class CommissionCalcDao
 	{
 		StringBuilder sql = new StringBuilder()
 				.append("select id from  ").append(TABLE_NAME)
-				.append(" where state=").append(CommissionState.calced);
+				.append(" where state='").append(CommissionState.calced+"'");
 
 		return jdbcTemplate.queryForList(sql.toString(), String.class);
 	}

@@ -36,6 +36,32 @@ public class TuanZhangFilterDao
 	private final String TABLE_NAME_ORDER = TableName.Order.getName();
 	private final String TABLE_NAME_TUAN = TableName.Tuan.getName();
 
+	public List<String> getOrderIdList(List<String> ids) throws LittleCatException
+	{
+		String sql = "select orderId from " + TABLE_NAME + "where id in (:ids)";
+
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		parameters.addValue("ids", ids);
+
+		try
+		{
+			return namedParameterJdbcTemplate.query(sql, parameters, new RowMapper<String>()
+			{
+
+				@Override
+				public String mapRow(ResultSet rs, int num) throws SQLException
+				{
+					return rs.getString("orderId");
+				}
+			});
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
 	public boolean exist(String orderDate) throws LittleCatException
 	{
 		String sql = "select count(1) from " + TABLE_NAME + " where orderDate = ?";
@@ -151,7 +177,7 @@ public class TuanZhangFilterDao
 		}
 	}
 
-	public List<TuanZhangFilterMO> getList(String orderDate, String tuanZhangName,String tuanZhangMobile,String terminalUserName,String terminalUserMobile, String state) throws LittleCatException
+	public List<TuanZhangFilterMO> getList(String orderDate, String tuanZhangName, String tuanZhangMobile, String terminalUserName, String terminalUserMobile, String state) throws LittleCatException
 	{
 
 		StringBuilder sql = new StringBuilder()
@@ -166,12 +192,12 @@ public class TuanZhangFilterDao
 		{
 			sql.append(" and e.name like '%" + tuanZhangName + "%' ");
 		}
-		
+
 		if (StringUtil.isNotEmpty(tuanZhangMobile))
 		{
 			sql.append(" and e.mobile like '%" + tuanZhangMobile + "%' ");
 		}
-		
+
 		if (StringUtil.isNotEmpty(terminalUserName))
 		{
 			sql.append(" and d.name like '%" + terminalUserName + "%' ");
@@ -186,8 +212,8 @@ public class TuanZhangFilterDao
 		{
 			sql.append(" and a.state = '" + state + "' ");
 		}
-		
-		System.out.println("SQL:"+sql);
+
+		System.out.println("SQL:" + sql);
 
 		try
 		{
