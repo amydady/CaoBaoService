@@ -127,6 +127,10 @@ public class CommissionCalcBusiness
 
 			// 自提点团长ID
 			String deliverySiteTuanZhangId = order.getDeliveryTuanZhangId();
+			if (tuanBusiness.isTuanZhang(order.getTerminalUserId()))
+			{// 团长自购，物流佣金结算给自己
+				deliverySiteTuanZhangId = order.getTerminalUserId();
+			}
 
 			// 计算佣金=========================
 			List<CommissionCalcMO> commissionCalcMOList = new ArrayList<CommissionCalcMO>();
