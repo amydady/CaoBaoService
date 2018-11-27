@@ -87,8 +87,22 @@ public class TuanBusiness
 		}
 	}
 
-	public List<TuanMO> getDeliverySiteList(String terminalUserId, String province, String city, String area) throws LittleCatException
+	public List<TuanMO> getDeliverySiteList(String terminalUserId, String province, String city, String area,String shareTuanZhangId) throws LittleCatException
 	{
-		return tuanDao.getDeliverySiteList(terminalUserId,province, city, area);
+		List<TuanMO> mos= tuanDao.getDeliverySiteList(terminalUserId,province, city, area);
+		
+		if(tuanDao.isTuanZhang(terminalUserId))
+		{
+			return mos;
+		}
+		
+		//普通用户，将团长地址置顶：本次分享团长、归属团长
+		
+		//当前归属团长
+		String currentTuanId = tuanMemberBusiness.getCurrentEnableTuan(terminalUserId).getTuanId();
+		
+		
+		
+		return mos;
 	}
 }

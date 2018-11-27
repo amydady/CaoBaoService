@@ -428,7 +428,7 @@ public class TuanController
 	}
 
 	@GetMapping(value = "/getDeliverySiteList")
-	public RestRsp<TuanMO> getDeliverySiteList(@RequestParam String terminalUserId, @RequestParam String province, @RequestParam String city, @RequestParam String area)
+	public RestRsp<TuanMO> getDeliverySiteList(@RequestParam String terminalUserId, @RequestParam String province, @RequestParam String city, @RequestParam String area,@RequestParam @Nullable String shareTuanZhangId)
 	{
 		RestRsp<TuanMO> result = new RestRsp<TuanMO>();
 
