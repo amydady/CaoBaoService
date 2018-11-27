@@ -92,6 +92,48 @@ public class OrderDao
 		}
 	}
 
+	public void tuiKuanShenqing(String id, String remark) throws LittleCatException
+	{
+		String sql = "update " + TABLE_NAME + " set state = ?,returnApplyRemark=?,returnApplyTime = now() where id = ?";
+
+		try
+		{
+			jdbcTemplate.update(sql, new Object[] { OrderState.tuikuanzhong.name(), remark, id });
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+	
+	public void cancelTuiKuan(String id, String remark) throws LittleCatException
+	{
+		String sql = "update " + TABLE_NAME + " set state = ?,returnCancelRemark=?,returnCancelTime = now() where id = ?";
+
+		try
+		{
+			jdbcTemplate.update(sql, new Object[] { OrderState.quxiaotuikuan.name(), remark, id });
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
+	public void completeTuiKuan(String id, String remark) throws LittleCatException
+	{
+		String sql = "update " + TABLE_NAME + " set state = ?,returnCompleteRemark=?,returnCompleteTime = now() where id = ?";
+
+		try
+		{
+			jdbcTemplate.update(sql, new Object[] { OrderState.yituikuan.name(), remark, id });
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+
 	public void terminalUserReceive(String id) throws LittleCatException
 	{
 		String sql = "update " + TABLE_NAME + " set state = '" + OrderState.yishouhuo.name() + "',receiveTime = now() where id = ?";

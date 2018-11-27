@@ -317,7 +317,7 @@ public class TuanController
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/isTuanZhang")
 	public RestRsp<Boolean> isTuanZhang(@RequestParam String id)
 	{
@@ -428,13 +428,13 @@ public class TuanController
 	}
 
 	@GetMapping(value = "/getDeliverySiteList")
-	public RestRsp<TuanMO> getDeliverySiteList(@RequestParam String terminalUserId, @RequestParam String province, @RequestParam String city, @RequestParam String area,@RequestParam @Nullable String shareTuanZhangId)
+	public RestRsp<TuanMO> getDeliverySiteList(@RequestParam String terminalUserId, @RequestParam String province, @RequestParam String city, @RequestParam String area, @RequestParam @Nullable String shareTuanZhangId)
 	{
 		RestRsp<TuanMO> result = new RestRsp<TuanMO>();
 
 		try
 		{
-			result.getData().addAll(tuanBusiness.getDeliverySiteList(terminalUserId,province, city, area));
+			result.getData().addAll(tuanBusiness.getDeliverySiteList(terminalUserId, province, city, area, shareTuanZhangId));
 		}
 		catch (LittleCatException e)
 		{

@@ -25,6 +25,7 @@ import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.order.business.OrderBusiness;
 import com.littlecat.order.model.OrderCreateReqInfo;
 import com.littlecat.order.model.OrderMO;
+import com.littlecat.order.model.OrderReturnReqInfo;
 
 @RestController
 @RequestMapping("/rest/littlecat/caobao/order")
@@ -161,14 +162,14 @@ public class OrderController
 		return result;
 	}
 
-	@PutMapping(value = "/tuiKuanShenqing/{id}")
-	public RestSimpleRsp tuiKuanShenqing(@PathVariable String id)
+	@PutMapping(value = "/tuiKuanShenqing")
+	public RestSimpleRsp tuiKuanShenqing(@RequestBody OrderReturnReqInfo req)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			orderBusiness.tuiKuanShenqing(id);
+			orderBusiness.tuiKuanShenqing(req);
 		}
 		catch (LittleCatException e)
 		{
@@ -186,14 +187,39 @@ public class OrderController
 		return result;
 	}
 
-	@PutMapping(value = "/completeTuiKuan/{id}")
-	public RestSimpleRsp completeTuiKuan(@PathVariable String id)
+	@PutMapping(value = "/completeTuiKuan")
+	public RestSimpleRsp completeTuiKuan(@RequestBody OrderReturnReqInfo req)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			orderBusiness.completeTuiKuan(id);
+			orderBusiness.completeTuiKuan(req);
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+	
+	@PutMapping(value = "/cancelTuiKuan")
+	public RestSimpleRsp cancelTuiKuan(@RequestBody OrderReturnReqInfo req)
+	{
+		RestSimpleRsp result = new RestSimpleRsp();
+
+		try
+		{
+			orderBusiness.cancelTuiKuan(req);
 		}
 		catch (LittleCatException e)
 		{

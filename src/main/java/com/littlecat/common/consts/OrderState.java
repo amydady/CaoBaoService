@@ -15,6 +15,7 @@ public enum OrderState
 	yishouhuo("已收货"), // 已收货
 	tuikuanzhong("退款中"), // 退款中
 	yituikuan("已退款"), // 已退款
+	quxiaotuikuan("取消退款"), // 取消退款
 	tuangoujiesantuikuan("团购解散退款"), // 团购解散退款
 	yiquxiao("已取消");// 已取消
 

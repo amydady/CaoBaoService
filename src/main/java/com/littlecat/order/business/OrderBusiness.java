@@ -42,6 +42,7 @@ import com.littlecat.lock.model.ResLockMO;
 import com.littlecat.order.dao.OrderDao;
 import com.littlecat.order.model.OrderDetailMO;
 import com.littlecat.order.model.OrderMO;
+import com.littlecat.order.model.OrderReturnReqInfo;
 import com.littlecat.quanzi.business.TuanBusiness;
 import com.littlecat.quanzi.business.TuanMemberBusiness;
 import com.littlecat.quanzi.model.TuanMemberMO;
@@ -93,13 +94,13 @@ public class OrderBusiness
 	private static final String MODEL_NAME_GROUPBUYPLAN = GroupBuyPlanMO.class.getSimpleName();
 
 	// 资源锁失效时间（秒）
-	public static final long RESLOCK_DISABLE_TIME = ResLockMO.DEFAULT_DISABLE_TIME;
+	private static final long RESLOCK_DISABLE_TIME = ResLockMO.DEFAULT_DISABLE_TIME;
 
 	// 获取资源锁超时时间（秒）
-	public static final long RESLOCK_TIMEOUTSECS = ResLockMO.DEFAULT_TIMEOUTSECS;
+	private static final long RESLOCK_TIMEOUTSECS = ResLockMO.DEFAULT_TIMEOUTSECS;
 
 	// 获取资源锁重试时间间隔（毫秒）
-	public static final long RESLOCK_RETRYTIMESTEP = ResLockMO.DEFAULT_RETRYTIMESTEP;
+	private static final long RESLOCK_RETRYTIMESTEP = ResLockMO.DEFAULT_RETRYTIMESTEP;
 
 	// order中团购任务字段名称
 	private static final String FIELD_NAME_GROUPBUYTASKID = "groupBuyTaskId";
@@ -264,7 +265,7 @@ public class OrderBusiness
 	{
 		orderDao.terminalUserReceive(id);
 	}
-	
+
 	public void terminalUserReceive(List<String> ids) throws LittleCatException
 	{
 		orderDao.terminalUserReceive(ids);
@@ -273,33 +274,34 @@ public class OrderBusiness
 	/**
 	 * 退款申请
 	 * 
-	 * @param id
+	 * @param req
 	 * @throws LittleCatException
 	 */
-	public void tuiKuanShenqing(String id) throws LittleCatException
+	public void tuiKuanShenqing(OrderReturnReqInfo req) throws LittleCatException
 	{
-		OrderMO mo = orderDao.getById(id);
+		orderDao.tuiKuanShenqing(req.getId(), req.getRemark());
+	}
 
-		mo.setState(OrderState.tuikuanzhong);
-		mo.setReturnApplyTime(DateTimeUtil.getCurrentTimeForDisplay());
-
-		orderDao.modify(mo);
+	/**
+	 * 撤销退款
+	 * 
+	 * @param req
+	 * @throws LittleCatException
+	 */
+	public void cancelTuiKuan(OrderReturnReqInfo req) throws LittleCatException
+	{
+		orderDao.cancelTuiKuan(req.getId(), req.getRemark());
 	}
 
 	/**
 	 * 完成退款
 	 * 
-	 * @param id
+	 * @param req
 	 * @throws LittleCatException
 	 */
-	public void completeTuiKuan(String id) throws LittleCatException
+	public void completeTuiKuan(OrderReturnReqInfo req) throws LittleCatException
 	{
-		OrderMO mo = orderDao.getById(id);
-
-		mo.setState(OrderState.yituikuan);
-		mo.setReturnCompleteTime(DateTimeUtil.getCurrentTimeForDisplay());
-
-		orderDao.modify(mo);
+		orderDao.completeTuiKuan(req.getId(), req.getRemark());
 	}
 
 	/**
@@ -333,7 +335,7 @@ public class OrderBusiness
 	{
 		orderDao.modify(mos);
 	}
-	
+
 	public void afterDeliverySiteReceive(String orderDate) throws LittleCatException
 	{
 		orderDao.afterDeliverySiteReceive(orderDate);

@@ -1,12 +1,16 @@
 package com.littlecat.quanzi.business;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
+import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.common.consts.BooleanTag;
 import com.littlecat.quanzi.dao.TuanDao;
 import com.littlecat.quanzi.model.TuanMO;
@@ -18,7 +22,7 @@ public class TuanBusiness
 {
 	@Autowired
 	private TuanDao tuanDao;
-	
+
 	@Autowired
 	private TuanMemberBusiness tuanMemberBusiness;
 
@@ -87,22 +91,43 @@ public class TuanBusiness
 		}
 	}
 
-	public List<TuanMO> getDeliverySiteList(String terminalUserId, String province, String city, String area,String shareTuanZhangId) throws LittleCatException
+	public List<TuanMO> getDeliverySiteList(String terminalUserId, String province, String city, String area, String shareTuanZhangId) throws LittleCatException
 	{
-		List<TuanMO> mos= tuanDao.getDeliverySiteList(terminalUserId,province, city, area);
-		
-		if(tuanDao.isTuanZhang(terminalUserId))
+		List<TuanMO> mos = tuanDao.getDeliverySiteList(terminalUserId, province, city, area);
+
+		if (tuanDao.isTuanZhang(terminalUserId))
 		{
 			return mos;
 		}
-		
-		//普通用户，将团长地址置顶：本次分享团长、归属团长
-		
-		//当前归属团长
+
+		// 普通用户，将团长地址置顶：本次分享团长、归属团长
+
+		// 当前归属团长
 		String currentTuanId = tuanMemberBusiness.getCurrentEnableTuan(terminalUserId).getTuanId();
 		
+		List<TuanMO> ret = new ArrayList<TuanMO>();
+		Set<String> toSkipIds = new HashSet<String>();
 		
+		if(StringUtil.isNotEmpty(shareTuanZhangId))
+		{
+			ret.add(tuanDao.getById(shareTuanZhangId));
+			toSkipIds.add(shareTuanZhangId);
+		}
 		
-		return mos;
+		if(StringUtil.isNotEmpty(currentTuanId))
+		{
+			ret.add(tuanDao.getById(currentTuanId));
+			toSkipIds.add(currentTuanId);
+		}
+		
+		for(TuanMO mo:mos)
+		{
+			if(!toSkipIds.contains(mo.getId()))
+			{
+				ret.add(mo);
+			}
+		}
+
+		return ret;
 	}
 }

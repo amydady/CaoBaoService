@@ -363,6 +363,9 @@ CREATE TABLE `t_order` (
 	`sitecity` VARCHAR(255) NOT NULL,
 	`sitearea` VARCHAR(255) NOT NULL,
 	`sitedetailInfo` VARCHAR(255) NOT NULL,
+	`returnApplyRemark` VARCHAR(1024) NULL,
+	`returnCancelRemark` VARCHAR(1024) NULL,
+	`returnCompleteRemark` VARCHAR(1024) NULL,
 	
 	`createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`payTime` DATETIME NULL,
@@ -370,6 +373,7 @@ CREATE TABLE `t_order` (
 	`deliverySiteReceiveTime` DATETIME NULL,
 	`receiveTime` DATETIME NULL,
 	`returnApplyTime` DATETIME NULL,
+	`returnCancelTime` DATETIME NULL,
 	`returnCompleteTime` DATETIME NULL,
 	`commissionCalcTime` DATETIME NULL,
 	
