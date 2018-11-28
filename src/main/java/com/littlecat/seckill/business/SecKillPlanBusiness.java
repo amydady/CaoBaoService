@@ -102,6 +102,11 @@ public class SecKillPlanBusiness
 	{
 		return secKillPlanDao.getById(id);
 	}
+	
+	public boolean isVariable(String id) throws LittleCatException
+	{
+		return secKillPlanDao.isVariable(id);
+	}
 
 	/**
 	 * 请求参数校验

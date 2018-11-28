@@ -41,12 +41,7 @@ public class SecKillPlanDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getGoodsId(), mo.getStartTime(), mo.getEndTime(), mo.getPrice(), mo.getLimitBuyNum(), mo.getCreateOperatorId(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId() });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(), ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
+			jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getGoodsId(), mo.getStartTime(), mo.getEndTime(), mo.getPrice(), mo.getLimitBuyNum(), mo.getCreateOperatorId(), mo.getDeliveryAreaId(), mo.getDeliveryFeeRuleId() });
 		}
 		catch (DataAccessException e)
 		{
@@ -83,6 +78,24 @@ public class SecKillPlanDao
 	public SecKillPlanMO getById(String id) throws LittleCatException
 	{
 		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new SecKillPlanMO.MOMapper());
+	}
+
+	public boolean isVariable(String id) throws LittleCatException
+	{
+		String sql = new StringBuilder()
+				.append(" select count(*) from ").append(TABLE_NAME).append(" a ")
+				.append(" where now() between a.startTime and a.endTime  ")
+				.append(" and a.enable='Y'")
+				.append(" and a.id = ? ")
+				.toString();
+		try
+		{
+			return jdbcTemplate.queryForObject(sql, new Object[] { id }, Integer.class) > 0;
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -147,7 +160,6 @@ public class SecKillPlanDao
 					mo.setGoodsPrice(rs.getBigDecimal("goodsPrice"));
 					mo.setGoodsMainImgData(rs.getString("goodsMainImgData"));
 					mo.setGoodsSummaryDescription(rs.getString("goodsSummaryDescription"));
-					
 
 					return mo;
 				}

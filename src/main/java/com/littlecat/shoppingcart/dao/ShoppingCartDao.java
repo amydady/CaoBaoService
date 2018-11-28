@@ -39,11 +39,6 @@ public class ShoppingCartDao
 
 	public String add(ShoppingCartMO mo) throws LittleCatException
 	{
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		if (StringUtil.isEmpty(mo.getId()))
 		{
 			mo.setId(UUIDUtil.createUUID());
@@ -53,12 +48,7 @@ public class ShoppingCartDao
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getBuyType().name(), mo.getResId(),mo.getShareTuanZhangId() });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.InsertObjectToDBError.getCode(), ErrorCode.InsertObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
+			jdbcTemplate.update(sql, new Object[] { mo.getId(), mo.getTerminalUserId(), mo.getBuyType().name(), mo.getResId(), mo.getShareTuanZhangId() });
 		}
 		catch (DataAccessException e)
 		{
@@ -70,21 +60,11 @@ public class ShoppingCartDao
 
 	public void modify(ShoppingCartMO mo) throws LittleCatException
 	{
-		if (mo == null)
-		{
-			throw new LittleCatException(ErrorCode.RequestObjectIsNull.getCode(), ErrorCode.RequestObjectIsNull.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-		}
-
 		String sql = "update " + TABLE_NAME + " set goodsNum = ?,tuanZhangId=? where id = ?";
 
 		try
 		{
-			int ret = jdbcTemplate.update(sql, new Object[] { mo.getGoodsNum(),mo.getShareTuanZhangId(), mo.getId() });
-
-			if (ret != 1)
-			{
-				throw new LittleCatException(ErrorCode.UpdateObjectToDBError.getCode(), ErrorCode.UpdateObjectToDBError.getMsg().replace("{INFO_NAME}", MODEL_NAME));
-			}
+			jdbcTemplate.update(sql, new Object[] { mo.getGoodsNum(), mo.getShareTuanZhangId(), mo.getId() });
 		}
 		catch (DataAccessException e)
 		{
@@ -103,7 +83,7 @@ public class ShoppingCartDao
 
 		for (ShoppingCartMO mo : mos)
 		{
-			batchParam.add(new Object[] { mo.getGoodsNum(),mo.getShareTuanZhangId(), mo.getId() });
+			batchParam.add(new Object[] { mo.getGoodsNum(), mo.getShareTuanZhangId(), mo.getId() });
 		}
 
 		String sql = "update " + TABLE_NAME + " set goodsNum = ?,tuanZhangId=? where id = ?";
