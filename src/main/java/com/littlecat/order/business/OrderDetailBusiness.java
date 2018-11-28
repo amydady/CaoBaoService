@@ -39,11 +39,6 @@ public class OrderDetailBusiness
 		return orderDetailDao.getById(id);
 	}
 
-	public List<OrderDetailMO> getByOrderIdWithGoodsDetail(String orderId) throws LittleCatException
-	{
-		return orderDetailDao.getByOrderIdWithGoodsDetail(orderId);
-	}
-
 	public List<OrderDetailMO> getByOrderId(String orderId) throws LittleCatException
 	{
 		return orderDetailDao.getByOrderId(orderId);

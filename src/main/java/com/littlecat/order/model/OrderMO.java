@@ -406,7 +406,7 @@ public class OrderMO extends BaseMO
 			mo.setGroupCancelTime(StringUtil.replace(rs.getString("groupCancelTime"),".0",""));
 
 			// get view info
-			mo.setDetails(orderDetailBusiness.getByOrderIdWithGoodsDetail(mo.getId()));
+			mo.setDetails(orderDetailBusiness.getByOrderId(mo.getId()));
 			mo.setDeliveryTuanZhangMobile(tuanBusiness.getById(mo.getDeliveryTuanZhangId()).getMobile());
 			
 			try

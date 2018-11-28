@@ -19,7 +19,6 @@ public class GoodsSalesRptDao
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
 
-	private final String TABLE_NAME_GOODS = TableName.Goods.getName();
 	private final String TABLE_NAME_ORDERDETAIL = TableName.OrderDetail.getName();
 	private final String TABLE_NAME_ORDER = TableName.Order.getName();
 

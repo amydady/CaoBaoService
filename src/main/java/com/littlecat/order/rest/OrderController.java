@@ -24,6 +24,7 @@ import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.order.business.OrderBusiness;
 import com.littlecat.order.model.OrderCreateReqInfo;
+import com.littlecat.order.model.OrderInventoryCheckRspMO;
 import com.littlecat.order.model.OrderMO;
 import com.littlecat.order.model.OrderReturnReqInfo;
 
@@ -289,6 +290,32 @@ public class OrderController
 
 		return result;
 	}
+	
+	@GetMapping(value = "/checkInventory")
+	public RestRsp<OrderInventoryCheckRspMO> checkInventory(@RequestParam  String id)
+	{
+		RestRsp<OrderInventoryCheckRspMO> result = new RestRsp<OrderInventoryCheckRspMO>();
+
+		try
+		{
+			result.getData().addAll(orderBusiness.checkInventory(id));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+	
 	
 
 	@PutMapping(value = "/cancel/{id}")

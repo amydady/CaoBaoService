@@ -121,25 +121,6 @@ public class OrderDetailMO extends BaseMO
 			mo.setGoodsId(rs.getString("goodsId"));
 			mo.setPrice(rs.getBigDecimal("price"));
 			mo.setGoodsNum(rs.getBigDecimal("goodsNum"));
-
-			return mo;
-		}
-	}
-
-	public static class MOMapperWithGoodsDetail implements RowMapper<OrderDetailMO>
-	{
-		@Override
-		public OrderDetailMO mapRow(ResultSet rs, int rowNum) throws SQLException
-		{
-			OrderDetailMO mo = new OrderDetailMO();
-
-			mo.setId(rs.getString("id"));
-			mo.setOrderId(rs.getString("orderId"));
-			mo.setBuyType(BuyType.valueOf(rs.getString("buyType")));
-			mo.setResId(rs.getString("resId"));
-			mo.setGoodsId(rs.getString("goodsId"));
-			mo.setPrice(rs.getBigDecimal("price"));
-			mo.setGoodsNum(rs.getBigDecimal("goodsNum"));
 			
 			
 			mo.setGoodsName(rs.getString("goodsName"));

@@ -72,6 +72,34 @@ public class OrderDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
+	
+	public void completeCommissionCalc(String id) throws LittleCatException
+	{
+		String sql = "update " + TABLE_NAME + " set commissionCalcTime = now() where id = ?";
+
+		try
+		{
+			jdbcTemplate.update(sql, new Object[] { id });
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
+	
+	public void cancel(String id) throws LittleCatException
+	{
+		String sql = "update " + TABLE_NAME + " set state = ?,cancelTime = now() where id = ?";
+
+		try
+		{
+			jdbcTemplate.update(sql, new Object[] { OrderState.yiquxiao.name(), id });
+		}
+		catch (DataAccessException e)
+		{
+			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
+		}
+	}
 
 	public void modify(List<OrderMO> mos) throws LittleCatException
 	{

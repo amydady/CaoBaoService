@@ -62,7 +62,7 @@ public class OrderDetailDao
 
 	public OrderDetailMO getById(String id) throws LittleCatException
 	{
-		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new OrderDetailMO.MOMapperWithGoodsDetail());
+		return DaoUtil.getById(TABLE_NAME, id, jdbcTemplate, new OrderDetailMO.MOMapper());
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class OrderDetailDao
 
 		try
 		{
-			return jdbcTemplate.query(sql, new Object[] { orderId }, new OrderDetailMO.MOMapperWithGoodsDetail());
+			return jdbcTemplate.query(sql, new Object[] { orderId }, new OrderDetailMO.MOMapper());
 		}
 		catch (DataAccessException e)
 		{
