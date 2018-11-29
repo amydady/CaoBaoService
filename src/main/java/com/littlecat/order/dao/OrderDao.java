@@ -72,7 +72,7 @@ public class OrderDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
-	
+
 	public void completeCommissionCalc(String id) throws LittleCatException
 	{
 		String sql = "update " + TABLE_NAME + " set commissionCalcTime = now() where id = ?";
@@ -86,7 +86,7 @@ public class OrderDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
-	
+
 	public void cancel(String id) throws LittleCatException
 	{
 		String sql = "update " + TABLE_NAME + " set state = ?,cancelTime = now() where id = ?";
@@ -133,7 +133,7 @@ public class OrderDao
 			throw new LittleCatException(ErrorCode.DataAccessException.getCode(), ErrorCode.DataAccessException.getMsg(), e);
 		}
 	}
-	
+
 	public void cancelTuiKuan(String id, String remark) throws LittleCatException
 	{
 		String sql = "update " + TABLE_NAME + " set state = ?,returnCancelRemark=?,returnCancelTime = now() where id = ?";
@@ -283,7 +283,7 @@ public class OrderDao
 		}
 	}
 
-	public List<OrderMO> getList(String id, String shareTuanZhangName, String deliveryTuanZhangName, String terminalUserName, String state, boolean curDay)
+	public List<OrderMO> getList(String id, String shareTuanZhangName, String deliveryTuanZhangName, String terminalUserName, String state, String createDate)
 	{
 		StringBuilder sql = new StringBuilder()
 				.append("select a.*,b.name shareTuanZhangName,c.name deliveryTuanZhangName, d.name terminalUserName from ").append(TABLE_NAME + " a ")
@@ -317,9 +317,9 @@ public class OrderDao
 			sql.append(" and a.state = '" + state + "' ");
 		}
 
-		if (curDay)
-		{// 只查当天
-			sql.append(" and date_format(a.createTime,'%Y%m%d') = date_format(curdate(),'%Y%m%d')");
+		if (StringUtil.isNotEmpty(createDate))
+		{
+			sql.append(" and date_format(a.createTime,'%Y%m%d') = date_format('" + createDate + "','%Y%m%d')");
 		}
 
 		return jdbcTemplate.query(sql.toString(), new OrderMO.MOMapper());

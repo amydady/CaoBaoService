@@ -38,6 +38,7 @@ import com.littlecat.inventory.business.SecKillInventoryBusiness;
 import com.littlecat.inventory.model.GoodsInventoryMO;
 import com.littlecat.inventory.model.SecKillInventoryMO;
 import com.littlecat.order.dao.OrderDao;
+import com.littlecat.order.model.GoodsSaleRspMO;
 import com.littlecat.order.model.OrderDetailMO;
 import com.littlecat.order.model.OrderInventoryCheckRspMO;
 import com.littlecat.order.model.OrderMO;
@@ -73,8 +74,8 @@ public class OrderBusiness
 	@Autowired
 	private SecKillInventoryBusiness secKillInventoryBusiness;
 
-//	@Autowired
-//	private ResLockBusiness resLockBusiness;
+	// @Autowired
+	// private ResLockBusiness resLockBusiness;
 
 	@Autowired
 	private SecKillPlanBusiness secKillPlanBusiness;
@@ -421,9 +422,14 @@ public class OrderBusiness
 		return orderDao.getBuyedNumOfSecKillPlan(secKillPlanId, terminalUserId);
 	}
 
-	public List<OrderMO> getList(String id, String shareTuanZhangName, String deliveryTuanZhangName, String terminalUserName, String state, boolean curDay)
+	public List<OrderMO> getList(String id, String shareTuanZhangName, String deliveryTuanZhangName, String terminalUserName, String state, String createDate)
 	{
-		return orderDao.getList(id, shareTuanZhangName, deliveryTuanZhangName, terminalUserName, state, curDay);
+		return orderDao.getList(id, shareTuanZhangName, deliveryTuanZhangName, terminalUserName, state, createDate);
+	}
+
+	public List<GoodsSaleRspMO> getGoodsSaleCount(String name, String payDate)
+	{
+		return orderDetailBusiness.getGoodsSaleCount(name, payDate);
 	}
 
 	/**

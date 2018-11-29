@@ -23,6 +23,7 @@ import com.littlecat.cbb.query.QueryParam;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
 import com.littlecat.order.business.OrderBusiness;
+import com.littlecat.order.model.GoodsSaleRspMO;
 import com.littlecat.order.model.OrderCreateReqInfo;
 import com.littlecat.order.model.OrderInventoryCheckRspMO;
 import com.littlecat.order.model.OrderMO;
@@ -38,9 +39,9 @@ public class OrderController
 	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
 	@PostMapping(value = "/create")
-	public RestRsp<Map<String,String>> create(@RequestBody OrderCreateReqInfo orderCreateReqInfo)
+	public RestRsp<Map<String, String>> create(@RequestBody OrderCreateReqInfo orderCreateReqInfo)
 	{
-		RestRsp<Map<String,String>> result = new RestRsp<Map<String,String>>();
+		RestRsp<Map<String, String>> result = new RestRsp<Map<String, String>>();
 
 		try
 		{
@@ -87,7 +88,7 @@ public class OrderController
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/unifiedOrder")
 	public RestRsp<String> unifiedOrder(@RequestParam String id)
 	{
@@ -212,7 +213,7 @@ public class OrderController
 
 		return result;
 	}
-	
+
 	@PutMapping(value = "/cancelTuiKuan")
 	public RestSimpleRsp cancelTuiKuan(@RequestBody OrderReturnReqInfo req)
 	{
@@ -265,15 +266,15 @@ public class OrderController
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/getListForWebApp")
-	public RestRsp<OrderMO> getListForWebApp(@RequestParam @Nullable String id,@RequestParam @Nullable String shareTuanZhangName, @RequestParam @Nullable String deliveryTuanZhangName, @RequestParam @Nullable String terminalUserName, @RequestParam @Nullable String state, @RequestParam boolean curDay)
+	public RestRsp<OrderMO> getListForWebApp(@RequestParam @Nullable String id, @RequestParam @Nullable String shareTuanZhangName, @RequestParam @Nullable String deliveryTuanZhangName, @RequestParam @Nullable String terminalUserName, @RequestParam @Nullable String state, @RequestParam @Nullable String createDate)
 	{
 		RestRsp<OrderMO> result = new RestRsp<OrderMO>();
 
 		try
 		{
-			result.getData().addAll(orderBusiness.getList(id, shareTuanZhangName, deliveryTuanZhangName, terminalUserName, state, curDay));
+			result.getData().addAll(orderBusiness.getList(id, shareTuanZhangName, deliveryTuanZhangName, terminalUserName, state, createDate));
 		}
 		catch (LittleCatException e)
 		{
@@ -290,9 +291,34 @@ public class OrderController
 
 		return result;
 	}
-	
+
+	@GetMapping(value = "/getGoodsSaleCount")
+	public RestRsp<GoodsSaleRspMO> getGoodsSaleCount(@RequestParam @Nullable String name, @RequestParam @Nullable String payDate)
+	{
+		RestRsp<GoodsSaleRspMO> result = new RestRsp<GoodsSaleRspMO>();
+
+		try
+		{
+			result.getData().addAll(orderBusiness.getGoodsSaleCount(name, payDate));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
 	@GetMapping(value = "/checkInventory")
-	public RestRsp<OrderInventoryCheckRspMO> checkInventory(@RequestParam  String id)
+	public RestRsp<OrderInventoryCheckRspMO> checkInventory(@RequestParam String id)
 	{
 		RestRsp<OrderInventoryCheckRspMO> result = new RestRsp<OrderInventoryCheckRspMO>();
 
@@ -315,8 +341,6 @@ public class OrderController
 
 		return result;
 	}
-	
-	
 
 	@PutMapping(value = "/cancel/{id}")
 	public RestSimpleRsp cancel(@PathVariable String id)

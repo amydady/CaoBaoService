@@ -10,6 +10,7 @@ import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.goods.business.GoodsBusiness;
 import com.littlecat.goods.model.GoodsMO;
 import com.littlecat.order.dao.OrderDetailDao;
+import com.littlecat.order.model.GoodsSaleRspMO;
 import com.littlecat.order.model.OrderDetailMO;
 
 @Component
@@ -42,5 +43,10 @@ public class OrderDetailBusiness
 	public List<OrderDetailMO> getByOrderId(String orderId) throws LittleCatException
 	{
 		return orderDetailDao.getByOrderId(orderId);
+	}
+
+	public List<GoodsSaleRspMO> getGoodsSaleCount(String name, String payDate)
+	{
+		return orderDetailDao.getGoodsSaleCount(name, payDate);
 	}
 }
