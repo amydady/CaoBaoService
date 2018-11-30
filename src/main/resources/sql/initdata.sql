@@ -32,6 +32,8 @@ insert into t_sys_menu(id,name,targeTurl,pid,sortNum,isDefault) values('301','�
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('302','物流费用管理','../delivery/DeliveryFeeRuleMgr.html','3','2');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('303','佣金类目管理','../commission/CommissionTypeMgr.html','3','3','N');
 insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('304','横幅图片管理','../main/HomeImgMgr.html','3','4');
+insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('305','关于信息管理','../main/AboutUsImgMgr.html','3','5');
+insert into t_sys_menu(id,name,targeTurl,pid,sortNum) values('306','合作协议管理','../main/QuanZiXieYiImgMgr.html','3','6');
 
 
 insert into t_sys_menu(id,name,pid,sortNum) values('88','统计分析','-1','88');

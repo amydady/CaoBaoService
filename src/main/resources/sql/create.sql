@@ -253,6 +253,22 @@ CREATE TABLE `t_goods_homeimgs` (
 	PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `t_basicinfo_aboutusimgs` (
+	`id` VARCHAR(255) NOT NULL,
+	`sortNum` INT NULL DEFAULT 0,
+	`imgData` VARCHAR(1024) NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `t_basicinfo_quanzixieyiimgs` (
+	`id` VARCHAR(255) NOT NULL,
+	`sortNum` INT NULL DEFAULT 0,
+	`imgData` VARCHAR(1024) NULL,
+	
+	PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `t_goods_detailimgs` (
 	`id` VARCHAR(255) NOT NULL,
 	`goodsId` VARCHAR(255) NOT NULL,

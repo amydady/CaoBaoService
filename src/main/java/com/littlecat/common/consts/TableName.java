@@ -36,6 +36,8 @@ public enum TableName
 	Province("t_basicinfo_province"),
 	City("t_basicinfo_city"),
 	Area("t_basicinfo_area"),
+	AboutUsImgs("t_basicinfo_aboutusimgs"),
+	QuanZiXieYiImgs("t_basicinfo_quanzixieyiimgs"),//圈子协议图片
 	
 	
 	Tuan("t_quanzi_tuan"),
