@@ -273,7 +273,7 @@ CREATE TABLE `t_goods_detailimgs` (
 	`id` VARCHAR(255) NOT NULL,
 	`goodsId` VARCHAR(255) NOT NULL,
 	`title` VARCHAR(255) NOT NULL,
-	`sortNum` VARCHAR(255) NOT NULL,
+	`sortNum` INT NULL DEFAULT 0,
 	`imgData` VARCHAR(1024) NULL,
 	
 	PRIMARY KEY (`id`)

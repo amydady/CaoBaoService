@@ -17,7 +17,7 @@ public class GoodsDetailImgsMO extends BaseMO
 {
 	private String goodsId;
 	private String title;
-	private String sortNum;
+	private int sortNum;
 	private String imgData;
 
 	public String getImgData()
@@ -50,12 +50,12 @@ public class GoodsDetailImgsMO extends BaseMO
 		this.title = title;
 	}
 
-	public String getSortNum()
+	public int getSortNum()
 	{
 		return sortNum;
 	}
 
-	public void setSortNum(String sortNum)
+	public void setSortNum(int sortNum)
 	{
 		this.sortNum = sortNum;
 	}
@@ -70,7 +70,7 @@ public class GoodsDetailImgsMO extends BaseMO
 			mo.setId(rs.getString("id"));
 			mo.setGoodsId(rs.getString("goodsId"));
 			mo.setTitle(rs.getString("title"));
-			mo.setSortNum(rs.getString("sortNum"));
+			mo.setSortNum(rs.getInt("sortNum"));
 			mo.setImgData(rs.getString("imgData"));
 
 			return mo;

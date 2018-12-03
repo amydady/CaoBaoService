@@ -363,8 +363,8 @@ public class GoodsController
 		return result;
 	}
 
-	@PostMapping(value = "/detailimgs/add/{goodsId}/{title}/{sortNum}")
-	public RestSimpleRsp uploadDetailImgs(@PathVariable String goodsId, @PathVariable String title, @PathVariable String sortNum, HttpServletRequest request)
+	@PostMapping(value = "/detailimgs/add/{goodsId}")
+	public RestSimpleRsp uploadDetailImgs(@PathVariable String goodsId, @RequestParam @Nullable String title, @RequestParam @Nullable int sortNum, HttpServletRequest request)
 			throws Exception
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
@@ -391,8 +391,8 @@ public class GoodsController
 		return result;
 	}
 
-	@PutMapping(value = "/detailimgs/modify/{id}/{title}/{sortNum}")
-	public RestSimpleRsp modifyDetailImgsInfo(@PathVariable String id, @PathVariable String title, @PathVariable String sortNum)
+	@PutMapping(value = "/detailimgs/modify/{id}")
+	public RestSimpleRsp modifyDetailImgsInfo(@PathVariable String id, @RequestParam @Nullable String title, @RequestParam @Nullable int sortNum)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 		GoodsDetailImgsMO mo = goodsDetailImgsBusiness.getById(id);
