@@ -29,7 +29,7 @@ public enum TableName
 	CommissionType("t_commission_type"),
 	GoodsCommission("t_commission_goods"),
 	CommissionCalc("t_commission_calc"),
-	CommissionApplyAccount("t_commission_applyaccount"),
+	CommissionApply("t_commission_apply"),
 	
 
 	

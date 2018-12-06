@@ -11,12 +11,12 @@ import com.littlecat.common.consts.ErrorCode;
 import com.littlecat.common.consts.TableName;
 
 @Component
-public class CommissionApplyAccountDao
+public class CommissionApplyDao
 {
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
 
-	private final String TABLE_NAME = TableName.CommissionApplyAccount.getName();
+	private final String TABLE_NAME = TableName.CommissionApply.getName();
 
 	public void add(CommissionApplyMO mo) throws LittleCatException
 	{

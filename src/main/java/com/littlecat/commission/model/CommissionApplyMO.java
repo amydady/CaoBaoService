@@ -17,14 +17,14 @@ import com.littlecat.cbb.utils.StringUtil;
 public class CommissionApplyMO extends BaseMO
 {
 	private String tuanZhangId; // 团长ID（结算的目标对象）
-	private String applyTime;
+	private String applyTime; // 申请时间
 
 	// 佣金申请的账户信息
-	private String bankHolderName;
-	private String bankName;
-	private String bankAccount;
-	private String zfbName;
-	private String zfbAccount;
+	private String bankHolderName; // 开户人姓名
+	private String bankName; // 开户行名称
+	private String bankAccount; // 银行账号
+	private String zfbName; // 支付宝姓名
+	private String zfbAccount; // 支付宝账号
 
 	public String getTuanZhangId()
 	{

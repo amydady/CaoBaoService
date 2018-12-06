@@ -18,7 +18,7 @@ import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
-import com.littlecat.commission.business.CommissionApplyAccountBusiness;
+import com.littlecat.commission.business.CommissionApplyBusiness;
 import com.littlecat.commission.business.CommissionCalcBusiness;
 import com.littlecat.commission.model.CommissionApplyMO;
 import com.littlecat.commission.model.CommissionCalcMO;
@@ -30,9 +30,9 @@ public class CommissionCalcController
 {
 	@Autowired
 	private CommissionCalcBusiness commissionCalcBusiness;
-	
+
 	@Autowired
-	private CommissionApplyAccountBusiness commissionApplyAccountBusiness;
+	private CommissionApplyBusiness commissionApplyBusiness;
 
 	private static final Logger logger = LoggerFactory.getLogger(CommissionCalcController.class);
 
@@ -210,7 +210,7 @@ public class CommissionCalcController
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/getApplyInfoByApplyTime")
 	public RestRsp<CommissionApplyMO> getApplyInfoByApplyTime(@RequestParam String tuanZhangId, @RequestParam String applyTime)
 	{
@@ -218,7 +218,7 @@ public class CommissionCalcController
 
 		try
 		{
-			result.getData().add(commissionApplyAccountBusiness.getByApplyTime(tuanZhangId, applyTime));
+			result.getData().add(commissionApplyBusiness.getByApplyTime(tuanZhangId, applyTime));
 		}
 		catch (LittleCatException e)
 		{
@@ -235,7 +235,7 @@ public class CommissionCalcController
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/getLatestApplyInfo")
 	public RestRsp<CommissionApplyMO> getLatestApplyInfo(@RequestParam String tuanZhangId)
 	{
@@ -243,7 +243,11 @@ public class CommissionCalcController
 
 		try
 		{
-			result.getData().add(commissionApplyAccountBusiness.getLatest(tuanZhangId));
+			CommissionApplyMO mo = commissionApplyBusiness.getLatest(tuanZhangId);
+			if (mo != null)
+			{
+				result.getData().add(mo);
+			}
 		}
 		catch (LittleCatException e)
 		{

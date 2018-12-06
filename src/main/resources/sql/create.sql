@@ -190,7 +190,7 @@ CREATE TABLE `t_commission_calc` (
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `t_commission_applyaccount` (
+CREATE TABLE `t_commission_apply` (
 	`tuanZhangId` VARCHAR(255) NOT NULL,
 	`applyTime` DATETIME NULL,
 

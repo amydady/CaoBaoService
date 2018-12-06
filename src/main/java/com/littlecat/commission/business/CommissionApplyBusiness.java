@@ -5,28 +5,28 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.littlecat.cbb.exception.LittleCatException;
-import com.littlecat.commission.dao.CommissionApplyAccountDao;
+import com.littlecat.commission.dao.CommissionApplyDao;
 import com.littlecat.commission.model.CommissionApplyMO;
 
 @Component
 @Transactional
-public class CommissionApplyAccountBusiness
+public class CommissionApplyBusiness
 {
 	@Autowired
-	private CommissionApplyAccountDao commissionApplyAccountDao;
+	private CommissionApplyDao commissionApplyDao;
 
 	public void add(CommissionApplyMO mo) throws LittleCatException
 	{
-		commissionApplyAccountDao.add(mo);
+		commissionApplyDao.add(mo);
 	}
 
 	public CommissionApplyMO getByApplyTime(String tuanZhangId, String applyTime) throws LittleCatException
 	{
-		return commissionApplyAccountDao.getByApplyTime(tuanZhangId, applyTime);
+		return commissionApplyDao.getByApplyTime(tuanZhangId, applyTime);
 	}
 
 	public CommissionApplyMO getLatest(String tuanZhangId) throws LittleCatException
 	{
-		return commissionApplyAccountDao.getLatest(tuanZhangId);
+		return commissionApplyDao.getLatest(tuanZhangId);
 	}
 }

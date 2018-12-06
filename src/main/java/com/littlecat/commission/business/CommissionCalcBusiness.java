@@ -58,7 +58,7 @@ public class CommissionCalcBusiness
 	private TuanBusiness tuanBusiness;
 	
 	@Autowired
-	private CommissionApplyAccountBusiness commissionApplyAccountBusiness;
+	private CommissionApplyBusiness commissionApplyBusiness;
 
 	public CommissionCalcMO getById(String id) throws LittleCatException
 	{
@@ -258,7 +258,7 @@ public class CommissionCalcBusiness
 		mo.setApplyTime(DateTimeUtil.getCurrentTimeForDisplay());
 		commissionCalcDao.apply(mo);
 		
-		commissionApplyAccountBusiness.add(mo);
+		commissionApplyBusiness.add(mo);
 	}
 
 	public void pay(List<String> ids) throws LittleCatException
