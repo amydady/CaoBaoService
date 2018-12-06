@@ -31,6 +31,13 @@ public class CommissionCalcMO extends BaseMO
 	private String applyTime;
 	private String payTime;
 	private String disableTime;
+	
+	//佣金申请的账户信息
+	private String bankHolderName;
+	private String bankName;
+	private String bankAccount;
+	private String zfbName;
+	private String zfbAccount;
 
 	// just for view
 	private String terminalUserName;
@@ -231,6 +238,60 @@ public class CommissionCalcMO extends BaseMO
 	{
 		this.goodsMainImgData = goodsMainImgData;
 	}
+	
+	
+
+	public String getBankHolderName()
+	{
+		return bankHolderName;
+	}
+
+	public void setBankHolderName(String bankHolderName)
+	{
+		this.bankHolderName = bankHolderName;
+	}
+
+	public String getBankName()
+	{
+		return bankName;
+	}
+
+	public void setBankName(String bankName)
+	{
+		this.bankName = bankName;
+	}
+
+	public String getBankAccount()
+	{
+		return bankAccount;
+	}
+
+	public void setBankAccount(String bankAccount)
+	{
+		this.bankAccount = bankAccount;
+	}
+
+	public String getZfbName()
+	{
+		return zfbName;
+	}
+
+	public void setZfbName(String zfbName)
+	{
+		this.zfbName = zfbName;
+	}
+
+	public String getZfbAccount()
+	{
+		return zfbAccount;
+	}
+
+	public void setZfbAccount(String zfbAccount)
+	{
+		this.zfbAccount = zfbAccount;
+	}
+
+
 
 	public static class MOMapper implements RowMapper<CommissionCalcMO>
 	{
@@ -252,6 +313,13 @@ public class CommissionCalcMO extends BaseMO
 			mo.setPayTime(StringUtil.replace(rs.getString("payTime"), ".0", ""));
 			mo.setDisableTime(StringUtil.replace(rs.getString("disableTime"), ".0", ""));
 			mo.setState(CommissionState.valueOf(rs.getString("state")));
+			
+
+			mo.setBankHolderName(rs.getString("bankHolderName"));
+			mo.setBankName(rs.getString("bankName"));
+			mo.setBankAccount(rs.getString("bankAccount"));
+			mo.setZfbName(rs.getString("zfbName"));
+			mo.setZfbAccount(rs.getString("zfbAccount"));
 
 			// relation info
 			try

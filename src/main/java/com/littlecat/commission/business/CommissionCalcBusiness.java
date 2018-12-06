@@ -16,6 +16,7 @@ import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.DateTimeUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.commission.dao.CommissionCalcDao;
+import com.littlecat.commission.model.CommissionApplyMO;
 import com.littlecat.commission.model.CommissionCalcMO;
 import com.littlecat.commission.model.CommissionGoodsMO;
 import com.littlecat.commission.model.CommissionReport;
@@ -55,6 +56,9 @@ public class CommissionCalcBusiness
 
 	@Autowired
 	private TuanBusiness tuanBusiness;
+	
+	@Autowired
+	private CommissionApplyAccountBusiness commissionApplyAccountBusiness;
 
 	public CommissionCalcMO getById(String id) throws LittleCatException
 	{
@@ -249,9 +253,12 @@ public class CommissionCalcBusiness
 		commissionCalcDao.modify(mos);
 	}
 
-	public void apply(String tuanZhangId) throws LittleCatException
+	public void apply(CommissionApplyMO mo) throws LittleCatException
 	{
-		commissionCalcDao.apply(tuanZhangId);
+		mo.setApplyTime(DateTimeUtil.getCurrentTimeForDisplay());
+		commissionCalcDao.apply(mo);
+		
+		commissionApplyAccountBusiness.add(mo);
 	}
 
 	public void pay(List<String> ids) throws LittleCatException

@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +18,9 @@ import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.rest.RestRsp;
 import com.littlecat.cbb.rest.RestSimpleRsp;
+import com.littlecat.commission.business.CommissionApplyAccountBusiness;
 import com.littlecat.commission.business.CommissionCalcBusiness;
+import com.littlecat.commission.model.CommissionApplyMO;
 import com.littlecat.commission.model.CommissionCalcMO;
 import com.littlecat.commission.model.CommissionReport;
 
@@ -29,6 +30,9 @@ public class CommissionCalcController
 {
 	@Autowired
 	private CommissionCalcBusiness commissionCalcBusiness;
+	
+	@Autowired
+	private CommissionApplyAccountBusiness commissionApplyAccountBusiness;
 
 	private static final Logger logger = LoggerFactory.getLogger(CommissionCalcController.class);
 
@@ -107,14 +111,14 @@ public class CommissionCalcController
 		return result;
 	}
 
-	@GetMapping(value = "/apply/{tuanZhangId}")
-	public RestSimpleRsp apply(@PathVariable String tuanZhangId)
+	@PostMapping(value = "/apply")
+	public RestSimpleRsp apply(@RequestBody CommissionApplyMO reqInfo)
 	{
 		RestSimpleRsp result = new RestSimpleRsp();
 
 		try
 		{
-			commissionCalcBusiness.apply(tuanZhangId);
+			commissionCalcBusiness.apply(reqInfo);
 		}
 		catch (LittleCatException e)
 		{
@@ -207,6 +211,56 @@ public class CommissionCalcController
 		return result;
 	}
 	
+	@GetMapping(value = "/getApplyInfoByApplyTime")
+	public RestRsp<CommissionApplyMO> getApplyInfoByApplyTime(@RequestParam String tuanZhangId, @RequestParam String applyTime)
+	{
+		RestRsp<CommissionApplyMO> result = new RestRsp<CommissionApplyMO>();
+
+		try
+		{
+			result.getData().add(commissionApplyAccountBusiness.getByApplyTime(tuanZhangId, applyTime));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+	
+	@GetMapping(value = "/getLatestApplyInfo")
+	public RestRsp<CommissionApplyMO> getLatestApplyInfo(@RequestParam String tuanZhangId)
+	{
+		RestRsp<CommissionApplyMO> result = new RestRsp<CommissionApplyMO>();
+
+		try
+		{
+			result.getData().add(commissionApplyAccountBusiness.getLatest(tuanZhangId));
+		}
+		catch (LittleCatException e)
+		{
+			result.setCode(e.getErrorCode());
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+		catch (Exception e)
+		{
+			result.setCode(Consts.ERROR_CODE_UNKNOW);
+			result.setMessage(e.getMessage());
+			logger.error(e.getMessage(), e);
+		}
+
+		return result;
+	}
+
 	@GetMapping(value = "/getCommissionReport")
 	public RestRsp<CommissionReport> getCommissionReport(@RequestParam String tuanZhangId)
 	{

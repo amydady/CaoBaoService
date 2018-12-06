@@ -15,6 +15,7 @@ import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.cbb.utils.UUIDUtil;
+import com.littlecat.commission.model.CommissionApplyMO;
 import com.littlecat.commission.model.CommissionCalcMO;
 import com.littlecat.common.consts.CommissionState;
 import com.littlecat.common.consts.ErrorCode;
@@ -155,7 +156,7 @@ public class CommissionCalcDao
 	{
 		StringBuilder sql = new StringBuilder()
 				.append("select id from  ").append(TABLE_NAME)
-				.append(" where state='").append(CommissionState.calced+"'");
+				.append(" where state='").append(CommissionState.calced + "'");
 
 		return jdbcTemplate.queryForList(sql.toString(), String.class);
 	}
@@ -200,17 +201,33 @@ public class CommissionCalcDao
 		}
 	}
 
-	public void apply(String tuanZhangId) throws LittleCatException
+	public void apply(CommissionApplyMO reqInfo) throws LittleCatException
 	{
 		StringBuilder sql = new StringBuilder()
 				.append(" update ").append(TABLE_NAME)
-				.append(" set state = '" + CommissionState.applyed.name() + "'")
-				.append(" ,applyTime=now() ")
-				.append(" where tuanZhangId='").append(tuanZhangId).append("'")
-				.append(" and state='").append(CommissionState.canapply).append("'");
+				.append(" set state = ?")
+				.append(" ,applyTime=? ")
+				.append(" ,bankHolderName=?")
+				.append(" ,bankName=?")
+				.append(" ,bankAccount=?")
+				.append(" ,zfbName=?")
+				.append(" ,zfbAccount=? ")
+				.append(" where tuanZhangId=? ")
+				.append(" and state=?");
 		try
 		{
-			jdbcTemplate.update(sql.toString());
+			jdbcTemplate.update(sql.toString(),
+					new Object[] {
+							CommissionState.applyed.name(),
+							reqInfo.getApplyTime(),
+							reqInfo.getBankHolderName(),
+							reqInfo.getBankName(),
+							reqInfo.getBankAccount(),
+							reqInfo.getZfbName(),
+							reqInfo.getZfbAccount(),
+							reqInfo.getTuanZhangId(),
+							CommissionState.canapply.name()
+					});
 		}
 		catch (DataAccessException e)
 		{

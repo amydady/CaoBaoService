@@ -190,6 +190,19 @@ CREATE TABLE `t_commission_calc` (
 	PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `t_commission_applyaccount` (
+	`tuanZhangId` VARCHAR(255) NOT NULL,
+	`applyTime` DATETIME NULL,
+
+	`bankHolderName` VARCHAR(255) NULL,
+	`bankName` VARCHAR(255) NULL,
+	`bankAccount` VARCHAR(255) NULL,
+	`zfbName` VARCHAR(255) NULL,
+	`zfbAccount` VARCHAR(255) NULL,
+	
+	UNIQUE KEY `unikey` (`tuanZhangId`,`applyTime`)
+);
+
 
 # 基础信息
 
