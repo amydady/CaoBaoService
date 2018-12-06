@@ -14,6 +14,7 @@ import com.littlecat.cbb.utils.StringUtil;
 import com.littlecat.common.consts.BooleanTag;
 import com.littlecat.quanzi.dao.TuanDao;
 import com.littlecat.quanzi.model.TuanMO;
+import com.littlecat.quanzi.model.TuanMemberMO;
 import com.littlecat.quanzi.model.TuanShenheReqInfo;
 
 @Component
@@ -103,26 +104,27 @@ public class TuanBusiness
 		// 普通用户，将团长地址置顶：本次分享团长、归属团长
 
 		// 当前归属团长
-		String currentTuanId = tuanMemberBusiness.getCurrentEnableTuan(terminalUserId).getTuanId();
-		
+		TuanMemberMO currentTuan = tuanMemberBusiness.getCurrentEnableTuan(terminalUserId);
+		String currentTuanId = currentTuan == null ? "" : currentTuan.getTuanId();
+
 		List<TuanMO> ret = new ArrayList<TuanMO>();
 		Set<String> toSkipIds = new HashSet<String>();
-		
-		if(StringUtil.isNotEmpty(shareTuanZhangId))
+
+		if (StringUtil.isNotEmpty(shareTuanZhangId))
 		{
 			ret.add(tuanDao.getById(shareTuanZhangId));
 			toSkipIds.add(shareTuanZhangId);
 		}
-		
-		if(StringUtil.isNotEmpty(currentTuanId))
+
+		if (StringUtil.isNotEmpty(currentTuanId))
 		{
 			ret.add(tuanDao.getById(currentTuanId));
 			toSkipIds.add(currentTuanId);
 		}
-		
-		for(TuanMO mo:mos)
+
+		for (TuanMO mo : mos)
 		{
-			if(!toSkipIds.contains(mo.getId()))
+			if (!toSkipIds.contains(mo.getId()))
 			{
 				ret.add(mo);
 			}
