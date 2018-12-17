@@ -207,11 +207,6 @@ public class CommissionCalcDao
 				.append(" update ").append(TABLE_NAME)
 				.append(" set state = ?")
 				.append(" ,applyTime=? ")
-				.append(" ,bankHolderName=?")
-				.append(" ,bankName=?")
-				.append(" ,bankAccount=?")
-				.append(" ,zfbName=?")
-				.append(" ,zfbAccount=? ")
 				.append(" where tuanZhangId=? ")
 				.append(" and state=?");
 		try
@@ -220,11 +215,6 @@ public class CommissionCalcDao
 					new Object[] {
 							CommissionState.applyed.name(),
 							reqInfo.getApplyTime(),
-							reqInfo.getBankHolderName(),
-							reqInfo.getBankName(),
-							reqInfo.getBankAccount(),
-							reqInfo.getZfbName(),
-							reqInfo.getZfbAccount(),
 							reqInfo.getTuanZhangId(),
 							CommissionState.canapply.name()
 					});
