@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.littlecat.cbb.common.Consts;
 import com.littlecat.cbb.exception.LittleCatException;
 import com.littlecat.cbb.utils.CollectionUtil;
 import com.littlecat.cbb.utils.DateTimeUtil;
@@ -23,6 +22,7 @@ import com.littlecat.commission.model.CommissionReport;
 import com.littlecat.commission.model.CommissionTypeMO;
 import com.littlecat.common.consts.CommissionState;
 import com.littlecat.common.consts.CommissionType;
+import com.littlecat.common.consts.SysParamName;
 import com.littlecat.common.utils.SysParamUtil;
 import com.littlecat.order.business.OrderBusiness;
 import com.littlecat.order.model.OrderDetailMO;
@@ -56,7 +56,7 @@ public class CommissionCalcBusiness
 
 	@Autowired
 	private TuanBusiness tuanBusiness;
-	
+
 	@Autowired
 	private CommissionApplyBusiness commissionApplyBusiness;
 
@@ -228,11 +228,11 @@ public class CommissionCalcBusiness
 
 		try
 		{
-			enableCommissionDelayDay = Integer.parseInt(SysParamUtil.getValueByName(Consts.PARAM_NAME_ENABLE_COMMISSION_DELAY_DAY));
+			enableCommissionDelayDay = Integer.parseInt(SysParamUtil.getValueByName(SysParamName.enable_commission_delay_day.name()));
 		}
 		catch (Exception e)
 		{
-			logger.error("get PARAM_NAME_ENABLE_COMMISSION_DELAY_DAY from db error.",e.getMessage());
+			logger.error("get PARAM_NAME_ENABLE_COMMISSION_DELAY_DAY from db error.", e.getMessage());
 		}
 
 		List<CommissionCalcMO> mos = new ArrayList<CommissionCalcMO>();
@@ -257,7 +257,7 @@ public class CommissionCalcBusiness
 	{
 		mo.setApplyTime(DateTimeUtil.getCurrentTimeForDisplay());
 		commissionCalcDao.apply(mo);
-		
+
 		commissionApplyBusiness.add(mo);
 	}
 
